@@ -14,12 +14,25 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "dat.gui": "^0.7.3",
     "echarts": "^4.2.0-rc.1",
     "element-ui": "^2.4.8",
+    "exports-loader": "^0.7.0",
+    "html2canvas": "^1.0.0-alpha.12",
+    "imports-loader": "^0.8.0",
     "jquery": "^3.3.1",
+    "less": "^3.8.0",
+    "less-loader": "^4.1.0",
+    "three": "^0.97.0",
+    "three-first-person-controls": "^0.2.1",
+    "three-gltf-loader": "^1.97.0",
+    "three-orbit-controls": "^82.1.0",
+    "tween": "^0.9.0",
+    "velocity-animate": "^1.5.2",
     "vue": "^2.5.2",
     "vue-axios": "^2.1.4",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "vue-video-player": "^5.0.2"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

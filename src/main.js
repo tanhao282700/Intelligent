@@ -24,6 +24,37 @@ Vue.prototype.$echarts = echarts;
 Vue.config.productionTip = false;
 
 
+/* 引入全局变量 */
+import base from './assets/global/base';
+Vue.prototype.BASE = base;
+
+/* 引入全局函数 */
+import global from './assets/global/global';
+Vue.use(global);
+
+//引入Velocity.js动画库
+import  Velocity from 'velocity-animate';
+
+//引入播放视频插件
+import VideoPlayer from 'vue-video-player'
+require('video.js/dist/video-js.css')
+require('vue-video-player/src/custom-theme.css')
+Vue.use(VideoPlayer);
+
+//全局组件
+import Crumbs from '@/components/common/crumbs/index.js'; // 导入自定义组件文件
+Vue.use(Crumbs);
+
+import Lines from '@/components/common/Lines/index.js'; // 导入自定义组件文件
+Vue.use(Lines);
+
+import Dialog from '@/components/common/dialog/index.js'; // 导入自定义组件文件
+Vue.use(Dialog);
+
+import reset from "./assets/css/reset.css";
+import common from "./assets/css/common.css";
+import './assets/icon/iconfont.css';
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

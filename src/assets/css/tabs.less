@@ -1,0 +1,38 @@
+.tabBoxs{
+    padding:0;
+    overflow:hidden;
+    width:100%;
+    padding-top:8px;
+    flex:1;
+    .el-tabs__header { //没起作用，我改了源码。 到时候弄  re：起作用了啊。。
+        margin:0
+    }
+    .tabItems{
+        display: inline-block;
+        transform: translateY(-4px);
+        font-size:16px;
+        color:#a7a7a7;
+        line-height:32px;
+        font-weight: normal;
+        font-stretch: normal;
+        padding:0;
+        &:hover{
+            color:#008aff
+        }
+    }
+
+   .is-active{
+      .tabItems{
+          color:#008aff;
+      }
+   }
+   //.el-tabs__nav-wrap::after没起作用，我改了源码。 到时候弄  re:不是没起作用background-color没有none属性应用transparent
+  .el-tabs__header{
+      .el-tabs__nav-wrap::after {
+          background-color: transparent;
+      }
+  }
+
+
+
+}

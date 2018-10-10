@@ -1,0 +1,109 @@
+@color-blue:#008aff;
+
+@color-red:#ff4f80;
+
+@color-orange:#ff8a63;
+
+@color-yellow:#ffcf85;
+// liner 渐变
+.gradientR(@color1,@color2){
+    @type:right;
+    @type2: left;
+    background: -webkit-linear-gradient(@type2, @color1 , @color2); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(@type, @color1, @color2); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(@type, @color1, @color2); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to @type, @color1 , @color2);
+}
+.gradientT(@color1,@color2){
+    @type: top;
+    @type2: bottom;
+    background: -webkit-linear-gradient(@type2, @color1 , @color2); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(@type, @color1, @color2); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(@type, @color1, @color2); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to @type, @color1 , @color2);
+}
+//计算VH
+.vh(@val){
+  height:@val*100/728vh;
+}
+.vhLH(@val){
+  line-height:@val*100/728vh;
+}
+.vhPT(@val){
+  padding-top:@val*100/728vh;
+}
+.vhPB(@val){
+  padding-bottom:@val*100/728vh;
+}
+.vhMB(@val){
+  margin-bottom:@val*100/728vh;
+}
+.vhMT(@val){
+  margin-top:@val*100/728vh;
+}
+.vhTop(@val){
+  top:@val*100/728vh;
+}
+.vhBottom(@val){
+  bottom:@val*100/728vh;
+}
+.vhLineH(@val){
+  line-height: @val*100/728vh;
+}
+ /* 日期选择器 */
+ .timeBox0{
+    width:2.9rem;
+    overflow: hidden;
+    height: 0.32rem;
+    position:relative;
+    display:inline-block;
+    .timeBox{
+      width:2.9rem;
+      height: 100%;
+      // transform:translateY(-0.05rem);
+      position:relative;
+      z-index: 11;
+      opacity:0;
+    }
+    .timeVal{
+      width:100%;
+      height:100%;
+      line-height:0.31rem;
+      position:absolute;
+      z-index: 10;
+      display:flex;
+      cursor:pointer;
+      .timeValIn{
+        flex:1;
+        text-align:center;
+        color:#fff;
+        font-size: 0.12rem;
+        cursor:pointer;
+      }
+    }
+  }
+
+  // 按钮白
+.btnBai1{
+    width: 2.2rem;
+    .vh(44);
+    .vhLH(44);
+    text-align: center;
+    font-size: 0.18rem;
+    border-radius: 0.04rem;
+     color: #3b85ef;
+        background-color: rgba(51, 51, 51, 0.2);
+        box-shadow: 0px 4px 10px 0px
+            rgba(74, 144, 226, 0.4),
+            inset 1px 1px 2px 0px
+            rgba(248, 253, 255, 0.15),
+            inset 0px -1px 1px 0px
+            #4a90e2;
+      cursor: pointer;
+      border: solid 0.01rem transparent;
+    &:active{
+        background-color: #3a84ee;
+        color :#fff;
+        border-color: #1989fa;
+    }
+}
