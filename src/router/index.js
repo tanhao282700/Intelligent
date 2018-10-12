@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+//首页
+import Home from '@/components/Home/Home'
+
 //能源
 import energy from '@/components/Energy/energy0'         //能源组件
 import energyFullLook from '@/components/Energy/energy'  //全景查看子组件
@@ -27,7 +30,7 @@ export default new Router({
     {
       path: '/',
       name: 'HelloWorld',
-      component: energy
+      component: Home
     },
     {
       path: '/energy',
