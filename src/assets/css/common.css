@@ -39,7 +39,9 @@
 .el-select span.el-input__suffix{
   display: none!important;
 }
-
+.el-select input.el-input__inner,.el-select input.el-input__inner::-webkit-input-placeholder{
+  font-size: 12px!important;
+}
 
 
 /*字体引入*/
