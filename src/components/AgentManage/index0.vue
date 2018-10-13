@@ -4,14 +4,14 @@
 -->
 <template>
   <div class="generation">
-      <SysHead :datas = "sData"/>
-      <router-view></router-view>
+      <div class="autoComponent">
+        <SysHead :datas = "sData"/>
+        <router-view></router-view>
+      </div>
   </div>
 </template>
 
 <script>
-
-
 import utils from "../../assets/js/utils.js";
 import SysHead from '@/components/common/sysHead';
 export default {
@@ -24,17 +24,19 @@ export default {
         sData:{
             id:3,
             lists:[
-                {id:0,name:'首页',route:'/generationM'},
-                {id:1,name:'排班表',route:'/generationM/schedule'},
-                {id:2,name:'工单',route:'/generationM/workList'},
-                {id:3,name:'巡检',route:'/generationM/routing'},
-                {id:4,name:'统计报表',route:'/generationM/report'},
+                {id:0,name:'首页',route:'/AgentManage'},
+                {id:1,name:'排班表',route:'/AgentManage/schedule'},
+                {id:2,name:'工单',route:'/AgentManage/workList'},
+                {id:3,name:'巡检',route:'/AgentManage/routing'},
+                {id:4,name:'统计报表',route:'/AgentManage/report'},
             ]
         }
     }
   },
   methods:{
-
+    search(param){
+      console.log(param)
+    }
   },
   created() {
 
@@ -48,5 +50,8 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="less" scoped='scoped' type="text/less">
 @import '../../assets/css/tabs.less';
-
+.generation{
+  width:100%;
+  height:100%;
+}
 </style>
