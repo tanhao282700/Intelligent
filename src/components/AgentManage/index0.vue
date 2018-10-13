@@ -5,7 +5,7 @@
 <template>
   <div class="generation">
       <div class="autoComponent">
-        <SysHead :datas = "sData"/>
+        <SysHead :datas = "sData" v-on:searchCont="search"/>
         <router-view></router-view>
       </div>
   </div>
