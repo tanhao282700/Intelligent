@@ -162,7 +162,7 @@ export default {
   methods:{
     handleClick(tab, event) {
         let activeName = this.activeName;
-        this.$router.replace({ path: `/generationM/schedule/${activeName}`});     
+        this.$router.replace({ path: `/AgentManage/schedule/${activeName}`});     
       },
       search(val,type){
         console.log(val,type)
@@ -191,7 +191,7 @@ export default {
   },
   created() {
      //配合路由 定位页面
-      let val = (this.$router.history.current.fullPath).split('/generationM/schedule')[1];
+      let val = (this.$router.history.current.fullPath).split('/AgentManage/schedule')[1];
       if(val==''){
           this.activeName = 'first';
       }else{

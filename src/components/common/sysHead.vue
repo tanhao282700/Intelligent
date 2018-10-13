@@ -1,5 +1,5 @@
 /*
-头部
+头部 by fanshan 2018/10/13
 
 */
 <template>
@@ -14,7 +14,7 @@
        </div>
       <span></span>
     </div>
-    <el-tabs v-model="activeName" @tab-click="toLink">
+    <el-tabs v-model="activeName" @tab-click="toLink" class="navTabs">
       <el-tab-pane v-for="(item,index) in datas.lists" :label="item.name" :name="'item'+index" :route="item.route" :stretch="true">
       </el-tab-pane>
     </el-tabs>
@@ -22,22 +22,32 @@
       <img src="../../assets/img/Home/logo.png" width="30px" height="30px" >
     </div>
     <div class="dropdownlist">
-      <a>菜单</a>
+      <SelectBox 
+        :options = 'menus' 
+        :value = "currMenu" 
+        placeholder=""
+        @change = "changeMenu"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import searchBox from '@/components/form/searchBox'
+import SelectBox from '@/components/form/selectBox';
 import '../../assets/css/fs_common.css';
 export default {
   props:['datas'],
-  components:{'searchBox':searchBox},
+  components:{'searchBox':searchBox,'SelectBox':SelectBox,},
   data () {
     return {
       placeholder:'请输入搜索内容',
       inputs:'',
-      activeName:'item0'
+      activeName:'item0',
+      menus:[
+          {label:'个人信息',value:1},
+          {label:'密码修改',value:2}],
+      currMenu:-1
     }
   },
   methods:{
@@ -47,12 +57,16 @@ export default {
      search(){
          //console.log(this.inputs);
          this.$emit('searchCont',this.inputs);
+     },
+     changeMenu(){
+
      }
   },
   created() {
      
   },
 }
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -60,6 +74,7 @@ export default {
 @import '../../assets/css/comon.less';
     .headBox0{
         position:absolute;
+        left:0;
         top:0;
         width:100%;
         height:50px;
@@ -82,6 +97,16 @@ export default {
           cursor:pointer;
           color:#fff;
           right:20px;
+        }
+        .navTabs{
+          height:50px;
+          display: inline-flex;
+          margin-left: 60px;
+           .el-tabs__header{
+             .el-tabs__nav-wrap{
+                height:0px;
+             }
+           }
         }
         .logo{
           cursor:pointer;
