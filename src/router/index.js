@@ -20,14 +20,30 @@ import fireAlarm from '@/components/Alarm/fireAlarm'
 import fireMonitor from '@/components/Alarm/components/fireMonitor'
 import fireHistory from '@/components/Alarm/components/fireHistory'
 
+//权限系统
+import permission from '@/components/Permission/Permission';
+import roleSetting from '@/components/Permission/roleSetting';
+import userSetting from '@/components/Permission/userSetting';
+
+//首页
+import Home from '@/components/Home/Home'
+
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
       path: '/',
-      name: 'HelloWorld',
-      component: energy
+      name: 'Home',
+      component: Home
+    },
+    {
+      path: '/permission',
+      component: permission,
+      children:[
+        { path: '/permission/user', component: userSetting,},
+        { path: '/permission/role', component: roleSetting,}
+      ]
     },
     {
       path: '/energy',

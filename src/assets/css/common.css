@@ -43,6 +43,14 @@
   font-size: 12px!important;
 }
 
+/*权限管理模块样式*/
+.userBox .queryBox .el-input__inner,.userBox .itemsBox .el-button{
+  height: 32px;
+  width: 110px;
+}
+.userBox .el-table th, .userBox .el-table tr{
+  font-size: 14px !important;
+}
 
 /*字体引入*/
 @font-face {
@@ -321,7 +329,7 @@ background-color: #65a3fa!important;
   border-color: #209757!important;
 }
 .el-button{
-  border-radius: 0.02rem!important;
+  border-radius: 2px!important;
   font-size:0.12rem!important;
 }
 
