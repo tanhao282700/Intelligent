@@ -15,11 +15,11 @@
       <span></span>
     </div>
     <el-tabs v-model="activeName" @tab-click="toLink" class="navTabs">
-      <el-tab-pane v-for="(item,index) in datas.lists" :label="item.name" :name="'item'+index" :route="item.route" :stretch="true">
+      <el-tab-pane v-for="(item,index) in datas.lists" :key="item.id" :label="item.name" :name="'item'+index" :route="item.route" :stretch="true">
       </el-tab-pane>
     </el-tabs>
     <div class="headimg">
-      <img src="../../assets/img/Home/logo.png" width="30px" height="30px" >
+      <img src="../../assets/img/home/logo.png" width="30px" height="30px" >
     </div>
     <div class="dropdownlist">
       <SelectBox 
@@ -122,7 +122,7 @@ export default {
             font-weight:600;
             padding:0 0 28px 44px;
             color:#fff;
-            background:url('../../assets/img/Home/logo.png') no-repeat left center;
+            background:url('../../assets/img/home/logo.png') no-repeat left center;
             background-size:32px 32px;
           }
         } 
