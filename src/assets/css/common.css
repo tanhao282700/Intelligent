@@ -5,8 +5,8 @@
   padding-top: 50px;
   height:100%;
   width:100%;
-  background:url('../../assets/img/fullBg.png') no-repeat;
-  background-size:100% 100%;
+  background:url('../../assets/img/fullBg.png') no-repeat center;
+  background-size:110% 110%;
 }
 
 /* 面包屑通用样式 */
@@ -43,14 +43,6 @@
   font-size: 12px!important;
 }
 
-/*权限管理模块样式*/
-.userBox .queryBox .el-input__inner,.userBox .itemsBox .el-button{
-  height: 32px;
-  width: 110px;
-}
-.userBox .el-table th, .userBox .el-table tr{
-  font-size: 14px !important;
-}
 
 /*字体引入*/
 @font-face {
@@ -98,19 +90,19 @@
   flex:1;
 }
 input::-webkit-input-placeholder { /* WebKit, Blink, Edge */
-  color:    #4d5d76;
+  color:    #4d5d76!important;
   font-size: 0.12rem;
 }
 input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
- color:    #4d5d76;
+ color:    #4d5d76!important;
  font-size: 0.12rem;
 }
 input::-moz-placeholder { /* Mozilla Firefox 19+ */
- color:    #4d5d76;
+ color:    #4d5d76!important;
  font-size: 0.12rem;
 }
 input:-ms-input-placeholder { /* Internet Explorer 10-11 */
- color:    #4d5d76;
+ color:    #4d5d76!important;
  font-size: 0.12rem;
 }
 
@@ -355,18 +347,19 @@ background-color: #65a3fa!important;
 .el-table, .el-table__expanded-cell{
   background-color:rgba(0,0,0,0)!important;
 }
-
 .el-table th{
-  color:#36fceb!important;
+  color:#36fceb;
+  height: .5rem;
+  line-height: .5rem;
 }
 .el-table tr{
   color:#f4f4f4!important;
 }
 .el-table th, .el-table tr{
-  background-color:rgba(0,0,0,0)!important;
-  font-size: 0.14rem!important;
-  height: 5.4945vh!important;
-  line-height: 5.4945vh!important;
+  background-color:transparent;
+  font-size: 0.14rem;
+  padding: 0;
+  border: none;
 }
 
 .el-table--small th{
@@ -375,7 +368,10 @@ background-color: #65a3fa!important;
   padding:0;
 }
 .el-table td{
-  border-bottom-color: rgba(58, 137, 249, 0.3)!important;
+  border-bottom-color: rgba(58, 137, 249, 0.3);
+  height: .4rem;
+  line-height: .4rem;
+  padding: 0;
 }
 .el-table th.is-leaf{
   border-bottom-color: transparent!important;
@@ -392,31 +388,28 @@ background-color: #65a3fa!important;
 /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
 ::-webkit-scrollbar
 {
-    width: 11px!important;
-    height: 16px!important;
-    background-color: rgba(0,0,0,0)!important;
+    width: 6px;
+    height: 6px;
+    background-color: rgba(0,0,0,0);
 }
 
 /*定义滚动条轨道 内阴影+圆角*/
 ::-webkit-scrollbar-track
 {
-    -webkit-box-shadow: inset 0 0 0.06rem rgba(0,0,0,0.3)!important;
-    border-radius: 0.1rem!important;
-    background-color: rgba(0,0,0,.2)!important;
+    -webkit-box-shadow: inset 0 0 0.06rem rgba(0,0,0,0.3);
+    background-color: rgba(238,238,238,1);
 }
 
 /*定义滑块 内阴影+圆角*/
 ::-webkit-scrollbar-thumb
 {
-    border-radius: 0.1rem!important;
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3)!important;
-    background-color: rgba(215,215,215,.3)!important;
+    border-radius: 0.1rem;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: rgba(153,153,153,1);
 }
 /* 分页样式 */
 .el-pagination{
   color:#008aff!important;
-
-  width: 100%!important;
   display: flex!important;
   justify-content: flex-end!important;
   position: relative;

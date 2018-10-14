@@ -26,7 +26,12 @@ import roleSetting from '@/components/Permission/roleSetting';
 import userSetting from '@/components/Permission/userSetting';
 
 //首页
-import Home from '@/components/Home/Home'
+import Home from '@/components/Home/Home';
+
+//门禁
+import DoorControl from '@/components/DoorControl/DoorControl'
+import tabs from '@/components/DoorControl/components/tabs'
+import tabsSys from '@/components/DoorControl/components/tabsSys'
 
 Vue.use(Router)
 
@@ -68,33 +73,33 @@ export default new Router({
 
     },
     {
-      path: '/generationM',
+      path: '/AgentManage',
       component: generationMIndex0,
       children:[
         {
-          path: '/generationM',
+          path: '/AgentManage',
           name:'generationMBase',
           component:generationMIndex
         },
         {
-          path: '/generationM/schedule',
+          path: '/AgentManage/schedule',
           component:generationMSchedule,
           children:[
-            { path: '/generationM/schedule/first'},
-            { path: '/generationM/schedule/second'},
-            { path: '/generationM/schedule/thrid'},
+            { path: '/AgentManage/schedule/first'},
+            { path: '/AgentManage/schedule/second'},
+            { path: '/AgentManage/schedule/thrid'},
           ]
         },
         {
-          path: '/generationM/workList',
+          path: '/AgentManage/workList',
           component:generationMWorkList
         },
         {
-          path: '/generationM/routing',
+          path: '/AgentManage/routing',
           component:generationMRouting
         },
         {
-          path: '/generationM/report',
+          path: '/AgentManage/report',
           component:generationMReport
         },
       ]
@@ -115,5 +120,16 @@ export default new Router({
         }
       ]
     },
+    {
+      path: '/DoorControl',
+      component: DoorControl,
+      redirect: '/DoorControl/components/tabsSys',
+      children:[
+        { path: '/DoorControl/components/tabs',component: tabs},
+        { path: '/DoorControl/components/tabsSys',component: tabsSys},
+      ]
+    },
+
+
   ]
 })

@@ -7,6 +7,8 @@ body{
     font-family:PingFangSC-Regular;
     color:#666;
     font-size:14px;
+    min-width: 1280px;
+    min-height: 728px;
 }
 input,select,textarea{
     border:1px solid #eee;
@@ -42,7 +44,7 @@ html,body{
   width: 100%;
 }
 html{
-    font-size: 7.32vw;
+    font-size: 100px;
 }
 *{
 	box-sizing: border-box;
