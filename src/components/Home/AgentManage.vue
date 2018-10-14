@@ -67,7 +67,7 @@
     },
     methods:{
       drawEchart(){
-        let myChart = this.$echarts.init(document.getElementById("echarts"));
+        let agentChart = this.$echarts.init(document.getElementById("echarts"));
         let option = {
           title : {
             text: '工单统计',
@@ -158,7 +158,7 @@
 
 
         // 绘制图表
-        myChart.setOption(option);
+        agentChart.setOption(option);
       }
     }
   }

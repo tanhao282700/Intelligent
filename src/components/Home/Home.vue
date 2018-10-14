@@ -147,7 +147,11 @@
           }
       },
       mounted(){
+        /*window.onresize = function(){
+          myChart.resize();
+          //myChart1.resize();    //若有多个图表变动，可多写
 
+        }*/
       },
       methods:{
         showBanerClick(){
@@ -263,6 +267,15 @@
     height:100%;
     min-height:728px;
     position:relative;
+    overflow:hidden;
+    .echarts div{
+      width:100%!important;
+      height:100%!important;
+      canvas{
+        width:100%!important;
+        height:100%!important;
+      }
+    }
     .buildModel{
       width:100%;
       height:100%;

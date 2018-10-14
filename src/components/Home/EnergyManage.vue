@@ -42,7 +42,7 @@
     },
     methods:{
       drawEchart(){
-        let myChart = this.$echarts.init(document.getElementById("nergyEcharts"));
+        let energyChart = this.$echarts.init(document.getElementById("nergyEcharts"));
         let option = {
           title : {
             show:false,
@@ -134,7 +134,7 @@
 
 
         // 绘制图表
-        myChart.setOption(option);
+        energyChart.setOption(option);
       }
     }
   }
@@ -171,6 +171,10 @@
     flex-direction: column;
     .nergyEcharts{
       height:50%;
+      div{
+        width:100%!important;
+        height:100%!important;
+      }
     }
     .info{
       flex:1;

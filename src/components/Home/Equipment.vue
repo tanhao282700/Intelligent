@@ -43,12 +43,12 @@
     },
     methods:{
       drawEchartTwo(){
-        let myChart = this.$echarts.init(document.getElementById("equipmentTwo"));
-
+        let equipmentChart = this.$echarts.init(document.getElementById("equipmentTwo"));
+        this.$parent.equipmentChart = equipmentChart
 
 
         // 绘制图表
-        myChart.setOption(option);
+        equipmentChart.setOption(option);
       }
     }
   }
