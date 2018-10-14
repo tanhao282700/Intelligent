@@ -39,7 +39,7 @@
 
     },
     mounted(){
-      this.drawEchartTwo()
+      /*this.drawEchartTwo()*/
     },
     methods:{
       drawEchartTwo(){

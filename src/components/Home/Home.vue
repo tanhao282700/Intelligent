@@ -5,7 +5,7 @@
     </div>
     <div class="header">
       <div class="companyName" @click="showBanerClick">
-        <span>图标</span>
+        <span></span>
         <span>泰立智汇</span>
       </div>
       <div class="systemName">
@@ -16,8 +16,8 @@
         <span>七月二十号</span>
         <span>多云</span>
         <span>34℃</span>
-        <span>图标</span>
-        <span>头像</span>
+        <img class="wetherIcon" src="../../assets/img/home/wethericon.png" ></img>
+        <span @click="showPersonInfo" class="userIcon"></span>
       </div>
     </div>
     <div class="partOne dragEle">
@@ -75,85 +75,48 @@
         </div>
       </div>
     </div>
-    <div class="baner" :class = " isShowBaner? 'showBaner' : 'closeBaner' ">
-      <div class="head" @click="showBanerClick">
-        <span class="logo"></span>
-        <span class="txt">泰立智汇</span>
-      </div>
-      <div class="banerCon">
-        <el-row class="tac b-box">
-          <el-col class="b-box">
-            <!--<h5>自定义颜色</h5>-->
-            <el-menu
-              default-active="2"
-              class="el-menu-vertical-demo"
-              background-color="#061733"
-              text-color="#fff"
-              active-text-color="#ffd04b">
-              <el-submenu index="1">
-                <template slot="title">
-                  <i class="el-icon-location"></i>
-                  <span>智慧管理</span>
-                </template>
-                <el-menu-item-group>
-                  <!--<template slot="title">分组一</template>-->
-                  <el-menu-item disabled index="1-1">门禁系统</el-menu-item>
-                  <el-menu-item index="1-2">视频监控系统</el-menu-item>
-                  <el-menu-item index="1-3">消防系统</el-menu-item>
-                  <el-menu-item index="1-4">中央空调系统</el-menu-item>
-                </el-menu-item-group>
-                <!--<el-menu-item-group title="分组2">
-                  <el-menu-item index="1-3">选项3</el-menu-item>
-                </el-menu-item-group>
-                <el-submenu index="1-4">
-                  <template slot="title">选项4</template>
-                  <el-menu-item index="1-4-1">选项1</el-menu-item>
-                </el-submenu>-->
-              </el-submenu>
-              <el-submenu index="2">
-                <template slot="title">
-                  <i class="el-icon-location"></i>
-                  <span>运营管理</span>
-                </template>
-                <el-menu-item-group>
-                  <el-menu-item index="2-1">能源管理系统</el-menu-item>
-                  <el-menu-item index="2-2">营收数据分析</el-menu-item>
-                  <el-menu-item index="2-3">设备情况</el-menu-item>
-                </el-menu-item-group>
-              </el-submenu>
-              <el-submenu index="3" class="noRight">
-                <template slot="title" class="noRight">
-                  <i class="el-icon-location"></i>
-                  <span>运维管理</span>
-                </template>
-              </el-submenu>
-              <el-submenu index="4" class="noRight">
-                <template slot="title">
-                  <i class="el-icon-location"></i>
-                  <span>告警管理</span>
-                </template>
-              </el-submenu>
-              <el-submenu index="5" class="noRight" disabled>
-                <template slot="title">
-                  <i class="el-icon-location"></i>
-                  <span>权限管理</span>
-                </template>
-              </el-submenu>
-            </el-menu>
-          </el-col>
-        </el-row>
+
+    <component :isShowBannerParam="showBannerParam" @changeBannerParam="updateBannerParam" is="Banner"></component>
+
+    <div class="management" v-show="personalCenter.isShowBounced">
+      <div class="to_top"></div>
+      <div class="to_con">
+        <div class="management-people">
+          <span>个人信息</span>
+        </div>
+        <div class="management-people">
+          <span>权限管理</span>
+        </div>
+        <div class="management-people">
+          <span>修改密码</span>
+        </div>
+        <div class="management-people" @click="loginOut">
+          <template>
+            <span>退出登录</span>
+          </template>
+        </div>
       </div>
     </div>
+
+    <el-dialog :visible.sync="personalCenter.isShowDialog" width="364px" top="30vh" custom-class="homeLoginDialog">
+      <span>是否确定退出此账号登录</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="personalCenter.isShowDialog = false">确 定</el-button>
+        <el-button @click="personalCenter.isShowDialog = false">取 消</el-button>
+      </span>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
+  import Banner from '../common/banner/Banner.vue'
   import AgentManage from './AgentManage.vue'
   import EnergyManage from './EnergyManage.vue'
   import Equipment from './Equipment.vue'
     export default {
       name: "home",
-      components:{AgentManage,EnergyManage,Equipment},
+      components:{AgentManage,EnergyManage,Equipment,Banner},
       data(){
           return {
               list:[{
@@ -175,12 +138,25 @@
               partOneView:'AgentManage',
               partTwoView:'EnergyManage',
               partThreeView:'Equipment',
-              isShowBaner:false
+              showBannerParam:false,
+              personalCenter:{
+                  isShowBounced:false,
+                  isShowDialog:false,
+              }
           }
       },
       methods:{
         showBanerClick(){
-          this.isShowBaner = !this.isShowBaner
+          this.showBannerParam = !this.showBannerParam
+        },
+        updateBannerParam(data){
+          this.showBannerParam = data
+        },
+        showPersonInfo(){
+          this.personalCenter.isShowBounced = !this.personalCenter.isShowBounced
+        },
+        loginOut(){
+          this.personalCenter.isShowDialog = true
         }
       }
     }
@@ -202,8 +178,58 @@
   .noRight .el-submenu__title .el-submenu__icon-arrow{
     display:none;
   }
+
+  #home .homeLoginDialog{
+    height:216px;
+    background:#061733;
+  }
+  #home .el-dialog__headerbtn{
+    top:6px;
+    right:10px;
+  }
+  #home .el-dialog__body{
+    height:142px;
+    padding:0;
+    color:#b5d6ff;
+    line-height:120px;
+    text-align: center;
+    font-size:20px;
+    /*padding-top:49px;
+    padding-bottom:49px;*/
+  }
+  #home .el-dialog__footer{
+    padding:0;
+    height:44px;
+  }
+  #home .el-dialog__footer .dialog-footer{
+    display: inline-block;
+    width:100%;
+    height:100%;
+    border:1px solid #3b85ee;
+    box-sizing: border-box;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+  #home .el-dialog__footer .dialog-footer button:first-child{
+    border-bottom-left-radius:6px!important;
+  }
+  #home .el-dialog__footer .dialog-footer button:last-child{
+    border-bottom-left-radius:8px;
+  }
+  #home .el-dialog__footer .dialog-footer button{
+    box-sizing: border-box;
+    width:50%;
+    margin:0;
+    padding:0;
+    display: inline-block;
+    height:100%;
+    float:left;
+  }
+  #home .el-button{
+    background:none;
+  }
 </style>
-<style scoped lang="less">
+<style scoped rel="stylesheet/less" lang="less">
   @import "../../assets/css/home.less";
   #home{
     width:100%;
@@ -227,15 +253,31 @@
       height:54px;
       line-height:54px;
       position:absolute;
-      background:#294877;
+      background:url(../../assets/img/home/titlebg.png) no-repeat left top;
+      background-size:100% 54px;
       top:0;
       left:0;
       display:flex;
       flex-direction: row;
       justify-content: space-between;
       font-size:14px;
+      .systemName{
+        padding:0 5.929%;
+        background:url(../../assets/img/home/topbg.png) no-repeat center center;
+        background-size:cover;
+      }
       .companyName{
         margin-left:16px;
+        display: flex;
+        align-items: center;
+        span:first-child{
+          display: inline-block;
+          margin-right:8px;
+          width:26px;
+          height:26px;
+          background:url(../../assets/img/home/logo.png) no-repeat center center;
+          background-size:cover;
+        }
       &:hover{
         cursor: pointer;
        }
@@ -248,6 +290,33 @@
       }
       .systemName{
         font-size:18px;
+      }
+      .info{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        span{
+          margin-right:10px;
+          display: inline-block;
+        }
+        img{
+          margin-right:10px;
+          display: inline-block;
+        }
+        .wetherIcon{
+          width:26px;
+          height:22px;
+        }
+        .userIcon{
+          width:31px;
+          height:31px;
+          display: inline-block;
+          background:url(../../assets/img/home/usericon.png) no-repeat center center;
+          background-size: cover;
+          &:hover{
+            cursor: pointer;
+          }
+        }
       }
     }
     .partOne{
@@ -401,56 +470,48 @@
 
 
 
-    .baner{
-      width:250px;
-      height:100%;
+
+
+
+
+    .management{
+      width:100px;
+      height:164px;
+      justify-content:center;
+      text-align:center;
       position:absolute;
-      left:-250px;
-      top:0;
-      background:#061b3a;
-      display:flex;
-      flex-direction:column;
-      box-shadow:0 0 14px 0 #35a3ee;
-      .head{
+      right:24px;
+      top:81px;
+      .to_top{
+        margin-left:60px;
+        width: 0;
+        height: 0;
+        border-bottom: 12px solid #061733;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+      }
+      .to_con{
+        height:152px;
+        background:#061733;
+        border-radius:6px;
+      }
+      .management-people{
+        width:100px;
+        height:34px;
+        color:#fff;
+        line-height:34px;
+        display: inline-block;
+        &:first-child{
+          margin-top:10px;
+        }
         &:hover{
           cursor:pointer;
-         }
-        height:55px;
-        display:flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        box-shadow:0 0 10px 0 black;
-        .logo{
-          background:url(../../assets/img/home/logo.png) no-repeat center center;
-          background-size:cover;
-          width:25px;
-          height:25px;
-          margin-right:14px;
-        }
-        .txt{
-          color:#ffffff;
-          font-size:18px;
-          font-weight:400;
+          background:#093365;
+          transition:all 1s;
+          color:#1989f9;
         }
       }
-      .banerCon{
-        flex:1;
-        margin-top:5px;
-      }
     }
-    .showBaner{
-      left:0;
-      transition:all 1s;
-    }
-    .closeBaner{
-      left:-250px;
-      transition:all 1s;
-    }
-
-
-
-
 
 
 
