@@ -13,15 +13,15 @@
         </div>
         <div class="formInput canEdit">
           <span>部门</span>
-          <input type="text" :readonly="options.isPersonInfo" value="工程部">
+          <input type="text" :readonly="options.isPersonInfo" value="吃鸡部">
         </div>
         <div class="formInput">
           <span>职位</span>
-          <input type="text" readonly value="老板">
+          <input type="text" readonly value="小队长">
         </div>
         <div class="formInput">
           <span>角色</span>
-          <input type="text" readonly value="老板娘">
+          <input type="text" readonly value="98K专业户">
         </div>
         <div class="formInput">
           <span>电话</span>

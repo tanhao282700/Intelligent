@@ -22,9 +22,9 @@
               <el-menu-item-group>
                 <!--<template slot="title">分组一</template>-->
                 <el-menu-item index="DoorControl">门禁系统</el-menu-item>
-                <el-menu-item index="1-2">视频监控系统</el-menu-item>
-                <el-menu-item index="1-3">消防系统</el-menu-item>
-                <el-menu-item index="1-4">中央空调系统</el-menu-item>
+                <el-menu-item disabled index="1-2">视频监控系统</el-menu-item>
+                <el-menu-item index="fireAlarm/fireMonitor">消防系统</el-menu-item>
+                <el-menu-item disabled index="1-4">中央空调系统</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
             <el-submenu index="2">
@@ -34,27 +34,32 @@
               </template>
               <el-menu-item-group>
                 <el-menu-item index="energy">能源管理系统</el-menu-item>
-                <el-menu-item index="2-2">营收数据分析</el-menu-item>
-                <el-menu-item index="2-3">设备情况</el-menu-item>
+                <el-menu-item disabled index="2-2">营收数据分析</el-menu-item>
+                <el-menu-item disabled index="2-3">设备情况</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
-            <el-submenu index="3" class="noRight">
-              <template slot="title" class="noRight">
+            <el-submenu index="3" >
+              <template slot="title">
                 <i class="el-icon-location"></i>
                 <span>运维管理</span>
               </template>
+              <el-menu-item disabled index="3-1">普通人员</el-menu-item>
+              <el-menu-item index="AgentManage">管理人员</el-menu-item>
             </el-submenu>
-            <el-submenu index="4" class="noRight">
+            <el-submenu index="4">
               <template slot="title">
                 <i class="el-icon-location"></i>
                 <span>告警管理</span>
               </template>
+              <el-menu-item index="fireAlarm/fireMonitor">告警管理</el-menu-item>
             </el-submenu>
-            <el-submenu index="5" class="noRight" disabled>
+            <!--<el-submenu index="5" class="noRight">-->
+            <el-submenu index="5">
               <template slot="title">
                 <i class="el-icon-location"></i>
                 <span>权限管理</span>
               </template>
+              <el-menu-item index="permission">权限管理</el-menu-item>
             </el-submenu>
           </el-menu>
         </el-col>
@@ -90,6 +95,10 @@
       showBanerClick(){
         this.$emit('changeBannerParam', !this.isShowBannerParam);
       },
+      goRoute(link){
+          console.log(11)
+        this.$router.push(link);
+      }
     }
   }
 </script>
