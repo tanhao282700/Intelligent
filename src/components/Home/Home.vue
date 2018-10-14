@@ -3,13 +3,13 @@
     <div class="buildModel">
 
     </div>
+    <div class="systemName">
+      <div class="systemCon">泰立汇云智慧酒店管理系统</div>
+    </div>
     <div class="header">
       <div class="companyName" @click="showBanerClick">
         <span></span>
         <span>泰立智汇</span>
-      </div>
-      <div class="systemName">
-        泰立汇云智慧酒店管理系统
       </div>
       <div class="info">
         <span>22/08</span>
@@ -42,7 +42,7 @@
         </div>
         <div class="addIcon">+</div>
       </div>
-      <component :is="partOneView"></component>
+      <component :is="partOneView" :isResize="isResize"></component>
     </div>
     <div class="partTwo dragEle">
       <div class="add" style="display:none;">
@@ -52,7 +52,7 @@
         </div>
         <div class="addIcon">+</div>
       </div>
-      <component :is="partTwoView"></component>
+      <component :is="partTwoView" :isResize="isResize"></component>
     </div>
     <div class="partThree dragEle">
       <div class="add" style="display:none;">
@@ -62,9 +62,9 @@
         </div>
         <div class="addIcon">+</div>
       </div>
-      <component :is="partThreeView"></component>
+      <component :is="partThreeView" :isResize="isResize"></component>
     </div>
-    <div class="partFour dragEle">
+    <div class="partFour dragEle" @click="addModules">
       <div class="add">
         <div class="title">
           <span class="titleIcon"></span>
@@ -76,15 +76,15 @@
     <div class="monitoring">
 
     </div>
-    <div class="modules">
+    <div class="modules" v-if="isOperateModules">
       <div class="title">
-        <a href="javascript:void(0)"></a>
+        <a @click="closeModules" href="javascript:void(0)"></a>
       </div>
       <div class="modeCon">
         <div class="modeBox">
-          <div class="modeDetail boxs" v-for="i in 8">
-            <img src="../../assets/img/home/revenueData.png" alt="">
-            <span>营收数据分析</span>
+          <div class="modeDetail boxs" v-for="i in list">
+            <img :src="i.src" alt="">
+            <span v-text="i.name"></span>
           </div>
         </div>
       </div>
@@ -110,30 +110,43 @@
   import AgentManage from './AgentManage.vue'
   import EnergyManage from './EnergyManage.vue'
   import Equipment from './Equipment.vue'
-    export default {
+  import Door from './DoorControl.vue'
+
+  export default {
       name: "home",
-      components:{AgentManage,EnergyManage,Equipment,Banner,PersonInfo},
+      components:{AgentManage,EnergyManage,Equipment,Banner,PersonInfo,Door},
       data(){
           return {
               list:[{
                 id:1,
-                name:"代维系统数据"
+                name:"代维管理系统",
+                src:"../../../static/img/agent.png"
               },{
                 id:2,
-                name:"设备管理"
+                name:"设备情况",
+                src:"../../../static/img/equipment.png"
               },{
                 id:3,
-                name:"实时控制"
+                name:"中央空调系统",
+                src:"../../../static/img/conditioning.png"
               },{
                 id:4,
-                name:"营收数据分析"
+                name:"营收数据分析",
+                src:"../../../static/img/revenueData.png"
               },{
                 id:5,
-                name:"能源管理系统"
+                name:"能源管理系统",
+                src:"../../../static/img/energy.png"
+              },{
+                id:6,
+                name:"门禁系统",
+                src:"../../../static/img/doorManage.png"
               }],
+              isOperateModules:false,  //添加删除显示的模块
+              isResize:1,  //当前窗口是否重置，重绘canvas图标
               partOneView:'AgentManage',
               partTwoView:'EnergyManage',
-              partThreeView:'Equipment',
+              partThreeView:'Door',
               showBannerParam:false,
               personalCenter:{
                   isShowBounced:false,
@@ -147,13 +160,18 @@
           }
       },
       mounted(){
-        /*window.onresize = function(){
-          myChart.resize();
-          //myChart1.resize();    //若有多个图表变动，可多写
-
-        }*/
+        const that = this;
+        window.onresize = function(){
+          that.isResize++
+        }
       },
       methods:{
+        addModules(){
+          this.isOperateModules = true;
+        },
+        closeModules(){
+          this.isOperateModules = false;
+        },
         showBanerClick(){
           this.showBannerParam = true
         },
@@ -175,90 +193,7 @@
       }
     }
 </script>
-<style>
-  .el-menu{
-    border-right:none;
-    height:100%;
-  }
-  .b-box{
-    height:100%;
-  }
-  .el-submenu__title:hover{
-    background:#011f43!important;
-  }
-  .el-submenu__title:hover{
-    background:#008aff!important;
-  }
-  .noRight .el-submenu__title .el-submenu__icon-arrow{
-    display:none;
-  }
 
-  #home .homeLoginDialog{
-    height:216px;
-    background:#061733;
-    box-shadow:0 0 6px 0 #35a3ee;
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-  }
-  #home .el-dialog__headerbtn{
-    top:6px;
-    right:10px;
-  }
-  #home .el-dialog__body{
-    height:142px;
-    padding:0;
-    color:#b5d6ff;
-    line-height:120px;
-    text-align: center;
-    font-size:20px;
-  }
-  #home .el-dialog__footer{
-    padding:0;
-    height:44px;
-  }
-  #home .el-dialog__footer .dialog-footer{
-    display: inline-block;
-    width:100%;
-    height:100%;
-    border:1px solid #3b85ee;
-    box-sizing: border-box;
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-  }
-  #home .el-dialog__footer .dialog-footer button:first-child{
-    border-bottom-left-radius:6px!important;
-  }
-  #home .el-dialog__footer .dialog-footer button:last-child{
-    border-bottom-left-radius:8px;
-  }
-  #home .el-dialog__footer .dialog-footer button{
-    box-sizing: border-box;
-    width:50%;
-    margin:0;
-    padding:0;
-    display: inline-block;
-    height:100%;
-    float:left;
-  }
-  #home .el-button{
-    background:none;
-  }
-
-  .homeDropDown{
-    top:72px!important;
-    width:100px;
-    background:#061733;
-    border: 1px solid #4a90e2;
-    margin-right:20px!important;
-  }
-  .homeDropDown .popper__arrow{
-    left:68px!important;
-  }
-  .homeDropDown .homeDropdownItem:hover{
-    background:#093365;
-    color:#1989f9;
-  }
-</style>
 <style scoped rel="stylesheet/less" lang="less">
   @import "../../assets/css/home.less";
   #home{
@@ -286,6 +221,24 @@
       background:url(../../assets/img/home/1.png) no-repeat left top;
       background-size:cover;
     }
+    .systemName{
+      position:absolute;
+      width:100%;
+      height:54px;
+      left:0;
+      top:0;
+      text-align: center;
+      .systemCon{
+        font-size:16px;
+        color:#f2fdff;
+        line-height:54px;
+        height:54px;
+        display: inline-block;
+        padding:0 5.929%;
+        background:url(../../assets/img/home/topbg.png) no-repeat center center;
+        background-size:100% 100%;
+      }
+    }
     .header{
       color:#f2fdff;
       width:100%;
@@ -300,11 +253,6 @@
       flex-direction: row;
       justify-content: space-between;
       font-size:14px;
-      .systemName{
-        padding:0 5.929%;
-        background:url(../../assets/img/home/topbg.png) no-repeat center center;
-        background-size:cover;
-      }
       .companyName{
         margin-left:16px;
         display: flex;
@@ -441,6 +389,13 @@
             height:10.04vw;
             min-width:125px;
             min-height:125px;
+            float:left;
+            /*margin-left:3.8vw;*/
+            margin-left:6.432%;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            position:relative;
             &:hover{
                cursor: pointer;
                transform: scale(1.2);
@@ -451,15 +406,9 @@
                inset 0px -1px 1px 0px
                #498fe2;
              }
-            float:left;
-            margin-left:3.8vw;
             &:nth-child(5),&:nth-child(6),&:nth-child(7),&:nth-child(8){
                margin-top:7.113%;
              }
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            position:relative;
             img{
               width:52%;
               height:52%;
@@ -473,12 +422,17 @@
         }
       }
     }
-
+    .dragEle{
+      border-radius:8px;
+    }
     .dragEle .add{
       width:100%;
       height:100%;
       display: flex;
       flex-direction: column;
+      &:hover{
+        cursor: pointer;
+      }
       .title{
         height:8.9%;
         background:#0d2241;
@@ -562,5 +516,89 @@
 
 
 
+  }
+</style>
+<style>
+  .el-menu{
+    border-right:none;
+    height:100%;
+  }
+  .b-box{
+    height:100%;
+  }
+  .el-submenu__title:hover{
+    background:#011f43!important;
+  }
+  .el-submenu__title:hover{
+    background:#008aff!important;
+  }
+  .noRight .el-submenu__title .el-submenu__icon-arrow{
+    display:none;
+  }
+
+  #home .homeLoginDialog{
+    height:216px;
+    background:#061733;
+    box-shadow:0 0 6px 0 #35a3ee;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+  #home .el-dialog__headerbtn{
+    top:6px;
+    right:10px;
+  }
+  #home .el-dialog__body{
+    height:142px;
+    padding:0;
+    color:#b5d6ff;
+    line-height:120px;
+    text-align: center;
+    font-size:20px;
+  }
+  #home .el-dialog__footer{
+    padding:0;
+    height:44px;
+  }
+  #home .el-dialog__footer .dialog-footer{
+    display: inline-block;
+    width:100%;
+    height:100%;
+    border:1px solid #3b85ee;
+    box-sizing: border-box;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+  #home .el-dialog__footer .dialog-footer button:first-child{
+    border-bottom-left-radius:6px!important;
+  }
+  #home .el-dialog__footer .dialog-footer button:last-child{
+    border-bottom-left-radius:8px;
+  }
+  #home .el-dialog__footer .dialog-footer button{
+    box-sizing: border-box;
+    width:50%;
+    margin:0;
+    padding:0;
+    display: inline-block;
+    height:100%;
+    float:left;
+  }
+  #home .el-button{
+    background:none;
+  }
+
+  .homeDropDown{
+    top:72px!important;
+    width:100px;
+    background:#061733;
+    border: 1px solid #4a90e2;
+    margin-right:20px!important;
+  }
+  .homeDropDown .popper__arrow{
+    left:68px!important;
+  }
+  .homeDropDown .homeDropdownItem:hover{
+    background:#093365;
+    color:#1989f9;
   }
 </style>

@@ -14,7 +14,9 @@
 
   export default{
     props:{
-
+      isResize:{
+        type:Number
+      }
     },
     data(){
         return{
@@ -31,7 +33,8 @@
             time:'本年',
             data1:699,
             data2:499
-          }]
+          }],
+          energyChart:{}
         }
     },
     components:{
@@ -40,9 +43,15 @@
     mounted(){
       this.drawEchart()
     },
+    watch:{
+      isResize(){
+        this.energyChart.resize()
+      }
+    },
     methods:{
       drawEchart(){
         let energyChart = this.$echarts.init(document.getElementById("nergyEcharts"));
+        this.energyChart = energyChart
         let option = {
           title : {
             show:false,
@@ -139,7 +148,7 @@
     }
   }
 </script>
-<style lang="less" scoped>
+<style lang="less" rel="stylesheet/less" scoped>
   .agentComponent{
     width:100%;
     height:100%;
@@ -152,6 +161,8 @@
       flex-direction: row;
       justify-content: center;
       align-items: center;
+      border-top-right-radius:8px;
+      border-top-left-radius:8px;
       .titleIcon{
         width:22px;
         height:22px;

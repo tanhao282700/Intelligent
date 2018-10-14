@@ -15,7 +15,9 @@
 
   export default{
     props:{
-
+      isResize:{
+        type:Number
+      }
     },
     data(){
         return{
@@ -32,7 +34,8 @@
             time:'本年',
             data1:699,
             data2:499
-          }]
+          }],
+          equipmentChart:{}
         }
     },
     components:{
@@ -41,10 +44,15 @@
     mounted(){
       /*this.drawEchartTwo()*/
     },
+    watch:{
+      isResize(){
+        this.equipmentChart.resize()
+      }
+    },
     methods:{
       drawEchartTwo(){
         let equipmentChart = this.$echarts.init(document.getElementById("equipmentTwo"));
-        this.$parent.equipmentChart = equipmentChart
+        this.equipmentChart = equipmentChart
 
 
         // 绘制图表
@@ -53,7 +61,7 @@
     }
   }
 </script>
-<style lang="less" scoped>
+<style lang="less" rel="stylesheet/less" scoped>
   .agentComponent{
     width:100%;
     height:100%;
@@ -66,6 +74,8 @@
       flex-direction: row;
       justify-content: center;
       align-items: center;
+      border-top-right-radius:8px;
+      border-top-left-radius:8px;
       .titleIcon{
         width:22px;
         height:22px;

@@ -33,7 +33,7 @@
                 <span>运营管理</span>
               </template>
               <el-menu-item-group>
-                <el-menu-item index="2-1">能源管理系统</el-menu-item>
+                <el-menu-item index="energy">能源管理系统</el-menu-item>
                 <el-menu-item index="2-2">营收数据分析</el-menu-item>
                 <el-menu-item index="2-3">设备情况</el-menu-item>
               </el-menu-item-group>
