@@ -12,6 +12,7 @@
             class="el-menu-vertical-demo"
             background-color="#061733"
             text-color="#fff"
+            :router="isUserRouter"
             active-text-color="#ffd04b">
             <el-submenu index="1">
               <template slot="title">
@@ -20,7 +21,7 @@
               </template>
               <el-menu-item-group>
                 <!--<template slot="title">分组一</template>-->
-                <el-menu-item index="1-1">门禁系统</el-menu-item>
+                <el-menu-item index="DoorControl">门禁系统</el-menu-item>
                 <el-menu-item index="1-2">视频监控系统</el-menu-item>
                 <el-menu-item index="1-3">消防系统</el-menu-item>
                 <el-menu-item index="1-4">中央空调系统</el-menu-item>
@@ -71,14 +72,19 @@
     },
     data(){
       return{
-
+        isUserRouter:true
       }
     },
     components:{
 
     },
     mounted(){
-
+      /*$('.banerCon').on('click', (event) => event.stopPropagation());
+      $(document).on('click', () => {
+        if(this.$parent.showBannerParam){
+          this.$parent.showBannerParam = false
+          }
+        });*/
     },
     methods:{
       showBanerClick(){

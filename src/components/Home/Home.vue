@@ -17,7 +17,21 @@
         <span>多云</span>
         <span>34℃</span>
         <img class="wetherIcon" src="../../assets/img/home/wethericon.png" ></img>
-        <span @click="showPersonInfo" class="userIcon"></span>
+        <el-row class="block-col-2">
+          <el-col :span="12">
+            <el-dropdown trigger="click" @command="handleCommand" >
+              <span class="el-dropdown-link">
+                <span @click="showPersonInfo" class="userIcon"></span>
+              </span>
+              <el-dropdown-menu class="homeDropDown" slot="dropdown" >
+                <el-dropdown-item command="personInfo" class="homeDropdownItem" style="text-align:center;color:#f6f6f6">个人信息</el-dropdown-item>
+                <el-dropdown-item command="authorityManagement" class="homeDropdownItem" style="text-align:center;color:#f6f6f6">权限管理</el-dropdown-item>
+                <el-dropdown-item command="changePassword" class="homeDropdownItem" style="text-align:center;color:#f6f6f6">修改密码</el-dropdown-item>
+                <el-dropdown-item command="loginOut" class="homeDropdownItem" style="text-align:center;color:#f6f6f6">退出登录</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </el-col>
+        </el-row>
       </div>
     </div>
     <div class="partOne dragEle">
@@ -77,26 +91,7 @@
     </div>
 
     <component :isShowBannerParam="showBannerParam" @changeBannerParam="updateBannerParam" is="Banner"></component>
-
-    <div class="management" v-show="personalCenter.isShowBounced">
-      <div class="to_top"></div>
-      <div class="to_con">
-        <div class="management-people">
-          <span>个人信息</span>
-        </div>
-        <div class="management-people">
-          <span>权限管理</span>
-        </div>
-        <div class="management-people">
-          <span>修改密码</span>
-        </div>
-        <div class="management-people" @click="loginOut">
-          <template>
-            <span>退出登录</span>
-          </template>
-        </div>
-      </div>
-    </div>
+    <component is="PersonInfo" :options="personInfoOptions"></component>
 
     <el-dialog :visible.sync="personalCenter.isShowDialog" width="364px" top="30vh" custom-class="homeLoginDialog">
       <span>是否确定退出此账号登录</span>
@@ -111,12 +106,13 @@
 
 <script>
   import Banner from '../common/banner/Banner.vue'
+  import PersonInfo from '../common/personInfo/PersonInfo'
   import AgentManage from './AgentManage.vue'
   import EnergyManage from './EnergyManage.vue'
   import Equipment from './Equipment.vue'
     export default {
       name: "home",
-      components:{AgentManage,EnergyManage,Equipment,Banner},
+      components:{AgentManage,EnergyManage,Equipment,Banner,PersonInfo},
       data(){
           return {
               list:[{
@@ -142,12 +138,20 @@
               personalCenter:{
                   isShowBounced:false,
                   isShowDialog:false,
+              },
+              personInfoOptions:{
+                    isPersonInfo:false,  //显示个人信息
+                    isEditInfo:false,    //编辑个人信息 传参只用传false
+                    isChangePassword:false  //修改密码
               }
           }
       },
+      mounted(){
+
+      },
       methods:{
         showBanerClick(){
-          this.showBannerParam = !this.showBannerParam
+          this.showBannerParam = true
         },
         updateBannerParam(data){
           this.showBannerParam = data
@@ -155,8 +159,14 @@
         showPersonInfo(){
           this.personalCenter.isShowBounced = !this.personalCenter.isShowBounced
         },
-        loginOut(){
-          this.personalCenter.isShowDialog = true
+        handleCommand(command){
+          if(command == 'loginOut'){
+            this.personalCenter.isShowDialog = true
+          }else if(command==='personInfo'){
+              this.personInfoOptions.isPersonInfo = true
+          }else if(command == 'changePassword'){
+            this.personInfoOptions.isChangePassword = true
+          }
         }
       }
     }
@@ -182,6 +192,9 @@
   #home .homeLoginDialog{
     height:216px;
     background:#061733;
+    box-shadow:0 0 6px 0 #35a3ee;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
   }
   #home .el-dialog__headerbtn{
     top:6px;
@@ -194,8 +207,6 @@
     line-height:120px;
     text-align: center;
     font-size:20px;
-    /*padding-top:49px;
-    padding-bottom:49px;*/
   }
   #home .el-dialog__footer{
     padding:0;
@@ -228,14 +239,29 @@
   #home .el-button{
     background:none;
   }
+
+  .homeDropDown{
+    top:72px!important;
+    width:100px;
+    background:#061733;
+    border: 1px solid #4a90e2;
+    margin-right:20px!important;
+  }
+  .homeDropDown .popper__arrow{
+    left:68px!important;
+  }
+  .homeDropDown .homeDropdownItem:hover{
+    background:#093365;
+    color:#1989f9;
+  }
 </style>
 <style scoped rel="stylesheet/less" lang="less">
   @import "../../assets/css/home.less";
   #home{
     width:100%;
-    min-width:1366px;
+    min-width:1280px;
     height:100%;
-    min-height:768px;
+    min-height:728px;
     position:relative;
     .buildModel{
       width:100%;
@@ -308,6 +334,7 @@
           height:22px;
         }
         .userIcon{
+          margin-top: 22px;
           width:31px;
           height:31px;
           display: inline-block;
