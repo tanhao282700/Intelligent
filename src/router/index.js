@@ -45,6 +45,7 @@ export default new Router({
     {
       path: '/permission',
       component: permission,
+      redirect:'/permission/user',
       children:[
         { path: '/permission/user', component: userSetting,},
         { path: '/permission/role', component: roleSetting,}
