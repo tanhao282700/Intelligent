@@ -148,7 +148,7 @@ import utils from "../../assets/js/utils.js";
 import EchartCirFull from '../Energy/components/lookAll/EchartCirFull';
 import EchartBar from './components/index/echartBar';
 export default {
-  name:'gIndex',
+  name:'generationMBase',
   components:{
     'EchartCirFull':EchartCirFull,
     'EchartBar':EchartBar

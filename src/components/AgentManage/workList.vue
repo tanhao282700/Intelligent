@@ -55,7 +55,7 @@
         </div>
       </div>
       <div class="dispatch">
-        <div class="dispatchBtn">
+        <div class="dispatchBtn" @click="sendWork">
           <i class="el-icon-third-feiji"></i>
         </div>
       </div>
@@ -99,7 +99,7 @@ export default {
   },
   data () {
     return {
-        crumbs:['工单'],
+        crumbs:['代维系统','工单'],
         workH:[
           {id:1,tit:'今日在岗人数',val:"12",color:'#b5d7ff'},
           {id:2,tit:'今日工单总数',val:"32",color:'#f38a00'},
@@ -227,6 +227,9 @@ export default {
       rowClick(row){
         this.$refs.dialog.show();
         // console.log(row);
+      },
+      sendWork(){
+
       },
       tableInfos2Show(item){
         console.log(item)
@@ -373,21 +376,24 @@ export default {
       width: 0.6rem;
       height: 0.6rem;
       border-radius: 50%;
-      background-color: rgba(51, 51, 51, 0.2);
       box-shadow: 0px 4px 10px 0px 
-        rgba(74, 144, 226, 0.4), 
-        inset 1px 1px 2px 0px 
-        rgba(248, 253, 255, 0.15), 
-        inset 0px -1px 1px 0px 
-        #4a90e2;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        i{
-          font-size: 0.32rem;
-          color: #3b85ef;
-        }
+          rgba(74, 144, 226, 0.4), 
+          inset 1px 1px 2px 0px 
+          rgba(248, 253, 255, 0.15), 
+          inset 0px -1px 1px 0px 
+          #4a90e2;
+      background-color: rgba(51, 51, 51, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      &:hover{
+        background-color:rgba(58, 137, 249, 0.3);
+      }
+      i{
+        font-size: 0.32rem;
+        color: #3b85ef;
+      }
     }
   }
   .tableInfos{

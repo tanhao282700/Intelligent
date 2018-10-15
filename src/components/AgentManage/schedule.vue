@@ -28,7 +28,10 @@
                   <span slot="label" class="tabItems">
                       已审核
                   </span>
-                  <Examine :data = 'examData2'  @search = "(val)=>search(val,2)"/>
+                  <Examine 
+                    :data = 'examData2'  
+                    @search = "(val)=>search(val,2)" 
+                    @showInfo = "showInfoed"/>
               </el-tab-pane>
           </el-tabs>
           <transition name="fade">
@@ -88,7 +91,11 @@
             <div class="diaTit2">申请时间</div>
             <span v-text="dia.applyTime"></span>
           </div>
-          <div class="diaBtns">
+          <div class="examFlag">
+            <img class="rightBotm" v-show="dia.state==0" src="../../assets/img/generation/isno.png" alt="">
+            <img class="rightBotm" v-show="dia.state==1" src="../../assets/img/generation/isok.png" alt="">
+          </div>
+          <div class="diaBtns" v-show="dia.state==-1">
             <div class="diabtn diabtn22" @click="isNo(indexNow,dia)">驳回</div>
             <div class="diabtn"  @click="isOk(indexNow,dia)">同意</div>
           </div>
@@ -129,20 +136,20 @@ export default {
     return {
         activeName: 'first',
         examData1:[  //state状态 -1未审核 0审核失败 1审核通过 
-          {id:0,name:'王1',time:'2018-05-26 00:59~06:19',time2:'2018-05-27 07:59~14:19',name2:'白1',state:-1}, 
-          {id:0,name:'王2',time:'2018-05-26 00:59~06:19',time2:'2018-05-27 07:59~14:19',name2:'白2',state:-1},
-          {id:0,name:'王3',time:'2018-05-26 00:59~06:19',time2:'2018-05-27 07:59~14:19',name2:'白3',state:-1},
-          {id:0,name:'王4',time:'2018-05-26 00:59~06:19',time2:'2018-05-27 07:59~14:19',name2:'白4',state:-1},
-          {id:0,name:'王5',time:'2018-05-26 00:59~06:19',time2:'2018-05-27 07:59~14:19',name2:'白5',state:-1},
-          {id:0,name:'王6',time:'2018-05-26 00:59~06:19',time2:'2018-05-27 07:59~14:19',name2:'白6',state:-1},
-          {id:0,name:'王7',time:'2018-05-26 00:59~06:19',time2:'2018-05-27 07:59~14:19',name2:'白7',state:-1},
-          {id:0,name:'王8',time:'2018-05-26 00:59~06:19',time2:'2018-05-27 07:59~14:19',name2:'白8',state:-1},
-          {id:0,name:'王9',time:'2018-05-26 00:59~06:19',time2:'2018-05-27 07:59~14:19',name2:'白9',state:-1},
-          {id:0,name:'王10',time:'2018-05-26 00:59~06:19',time2:'2018-05-27 07:59~14:19',name2:'白10',state:-1},
+          {id:0,name:'王1',time:'2018-05-26 00:59~06:19',time2:'2018-05-27 07:59~14:19',name2:'白1',state:-1,img1:'http://img4.imgtn.bdimg.com/it/u=1652942597,4175456571&fm=26&gp=0.jpg',img2:'http://img0.imgtn.bdimg.com/it/u=2242889095,3429329643&fm=26&gp=0.jpg',tel1:'18349171744',tel2:'18349171722',reason:'Ant Design是一个服务于企业级产品的设计体系，基于『确定』和『自然』的设计价值观和模块化的解决方案，让设计者专注于更好的用户体验。'}, 
+          {id:0,name:'王2',time:'2018-05-26 00:59~06:19',time2:'2018-05-27 07:59~14:19',name2:'白2',state:-1,img1:'http://img4.imgtn.bdimg.com/it/u=1652942597,4175456571&fm=26&gp=0.jpg',img2:'http://img0.imgtn.bdimg.com/it/u=2242889095,3429329643&fm=26&gp=0.jpg',tel1:'18349171744',tel2:'18349171722',reason:'Ant Design是一个服务于企业级产品的设计体系，基于『确定』和『自然』的设计价值观和模块化的解决方案，让设计者专注于更好的用户体验。'},
+          {id:0,name:'王3',time:'2018-05-26 00:59~06:19',time2:'2018-05-27 07:59~14:19',name2:'白3',state:-1,img1:'http://img4.imgtn.bdimg.com/it/u=1652942597,4175456571&fm=26&gp=0.jpg',img2:'http://img0.imgtn.bdimg.com/it/u=2242889095,3429329643&fm=26&gp=0.jpg',tel1:'18349171744',tel2:'18349171722',reason:'Ant Design是一个服务于企业级产品的设计体系，基于『确定』和『自然』的设计价值观和模块化的解决方案，让设计者专注于更好的用户体验。'},
+          {id:0,name:'王4',time:'2018-05-26 00:59~06:19',time2:'2018-05-27 07:59~14:19',name2:'白4',state:-1,img1:'http://img4.imgtn.bdimg.com/it/u=1652942597,4175456571&fm=26&gp=0.jpg',img2:'http://img0.imgtn.bdimg.com/it/u=2242889095,3429329643&fm=26&gp=0.jpg',tel1:'18349171744',tel2:'18349171722',reason:'Ant Design是一个服务于企业级产品的设计体系，基于『确定』和『自然』的设计价值观和模块化的解决方案，让设计者专注于更好的用户体验。'},
+          {id:0,name:'王5',time:'2018-05-26 00:59~06:19',time2:'2018-05-27 07:59~14:19',name2:'白5',state:-1,img1:'http://img4.imgtn.bdimg.com/it/u=1652942597,4175456571&fm=26&gp=0.jpg',img2:'http://img0.imgtn.bdimg.com/it/u=2242889095,3429329643&fm=26&gp=0.jpg',tel1:'18349171744',tel2:'18349171722',reason:'Ant Design是一个服务于企业级产品的设计体系，基于『确定』和『自然』的设计价值观和模块化的解决方案，让设计者专注于更好的用户体验。'},
+          {id:0,name:'王6',time:'2018-05-26 00:59~06:19',time2:'2018-05-27 07:59~14:19',name2:'白6',state:-1,img1:'http://img4.imgtn.bdimg.com/it/u=1652942597,4175456571&fm=26&gp=0.jpg',img2:'http://img0.imgtn.bdimg.com/it/u=2242889095,3429329643&fm=26&gp=0.jpg',tel1:'18349171744',tel2:'18349171722',reason:'Ant Design是一个服务于企业级产品的设计体系，基于『确定』和『自然』的设计价值观和模块化的解决方案，让设计者专注于更好的用户体验。'},
+          {id:0,name:'王7',time:'2018-05-26 00:59~06:19',time2:'2018-05-27 07:59~14:19',name2:'白7',state:-1,img1:'http://img4.imgtn.bdimg.com/it/u=1652942597,4175456571&fm=26&gp=0.jpg',img2:'http://img0.imgtn.bdimg.com/it/u=2242889095,3429329643&fm=26&gp=0.jpg',tel1:'18349171744',tel2:'18349171722',reason:'Ant Design是一个服务于企业级产品的设计体系，基于『确定』和『自然』的设计价值观和模块化的解决方案，让设计者专注于更好的用户体验。'},
+          {id:0,name:'王8',time:'2018-05-26 00:59~06:19',time2:'2018-05-27 07:59~14:19',name2:'白8',state:-1,img1:'http://img4.imgtn.bdimg.com/it/u=1652942597,4175456571&fm=26&gp=0.jpg',img2:'http://img0.imgtn.bdimg.com/it/u=2242889095,3429329643&fm=26&gp=0.jpg',tel1:'18349171744',tel2:'18349171722',reason:'Ant Design是一个服务于企业级产品的设计体系，基于『确定』和『自然』的设计价值观和模块化的解决方案，让设计者专注于更好的用户体验。'},
+          {id:0,name:'王9',time:'2018-05-26 00:59~06:19',time2:'2018-05-27 07:59~14:19',name2:'白9',state:-1,img1:'http://img4.imgtn.bdimg.com/it/u=1652942597,4175456571&fm=26&gp=0.jpg',img2:'http://img0.imgtn.bdimg.com/it/u=2242889095,3429329643&fm=26&gp=0.jpg',tel1:'18349171744',tel2:'18349171722',reason:'Ant Design是一个服务于企业级产品的设计体系，基于『确定』和『自然』的设计价值观和模块化的解决方案，让设计者专注于更好的用户体验。'},
+          {id:0,name:'王10',time:'2018-05-26 00:59~06:19',time2:'2018-05-27 07:59~14:19',name2:'白10',state:-1,img1:'http://img4.imgtn.bdimg.com/it/u=1652942597,4175456571&fm=26&gp=0.jpg',img2:'http://img0.imgtn.bdimg.com/it/u=2242889095,3429329643&fm=26&gp=0.jpg',tel1:'18349171744',tel2:'18349171722',reason:'Ant Design是一个服务于企业级产品的设计体系，基于『确定』和『自然』的设计价值观和模块化的解决方案，让设计者专注于更好的用户体验。'},
         ],
         examData2:[
-          {id:0,name:'王11',time:'2018-05-26 00:59~06:19',time2:'2018-05-27 07:59~14:19',name2:'白11',state:0},
-          {id:0,name:'王12',time:'2018-05-26 00:59~06:19',time2:'2018-05-27 07:59~14:19',name2:'白12',state:1},       
+          {id:0,name:'王11',time:'2018-05-26 00:59~06:19',time2:'2018-05-27 07:59~14:19',name2:'白11',state:0,img1:'http://img4.imgtn.bdimg.com/it/u=1652942597,4175456571&fm=26&gp=0.jpg',img2:'http://img0.imgtn.bdimg.com/it/u=2242889095,3429329643&fm=26&gp=0.jpg',tel1:'18349171744',tel2:'18349171722',reason:'Ant Design是一个服务于企业级产品的设计体系，基于『确定』和『自然』的设计价值观和模块化的解决方案，让设计者专注于更好的用户体验。'},
+          {id:0,name:'王12',time:'2018-05-26 00:59~06:19',time2:'2018-05-27 07:59~14:19',name2:'白12',state:1,img1:'http://img4.imgtn.bdimg.com/it/u=1652942597,4175456571&fm=26&gp=0.jpg',img2:'http://img0.imgtn.bdimg.com/it/u=2242889095,3429329643&fm=26&gp=0.jpg',tel1:'18349171744',tel2:'18349171722',reason:'Ant Design是一个服务于企业级产品的设计体系，基于『确定』和『自然』的设计价值观和模块化的解决方案，让设计者专注于更好的用户体验。'}     
         ],
         indexNow:-1,
         dia:{
@@ -155,7 +162,8 @@ export default {
           time2:'2018-7-7 04:08 ~ 13:43',
           img2:'http://img0.imgtn.bdimg.com/it/u=2242889095,3429329643&fm=26&gp=0.jpg',
           reason:'Ant Design是一个服务于企业级产品的设计体系，基于『确定』和『自然』的设计价值观和模块化的解决方案，让设计者专注于更好的用户体验。',
-          applyTime:'2018/09/04 04:44'
+          applyTime:'2018/09/04 04:44',
+          state:'-1'
         }
     }
   },
@@ -184,9 +192,15 @@ export default {
         this.$refs.dialog.hide();
       },
       showInfo(i,item){
+        this.dia = item;
         this.indexNow = i;
-
         this.$refs.dialog.show();
+      },
+      showInfoed(i,item){
+        console.log(i)
+        this.dia = item;
+        this.$refs.dialog.show();
+        console.log(this.$refs)
       }
   },
   created() {
@@ -236,10 +250,18 @@ export default {
     text-indent: 0.20rem;
     .vhLH(50);
   }
+  .examFlag{
+    .rightBotm{
+      position:absolute;
+      bottom:0;
+      right:0;
+    }
+  }
   .pBody{
     .vh(165);
     width: 100%;
     display: flex;
+
     .pBox{
       flex: 1;
       display: flex;
@@ -255,6 +277,7 @@ export default {
         img{
           .vh(125);
         }
+
       }
       .nameBox{
         margin-left: 0.11rem;
