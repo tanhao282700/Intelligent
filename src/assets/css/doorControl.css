@@ -4,7 +4,7 @@
 .companyLogo{float: left;width:200px;height:50px;line-height: 50px;}
 .companyLogo>i{display: inline-block;width:30px;height:30px;}
 .companyLogo>span{display: inline-block;height:50px;line-height: 50px;font-size: 16px;}
-.searchBox{float: left;width:20%;height:100%;padding-left:20px;height:50px;padding-top:5px;position: relative;}
+.searchBox{position: relative;}
 .searchBox .el-input{background:#001838!important;}
 .searchBox input{background:#001838!important;padding-right:70px;border:0px!important;}
 .searchBox .btn{position: absolute;top:9px;right:4px;font-size: 16px;line-height: 30px;}
@@ -12,7 +12,7 @@ nav.tabNav{float: left;width:auto;height:50px;line-height: 50px;}
 nav.tabNav span a{color: #cdcdcd;cursor: pointer;padding-left: 20px;}
 nav.tabNav span a.on{color:#008aff;}
 .cursor{cursor: pointer;}
-.floatRt{float:right;}
+.floatRt{float:right!important;}
 .borderShadow{width:100%;height:auto;position: relative;padding-top: 50px;padding-bottom: 10px;-webkit-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);-moz-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);box-shadow:0 0 10px rgba(74, 144, 226, 0.22);}
 .tabsDomBox{padding-top: 80px;position: relative;}
 .tableBox{width:100%;height:100%;box-sizing:border-box;}
@@ -85,3 +85,56 @@ nav.tabNav span a.on{color:#008aff;}
 .doorWarning{border:1px solid #e04f4f;background:#FF5D3B;}
 .doorOpen{border:1px solid #fff;background:#fff;}
 /*  门禁模块样式  e*/
+
+/* 视频监控  s*/
+.VideoSurveillance{padding-top: 85px;}
+.VideoSurveillance .navCrumbs{padding-left: 20px;}
+.VideoSurveillance .mainContentBox{width:100%;height:100%;border-radius: 4px;-webkit-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);-moz-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);box-shadow:0 0 10px rgba(74, 144, 226, 0.22);position: relative;padding-top: 40px;}
+.videoConditionsBox{position:absolute;top:0;left:0;height:40px;width:100%;background:rgba(0,0,0,.25);border-radius: 4px 4px 0 0;padding-top: 4px;}
+.videoConditionsBox li{float: left;width:100px;height:32px;text-align: right;padding-right:20px;line-height: 32px;font-size: 12px;}
+.videoConditionsBox li .el-input__inner{height:32px;}
+.videoConditionsBox li.floatRt{width:140px;}
+.videoConditionsBox li span.totleVideosNum{color:#f38a00;padding-left: 10px;}
+.VideoSurveillance .bottomShadow .floorImgBox span{position: absolute;left:100px;top:100px;z-index: 10;display: block;cursor:pointer;width:30px;height:20px;background:url(../../assets/img/Video/monitor1.png) no-repeat;background-size: 100% 100%;}
+.VideoSurveillance .bottomShadow .floorImgBox span label{position: absolute;top:-4px;right:-18px;display: block;width:16px;height:16px;border-radius: 8px;text-align: center;line-height: 16px;font-size: 12px;background:#7ea5e7;}
+
+.videoShowBox{position: absolute;top:0px;left:0;z-index:11;display: block;width:100%;height:100%;padding:70px 20px 20px 20px;}
+.videoPopBg>i{position: absolute;right:-13px;top:-9px;cursor:pointer;font-size:18px;line-height: 20px;text-align: center;display: block;width:20px;height:20px;border-radius:10px;background:#00275b;color:#3b89f9;}
+.videoPopBg{width:100%;height:100%;background:#02132a;position:relative;-webkit-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);-moz-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);box-shadow:0 0 10px rgba(74, 144, 226, 0.22);padding-top:40px;}
+.videoDeviceTitle{display:block;height:40px;width:100%;line-height: 40px;background: rgba(0,0,0,.25);position:absolute;left:0;top:0;padding:0 20px;}
+.videoDeviceTitle span.dateBox{height:40px;line-height: 40px;width:140px;position: absolute;top:0;left:50%;margin-left: -70px;text-align: center;font-size: 14px;}
+.videoDeviceTitle span.deviceaAcription{font-size: 12px;display: inline-block;height:40px;line-height: 40px;}
+.videoPanelBox{padding:20px;width:100%;height:100%;}
+.videoDeviceInfo{height:30px;line-height: 30px;padding:0 20px;background: #00275b;color:#fff;font-size: 12px;border-radius: 4px;border:0px;outline:none;margin-top:5px;cursor:pointer;}
+
+.deviceInfoPop{position:absolute;top:0;left:0;display:block;width:100%;height:100%;background:rgba(0,0,0,.1);}
+.deviceInfoPop .deviceInfoBgBox{position: absolute;top:50%;left:50%;width:700px;height:440px;margin-left:-350px;margin-top:-240px;background:#02132a;border-radius: 8px;-webkit-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);-moz-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);box-shadow:0 0 10px rgba(74, 144, 226, 0.22);padding:60px 0 20px 0;}
+.deviceInfoPop .deviceInfoBgBox>span{position: absolute;left:0;top:0;display:block;width:100%;height:40px;background:rgba(0,0,0,.25);border-radius:8px 8px 0 0;padding-left:20px;line-height: 40px;font-size: 12px;}
+.deviceInfoPop .deviceInfoBgBox>i{position: absolute;right:-13px;top:-9px;cursor:pointer;font-size:18px;line-height: 20px;text-align: center;display: block;width:20px;height:20px;border-radius:10px;background:#00275b;color:#3b89f9;}
+
+.deviceTabBox{width:100%;height:100%;padding-top: 40px;position: relative;}
+.deviceTabBox nav.tabNav{padding:0 20px;width:100%;position: absolute;left:0;top:0;display: block;}
+.deviceTabBox nav.tabNav>span{display:inline-block;width:50%;height:32px;line-height: 32px;text-align:center;color:#fff;float: left;background: rgba(255,255,255,.01);}
+.deviceTabBox nav.tabNav span a{display: block;width:100%;height:100%;line-height: 32px;text-align:center;border:1px solid #3b89f9;}
+.deviceTabBox nav.tabNav span a.on{display: block;width:100%;height:100%;line-height: 32px;text-align:center;background:rgba(59, 137, 249, 0.2);color:#4a90e2;}
+.deviceTabBox nav.tabNav span:first-child a{border-right:0px;border-radius:5px 0 0 5px;}
+.deviceTabBox nav.tabNav span:last-child a{border-radius:0 5px 5px 0;}
+
+.deviceInfoDom{width:100%;height:100%;padding:10px 20px 0 20px;}
+.deviceInfoDom>ul{width:100%;height:100%;padding:0;}
+.deviceInfoDom>ul>li{width:50%;height:34px;line-height: 34px;float: left;}
+.deviceInfoDom>ul>li span{color:#fff;font-size: 12px;}
+.deviceInfoDom>ul>li:nth-child(even) span{display: inline-block;width:86px;}
+.deviceInfoDom>ul>li span.devNameSpan{color:#4f648b;padding-right:10px;}
+
+.maintenanceRecord{width:100%;height:100%;padding:10px 20px 0 16px;}
+.maintenanceRecord ul.devHistryList{width:100%;height:auto;padding:0;padding-left: 4px;}
+.maintenanceRecord ul.devHistryList>li{width:100%;height:54px;padding-left: 10px;border-left: 1px solid #2772e3;padding-bottom: 4px;position: relative;}
+.maintenanceRecord ul.devHistryList>li:before{content: '';display: block;width:8px;height:8px;background:linear-gradient(180deg,rgba(254,231,187,1) 0%,rgba(255,208,142,1) 100%);position: absolute;left:-4px;top:4px;border-radius:4px;}
+.maintenanceRecord ul.devHistryList>li span{color:#b5d7ff;font-size: 12px;}
+.maintenanceRecord ul.devHistryList>li span.dateHistryBox{color:#b5d7ff;font-size: 12px;margin-bottom: 2px;}
+.maintenanceRecord ul.devHistryList>li span.dateHistryBox a{padding-left: 10px;position: relative;margin-left: 12px;}
+.maintenanceRecord ul.devHistryList>li span.dateHistryBox a i{position:absolute;left: 0;top:0;display: block;width:1px;height:12px;background:linear-gradient(180deg,rgba(0,193,255,1) 0%,rgba(0,142,254,1) 100%); }
+.maintenanceRecord ul.devHistryList>li span.maintenanceContent{color:#fff;font-size: 12px;display: block;width:100%;height:28px;background:#011f51;line-height: 28px;padding-left: 6px;margin-top:4px;box-shadow:0px 0px 1px 0px rgba(87,113,176,0.15),0px 0px 2px 0px rgba(0,0,0,0.33);}
+
+/* 视频监控  e*/
