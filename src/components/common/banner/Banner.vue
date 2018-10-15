@@ -106,7 +106,8 @@
   .baner{
     width:250px;
     height:100%;
-    position:absolute;
+    position:fixed;
+    z-index:10;
     left:-250px;
     top:0;
     background:#061b3a;
