@@ -13,7 +13,7 @@
       <div class="itemsBox">
         <!--筛选查询-->
         <div class="queryBox">
-          <el-select placeholder="请选择" v-for="(items,index) in options" v-model=" itemValue[index] " :key="index" class="querySelectItem">
+          <el-select placeholder="请选择" v-for="(items,index) in options" v-model="itemValue[index]" :key="index" class="querySelectItem">
             <el-option
               v-for="item in items"
               :key="item.value"
@@ -21,248 +21,291 @@
               :value="item.value">
             </el-option>
           </el-select>
+          <el-input
+            placeholder="请输入用户名称"
+            v-model="itemValue[3]"
+            class="userNameInput"
+            clearable>
+          </el-input>
+          <div>
+            <el-button class="queryDataBtn queryBoxBtn" @click="queryData"><i></i><span>查询</span></el-button>
+          </div>
         </div>
 
         <!--新增用户-->
         <div>
-          <el-button class="addNewUserBtn"><i></i><span>新增账号</span></el-button>
+          <el-button class="addNewUserBtn queryBoxBtn" @click="addAccount"><i></i><span>新增账号</span></el-button>
         </div>
       </div>
 
       <!--用户表格-->
-      <el-table
-        :data="tableData"
-        style="width: 100%">
-        <el-table-column
-          prop="code"
-          label="编号"
-          align="center">
-        </el-table-column>
-        <el-table-column
-          prop="userName"
-          label="用户名(手机号)">
-        </el-table-column>
-        <el-table-column
-          prop="nickName"
-          label="昵称">
-        </el-table-column>
-        <el-table-column
-          prop="department"
-          label="部门">
-        </el-table-column>
-        <el-table-column
-          prop="position"
-          label="职位">
-        </el-table-column>
-        <el-table-column
-          prop="role"
-          label="角色">
-        </el-table-column>
-        <el-table-column
-          prop="createTime"
-          label="创建时间">
-        </el-table-column>
-        <el-table-column
-          prop="operation"
-          label="操作"
-          width="180">
-          <template slot-scope="scope">
-            <a href="javascrtip:;" @click="handleClick(scope.row)" class="tableBtn">修改</a>
-            <a href="javascrtip:;" @click="handleClick(scope.row)" class="tableBtn">删除</a>
-          </template>
-        </el-table-column>
-      </el-table>
+      <div class="userTableContainer">
+        <el-table
+          :data="curPageData"
+          style="width: 100%"
+          class="tableAlignCenter tableHeadBlue">
+          <el-table-column
+            prop="code"
+            label="编号"
+            min-width="7%">
+          </el-table-column>
+          <el-table-column
+            prop="userName"
+            label="用户名(手机号)"
+            min-width="10%">
+          </el-table-column>
+          <el-table-column
+            prop="nickName"
+            label="昵称"
+            min-width="19%">
+          </el-table-column>
+          <el-table-column
+            prop="department"
+            label="部门"
+            min-width="12%">
+          </el-table-column>
+          <el-table-column
+            prop="position"
+            label="职位"
+            min-width="12%">
+          </el-table-column>
+          <el-table-column
+            prop="role"
+            label="角色"
+            min-width="12%">
+          </el-table-column>
+          <el-table-column
+            prop="createTime"
+            label="创建时间"
+            min-width="19%">
+          </el-table-column>
+          <el-table-column
+            prop="operation"
+            label="操作"
+            min-width="9%">
+            <template slot-scope="scope">
+              <a href="javascrtip:;" @click="editAccount(scope.row)" class="tableBtn">修改</a>
+              <a href="javascrtip:;" @click="deleteAccount(scope.row)" class="tableBtn">删除</a>
+            </template>
+          </el-table-column>
+        </el-table>
+
+        <!--分页器-->
+        <div class="paginationBox">
+          <div class="totalPageNumBox">共{{totalPageNum}}页</div>
+
+          <div class="el-input el-pagination__editor is-in-pagination curPageBox">
+            <input type="number" autocomplete="off" class="el-input__inner" v-model="currentPage">
+            <span @click="toInputPage">GO</span>
+          </div>
+
+          <el-pagination
+            @current-change="currentPageChange"
+            :current-page="currentPage"
+            :page-size="pageSize"
+            :page-count="totalPageNum"
+            layout="prev, pager, next"
+            :total="totalDataNumber">
+          </el-pagination>
+
+        </div>
+
+      </div>
+
+      <!--新增或修改信息弹窗-->
+      <el-dialog :title="formTitle" :visible.sync="accountInfoDialog" class="dialogBox" :close-on-click-modal="false">
+        <el-form :model="form">
+          <el-form-item :label="form.name.label" >
+            <el-input v-model="form.name.key" autocomplete="off" placeholder="请输入用户名可以默认手机号"></el-input>
+          </el-form-item>
+          <el-form-item :label="form.password.label" v-if="isAdd">
+            <el-input v-model="form.password.key" type="password" autocomplete="off" placeholder="请设置初始密码"></el-input>
+          </el-form-item>
+          <el-form-item :label="form.password.label" v-else>
+            <el-button @click="resetPw" class="queryBoxBtn resetPwBtn"><i></i>重 置</el-button>
+          </el-form-item>
+          <el-form-item :label="form.department.label" >
+            <el-select v-model="form.department.key" placeholder="请选择">
+              <el-option label="工程部" value="department1"></el-option>
+              <el-option label="建设部" value="department2"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item :label="form.position.label" >
+            <el-select v-model="form.position.key" placeholder="请选择">
+              <el-option label="经理" value="position1"></el-option>
+              <el-option label="主管" value="position2"></el-option>
+              <el-option label="员工" value="position3"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item :label="form.role.label" >
+            <el-select v-model="form.role.key" placeholder="请选择">
+              <el-option label="强电运维" value="role1"></el-option>
+              <el-option label="强电测试" value="role2"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="saveNewAccount(isAdd)" class="saveBtn">保存</el-button>
+          <el-button @click="accountInfoDialog = false" class="cancleBtn">取消</el-button>
+        </div>
+      </el-dialog>
+
+      <!--删除信息弹窗-->
+      <el-dialog :visible.sync="deleteInfoDialog" class="dialogBox deleteInfoDialog" :close-on-click-modal="false">
+        <div class="deleteTextBox">是否确定删除此信息？</div>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="confirmDelete()" class="saveBtn">保存</el-button>
+          <el-button @click="deleteInfoDialog = false" class="cancleBtn">取消</el-button>
+        </div>
+      </el-dialog>
     </div>
 
   </div>
 </template>
 
 <script>
+    import queryData from './Data/permissionData.json';
+    import tableData from './Data/tableData.json';
+
     export default {
       name: "user-setting",
       data(){
         return {
-          options: [
-            [
-              {
-                value: '工程部',
-                label: '工程部'
-              }, {
-                value: '酒店部',
-                label: '酒店部'
-              }
-            ],
-            [
-              {
-                value: '经理',
-                label: '经理'
-              }, {
-                value: '维修工',
-                label: '维修工'
-              }
-            ],
-            [
-              {
-                value: '强电运维',
-                label: '强电运维'
-              }, {
-                value: '强电测试',
-                label: '强电测试'
-              }
-            ]
-          ],
-          itemValue:['','',''],
-          tableData: [
-            {
-              code: '01',
-              userName: '13888888888',
-              nickName: '张三(默认手机)',
-              department: '工程部',
-              role: '维修工',
-              position: '强电运维',
-              createTime: '2018/06/02 16:55:23'
-            },
-            {
-              code: '02',
-              userName: '13888888888',
-              nickName: '张三(默认手机)',
-              department: '工程部',
-              role: '维修工',
-              position: '强电运维',
-              createTime: '2018/06/02 16:55:23'
-            },
-            {
-              code: '03',
-              userName: '13888888888',
-              nickName: '张三(默认手机)',
-              department: '工程部',
-              role: '维修工',
-              position: '强电运维',
-              createTime: '2018/06/02 16:55:23'
-            },
-            {
-              code: '04',
-              userName: '13888888888',
-              nickName: '张三(默认手机)',
-              department: '工程部',
-              role: '维修工',
-              position: '强电运维',
-              createTime: '2018/06/02 16:55:23'
-            },
-            {
-              code: '05',
-              userName: '13888888888',
-              nickName: '张三(默认手机)',
-              department: '工程部',
-              role: '维修工',
-              position: '强电运维',
-              createTime: '2018/06/02 16:55:23'
-            },
-            {
-              code: '06',
-              userName: '13888888888',
-              nickName: '张三(默认手机)',
-              department: '工程部',
-              role: '维修工',
-              position: '强电运维',
-              createTime: '2018/06/02 16:55:23'
-            },
-            {
-              code: '07',
-              userName: '13888888888',
-              nickName: '张三(默认手机)',
-              department: '工程部',
-              role: '维修工',
-              position: '强电运维',
-              createTime: '2018/06/02 16:55:23'
-            },
-            {
-              code: '08',
-              userName: '13888888888',
-              nickName: '张三(默认手机)',
-              department: '工程部',
-              role: '维修工',
-              position: '强电运维',
-              createTime: '2018/06/02 16:55:23'
-            },
-            {
-              code: '09',
-              userName: '13888888888',
-              nickName: '张三(默认手机)',
-              department: '工程部',
-              role: '维修工',
-              position: '强电运维',
-              createTime: '2018/06/02 16:55:23'
-            },
-            {
-              code: '10',
-              userName: '13888888888',
-              nickName: '张三(默认手机)',
-              department: '工程部',
-              role: '维修工',
-              position: '强电运维',
-              createTime: '2018/06/02 16:55:23'
-            },
-            {
-              code: '11',
-              userName: '13888888888',
-              nickName: '张三(默认手机)',
-              department: '工程部',
-              role: '维修工',
-              position: '强电运维',
-              createTime: '2018/06/02 16:55:23'
-            },
-          ]
+          options: "",
+          itemValue:[],
+          tableData: [],
+          currentPage: 1,
+          pageSize: 11,
+          totalPageNum: '',
+          totalDataNumber:'',
+          curPageData:[],
+          groupPageData:[],
+          accountInfoDialog:false,
+          deleteInfoDialog:false,
+          form: {
+            name: {label:"用户名", key:""},
+            password:{label:"密码", key:""},
+            department: {label:"部门", key:""},
+            position: {label:"职位", key:""},
+            role: {label:"角色", key:""}
+          },
+          formTitle:"",
+          isAdd:true
         }
       },
       methods:{
+        queryData(){
+          /*根据筛选条件查询数据*/
+          console.log(this.itemValue);
+        },
+        currentPageChange(val) {
+          /*当前页变动事件*/
+          this.currentPage = val;
+          this.curPageData = this.groupPageData[val-1];
+        },
+        tabelDataGroupBy(){
+          /*根据请求表格数据分组*/
+          let that = this;
+          this.tableData = tableData;
+          this.totalDataNumber = this.tableData.length;
+          this.totalPageNum = Math.ceil(Number(this.totalDataNumber) / this.pageSize);
+          if(this.totalPageNum == 1){
+            this.curPageData = this.tableData;
+          }else {
+            let times = 0;
+            let curGroup = 1;
+            let tempArray = [];
+            let pageSize = this.pageSize;
+            for(let i=0;i<this.totalDataNumber;i++){
+              if(times<pageSize){
+                times++;
+              }else {
+                times = 1;
+                that.groupPageData.push(tempArray);
+                tempArray = [];
+                curGroup++;
+              }
+              tempArray.push(tableData[i]);
+              if(curGroup==that.totalPageNum && i==that.totalDataNumber-1){
+                that.groupPageData.push(tempArray);
+                that.curPageData = that.groupPageData[0];
+              }
+            }
+          }
+        },
+        toInputPage(){
+          /*显示输入页表格数据*/
+          this.curPageData = this.groupPageData[this.currentPage-1];
+        },
+        addAccount(){
+          /*打开新增帐号弹窗*/
+          this.accountInfoDialog = true;
+          this.formTitle = '新增帐号';
+          this.isAdd = true;
+        },
+        saveNewAccount(type){
+          /*保存新增帐号*/
+          for(var i in this.form){
+            if(!type && i=='password'){
+              break;
+            }
+            let temp = this.form[i].key;
+            if(!temp){
+              this.$message.error(this.form[i].label + "不能为空");
+              return;
+            }
+          }
+          this.accountInfoDialog = false;
+          this.clearForm();
+          let message = type?"保存成功":"修改成功";;
+          this.$message({
+            message: message,
+            type: 'success'
+          });
+        },
+        editAccount(val){
+          /*修改信息*/
+          console.log(val);
+          this.accountInfoDialog = true;
+          this.formTitle = '修改信息';
+          this.isAdd = false;
+          this.form.name.key = val.userName;
+          this.form.department.key = val.department;
+          this.form.position.key = val.position;
+          this.form.role.key = val.role;
+        },
+        deleteAccount(val){
+          this.deleteInfoDialog = true;
+        },
+        confirmDelete(){
+          this.$message({
+            message: '删除成功',
+            type: 'success'
+          });
+          this.deleteInfoDialog = false;
+        },
+        resetPw(){
+          /*重置密码*/
+        },
+        clearForm(){
+          for(var i in this.form){
+            this.form[i].key = '';
+          }
+        }
+      },
+      created(){
+        this.options = queryData;
+        if(tableData){
+          this.tabelDataGroupBy();
+        }
+      },
+      mounted(){
 
       }
     }
 </script>
 
 <style scoped>
-  .contentBox{
-    height: calc(100% - 40px);
-  }
-  .itemsBox{
-    height: 52px;
-    padding: 10px 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .itemsBox>div{
-    height: 32px;
-    width: auto;
-  }
-  .queryBox .el-select:not(:last-child){
-    margin-right: 12px;
-  }
-  .addNewUserBtn{
-    padding: 0;
-    line-height: 32px;
-    background-color: #209757;
-    font-size: 14px;
-    color: #fff;
-    border: none;
-    display: flex;
-    height: 32px;
-    align-items: center;
-    justify-content: center;
-  }
-  .addNewUserBtn i{
-    display: inline-block;
-    vertical-align: middle;
-    width:16px;
-    height: 16px;
-    background: url("../../assets/img/Permission/add-username.png") no-repeat;
-    background-size: 100% 100%;
-    margin-right: 10px;
-    margin-top: -2px;
-  }
-  .tableBtn{
-    color: #36FCEB;
-    text-decoration: underline;
-  }
+
+
 </style>

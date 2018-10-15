@@ -1,45 +1,38 @@
 <template>
   <div class="permissionBox autoComponent">
-      <header>
-        <router-link to="/permission/user">用户设置</router-link>
-        <router-link to="/permission/role">角色设置</router-link>
-      </header>
+    <SysHead :datas = "routerData" v-on:searchCont="search"/>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-    export default {
-        name: "permission",
-        data(){
-          return{
+    import SysHead from '@/components/common/sysHead';
+    import "../../assets/css/Permission/permission.css";
 
+    export default {
+      components:{
+        "SysHead":SysHead
+      },
+      name: "permission",
+      data(){
+        return{
+          routerData:{
+            id:0,
+            lists:[
+              {id:0,name:'用户设置',route:'/permission/user'},
+              {id:1,name:'角色设置',route:'/permission/role'}
+            ]
           }
         }
+      },
+      methods:{
+        search(param){
+          console.log(param);
+        }
+      }
     }
 </script>
 
 <style scoped>
-  .permissionBox{
-    padding: 50px 30px 30px;
-    color: #fff;
-  }
-  .permissionBox>div{
-    height: 100%;
-    width: 100%;
-  }
-  header{
-    height: 50px;
-    line-height: 50px;
-    background-color: #fff;
-    width: 100%;
-    position: absolute;
-    left: 0;
-    top: 0;
-  }
-  header a{
-    font-size: 20px;
-    color: #333;
-  }
 
 </style>

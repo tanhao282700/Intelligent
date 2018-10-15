@@ -23,6 +23,7 @@
   color: #008AFF;
 }
 
+
 /* 下拉选择器样式调整 */
 .el-select::after{
   content: "";
@@ -173,8 +174,6 @@ background-color: #65a3fa!important;
   .el-select-dropdown__item.hover, .el-select-dropdown__item:hover{
     background-color:rgba(25,137,250,0.25)!important;
     color:#1989fa!important;
-    font-weight:600!important;
-    /* text-align: center!important; */
   }
   .el-select-dropdown__list{
     padding-bottom: 16px;
