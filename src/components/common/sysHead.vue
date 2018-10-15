@@ -4,7 +4,8 @@
 */
 <template>
   <div class="headBox0">
-      <div class="logo">
+      <div class="logo" @click="showBanerClick">
+        <i></i>
         <span>泰立智汇</span>
       </div>
     <div class = "searchBox">
@@ -29,25 +30,29 @@
         @change = "changeMenu"
       />
     </div>
+    <component :isShowBannerParam="showBannerParam" @changeBannerParam="updateBannerParam" is="Banner"></component>
   </div>
 </template>
 
 <script>
 import searchBox from '@/components/form/searchBox'
+import Banner from './banner/Banner.vue'
 import SelectBox from '@/components/form/selectBox';
 import '../../assets/css/fs_common.css';
 export default {
   props:['datas'],
-  components:{'searchBox':searchBox,'SelectBox':SelectBox,},
+  components:{'searchBox':searchBox,'SelectBox':SelectBox,'Banner':Banner},
   data () {
     return {
       placeholder:'请输入搜索内容',
       inputs:'',
+      showBannerParam:false,
       activeName:'item0',
       menus:[
           {label:'个人信息',value:1},
           {label:'密码修改',value:2}],
-      currMenu:-1
+      currMenu:-1,
+      
     }
   },
   methods:{
@@ -60,7 +65,13 @@ export default {
      },
      changeMenu(){
 
-     }
+     },
+     showBanerClick(){
+         this.showBannerParam = !this.showBannerParam
+     },
+     updateBannerParam(data){
+         this.showBannerParam = data
+     },
   },
   created() {
      
@@ -115,16 +126,21 @@ export default {
           margin-left:14px;
           margin-right:20px;
           span{
-            vertical-align:middle;
-            margin-top:8px;
+            margin-top:7px;
             height:18px;
             font-size:18px;
             font-weight:600;
-            padding:0 0 28px 44px;
             color:#fff;
-            background:url('../../assets/img/home/logo.png') no-repeat left center;
-            background-size:32px 32px;
           }
+          i{
+              display: inline-block;
+              margin-right:8px;
+              margin-top:7px;
+              width:26px;
+              height:26px;
+              background:url(../../assets/img/home/logo.png) no-repeat center center;
+              background-size:cover;
+            }
         } 
         .searchBox{
           width:362px;
