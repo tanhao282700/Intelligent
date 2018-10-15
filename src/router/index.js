@@ -1,11 +1,11 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import Vue from 'vue';
+import Router from 'vue-router';
 
 //能源
-import energy from '@/components/Energy/energy0'         //能源组件
-import energyFullLook from '@/components/Energy/energy'  //全景查看子组件
-import RunMsg from '@/components/Energy/runMsg'          //运行情况子组件
-import Alarm from '@/components/Energy/alarm'
+import energy from '@/components/Energy/energy0';         //能源组件
+import energyFullLook from '@/components/Energy/energy';  //全景查看子组件
+import RunMsg from '@/components/Energy/runMsg';          //运行情况子组件
+import Alarm from '@/components/Energy/alarm';
 
 //代维系统管理端
 import generationMIndex0 from '@/components/AgentManage/index0';
@@ -16,9 +16,9 @@ import generationMRouting from '@/components/AgentManage/routing';
 import generationMReport from '@/components/AgentManage/report';
 
 //消防报警
-import fireAlarm from '@/components/Alarm/fireAlarm'
-import fireMonitor from '@/components/Alarm/components/fireMonitor'
-import fireHistory from '@/components/Alarm/components/fireHistory'
+import fireAlarm from '@/components/Alarm/fireAlarm';
+import fireMonitor from '@/components/Alarm/components/fireMonitor';
+import fireHistory from '@/components/Alarm/components/fireHistory';
 
 //权限系统
 import permission from '@/components/Permission/Permission';
@@ -29,11 +29,14 @@ import userSetting from '@/components/Permission/userSetting';
 import Home from '@/components/Home/Home';
 
 //门禁
-import DoorControl from '@/components/DoorControl/DoorControl'
-import tabs from '@/components/DoorControl/components/tabs'
-import tabsSys from '@/components/DoorControl/components/tabsSys'
+import DoorControl from '@/components/DoorControl/DoorControl';
+import tabs from '@/components/DoorControl/components/tabs';
+import tabsSys from '@/components/DoorControl/components/tabsSys';
 
-Vue.use(Router)
+//视频监控
+import VideoSurveillance from '@/components/VideoSurveillance/VideoSurveillance';
+
+Vue.use(Router);
 
 export default new Router({
   routes: [
@@ -129,6 +132,10 @@ export default new Router({
         { path: '/DoorControl/components/tabs',component: tabs},
         { path: '/DoorControl/components/tabsSys',component: tabsSys},
       ]
+    },
+    {
+      path: '/VideoSurveillance',
+      component: VideoSurveillance,
     },
 
 
