@@ -3,6 +3,7 @@
     <div class="title">
       <span class="titleIcon"></span>
       <span class="txt">代维管理系统</span>
+      <img src="../../assets/img/home/close.png" alt="">
     </div>
     <div class="con">
       <div class="echarts" id="echarts"></div>
@@ -187,6 +188,22 @@
       align-items: center;
       border-top-right-radius:8px;
       border-top-left-radius:8px;
+      position:relative;
+      img{
+        position:absolute;
+        width:24px;
+        height:24px;
+        right:10px;
+        top:50%;
+        margin-top:-12px;
+        display: none;
+      }
+      &:hover{
+        cursor: pointer;
+        img{
+          display: block;
+        }
+      }
       .titleIcon{
         width:22px;
         height:22px;

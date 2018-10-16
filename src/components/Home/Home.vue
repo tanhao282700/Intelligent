@@ -1,7 +1,14 @@
 <template>
   <div id="home">
     <div class="buildModel">
-
+      <!--<iframe
+        ref="iframe"
+        name="myFrame"
+        frameborder="0"
+        width="100%"
+        height="100%"
+        src="../../../static/bim3d/Web3D/Web3D.html">
+      </iframe>-->
     </div>
     <div class="systemName">
       <div class="systemCon">泰立汇云智慧酒店管理系统</div>
@@ -34,55 +41,89 @@
       </div>
     </div>
     <div class="partOne dragEle">
-      <div class="add" style="display: none">
+      <div class="add" v-if="!partsData[0].componentsName" @click="addModules(0)">
         <div class="title">
           <span class="titleIcon"></span>
           <span class="txt">请添加系统</span>
         </div>
         <div class="addIcon">+</div>
       </div>
-      <component :is="partOneView" :isResize="isResize"></component>
+      <component v-if="partsData[0].componentsName" :is="partsData[0].componentsName" :isResize="isResize"></component>
     </div>
     <div class="partTwo dragEle">
-      <div class="add" style="display:none;">
+      <div class="add" v-if="!partsData[1].componentsName" @click="addModules(1)">
         <div class="title">
           <span class="titleIcon"></span>
           <span class="txt">请添加系统</span>
         </div>
         <div class="addIcon">+</div>
       </div>
-      <component :is="partTwoView" :isResize="isResize"></component>
+      <component v-if="partsData[1].componentsName" :is="partsData[1].componentsName" :isResize="isResize"></component>
     </div>
     <div class="partThree dragEle">
-      <div class="add" style="display:none;">
+      <div class="add" v-if="!partsData[2].componentsName" @click="addModules(2)">
         <div class="title">
           <span class="titleIcon"></span>
           <span class="txt">请添加系统</span>
         </div>
         <div class="addIcon">+</div>
       </div>
-      <component :is="partThreeView" :isResize="isResize"></component>
+      <component v-if="partsData[2].componentsName" :is="partsData[2].componentsName" :isResize="isResize"></component>
     </div>
     <div class="partFour dragEle" >
-      <div class="add" @click="addModules" style="display:none;">
+      <div class="add" v-if="!partsData[3].componentsName" @click="addModules(3)" >
         <div class="title">
           <span class="titleIcon"></span>
           <span class="txt">请添加系统</span>
         </div>
         <div class="addIcon">+</div>
       </div>
-      <component :is="partFourView" :isResize="isResize"></component>
+      <component v-if="partsData[3].componentsName" :is="partsData[3].componentsName" :isResize="isResize"></component>
     </div>
-    <div class="monitoring">
-
+    <div class="monitoring" v-if="isOpenMonitor">
+      <div class="monitoringName">
+        <i></i>
+        <span>实<br>时<br>监<br>控</span>
+      </div>
+      <div class="monitoringCon">
+        <div class="monitoringConL">
+          <div class="monitorItem" v-for="(i,index) in 5">
+            <div class="monitorItemCon">
+              <span :class="{'cor-r':i==1,'cor-y':i!=1}">电压告警：电压超过正常水平</span>
+              <div class="time">
+                <span>14:00</span>
+                <span>
+                  <i style="color:#f36b6d;">01</i>/05
+                </span>
+              </div>
+            </div>
+            <div class="shutIcon">
+              <span @click="openMonitor" v-if="index===0"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="smallMonitoring" v-if="!isOpenMonitor">
+      <div class="left">
+        <img src="../../assets/img/home/smallAlarm.png" alt="">
+        <span class="cor-r">电压告警：电压超过正常水平</span>
+      </div>
+      <div class="right">
+          <span>14:00</span>
+          <span>
+              <i style="color:#f36b6d;">01</i>/05
+          </span>
+          <span @click="openMonitor"></span>
+      </div>
     </div>
     <div class="modules" v-if="isOperateModules">
       <div class="title">
-        <a @click="closeModules" href="javascript:void(0)"></a>
+        <a @click="isOperateModules = false" href="javascript:void(0)"></a>
       </div>
       <div class="modeCon">
         <div class="modeBox">
-          <div class="modeDetail boxs" v-for="i in list">
+          <div class="modeDetail boxs" @click="chooseSystem(i,index)" v-for="(i,index) in list">
             <img :src="i.src" alt="">
             <span v-text="i.name"></span>
           </div>
@@ -111,44 +152,66 @@
   import EnergyManage from './EnergyManage.vue'
   import Equipment from './Equipment.vue'
   import Door from './DoorControl.vue'
-  import revenueData from './revenueData.vue'
+  import RevenueData from './RevenueData.vue'
+  import Conditioning from './ConditioningSystem.vue'
 
   export default {
       name: "home",
-      components:{AgentManage,EnergyManage,Equipment,Banner,PersonInfo,Door,revenueData},
+      components:{AgentManage,EnergyManage,Equipment,Banner,PersonInfo,Door,RevenueData,Conditioning},
       data(){
           return {
               list:[{
                 id:1,
                 name:"代维管理系统",
-                src:"../../../static/img/agent.png"
+                src:"../../../static/img/agent.png",
+                componentsName:'AgentManage'
               },{
                 id:2,
                 name:"设备情况",
-                src:"../../../static/img/equipment.png"
+                src:"../../../static/img/equipment.png",
+                componentsName:'Equipment'
               },{
                 id:3,
                 name:"中央空调系统",
-                src:"../../../static/img/conditioning.png"
+                src:"../../../static/img/conditioning.png",
+                componentsName:'Conditioning'
               },{
                 id:4,
                 name:"营收数据分析",
-                src:"../../../static/img/revenueData.png"
+                src:"../../../static/img/revenueData.png",
+                componentsName:'RevenueData'
               },{
                 id:5,
                 name:"能源管理系统",
-                src:"../../../static/img/energy.png"
+                src:"../../../static/img/energy.png",
+                componentsName:'EnergyManage'
               },{
                 id:6,
                 name:"门禁系统",
-                src:"../../../static/img/doorManage.png"
+                src:"../../../static/img/doorManage.png",
+                componentsName:'Door'
               }],
-              isOperateModules:false,  //添加删除显示的模块
+              partsData:[{
+                  id:"partOne",
+                  componentsName:'EnergyManage'
+              },{
+                id:"partTwo",
+                componentsName:''
+              },{
+                id:"partThree",
+                componentsName:''
+              },{
+                id:"partFour",
+                componentsName:''
+              }],
+              currentMudel:0,  //当前点击添加系统的模块
+              isOperateModules:false,  //是否显示中间所有的系统
+              isOpenMonitor:false,  //是否展开实时监控
               isResize:1,  //当前窗口是否重置，重绘canvas图标
-              partOneView:'EnergyManage',
-              partTwoView:'revenueData',
-              partThreeView:'Equipment',
-              partFourView:'AgentManage',
+              partOneView:'',
+              partTwoView:'',
+              partThreeView:'',
+              partFourView:'',
               showBannerParam:false,
               personalCenter:{
                   isShowBounced:false,
@@ -168,11 +231,16 @@
         }
       },
       methods:{
-        addModules(){
-          this.isOperateModules = true;
+        addModules(index){
+            this.currentMudel = index;
+            this.isOperateModules = true;
         },
-        closeModules(){
-          this.isOperateModules = false;
+        chooseSystem(item,index){
+          this.partsData[this.currentMudel].componentsName = item.componentsName
+          this.isOperateModules = false
+        },
+        openMonitor(){
+            this.isOpenMonitor = !this.isOpenMonitor
         },
         showBanerClick(){
           this.showBannerParam = true
@@ -345,14 +413,124 @@
       .hei(674);
       .heiT(829);
     }
+    .smallMonitoring{
+      position:absolute;
+      .widl(560);
+      .wid(1614);
+      height:3.9%;
+      .heiB(32);
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      opacity:.8;
+      background:#1e303a;
+      border-radius:4px;
+      .left{
+        img{
+          height:100%;
+        }
+        span{
+          padding-left:16px;
+        }
+      }
+      .right{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        color:#c0cbd1;
+        span{
+          margin-right:20px;
+        }
+        span:last-child{
+          margin-right:10px;
+          display: inline-block;
+          width:30px;
+          height:30px;
+          background:url(../../assets/img/home/open.png) no-repeat left top;
+          background-size:cover;
+          &:hover{
+            cursor:pointer;
+          }
+        }
+      }
+    }
     .monitoring{
       position:absolute;
-      background:#121e2e;
+      background:#274758;
       opacity:.8;
       .widl(560);
       .wid(1614);
       .hei(304);
-      .heiB(20);
+      .heiB(32);
+      border-radius:4px;
+      display:flex;
+      flex-direction: row;
+      .monitoringName{
+        width:4%;
+        background:#0d1e30;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color:white;
+        i{
+          display:inline-block;
+          width:24px;
+          height:20px;
+          background:url(../../assets/img/home/alarm.png) no-repeat left top;
+          background-size:cover;
+        }
+      }
+      .monitoringCon{
+        flex:1;
+        display: flex;
+        flex-direction: row;
+        .monitoringConL{
+          flex:1;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-around;
+          .monitorItem{
+            height:14%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            .monitorItemCon{
+              flex:1;
+              height:100%;
+              margin:0 10px;
+              padding-left:16px;
+              padding-right:8px;
+              background:#1e303a;
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+              justify-content: space-between;
+              .time span{
+                margin-left:10px;
+                color:#c0cbd1;
+              }
+            }
+            .shutIcon{
+              height:100%;
+              width:5%;
+              display: flex;
+              align-items: center;
+              span{
+                display: inline-block;
+                width:30px;
+                height:30px;
+                background:url(../../assets/img/home/shut.png) no-repeat left top;
+                background-size:cover;
+                &:hover{
+                  cursor:pointer;
+                }
+              }
+            }
+          }
+        }
+      }
     }
     .modules{
       position:absolute;
@@ -513,7 +691,12 @@
 
 
 
-
+  .cor-r{
+    color:#994f5e;
+  }
+  .cor-y{
+    color:#f7a118;
+  }
 
 
 
@@ -521,22 +704,6 @@
   }
 </style>
 <style>
-  .el-menu{
-    border-right:none;
-    height:100%;
-  }
-  .b-box{
-    height:100%;
-  }
-  .el-submenu__title:hover{
-    background:#011f43!important;
-  }
-  .el-submenu__title:hover{
-    background:#008aff!important;
-  }
-  .noRight .el-submenu__title .el-submenu__icon-arrow{
-    display:none;
-  }
 
   #home .homeLoginDialog{
     height:216px;
@@ -592,7 +759,7 @@
   .homeDropDown{
     top:72px!important;
     width:100px;
-    background:#061733;
+    background:#061733!important;
     border: 1px solid #4a90e2;
     margin-right:20px!important;
   }

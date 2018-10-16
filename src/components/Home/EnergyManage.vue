@@ -3,10 +3,16 @@
     <div class="title">
       <span class="titleIcon"></span>
       <span class="txt">能源管理系统</span>
+      <img src="../../assets/img/home/close.png" alt="">
     </div>
     <div class="con">
       <div class="nergyEcharts" id="nergyEcharts"></div>
-      <div class="nergyEcharts2"></div>
+      <div class="nergyEcharts2" id="nergyEcharts2"></div>
+      <div class="button">
+        <span>水</span>
+        <span>电</span>
+        <span>气</span>
+      </div>
     </div>
   </div>
 </template>
@@ -34,7 +40,8 @@
             data1:699,
             data2:499
           }],
-          energyChart:{}
+          energyChart:{},
+          energyChart2:{}
         }
     },
     components:{
@@ -42,6 +49,7 @@
     },
     mounted(){
       this.drawEchart()
+      this.drawEchart2()
     },
     watch:{
       isResize(){
@@ -142,8 +150,104 @@
         };
 
 
+
+
         // 绘制图表
         energyChart.setOption(option);
+      },
+      drawEchart2(){
+        let energyChart2 = this.$echarts.init(document.getElementById("nergyEcharts2"));
+        this.energyChart2 = energyChart2
+        let option2 = {
+          title:{
+            text:'25%',
+            textStyle:{
+                  color:'#4be283',
+            },
+            backgroundColor:'#1d2d3a'
+          },
+
+          tooltip : {
+            trigger: 'axis',
+          },
+          legend: {
+            data:['今年计划','2017','2018'],
+            right:0,
+            padding:0,
+            textStyle:{
+              color:'#eeeff1'
+            },
+            top:10
+          },
+          calculable : true,
+          xAxis : [
+            {
+              type : 'category',
+              boundaryGap : false,
+              nameTextStyle:{
+                  color:'#f8f8f6'
+              },
+              axisLine:{
+                  lineStyle:{
+                    color:'#bfc7ca'
+                  }
+              },
+              axisTick:{
+                  show:false
+              },
+              data : ['01','02','03','04','05','06','07']
+            }
+          ],
+          yAxis : [
+            {
+              show:false,
+              type : 'value'
+            }
+          ],
+          series : [
+            {
+              name:'今年计划',
+              type:'line',
+              smooth:true,
+              showSymbol:false,
+              lineStyle:{
+                  color:'#3af2e6',
+                  shadowBlur:6,
+                  shadowOffsetY:2,
+                  shadowColor:'#3af2e6'
+              },
+              data:[120, 132, 101, 134, 90, 230, 210]
+            },
+            {
+              name:'2017',
+              type:'line',
+              smooth:true,
+              showSymbol:false,
+              lineStyle:{
+                color:'#fd9a1b',
+                shadowBlur:6,
+                shadowOffsetY:2,
+                shadowColor:'#fd9a1b'
+              },
+              data:[220, 0, 191, 234, 290, 330, 310]
+            },
+            {
+              name:'2018',
+              type:'line',
+              smooth:true,
+              showSymbol:false,
+              lineStyle:{
+                color:'#f96072',
+                shadowBlur:6,
+                shadowOffsetY:2,
+                shadowColor:'#f96072'
+              },
+              data:[150, 232, 201, 154, 190, 330, 700]
+            }
+          ],
+          color:['#3af2e6','#fd9a1b','#f96072']
+        };
+        energyChart2.setOption(option2);
       }
     }
   }
@@ -163,6 +267,22 @@
       align-items: center;
       border-top-right-radius:8px;
       border-top-left-radius:8px;
+      position:relative;
+      img{
+        position:absolute;
+        width:24px;
+        height:24px;
+        right:10px;
+        top:50%;
+        margin-top:-12px;
+        display: none;
+      }
+      &:hover{
+        cursor: pointer;
+        img{
+          display: block;
+        }
+      }
       .titleIcon{
         width:22px;
         height:22px;
@@ -180,6 +300,7 @@
     /*padding:0 5.976%;*/
     display:flex;
     flex-direction: column;
+    position:relative;
     .nergyEcharts{
       height:50%;
       div{
@@ -188,9 +309,32 @@
       }
     }
     .nergyEcharts2{
-      height:35.714%;
-      background:#2d475e;
+      /*height:35.714%;*/
+      flex:1;
+      /*background:#2d475e;*/
       margin-top:8%;
+    }
+    .button{
+      width:100%;
+      position:absolute;
+      z-index:99;
+      bottom:2%;
+      text-align: center;
+      span{
+        display: inline-block;
+        background:#1a365b;
+        width:26px;
+        height:26px;
+        line-height:26px;
+        text-align:center;
+        color:#cdcdcd;
+        margin-left:8px;
+        &:hover{
+          background:#72a7f3;
+          color:white;
+          cursor:pointer;
+        }
+      }
     }
   }
   }

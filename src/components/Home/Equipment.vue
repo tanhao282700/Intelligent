@@ -3,6 +3,7 @@
     <div class="title">
       <span class="titleIcon"></span>
       <span class="txt">设备情况</span>
+      <img src="../../assets/img/home/close.png" alt="">
     </div>
     <div class="con">
       <div class="chart" id="equipmentOne"></div>
@@ -21,20 +22,6 @@
     },
     data(){
         return{
-          dataAxis:['今日','本月','本年'],
-          data:[{
-              time:'今日',
-              data1:20,
-              data2:30
-          },{
-            time:'本月',
-            data1:30,
-            data2:40
-          },{
-            time:'本年',
-            data1:699,
-            data2:499
-          }],
           equipmentChartOne:{},
           equipmentChartTwo:{}
         }
@@ -44,7 +31,7 @@
     },
     mounted(){
       this.drawEchartOne()
-      this.drawEchartTwo()
+      /*this.drawEchartTwo()*/
     },
     watch:{
       isResize(){
@@ -256,6 +243,22 @@
       align-items: center;
       border-top-right-radius:8px;
       border-top-left-radius:8px;
+      position:relative;
+      img{
+        position:absolute;
+        width:24px;
+        height:24px;
+        right:10px;
+        top:50%;
+        margin-top:-12px;
+        display: none;
+      }
+      &:hover{
+        cursor: pointer;
+        img{
+          display: block;
+        }
+      }
       .titleIcon{
         width:22px;
         height:22px;
