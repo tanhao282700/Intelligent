@@ -25,7 +25,6 @@
               </span>
               <el-dropdown-menu class="homeDropDown" slot="dropdown" >
                 <el-dropdown-item command="personInfo" class="homeDropdownItem" style="text-align:center;color:#f6f6f6">个人信息</el-dropdown-item>
-                <el-dropdown-item command="authorityManagement" class="homeDropdownItem" style="text-align:center;color:#f6f6f6">权限管理</el-dropdown-item>
                 <el-dropdown-item command="changePassword" class="homeDropdownItem" style="text-align:center;color:#f6f6f6">修改密码</el-dropdown-item>
                 <el-dropdown-item command="loginOut" class="homeDropdownItem" style="text-align:center;color:#f6f6f6">退出登录</el-dropdown-item>
               </el-dropdown-menu>
@@ -64,14 +63,15 @@
       </div>
       <component :is="partThreeView" :isResize="isResize"></component>
     </div>
-    <div class="partFour dragEle" @click="addModules">
-      <div class="add">
+    <div class="partFour dragEle" >
+      <div class="add" @click="addModules" style="display:none;">
         <div class="title">
           <span class="titleIcon"></span>
           <span class="txt">请添加系统</span>
         </div>
         <div class="addIcon">+</div>
       </div>
+      <component :is="partFourView" :isResize="isResize"></component>
     </div>
     <div class="monitoring">
 
@@ -111,10 +111,11 @@
   import EnergyManage from './EnergyManage.vue'
   import Equipment from './Equipment.vue'
   import Door from './DoorControl.vue'
+  import revenueData from './revenueData.vue'
 
   export default {
       name: "home",
-      components:{AgentManage,EnergyManage,Equipment,Banner,PersonInfo,Door},
+      components:{AgentManage,EnergyManage,Equipment,Banner,PersonInfo,Door,revenueData},
       data(){
           return {
               list:[{
@@ -144,9 +145,10 @@
               }],
               isOperateModules:false,  //添加删除显示的模块
               isResize:1,  //当前窗口是否重置，重绘canvas图标
-              partOneView:'AgentManage',
-              partTwoView:'EnergyManage',
-              partThreeView:'Door',
+              partOneView:'EnergyManage',
+              partTwoView:'revenueData',
+              partThreeView:'Equipment',
+              partFourView:'AgentManage',
               showBannerParam:false,
               personalCenter:{
                   isShowBounced:false,

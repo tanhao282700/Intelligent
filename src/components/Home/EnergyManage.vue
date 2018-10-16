@@ -1,12 +1,12 @@
 <template>
-  <div class="agentComponent">
+  <div class="energyComponent">
     <div class="title">
       <span class="titleIcon"></span>
       <span class="txt">能源管理系统</span>
     </div>
     <div class="con">
       <div class="nergyEcharts" id="nergyEcharts"></div>
-
+      <div class="nergyEcharts2"></div>
     </div>
   </div>
 </template>
@@ -149,7 +149,7 @@
   }
 </script>
 <style lang="less" rel="stylesheet/less" scoped>
-  .agentComponent{
+  .energyComponent{
     width:100%;
     height:100%;
     display:flex;
@@ -187,55 +187,10 @@
         height:100%!important;
       }
     }
-    .info{
-      flex:1;
-      display:flex;
-      flex-direction: row;
-      .infoC{
-        flex-basis: 30%;
-        height:100%;
-        margin-left:2.5%;
-        flex-direction: column;
-        display:flex;
-        align-items:center;
-        .category{
-          border:1px solid #2c69bc;
-          width:4.2vw;
-          height:4.2vw;
-          border-radius:4vw;
-          line-height:4vw;
-          text-align:center;
-          color:#8aa5c3;
-          font-size:2vw;
-          font-weight:400;
-          margin-top:.8vw;
-        }
-        .percent{
-          flex:1;
-          margin-top:.8vw;
-          margin-bottom:.8vw;
-          background:#131e30;
-          display:flex;
-          flex-direction: column;
-          align-items:center;
-          font-size:.4vw;
-          padding:.3vw 4px;
-          justify-content:space-between;
-          span:nth-child(1){
-            color:#36a45d;
-            font-size:1vw;
-            /*margin-top:.4vw;*/
-          }
-          span:nth-child(2){
-            color:#2d5e96;
-            /*margin-top:.4vw;*/
-          }
-          span:nth-child(3){
-            color:#62738d;
-            /*margin-top:.3vw;*/
-          }
-        }
-      }
+    .nergyEcharts2{
+      height:35.714%;
+      background:#2d475e;
+      margin-top:8%;
     }
   }
   }
