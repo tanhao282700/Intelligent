@@ -2,7 +2,7 @@
     <div class = "chooseBox2">
         <div class = "chooseBoxIn">
             <span v-text = 'searchVal(options,value0,placeholder)'></span>
-            <i :class="icon" style="padding-left:0.02rem;"></i>
+            <i :class="icon?icon:'el-icon-caret-bottom'" style="padding-left:0.02rem;"></i>
         </div>
         <el-select 
             v-model="value0" 
@@ -55,9 +55,6 @@ export default {
     this.value0 = this.value;
   },
   mounted() {
-    if(!this.icon || this.icon==''){
-      this.icon='el-icon-caret-bottom';
-    }
   },
 }
 </script>
