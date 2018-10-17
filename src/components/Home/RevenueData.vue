@@ -7,7 +7,14 @@
     </div>
     <div class="con">
       <div class="con-top">
-        <div class="revenueEcharts1" id="revenueEcharts1"></div>
+        <div class="revenueEcharts1" id="revenueEcharts1">
+          <div class="name">用能营收占比</div>
+          <div class="percent">
+            <div class="mounts">
+              <span>22%</span>
+            </div>
+          </div>
+        </div>
         <div class="revenueEcharts2" id="revenueEcharts2"></div>
       </div>
       <div class="revenueEcharts3" id="revenueEcharts3"></div>
@@ -15,7 +22,7 @@
   </div>
 </template>
 <script>
-
+  /*import "echarts-liquidfill"*/
   export default{
     props:{
       isResize:{
@@ -31,68 +38,104 @@
 
     },
     mounted(){
-      /*this.drawEchart()*/
+      this.drawEchart2()
+      /*this.drawEchart3()*/
     },
     watch:{
       isResize(){
-        /*this.revenueCharts1.resize()*/
+        this.revenueCharts2.resize()
+        /*this.revenueCharts3.resize()*/
       }
     },
     methods:{
-      drawEchart(){
-        let revenueCharts1 = this.$echarts.init(document.getElementById("revenueEcharts1"));
-        this.revenueCharts1 = revenueCharts1
-        let option1 = {
-          color: ["#f5a623", "#fff"],
-          grid: [{//外框
-            top: '6%',
-            left: '0',
-            right: '0',
-            bottom: '3%',
-            containLabel: false,
-          }],
-          calculable: true,
-          tooltip: {
-            trigger: 'axis'
+      drawEchart2(){
+        let revenueCharts2 = this.$echarts.init(document.getElementById("revenueEcharts2"));
+        this.revenueCharts2 = revenueCharts2
+        let option2 = {
+          tooltip : {
+            trigger: 'axis',
           },
-          xAxis: [{
-            type: 'value',
-            splitLine: {show: false},
-            axisLabel: {show: false},
-            axisTick: {show: false},//不显示刻度
-            axisLine: {show: false},
-            boundaryGap: false,//坐标轴两边留白策略
-          }],
-          yAxis: [{
-            type: 'category',
-            boundaryGap: false,
-            position: 'top',
-            data: [100],
-            splitLine: {show: false},
-            axisLabel: {show: false},
-            axisTick: {show: false},//不显示刻度
-            axisLine: {show: false},
-          }],
-          series: [
+          grid: {
+            top: 20,
+            bottom: 20
+          },
+          legend: {
+            data:['每餐位用能均值','每房用能均值'],
+            orient:'horizontal',
+            right:0,
+            padding:0,
+            textStyle:{
+              color:'#eeeff1'
+            },
+            top:10
+          },
+          calculable : true,
+          xAxis : [
             {
-              type: 'bar',
-              data: [10],
-              barWidth: 10,
-              barGap: '-100%',
-              z:1
+              type : 'category',
+              boundaryGap : false,
+              nameTextStyle:{
+                color:'#f8f8f6'
+              },
+              axisLine:{
+                lineStyle:{
+                  color:'#bfc7ca'
+                }
+              },
+              axisTick:{
+                show:false
+              },
+              data : ['01','02','03','04','05','06','07']
+            }
+          ],
+          yAxis : [
+            {
+              show:false,
+              type : 'value'
+            }
+          ],
+          series : [
+            {
+              name:'每餐位用能均值',
+              type:'line',
+              smooth:true,
+              showSymbol:false,
+              lineStyle:{
+                color:'#3af2e6',
+                shadowBlur:6,
+                shadowOffsetY:2,
+                shadowColor:'#3af2e6'
+              },
+              data:[430, 810, 840, 320, 461, 180, 920]
             },
             {
-              type: 'bar',
-              data: [20],
-              barWidth: 10,
-              barGap: '-100%'
+              name:'每房用能均值',
+              type:'line',
+              smooth:true,
+              showSymbol:false,
+              lineStyle:{
+                color:'#f96074',
+                shadowBlur:6,
+                shadowOffsetY:2,
+                shadowColor:'#f96074'
+              },
+              data:[620, 460, 220, 630, 401, 110, 640]
             }
-          ]
+          ],
+          color:['#3af2e6','#f96074']
         };
-
-
-        // 绘制图表
-        revenueCharts1.setOption(option1);
+        revenueCharts2.setOption(option2);
+      },
+      drawEchart3(){
+        let revenueCharts3 = this.$echarts.init(document.getElementById("revenueEcharts3"));
+        this.revenueCharts3 = revenueCharts3
+        let option3 = {
+          series: [{
+            type: 'liquidFill',
+            data: [0.6, 0.5, 0.4, 0.3]
+          }]
+        };
+        revenueCharts3.setOption(option3);
       }
     }
   }
@@ -149,9 +192,48 @@
       background:#2d475e;
       height:50.974%;
       display: flex;
+      flex-direction: column;
       #revenueEcharts1{
+        padding:0 5%;
         height:44.985%;
         width:100%;
+        display: flex;
+        flex-direction: column;
+        .name{
+          height:35.428%;
+          display: flex;
+          align-items: center;
+          color:white;
+          font-size:14px;
+        }
+        .percent{
+          height:37.143%;
+          background:#192f3d;
+          border-radius:4px;
+          display: flex;
+          flex-direction: row;
+          .mounts{
+            width:20%;
+            background:#29dfd3;
+            border-top-left-radius: 4px;
+            border-bottom-left-radius: 4px;
+            position:relative;
+            span{
+              display: inline-block;
+              position:absolute;
+              right:-14px;
+              bottom:-20px;
+              width:27px;
+              height:18px;
+              background:url(../../assets/img/home/percent.png) no-repeat left top;
+              background-size:cover;
+              font-size:10px;
+              color:white;
+              line-height:20px;
+              text-align:center;
+            }
+          }
+        }
       }
       #revenueEcharts2{
         flex:1;

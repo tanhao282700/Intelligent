@@ -6,9 +6,26 @@
       <img src="../../assets/img/home/close.png" alt="">
     </div>
     <div class="con">
-      <div class="chart" id="equipmentOne"></div>
-      <div class="chart" id="equipmentTwo"></div>
-      <div class="chart" id="equipmentThree"></div>
+      <div class="chart" id="equipmentOne">
+        <div class="tips">
+          <div class="icon cor-r"></div>
+          <div class="txt first">故障总数</div>
+          <div class="icon cor-b"></div>
+          <div class="txt">设备总数</div>
+        </div>
+        <div class="chartInfo">
+          <div class="persent"></div>
+        </div>
+        <div class="counts">
+          <span class="countsBg countsL"></span>
+          <div class="info">
+            共&nbsp;<span>1000</span>&nbsp;台
+          </div>
+          <span class="countsBg countsR"></span>
+        </div>
+      </div>
+      <div class="chart" id="equipmentTwo" ref="equipmentTwo"></div>
+      <div class="chart" id="equipmentThree" ref="equipmentThree"></div>
     </div>
   </div>
 </template>
@@ -30,135 +47,83 @@
 
     },
     mounted(){
-      this.drawEchartOne()
-      /*this.drawEchartTwo()*/
+      /*this.drawEchartOne()*/
+      this.drawEchartTwo()
+      this.drawEchartThree()
     },
     watch:{
       isResize(){
-        this.equipmentChartOne.resize()
+        /*this.equipmentChartOne.resize()*/
       }
     },
     methods:{
+      drawEchartThree(){
+        let height = this.$refs.equipmentThree.clientHeight
+        var option3 = {
+          width:height, //canvas宽度
+          height:height, //canvas高度
+          outCircleObj:{ //外环对象
+            lineWidth:4, //线宽
+            bgColor1:"#FF0000", //背景渐变色
+            bgColor2:"#FAD961",
+            bgColor3:"#59FF16"
+          },
+          inCircleObj:{
+            lineWidth:14,
+            bgColor1:"#FAD961",
+            bgColor2:"#F7A51C",
+            bgColor3:"#FAD961",
+            text:[0,1,2,3,4], //刻度值
+            textColor:"#fff", //文字颜色
+            opacity:"0.3" //内环透明度
+          },
+          space:4, //内外环间隔
+          title:{
+            text:"维保评分",
+            color:"#fff",
+            size:"14"
+          },
+          dataValue:{
+            text:"80%",
+            color:"#F7A51C",
+            size:"20"
+          }
+        }
+        $("#equipmentThree").circleChart(option3);
+      },
       drawEchartTwo(){
-        let equipmentChartTwo = this.$echarts.init(document.getElementById("equipmentTwo"));
-        this.equipmentChartTwo = equipmentChartTwo
-        let option2 = {
-          tooltip : {
-            formatter: "{a} <br/>{c} {b}"
+        let height = this.$refs.equipmentTwo.clientHeight
+        var option2 = {
+          width:height, //canvas宽度
+          height:height, //canvas高度
+          outCircleObj:{ //外环对象
+            lineWidth:4, //线宽
+            bgColor1:"#FF0000", //背景渐变色
+            bgColor2:"#FAD961",
+            bgColor3:"#59FF16"
           },
-          toolbox: {
-            show: true,
-            feature: {
-              restore: {show: true},
-              saveAsImage: {show: true}
-            }
+          inCircleObj:{
+            lineWidth:14,
+            bgColor1:"#FAD961",
+            bgColor2:"#F7A51C",
+            bgColor3:"#FAD961",
+            text:[0,1,2,3,4], //刻度值
+            textColor:"#ffffff", //文字颜色
+            opacity:"0.3" //内环透明度
           },
-          series : [
-            {
-              name: '速度',
-              type: 'gauge',
-              z: 3,
-              min: 0,
-              max: 220,
-              splitNumber: 11,
-              radius: '40%',
-              axisLine: {   show:false,
-              },
-              axisTick: {  show:false
-              },
-              splitLine: {     show:false
-              },
-              axisLabel: {show:false
-              },
-              title : {show:false
-              },
-              pointer : {
-                show:false
-              },
-              detail :{show:false
-              },
-              data:[{value: 40, name: 'km/h'}]
-            }, {
-              name: '速度',
-              type: 'gauge',
-              z: 3,
-              min: 0,
-              max: 220,
-              splitNumber: 11,
-              radius: '45%',
-              axisLine: {
-                lineStyle: { // 属性lineStyle控制线条样式
-                  color: [
-                    [ 0.5,  this.$echarts.graphic.LinearGradient(0, 0, 1, 0, [{
-                      offset: 1,
-                      color: "#E75F25" // 50% 处的颜色
-                    }, {
-                      offset: 0.8,
-                      color: "#D9452C" // 40% 处的颜色
-                    }], false) ], // 100% 处的颜色
-                    [ 0.7,  this.$echarts.graphic.LinearGradient(0, 0, 1, 0, [{
-                      offset: 1,
-                      color: "#FFC539" // 70% 处的颜色
-                    }, {
-                      offset: 0.8,
-                      color: "#FE951E" // 66% 处的颜色
-                    }, {
-                      offset: 0,
-                      color: "#E75F25" // 50% 处的颜色
-                    }], false) ],
-                    [ 0.9,  this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                      offset: 1,
-                      color: "#C7DD6B" // 90% 处的颜色
-                    }, {
-                      offset: 0.8,
-                      color: "#FEEC49" // 86% 处的颜色
-                    }, {
-                      offset: 0,
-                      color: "#FFC539" // 70% 处的颜色
-                    }], false) ],
-                    [1,  this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [ {
-                      offset: 0.2,
-                      color: "#1CAD52" // 92% 处的颜色
-                    }, {
-                      offset: 0,
-                      color: "#C7DD6B" // 90% 处的颜色
-                    }], false) ]
-                  ],
-                  width: 10
-                }
-              },
-              axisTick: {   show:false
-              },
-              splitLine: {   show:false
-              },
-              axisLabel: {
-                color: '#eee',
-                distance: -10,
-              },
-              pointer : { //指针样式
-                show:false
-              },
-              title : {
-                // 其余属性默认使用全局文本样式，详见TEXTSTYLE
-                fontWeight: 'bolder',
-                fontSize: 20,
-                fontStyle: 'italic'
-              },
-              detail : {
-                // 其余属性默认使用全局文本样式，详见TEXTSTYLE
-                formatter: function (value) {
-                  value = (value + '').split('.');
-                  value.length < 2 && (value.push('00'));
-                  return ('00' + value[0]).slice(-2)
-                    + '.' + (value[1] + '00').slice(0, 2);
-                },
-              },
-              data:[{value: 40, name: 'km/h'}]
-            }
-          ]
-        };
-
-        /*equipmentChartTwo.setOption(option2);*/
+          space:4, //内外环间隔
+          title:{
+            text:"健康度",
+            color:"#ffffff",
+            size:"14"
+          },
+          dataValue:{
+            text:"99%",
+            color:"#F7A51C",
+            size:"20"
+          }
+        }
+        $("#equipmentTwo").circleChart(option2);
       },
       drawEchartOne(){
         let equipmentChartOne = this.$echarts.init(document.getElementById("equipmentOne"));
@@ -277,12 +242,100 @@
     display:flex;
     flex-direction: column;
     padding:0 3.187%;
-    .chart{
+    position:relative;
+    /*.chart{
+      flex-basis: 33.333%;
+    }*/
+    #equipmentTwo{
+      height:34.985%;
+    }
+    #equipmentThree{
+      height:34.985%;
+    }
+    #equipmentOne{
+      height:30.084%;
+      display: flex;
+      flex-direction: column;
+      padding:0 3.984%;
+      .tips{
+        height:28.9%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-end;
+        color:#f6f4f7;
+        .icon{
+          width:16px;
+          height:16px;
+          border-radius:2px;
+          margin-right:4px;
+        }
+        .first{
+          margin-right:8px;
+        }
+        .cor-r{
+          background:#f66c6c;
+        }
+        .cor-b{
+          background:#008aff;
+        }
+      }
+      .chartInfo{
+        height:40.462%;
+        background:#3b89f8;
+        border-radius:4px;
+        display: flex;
+        flex-direction: row;
+        .persent{
+          height:100%;
+          width:20%;
+          border-top-left-radius: 4px;
+          border-bottom-left-radius: 4px;
+          background:#f96074;
+        }
+      }
+      .counts{
+        margin-top:2%;
+        flex-basis: 18%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        .info{
+          padding:0 4px;
+          color:#ffffff;
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          span{
+            font-size:18px;
+          }
+        }
+        .countsBg{
+          flex:1;
+          height:100%;
+        }
+        .countsL{
+          background:url(../../assets/img/home/countsL.png) no-repeat left top;
+          background-size:cover;
+        }
+        .countsR{
+          background:url(../../assets/img/home/countsR.png) no-repeat right top;
+          background-size:cover;
+        }
+      }
+    }
+    /*#equipmentOne{
       flex-basis: 33.333%;
     }
     #equipmentTwo{
-
-    }
+      width:400px;
+      height:400px;
+      position:relative;
+      right:-100%;
+      top:0;
+      background:white;
+    }*/
   }
   }
 </style>

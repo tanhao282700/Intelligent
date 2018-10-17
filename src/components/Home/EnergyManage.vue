@@ -166,7 +166,9 @@
             },
             backgroundColor:'#1d2d3a'
           },
-
+          grid: {
+            top: 26,
+          },
           tooltip : {
             trigger: 'axis',
           },

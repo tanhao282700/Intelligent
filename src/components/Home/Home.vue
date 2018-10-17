@@ -193,7 +193,7 @@
               }],
               partsData:[{
                   id:"partOne",
-                  componentsName:'EnergyManage'
+                  componentsName:'RevenueData'
               },{
                 id:"partTwo",
                 componentsName:''
@@ -699,8 +699,6 @@
   }
 
 
-
-
   }
 </style>
 <style>
@@ -769,5 +767,13 @@
   .homeDropDown .homeDropdownItem:hover{
     background:#093365;
     color:#1989f9;
+  }
+
+  #equipmentTwo canvas{
+    float:right;
+    margin-right:1%;
+  }
+  .chart canvas{
+    height:100%!important;
   }
 </style>
