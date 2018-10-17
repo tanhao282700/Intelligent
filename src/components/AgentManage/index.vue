@@ -32,18 +32,16 @@
                   <label for="">已完成数</label>
                   <div class="numBox">
                       <div class="numFeal">
-                        <div class="numLines" :style="{'width':2.10*echartCirData3.data[1].value/echartCirData3.total +'rem'}"></div>
+                        <div class="numLines" :style="{'width':2.10*echartCirData3.data[1].value/echartCirData3.total +'rem'}">{{echartCirData3.data[0].value}}</div>
                       </div>
-                      <img src="../../assets/img/circle/down.png" alt="">
                   </div>
                 </li>
                 <li>
                   <label for="">未完成数</label>
                   <div class="numBox">
                     <div class="numFeals">
-                      <div class="numLines2" :style="{'width':2.10*echartCirData3.data[0].value/echartCirData3.total +'rem'}"></div>
+                      <div class="numLines2" :style="{'width':2.10*echartCirData3.data[0].value/echartCirData3.total +'rem'}">{{echartCirData3.data[1].value}}</div>
                     </div>
-                      <img src="../../assets/img/circle/down.png" alt="">
                   </div>
                 </li>
               </ul>
@@ -67,18 +65,16 @@
                   <label for="">已完成数</label>
                   <div class="numBox">
                       <div class="numFeal">
-                        <div class="numLines" :style="{'width':2.10*echartCirData4.data[1].value/echartCirData4.total +'rem'}"></div>
+                        <div class="numLines" :style="{'width':2.10*echartCirData4.data[1].value/echartCirData4.total +'rem'}">{{echartCirData4.data[1].value}}</div>
                       </div>
-                      <img src="../../assets/img/circle/down.png" alt="">
                   </div>
                 </li>
                 <li>
                   <label for="">未完成数</label>
                   <div class="numBox">
                     <div class="numFeals">
-                      <div class="numLines2" :style="{'width':2.10*echartCirData4.data[0].value/echartCirData4.total +'rem'}"></div>
+                      <div class="numLines2" :style="{'width':2.10*echartCirData4.data[0].value/echartCirData4.total +'rem'}">{{echartCirData4.data[0].value}}</div>
                     </div>
-                      <img src="../../assets/img/circle/down.png" alt="">
                   </div>
                 </li>
               </ul>
@@ -109,7 +105,7 @@
           </div>
           <div class="workBox1Cir">
             <div class="workBox1CirIn">
-
+              <EchartPie :data="barData"></EchartPie>
             </div>
           </div>
           <div class="workBox1In">
@@ -147,11 +143,14 @@
 import utils from "../../assets/js/utils.js";
 import EchartCirFull from '../Energy/components/lookAll/EchartCirFull';
 import EchartBar from './components/index/echartBar';
+import EchartPie from './components/index/echartPie';
+
 export default {
   name:'generationMBase',
   components:{
     'EchartCirFull':EchartCirFull,
-    'EchartBar':EchartBar
+    'EchartBar':EchartBar,
+    'EchartPie':EchartPie
   },
   computed:{
     msgsInTit(){
@@ -172,14 +171,14 @@ export default {
         monR:'78.9',
         yearW:'88.9',
         yearR:'71.9'
-        },
-        barData:{
+      },
+      barData:{
           id:'barData',
-          style:{width:'6.23rem',height:240*100/728+'vh',marginLeft:'0.1rem',marginTop:10*100/728+'vh'},
-          data:[[57,0,0],[0,33,0],[0,0,20]],
+          style:{marginLeft:'0.1rem',marginTop:10*100/728+'vh'},
+          data:[57, 33, 20],
           total:110,
           xData:['系统派发','人工派发','外报维修']
-        },
+      },
       fillBoxs:[
         {id:'year',name:'年'},
         {id:'mon',name:'月'},
@@ -198,10 +197,10 @@ export default {
               '#f56c6c','#008aff'
             ],
             size:[0,'72.89%'],
-            total:100,
+            total:112,
             data:[
-              {value:29, name:Math.floor(29/(71+29)*100)+'%',tit:'未完成数'},
-              {value:71, name:Math.floor(71/(71+29)*100)+'%',tit:'已完成数'},
+              {value:24, name:Math.floor(29/(71+29)*100)+'%',tit:'未完成数'},
+              {value:88, name:Math.floor(71/(71+29)*100)+'%',tit:'已完成数'},
             ],
         },
         echartCirData4:{
@@ -210,10 +209,10 @@ export default {
               '#f56c6c','#008aff'
             ],
             size:[0,'72.89%'],
-            total:120,
+            total:102,
             data:[
-              {value:39, name:Math.floor(39/(71+29)*100)+'%',tit:'未完成数'},
-              {value:81, name:Math.floor(81/(71+29)*100)+'%',tit:'已完成数'},
+              {value:2, name:Math.floor(39/(71+29)*100)+'%',tit:'未完成数'},
+              {value:100, name:Math.floor(81/(71+29)*100)+'%',tit:'已完成数'},
             ],
         },
 
@@ -374,10 +373,18 @@ export default {
                     .numLines{
                       height: 100%;
                       background: #008aff;
+                      color:#fff;
+                      text-align:right;
+                      padding-right:5*100/1366vw;
+                      .vhLH(24);
                     }
                     .numLines2{
                       height: 100%;
                       background: #f56c6c;
+                      color:#fff;
+                      text-align:right;
+                      .vhLH(24);
+                      padding-right:5*100/1366vw;
                     }
                   }
                   img{
@@ -458,7 +465,10 @@ export default {
         .workBox1CirIn{
           width: 1.97rem;
           height: 1.97rem;
-          background: rgba(0,0,0,.2);
+          div{
+            width:100%;
+            height:100%;
+          }
         }
 
       }

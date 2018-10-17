@@ -1,5 +1,5 @@
 <template>
-    <div class="myChartBox">      
+    <div class="barChart">      
         <div :id="data.id" class="myChart"  :style = "data.style"></div>
     </div>
 </template>
@@ -9,119 +9,92 @@ export default {
   props:['data'],
   data () {
     return {
-        color:[
-            {color1:'#00c1ff',color2:'#008efe'},
-            {color1:'#ff9a6a',color2:'#fe5e83'},
-            {color1:'#fee7bb',color2:'#ffd08e'},
-        ]
+
     }
   },
   methods:{
       drawLine(){
-          let data = this.data;
-        // 基于准备好的dom，初始化echarts实例
+        let data = this.data;
         let myChart = this.$echarts.init(document.getElementById(data.id));
+        var dataAxis = ['系统派发', '人工派发', '外报维修'];
+        var yMax = 500;
+        var dataShadow = [];
 
-        let series = [];
-        for(let i=0;i<data.data.length;i++){
-            let obj = {
-                type: 'bar',
-                data: data.data[i],
-                stack:1,
-                barMaxWidth:'50%',
-                label: {                   
-                    normal: {
-                        show: true,
-                        textBorderColor:'rgba(0,0,0,0.2)',
-                        position: 'insideTop',
-                        formatter:function(val){
-                           let res = '';
-                            if(val.value!=0){
-                               res = Math.floor(Number(val.value*100)/Number(data.total)) +'% '+val.value;
-                            }
-                            return res;
-                        },
-                    }
-                },
-                itemStyle: {
-                        normal: {
-                            color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                                offset: 0,
-                                color: this.color[i].color1
-                            }, {
-                                offset: 1,
-                                color: this.color[i].color2
-                            }])
-                        },
-                        emphasis: {
-                            barBorderWidth: 1,
-                            shadowBlur: 10,
-                            shadowOffsetX: 0,
-                            shadowOffsetY: 0,
-                            shadowColor: 'rgba(0,0,0,0.5)'
-                        },
-                    },
-            };
-            series.push(obj)
+        for (var i = 0; i < data.length; i++) {
+            dataShadow.push(yMax);
         }
 
         let option = {
             xAxis: {
-                
-                type: 'category',
-                nameTextStyle:{
-                    color:'#fff',
-                    fontSize:'0.12rem'
-                },
-                axisLine:{
-                    show:false,
-                    lineStyle:{
-                        color:'#fff'
+                data: dataAxis,
+                axisLabel: {
+                    textStyle: {
+                        color: '#fff'
                     }
                 },
-                splitLine:{
-                    show:true,
-                    lineStyle:{
-                        color:'rgba(45,148,240,0.2)'
-                    }
+                axisTick: {
+                    show: false
                 },
-                axisTick:{
-                    show:false,
+                axisLine: {
+                    show: false
                 },
-                splitArea:{
-                    show:true,
-                    areaStyle:{
-                        color:['rgba(0,0,0,0)','rgba(0,0,0,0.1)']
-                    }
-                },
-                data: data.xData
-            },
-            grid:{
-                left:0,
-                top:0,
-                right:0,
-                bottom:'13%'
+                z: 10
             },
             yAxis: {
-                type: 'value',
-                axisLine:{
-                    show:true,
-                    lineStyle:{
-                         color:'rgba(45,148,240,0.2)'
-                     }
+                axisLine: {
+                    show: false
                 },
-                splitLine:{
-                     show:true,
-                     lineStyle:{
-                         color:'rgba(45,148,240,0.2)'
-                     },
-                     interval:35
+                axisTick: {
+                    show: false
+                },
+                axisLabel: {
+                    textStyle: {
+                        color: '#999'
+                    }
                 }
             },
-            series:series
+            dataZoom: [
+                {
+                    type: 'inside'
+                }
+            ],
+            series: [
+                { // For shadow
+                    type: 'bar',
+                    itemStyle: {
+                        normal: {color: 'transparent'}
+                    },
+                    barGap:'-100%',
+                    barCategoryGap:'40%',
+                    data: dataShadow,
+                    animation: false
+                },
+                {
+                    type: 'bar',
+                    itemStyle: {
+                        normal: {
+                            color:[]   
+                        },
+                        emphasis: {
+                            color: []
+                        }
+                    },
+                    data: data
+                }
+            ]
         };
-        // 绘制图表
-       myChart.setOption(option); 
+
+        // Enable data zoom when user click bar.
+        var zoomSize = 6;
+        myChart.on('click', function (params) {
+            console.log(dataAxis[Math.max(params.dataIndex - zoomSize / 2, 0)]);
+            myChart.dispatchAction({
+                type: 'dataZoom',
+                startValue: dataAxis[Math.max(params.dataIndex - zoomSize / 2, 0)],
+                endValue: dataAxis[Math.min(params.dataIndex + zoomSize / 2, data.length - 1)]
+            });
+        });
+        myChart.setOption(option);
     }
   },
   created() {
@@ -135,7 +108,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="less" scoped="" type="text/less"> 
 @import '../../../../assets/css/comon.less';
-.myChartBox{
+.barChart{
     .vh(220);
     width:100%;
     position:relative; 

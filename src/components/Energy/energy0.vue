@@ -4,7 +4,7 @@
     start in 2018-8-2
 -->
 <template>
-  <div class="energyBase">
+  <div class="energyBase autoComponent">
     <SysHead :datas = "sData"/>
     <div class="energyBody">
         <router-view></router-view>
@@ -28,9 +28,9 @@ export default {
       sData:{
             id:2,
             lists:[
-                {id:0,name:'全景查看',route:'/energy/fullLook'},
-                {id:0,name:'运行情况',route:'/energy/runMsg'},
-                {id:0,name:'监控告警',route:'/energy/alarm'},
+                {id:1,name:'全景查看',route:'/energy/fullLook'},
+                {id:2,name:'运行情况',route:'/energy/runMsg'},
+                {id:3,name:'监控告警',route:'/energy/alarm'},
             ]
         }
     }

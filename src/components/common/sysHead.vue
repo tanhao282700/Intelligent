@@ -19,16 +19,33 @@
       <el-tab-pane v-for="(item,index) in datas.lists" :key="item.id" :label="item.name" :name="'item'+index" :route="item.route" :stretch="true">
       </el-tab-pane>
     </el-tabs>
-    <div class="headimg">
-      <img src="../../assets/img/home/logo.png" width="30px" height="30px" >
-    </div>
-    <div class="dropdownlist">
-      <SelectBox 
-        :options = 'menus' 
-        :value = "currMenu" 
-        placeholder=""
-        @change = "changeMenu"
-      />
+    <el-row class="block-col-2 userCenter" style="position: absolute;right: 80px;top: 10px;">
+      <el-col :span="12">
+        <el-dropdown trigger="click" @command="handleCommand" >
+          <span class="el-dropdown-link">
+            <span @click="showPersonInfo" class="userIcon"></span>
+          </span>
+          <el-dropdown-menu class="homeDropDown" slot="dropdown" style="background: #061733;border: 1px solid #4a90e2">
+            <el-dropdown-item command="personInfo" class="homeDropdownItem" style="text-align:center;color:#f6f6f6">个人信息</el-dropdown-item>
+            <el-dropdown-item command="authorityManagement" class="homeDropdownItem" style="text-align:center;color:#f6f6f6">权限管理</el-dropdown-item>
+            <el-dropdown-item command="changePassword" class="homeDropdownItem" style="text-align:center;color:#f6f6f6">修改密码</el-dropdown-item>
+            <el-dropdown-item command="loginOut" class="homeDropdownItem" style="text-align:center;color:#f6f6f6">退出登录</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </el-col>
+    </el-row>
+    <div class="dropdownlist" >
+      <el-dropdown trigger="click" @command="handleCommand" >
+        <span class="el-dropdown-link">
+           <img src="../../assets/img/AgentManage/dropdown_icon.png" @click="showMenus"/>
+        </span>
+        <el-dropdown-menu class="homeDropDown" slot="dropdown" style="background: #061733;border: 1px solid #4a90e2">
+          <el-dropdown-item command="menu1" class="homeDropdownItem" style="text-align:center;color:#f6f6f6">菜单1</el-dropdown-item>
+          <el-dropdown-item command="menu2" class="homeDropdownItem" style="text-align:center;color:#f6f6f6">菜单2</el-dropdown-item>
+          <el-dropdown-item command="menu3" class="homeDropdownItem" style="text-align:center;color:#f6f6f6">菜单3</el-dropdown-item>
+          <el-dropdown-item command="menu4" class="homeDropdownItem" style="text-align:center;color:#f6f6f6">菜单4</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
     </div>
     <component :isShowBannerParam="showBannerParam" @changeBannerParam="updateBannerParam" is="Banner"></component>
   </div>
@@ -52,7 +69,15 @@ export default {
           {label:'个人信息',value:1},
           {label:'密码修改',value:2}],
       currMenu:-1,
-      
+      personalCenter:{
+          isShowBounced:false,
+          isShowDialog:false,
+      },
+      personInfoOptions:{
+            isPersonInfo:false,  //显示个人信息
+            isEditInfo:false,    //编辑个人信息 传参只用传false
+            isChangePassword:false  //修改密码
+      }
     }
   },
   methods:{
@@ -72,6 +97,21 @@ export default {
      updateBannerParam(data){
          this.showBannerParam = data
      },
+     showPersonInfo(){
+         this.personalCenter.isShowBounced = !this.personalCenter.isShowBounced
+     },
+     handleCommand(command){
+        if(command == 'loginOut'){
+          this.personalCenter.isShowDialog = true
+        }else if(command==='personInfo'){
+            this.personInfoOptions.isPersonInfo = true
+        }else if(command == 'changePassword'){
+          this.personInfoOptions.isChangePassword = true
+        }
+      },
+      showMenus(){
+
+      }
   },
   created() {
      
@@ -93,12 +133,15 @@ export default {
         display:flex;
         background:rgba(0,45,104,0.8);
         box-shadow:0px 2px 3px 0px rgba(0,0,0,0.2);
-        .headimg{
+        .userIcon{
+          width:30px;
           height:30px;
-          position:absolute;
-          top:10px;
-          cursor:pointer;
-          right:80px;
+          display: inline-block;
+          background:url(../../assets/img/home/usericon.png) no-repeat center center;
+          background-size: cover;
+          &:hover{
+            cursor: pointer;
+          }
         }
         .dropdownlist{
           height:50px;
@@ -108,9 +151,12 @@ export default {
           cursor:pointer;
           color:#fff;
           right:20px;
+          img{
+            width:20px;
+          }
         }
         .navTabs{
-          height:50px;
+          height:30px;line-height:30px;
           display: inline-flex;
           margin-left: 60px;
            .el-tabs__header{
@@ -126,10 +172,8 @@ export default {
           margin-left:14px;
           margin-right:20px;
           span{
-            margin-top:7px;
+            margin-top:9px;
             height:18px;
-            font-size:18px;
-            font-weight:600;
             color:#fff;
           }
           i{
