@@ -160,7 +160,7 @@ background-color: #65a3fa!important;
 /* 表单组件ele修改 */
 
 .el-select-dropdown{
-    background:#051732!important;
+    background:#04152c!important;
     border: 1px solid #4a90e2!important;
     box-shadow: 0px 2px 12px 0px
     rgba(39, 141, 255, 0.25)!important;
@@ -168,10 +168,9 @@ background-color: #65a3fa!important;
   }
   .el-select-dropdown__item{
     color:#fff!important;
-
   }
   .el-select-dropdown__item.hover, .el-select-dropdown__item:hover{
-    background-color:rgba(25,137,250,0.25)!important;
+    background-color:rgba(25,137,250,0.25);
     color:#1989fa!important;
   }
   .el-select-dropdown__list{
@@ -394,6 +393,7 @@ background-color: #65a3fa!important;
 /*定义滚动条轨道 内阴影+圆角*/
 ::-webkit-scrollbar-track
 {
+    border-radius: 0.1rem;
     -webkit-box-shadow: inset 0 0 0.06rem rgba(0,0,0,0.3);
     background-color: rgba(238,238,238,1);
 }

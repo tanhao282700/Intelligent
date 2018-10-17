@@ -69,15 +69,39 @@
   background: url("../../img/common/search.png") no-repeat;
   margin-right: 6px;
 }
-.userBox .resetPwBtn{
+.roleBox .queryDataBtn{
+  margin-left: 0;
+}
+.userBox .addNewRoleBtn{
+  background-color: #3A84EE!important;
+  width: 1.1rem;
+}
+.userBox .addNewRoleBtn i{
+  background: url("../../img/Permission/add-role.png") no-repeat;
+  margin-right: .1rem;
+}
+.userBox .resetPwBtn,.userBox .resetPwBtn:hover,.userBox .resetPwBtn:focus{
   width: .88rem;
   background-color: #3b85ef;
   font-size: .12rem!important;
 }
+.userBox .resetPwBtn.loading i{
+  animation: revolve 1s linear infinite;
+}
 .userBox .resetPwBtn i{
-  background: url("../../img/Permission/reset.png") no-repeat;
-  background-size: auto .13rem!important;
+  background: url("../../img/Permission/reset.png") no-repeat center;
+  background-size: .13rem auto!important;
   margin-right: 6px;
+  width: .13rem;
+  height: .13rem;
+}
+@keyframes revolve{
+  from{
+    transform: rotate(0deg);
+  }
+  to{
+    transform: rotate(360deg);
+  }
 }
 
 .tableBtn{
@@ -137,9 +161,6 @@
   font-size: .12rem;
   cursor: pointer;
 }
-.el-table{
-  min-height: 500px;
-}
 
 .userBox .queryBox .el-input__inner{
   height: 32px;
@@ -156,6 +177,10 @@
   background-color: rgba(0,0,0,.25)!important;
   border: none!important;
   font-weight: normal;
+}
+.tableAlignCenter.roleSetTable td:nth-child(3){
+  text-align: left!important;
+  padding-left: .2rem;
 }
 .userNameInput input{
   width: 180px!important;
@@ -221,7 +246,6 @@
   box-shadow: 0px 2px 8px 0px rgba(73, 143, 226, 0.5);
   padding: 1px 1px 0;
   margin-top: -10vh!important;
-
 }
 .dialogBox .el-dialog__header{
   height: .5rem;
@@ -266,6 +290,9 @@
   height: .32rem;
   line-height: .32rem;
 }
+.roleBox .dialogBox .el-form-item__label{
+  width: .56rem!important;
+}
 .dialogBox .el-form-item__content{
   margin-left: .7rem!important;
   height: .32rem;
@@ -306,23 +333,31 @@
   flex: 1;
   margin: 0;
   height: .44rem;
-  border-radius: 0;
+  border-radius: 0!important;
   color: #fff;
 }
 .dialogBox .dialog-footer .saveBtn{
   background-color: #3B85EF;
   border: none;
+  border-bottom-left-radius: 8px!important;
 }
 .dialogBox .dialog-footer .cancleBtn{
   background-color: transparent;
   border: 1px solid #4A90E2;
-  border-bottom-right-radius: 8px;
+  border-bottom-right-radius: 8px!important;
 }
 .dialogBox .dialog-footer .saveBtn:hover{
   background-color: #3B85EF;
 }
 .dialogBox .dialog-footer .cancleBtn:hover{
   background-color: transparent;
+}
+.roleBox .powerSelectBox .el-input__inner{
+  width: 2.28rem!important;
+  padding: 0 .2rem 0 .12rem!important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .deleteInfoDialog .el-dialog{
@@ -340,4 +375,37 @@
   line-height: .26rem;
   text-align: center;
   color: #B5D7FF;
+}
+
+.el-tree{
+  background-color: transparent!important;
+}
+.el-select-dropdown .el-select-dropdown__item{
+  height: auto!important;
+  padding: 0;
+  text-indent: .2rem;
+}
+.el-select-dropdown__item.selected .el-tree,.el-tree-node__content{
+  background-color: #04152c!important;
+  color: #fff;
+  text-indent: 0;
+}
+.el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content{
+  background-color: #08315f!important;
+}
+.el-tree-node__content{
+  display: block;
+  height: .26rem;
+  line-height: .26rem;
+}
+.el-tree-node__content .el-checkbox__inner{
+  border-radius: 100%;
+  background-color: transparent;
+  border-color: #008AFF;
+}
+.el-tree-node__content>.el-tree-node__expand-icon{
+  margin-right: 4px;
+}
+.el-select-dropdown__item.Hover,.el-tree-node__content:hover{
+  background:rgba(25,137,250,0.25) !important;
 }

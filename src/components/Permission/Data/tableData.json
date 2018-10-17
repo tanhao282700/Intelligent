@@ -6,7 +6,8 @@
     "department": "工程部",
     "role": "强电运维",
     "position": "经理",
-    "createTime": "2018/06/02 16:55:23"
+    "createTime": "2018/06/02 16:55:23",
+    "powerRange":"能源管理系统/代维管理系统/酒店管理系统"
   },
   {
     "code": "02",
@@ -15,7 +16,8 @@
     "department": "工程部",
     "role": "强电运维",
     "position": "经理",
-    "createTime": "2018/06/02 16:55:23"
+    "createTime": "2018/06/02 16:55:23",
+    "powerRange":"代维管理系统/酒店管理系统"
   },
   {
     "code": "03",
@@ -24,7 +26,8 @@
     "department": "工程部",
     "role": "强电运维",
     "position": "经理",
-    "createTime": "2018/06/02 16:55:23"
+    "createTime": "2018/06/02 16:55:23",
+    "powerRange":"能源管理系统/代维管理系统/酒店管理系统"
   },
   {
     "code": "04",
@@ -33,7 +36,8 @@
     "department": "工程部",
     "role": "强电运维",
     "position": "经理",
-    "createTime": "2018/06/02 16:55:23"
+    "createTime": "2018/06/02 16:55:23",
+    "powerRange":"能源管理系统/代维管理系统/酒店管理系统"
   },
   {
     "code": "05",
@@ -42,7 +46,8 @@
     "department": "工程部",
     "role": "强电运维",
     "position": "经理",
-    "createTime": "2018/06/02 16:55:23"
+    "createTime": "2018/06/02 16:55:23",
+    "powerRange":"代维管理系统/酒店管理系统"
   },
   {
     "code": "06",
@@ -51,7 +56,8 @@
     "department": "工程部",
     "role": "强电运维",
     "position": "经理",
-    "createTime": "2018/06/02 16:55:23"
+    "createTime": "2018/06/02 16:55:23",
+    "powerRange":"能源管理系统/代维管理系统/酒店管理系统"
   },
   {
     "code": "07",
@@ -60,7 +66,8 @@
     "department": "工程部",
     "role": "强电运维",
     "position": "经理",
-    "createTime": "2018/06/02 16:55:23"
+    "createTime": "2018/06/02 16:55:23",
+    "powerRange":"能源管理系统/代维管理系统/酒店管理系统"
   },
   {
     "code": "08",
@@ -69,7 +76,8 @@
     "department": "工程部",
     "role": "强电运维",
     "position": "经理",
-    "createTime": "2018/06/02 16:55:23"
+    "createTime": "2018/06/02 16:55:23",
+    "powerRange":"代维管理系统/酒店管理系统"
   },
   {
     "code": "09",
@@ -78,7 +86,8 @@
     "department": "工程部",
     "role": "强电运维",
     "position": "经理",
-    "createTime": "2018/06/02 16:55:23"
+    "createTime": "2018/06/02 16:55:23",
+    "powerRange":"代维管理系统/酒店管理系统"
   },
   {
     "code": "10",
@@ -87,7 +96,8 @@
     "department": "工程部",
     "role": "强电运维",
     "position": "经理",
-    "createTime": "2018/06/02 16:55:23"
+    "createTime": "2018/06/02 16:55:23",
+    "powerRange":"代维管理系统/酒店管理系统"
   },
   {
     "code": "11",
@@ -96,7 +106,8 @@
     "department": "工程部",
     "role": "强电运维",
     "position": "经理",
-    "createTime": "2018/06/02 16:55:23"
+    "createTime": "2018/06/02 16:55:23",
+    "powerRange":"代维管理系统/酒店管理系统"
   },
   {
     "code": "06",
@@ -105,7 +116,8 @@
     "department": "工程部",
     "role": "强电运维",
     "position": "经理",
-    "createTime": "2018/06/02 16:55:23"
+    "createTime": "2018/06/02 16:55:23",
+    "powerRange":"代维管理系统/酒店管理系统"
   },
   {
     "code": "07",
@@ -114,7 +126,8 @@
     "department": "工程部",
     "role": "强电运维",
     "position": "经理",
-    "createTime": "2018/06/02 16:55:23"
+    "createTime": "2018/06/02 16:55:23",
+    "powerRange":"代维管理系统/酒店管理系统"
   },
   {
     "code": "08",
@@ -123,7 +136,8 @@
     "department": "工程部",
     "role": "强电运维",
     "position": "经理",
-    "createTime": "2018/06/02 16:55:23"
+    "createTime": "2018/06/02 16:55:23",
+    "powerRange":"代维管理系统/酒店管理系统"
   },
   {
     "code": "09",
@@ -132,7 +146,8 @@
     "department": "工程部",
     "role": "强电运维",
     "position": "经理",
-    "createTime": "2018/06/02 16:55:23"
+    "createTime": "2018/06/02 16:55:23",
+    "powerRange":"代维管理系统/酒店管理系统"
   },
   {
     "code": "10",
@@ -141,7 +156,8 @@
     "department": "工程部",
     "role": "强电运维",
     "position": "经理",
-    "createTime": "2018/06/02 16:55:23"
+    "createTime": "2018/06/02 16:55:23",
+    "powerRange":"代维管理系统/酒店管理系统"
   },
   {
     "code": "11",
@@ -150,7 +166,8 @@
     "department": "工程部",
     "role": "强电运维",
     "position": "经理",
-    "createTime": "2018/06/02 16:55:23"
+    "createTime": "2018/06/02 16:55:23",
+    "powerRange":"代维管理系统/酒店管理系统"
   },
   {
     "code": "06",
@@ -159,7 +176,8 @@
     "department": "建设部",
     "role": "强电测试",
     "position": "维修工",
-    "createTime": "2018/06/02 16:55:23"
+    "createTime": "2018/06/02 16:55:23",
+    "powerRange":"代维管理系统/酒店管理系统"
   },
   {
     "code": "07",
@@ -168,7 +186,8 @@
     "department": "工程部",
     "role": "强电运维",
     "position": "经理",
-    "createTime": "2018/06/02 16:55:23"
+    "createTime": "2018/06/02 16:55:23",
+    "powerRange":"代维管理系统/酒店管理系统"
   },
   {
     "code": "08",
@@ -177,7 +196,8 @@
     "department": "工程部",
     "role": "强电运维",
     "position": "经理",
-    "createTime": "2018/06/02 16:55:23"
+    "createTime": "2018/06/02 16:55:23",
+    "powerRange":"代维管理系统/酒店管理系统"
   },
   {
     "code": "09",
@@ -186,7 +206,8 @@
     "department": "工程部",
     "role": "强电运维",
     "position": "经理",
-    "createTime": "2018/06/02 16:55:23"
+    "createTime": "2018/06/02 16:55:23",
+    "powerRange":"能源管理系统/代维管理系统/酒店管理系统/门禁系统…"
   },
   {
     "code": "10",
@@ -195,7 +216,8 @@
     "department": "工程部",
     "role": "强电运维",
     "position": "经理",
-    "createTime": "2018/06/02 16:55:23"
+    "createTime": "2018/06/02 16:55:23",
+    "powerRange":"能源管理系统/代维管理系统/酒店管理系统/门禁系统…"
   },
   {
     "code": "11",
@@ -204,7 +226,8 @@
     "department": "建设部",
     "role": "强电测试",
     "position": "经理",
-    "createTime": "2018/06/02 16:55:23"
+    "createTime": "2018/06/02 16:55:23",
+    "powerRange":"能源管理系统/代维管理系统/酒店管理系统/门禁系统…"
   },
   {
     "code": "06",
@@ -213,7 +236,8 @@
     "department": "工程部",
     "role": "强电运维",
     "position": "经理",
-    "createTime": "2018/06/02 16:55:23"
+    "createTime": "2018/06/02 16:55:23",
+    "powerRange":"能源管理系统/代维管理系统/酒店管理系统/门禁系统…"
   },
   {
     "code": "07",
@@ -222,7 +246,8 @@
     "department": "工程部",
     "role": "强电运维",
     "position": "经理",
-    "createTime": "2018/06/02 16:55:23"
+    "createTime": "2018/06/02 16:55:23",
+    "powerRange":"代维管理系统/酒店管理系统"
   },
   {
     "code": "08",
@@ -231,7 +256,8 @@
     "department": "工程部",
     "role": "强电运维",
     "position": "经理",
-    "createTime": "2018/06/02 16:55:23"
+    "createTime": "2018/06/02 16:55:23",
+    "powerRange":"代维管理系统/酒店管理系统"
   },
   {
     "code": "09",
@@ -240,7 +266,8 @@
     "department": "工程部",
     "role": "强电测试",
     "position": "经理",
-    "createTime": "2018/06/02 16:55:23"
+    "createTime": "2018/06/02 16:55:23",
+    "powerRange":"能源管理系统/代维管理系统/酒店管理系统/门禁系统…"
   },
   {
     "code": "10",
@@ -249,7 +276,8 @@
     "department": "工程部",
     "role": "强电运维",
     "position": "经理",
-    "createTime": "2018/06/02 16:55:23"
+    "createTime": "2018/06/02 16:55:23",
+    "powerRange":"能源管理系统/代维管理系统/酒店管理系统/门禁系统…"
   },
   {
     "code": "11",
@@ -258,7 +286,8 @@
     "department": "工程部",
     "role": "强电运维",
     "position": "经理",
-    "createTime": "2018/06/02 16:55:23"
+    "createTime": "2018/06/02 16:55:23",
+    "powerRange":"能源管理系统/代维管理系统/酒店管理系统/门禁系统…"
   },
   {
     "code": "06",
@@ -267,6 +296,7 @@
     "department": "工程部",
     "role": "强电运维",
     "position": "经理",
-    "createTime": "2018/06/02 16:55:23"
+    "createTime": "2018/06/02 16:55:23",
+    "powerRange":"代维管理系统/酒店管理系统"
   }
 ]

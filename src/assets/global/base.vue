@@ -1,5 +1,5 @@
 <script>
-  const API_BASE_URL='111';
+  const API_BASE_URL='';
 
   export default {
     name:'base',

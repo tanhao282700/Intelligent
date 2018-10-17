@@ -51,14 +51,19 @@ Vue.use(Lines);
 import Dialog from '@/components/common/dialog/index.js'; // 导入自定义组件文件
 Vue.use(Dialog);
 
+//引入Vuex
+import store from './store'
+
 import reset from "./assets/css/reset.css";
 import common from "./assets/css/common.css";
 import './assets/icon/iconfont.css';
+import './assets/js/circleChart.js';
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

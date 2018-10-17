@@ -43,6 +43,7 @@
         <el-table
           :data="curPageData"
           style="width: 100%"
+          height="500"
           class="tableAlignCenter tableHeadBlue">
           <el-table-column
             prop="code"
@@ -113,7 +114,7 @@
       </div>
 
       <!--新增或修改信息弹窗-->
-      <el-dialog :title="formTitle" :visible.sync="accountInfoDialog" class="dialogBox" :close-on-click-modal="false">
+      <el-dialog :title="formTitle" :visible.sync="accountInfoDialog" class="dialogBox" :close-on-click-modal="false" @close="clearForm">
         <el-form :model="form">
           <el-form-item :label="form.name.label" >
             <el-input v-model="form.name.key" autocomplete="off" placeholder="请输入用户名可以默认手机号"></el-input>
@@ -122,7 +123,7 @@
             <el-input v-model="form.password.key" type="password" autocomplete="off" placeholder="请设置初始密码"></el-input>
           </el-form-item>
           <el-form-item :label="form.password.label" v-else>
-            <el-button @click="resetPw" class="queryBoxBtn resetPwBtn"><i></i>重 置</el-button>
+            <el-button @click="resetPw" class="queryBoxBtn resetPwBtn" :class="{ loading: isReset }"><i></i>重 置</el-button>
           </el-form-item>
           <el-form-item :label="form.department.label" >
             <el-select v-model="form.department.key" placeholder="请选择">
@@ -148,6 +149,7 @@
           <el-button @click="saveNewAccount(isAdd)" class="saveBtn">保存</el-button>
           <el-button @click="accountInfoDialog = false" class="cancleBtn">取消</el-button>
         </div>
+        <bubbleTip :tipText="bubbleTip"/>
       </el-dialog>
 
       <!--删除信息弹窗-->
@@ -157,17 +159,23 @@
           <el-button @click="confirmDelete()" class="saveBtn">保存</el-button>
           <el-button @click="deleteInfoDialog = false" class="cancleBtn">取消</el-button>
         </div>
+        <bubbleTip :tipText="bubbleTip"/>
       </el-dialog>
+
     </div>
 
   </div>
 </template>
 
 <script>
-    import queryData from './Data/permissionData.json';
+    import queryData from './Data/queryGroupData.json';
     import tableData from './Data/tableData.json';
+    import bubbleTip from '@/components/common/bubbleTip';
 
     export default {
+      components:{
+        "bubbleTip":bubbleTip
+      },
       name: "user-setting",
       data(){
         return {
@@ -175,7 +183,7 @@
           itemValue:[],
           tableData: [],
           currentPage: 1,
-          pageSize: 11,
+          pageSize: 20,
           totalPageNum: '',
           totalDataNumber:'',
           curPageData:[],
@@ -190,7 +198,9 @@
             role: {label:"角色", key:""}
           },
           formTitle:"",
-          isAdd:true
+          isAdd:true,
+          bubbleTip:'',
+          isReset:false
         }
       },
       methods:{
@@ -245,23 +255,24 @@
         },
         saveNewAccount(type){
           /*保存新增帐号*/
+          let that = this;
           for(var i in this.form){
             if(!type && i=='password'){
               break;
             }
             let temp = this.form[i].key;
             if(!temp){
-              this.$message.error(this.form[i].label + "不能为空");
+              /*that.bubbleTipShow(this.form[i].label + "不能为空");*/
+              that.bubbleTipShow("请完善信息");
               return;
             }
           }
-          this.accountInfoDialog = false;
-          this.clearForm();
           let message = type?"保存成功":"修改成功";;
-          this.$message({
-            message: message,
-            type: 'success'
-          });
+          this.bubbleTipShow(message);
+          setTimeout(function () {
+            that.accountInfoDialog = false;
+            that.clearForm();
+          },2000)
         },
         editAccount(val){
           /*修改信息*/
@@ -278,19 +289,33 @@
           this.deleteInfoDialog = true;
         },
         confirmDelete(){
-          this.$message({
-            message: '删除成功',
-            type: 'success'
-          });
-          this.deleteInfoDialog = false;
+          let that = this;
+          that.bubbleTipShow('删除成功');
+          setTimeout(function () {
+            that.deleteInfoDialog = false;
+          },2000)
         },
         resetPw(){
           /*重置密码*/
+          var that = this;
+          this.isReset = true;
+          setTimeout(function () {
+            that.isReset = false;
+            that.bubbleTipShow('重置成功');
+          },1000);
         },
         clearForm(){
           for(var i in this.form){
             this.form[i].key = '';
           }
+        },
+        bubbleTipShow(tip){
+          this.bubbleTip = tip;
+          this.$store.state.bubbleShow = true;
+          var that = this;
+          setTimeout(function () {
+            that.$store.state.bubbleShow = false;
+          },3000)
         }
       },
       created(){
