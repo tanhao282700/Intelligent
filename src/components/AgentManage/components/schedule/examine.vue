@@ -30,9 +30,9 @@
                     <img v-show="v.state==0" class="examFlag" src="../../../../assets/img/generation/isno.png" alt="">
                     <img v-show="v.state==1" class="examFlag" src="../../../../assets/img/generation/isok.png" alt="">
                     <li v-show="v.state==-1" class="btns">
-                        <div class="btn btn1" @click="isNo(i,v)">驳回</div>
+                        <div class="btn btn1" @click.stop="isNo(i,v)">驳回</div>
                         <Lines :hei="30" :top="2" />
-                        <div class="btn btn2" @click="isOk(i,v)">同意</div>
+                        <div class="btn btn2" @click.stop="isOk(i,v)">同意</div>
                     </li>
                 </ul>      
             </el-scrollbar>            

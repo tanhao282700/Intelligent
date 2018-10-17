@@ -66,7 +66,7 @@
                                 <div class="tableBDuty item" v-text="v.duty"></div>
                                 <div class="spanBox">
                                     <span class="item "
-                                        @click="changeIschange(i,i0)"
+                                        @click="allow && changeIschange(i,i0)"
                                         @mouseover="changeOver(i,i0)"
                                         @mouseout="leaveOver()"
                                         :class="{
@@ -114,14 +114,13 @@
             </div>
         </div>
         <div class="tableBot">
-            
-            <div class="btnBai1" v-show="active=='exams' || active=='examed'" @click="botClick('change')">
+            <div class="btnBai1" v-show="active=='exams' || active=='examed' || active=='change'" @click="botClick('change')">
                 修改排班表
             </div>
-            <div class="btnBai1" v-show="active=='exams'" @click="botClick('exams')">
+            <div class="btnBai1" v-show="active=='exams' || active=='change'" @click="botClick('exams')">
                 审核通过
             </div>
-            <div class="btnBai1" v-show="active=='examed'">已审核</div>
+            <div class="btnBai1 btnBai2" v-show="active=='examed'">已审核</div>
             <div class="btnBai1" v-show="active=='saveing'" @click="botClick('save')">
                 保存
             </div>
@@ -129,8 +128,8 @@
         <Tk
             :lists="wOptions"
             @change="tkChoose"
+            v-show="isShow"
             :pos = "pos"
-            :isShow="isShow"
             ref = "tk"
         />
     </div>
@@ -138,6 +137,7 @@
 
 <script>
 import TimePickerT from '../../../../components/form/timePickerTit';
+import utils from '../../../../assets/js/utils'
 import SelectBox from './selectBox';
 import Tk from './tk';
 export default {
@@ -147,10 +147,268 @@ export default {
       'SelectBox':SelectBox,
       'Tk':Tk
   },
-    computed:{
-        backCurr(){//点击右上角返回当月按钮
-            
+    
+  data () {
+    return {
+        loading:false,
+        placeholder:'选择',
+        value7:'2018-8',
+        backOrCurr:false,//右上角图标显示：返回当前月还是显示当前月
+        cant:false,
+        active:'exams',
+        isShow:false,
+        allow:false,//状态，用于修改和禁止修改排班表
+        ischange:[-1,-1],
+        tableT:{
+            a:'09:00~17:30',
+            b:'09:00～次日09:30',
+            time:'176h/月'
         },
+        wOptions:[
+            {value:0,label:'休'},
+            {value:1,label:'A'},
+            {value:2,label:'B'},
+        ],
+        pOption:[
+            {value:1,label:'王尼玛',duty:'维修工'},
+            {value:2,label:'白狗汪',duty:'维修工'},
+            {value:3,label:'凤羽',duty:'维修工'},
+            {value:4,label:'周天天',duty:'维修工'},
+            {value:5,label:'李白清',duty:'维修工'},
+            {value:6,label:'杜甫',duty:'维修工'},
+            {value:7,label:'汪仔',duty:'维修工'},
+            {value:8,label:'狗蛋儿',duty:'维修工'},
+            {value:9,label:'娃哈哈',duty:'维修工'},
+            {value:10,label:'谷歌',duty:'维修工'},
+            {value:11,label:'天天',duty:'服务员'},
+            {value:12,label:'周周',duty:'维修工'},
+            {value:13,label:'剧透',duty:'保洁'},
+            {value:14,label:'登录',duty:'城管'},
+        ],
+        dataLlists:[
+            {id:1,pid:1,name:'王尼玛',duty:'项目总管',workTime:[
+                {time:'2018-8-5',title:'A',type:1},
+                {time:'2018-8-23',title:'B',type:2},
+            ]},
+            {id:2,pid:2,name:'白狗汪',duty:'前端',workTime:[
+                {time:'2018-8-6',title:'A',type:1},
+                {time:'2018-8-22',title:'B',type:2},
+            ]},
+            {id:3,pid:3,name:'凤羽',duty:'维修工',workTime:[
+                {time:'2018-8-7',title:'A',type:1},
+                {time:'2018-8-21',title:'B',type:2},
+            ]},
+             {id:4,pid:4,name:'周天天',duty:'维修工',workTime:[
+                {time:'2018-8-8',title:'A',type:1},
+                {time:'2018-8-20',title:'B',type:2},
+            ]},
+            {id:5,pid:5,name:'李白清',duty:'维修工',workTime:[
+                {time:'2018-8-9',title:'A',type:1},
+                {time:'2018-8-19',title:'B',type:2},
+            ]},
+            {id:6,pid:6,name:'杜甫',duty:'维修工',workTime:[
+                {time:'2018-8-10',title:'A',type:1},
+                {time:'2018-8-18',title:'B',type:2},
+            ]},
+            {id:7,pid:7,name:'汪仔',duty:'维修工',workTime:[
+                 {time:'2018-8-5',title:'B',type:2},
+                {time:'2018-8-11',title:'A',type:1},
+                {time:'2018-8-17',title:'B',type:2},
+            ]},
+            {id:8,pid:8,name:'狗蛋儿',duty:'维修工',workTime:[
+                {time:'2018-8-12',title:'A',type:1},
+                {time:'2018-8-16',title:'B',type:2},
+            ]},
+            {id:9,pid:9,name:'娃哈哈',duty:'维修工',workTime:[
+                {time:'2018-8-13',title:'A',type:1},
+                {time:'2018-8-15',title:'B',type:2},
+            ]},
+        ],
+        pos:{
+            top:0,
+            left:0
+        },
+        over:[-5,-5]
+    }
+  },
+  methods:{
+      leaveOver(){
+          this.over = [];
+          this.over.push(-5);
+          this.over.push(-5);
+      },
+      backCurr(){//点击右上角返回当月按钮
+          this.value7 = utils.time((new Date())/1000,9);
+      },
+      changeOver(i,i0){
+          this.over = [];
+          this.over.push(i);
+          this.over.push(i0);
+      },
+        deletess(i){    //这儿需要弹框
+            this.dataLlists.splice(i,1);
+        },
+        tkChoose(val){ //弹框选择
+            let objs = this.dataLlists[this.ischange[0]];
+            objs.workTime[this.ischange[1]].title = this.ckTypes(val);
+            objs.workTime[this.ischange[1]].type = val;
+            this.ischange = [-1,-1];
+            this.isShow=false;
+        },
+        ckTypes(id){
+            let res ='';
+            switch(id){
+                case 0:
+                    res = '休';
+                break;
+                case 1:
+                    res = 'A';
+                break;
+                case 2:
+                    res = 'B';
+                break;
+            }
+            return res;
+        },
+        changeIschange(i,i0,event){
+            this.isShow = true;
+            this.ischange = [];
+            this.ischange.push(i);
+            this.ischange.push(i0);
+
+            var e = event || window.event;
+            this.pos = {
+                top : e.clientY+'px',
+                left:e.clientX - 15+'px'
+            }
+            this.$refs.tk.show();
+            // console.log(this.ischange,this.pos)
+        },
+        change2(val,i,i0){
+
+        },
+      //日期组件相关
+        change(val,i){  //修改人名
+            this.dataLlists[i].pid = val;
+            this.dataLlists[i].name = this.getItem(val).label;
+            this.dataLlists[i].duty = this.getItem(val).duty;
+            this.placeholder =this.getItem(val).label;
+        },
+        getItem(id){
+            let lens = this.pOption.length;
+            let res = {};
+            for(let i=0;i<lens;i++){
+                if(id==this.pOption[i].value){
+                   res =  this.pOption[i];
+                }
+            }
+            return res;
+        },
+        changes(val){
+            this.value7 = val;
+        },
+        deletes(){
+            let attrs = this.value7.split('-');
+            if(attrs[1]==1){
+                attrs[1] = 12;
+                attrs[0] = Number(attrs[0])-1;
+            }else{
+                attrs[1] = Number(attrs[1])-1;
+            }
+            this.value7 = attrs.join('-');
+        },
+        adds(){
+            if(this.cant){
+                return;
+            }
+            let attrs = this.value7.split('-');
+            if(attrs[1]==12){
+                attrs[1] = 1;
+                attrs[0] = Number(attrs[0])+1;
+            }else{
+                attrs[1] = Number(attrs[1])+1;
+            }
+            this.value7 = attrs.join('-');
+        },
+      botClick(type){ //底部按钮操作
+            switch(type){
+                case 'change':
+                    this.allow = true;
+                    this.active = 'saveing';
+                    break;
+                case 'exams' :
+                    this.allow = false;
+                    this.active = 'examed'
+                    break;
+                case 'save' :
+                    this.allow = false;
+                    this.active = 'change'
+                    break;
+            }
+      },
+      addPerson(){ //新增人员
+        if(this.pOptions.length==0){
+            return this.$message('没有新员工了！');
+        }
+        if(this.dataLlists[this.dataLlists.length-1].pid==0){ //阻止连续新增操作
+            return this.$message('请选择员工！');
+        }
+        let addPersonBase={
+            id:this.dataLlists.length,
+            pid:0,
+            isNew:true,
+            name:'',
+            duty:'',
+            workTime:[]
+        };
+        this.dataLlists[this.dataLlists.length-1].isNew = false;
+        this.placeholder = '选择';
+        this.dataLlists.push(addPersonBase);
+        this.active='saveing'
+      },
+      ckMonNum(year,mon){  //检查年月天数
+        let res = 0;
+        if((year%4==0) && mon==2){
+            res =29;
+        }else if((year%4!=0) && mon==2){
+            res =28;
+        }else if((mon==4||mon==6||mon==9||mon==11 )){
+            res =30;
+        }else{
+            res =31;
+        }
+         return res;
+      },
+      ckWeek(id){
+          let res ='';
+          switch(id){
+              case 0:
+                res = '日';
+              break;
+              case 1:
+                res = '一';
+              break;
+              case 2:
+                res = '二';
+              break;
+              case 3:
+                res = '三';
+              break;
+              case 4:
+                res = '四';
+              break;
+              case 5:
+                res = '五';
+              break;
+              case 6:
+                res = '六';
+              break;
+            }
+            return res;
+        }
+  },
+  computed:{
+        
         year(){
            let year =  Number(this.value7.split('-')[0]);
            return year;
@@ -249,262 +507,6 @@ export default {
         }
 
     },
-  data () {
-    return {
-        loading:false,
-        placeholder:'选择',
-        value7:'2018-8',
-        backOrCurr:false,//右上角图标显示：返回当前月还是显示当前月
-        cant:false,
-        isShow:false,
-        active:'exams',
-        ischange:[-1,-1],
-        tableT:{
-            a:'09:00~17:30',
-            b:'09:00～次日09:30',
-            time:'176h/月'
-        },
-        wOptions:[
-            {value:0,label:'休'},
-            {value:1,label:'A'},
-            {value:2,label:'B'},
-        ],
-        pOption:[
-            {value:1,label:'王尼玛',duty:'维修工'},
-            {value:2,label:'白狗汪',duty:'维修工'},
-            {value:3,label:'凤羽',duty:'维修工'},
-            {value:4,label:'周天天',duty:'维修工'},
-            {value:5,label:'李白清',duty:'维修工'},
-            {value:6,label:'杜甫',duty:'维修工'},
-            {value:7,label:'汪仔',duty:'维修工'},
-            {value:8,label:'狗蛋儿',duty:'维修工'},
-            {value:9,label:'娃哈哈',duty:'维修工'},
-            {value:10,label:'谷歌',duty:'维修工'},
-            {value:11,label:'天天',duty:'服务员'},
-            {value:12,label:'周周',duty:'维修工'},
-            {value:13,label:'剧透',duty:'保洁'},
-            {value:14,label:'登录',duty:'城管'},
-        ],
-        dataLlists:[
-            {id:1,pid:1,name:'王尼玛',duty:'项目总管',workTime:[
-                {time:'2018-8-5',title:'A',type:1},
-                {time:'2018-8-23',title:'B',type:2},
-            ]},
-            {id:2,pid:2,name:'白狗汪',duty:'前端',workTime:[
-                {time:'2018-8-6',title:'A',type:1},
-                {time:'2018-8-22',title:'B',type:2},
-            ]},
-            {id:3,pid:3,name:'凤羽',duty:'维修工',workTime:[
-                {time:'2018-8-7',title:'A',type:1},
-                {time:'2018-8-21',title:'B',type:2},
-            ]},
-             {id:4,pid:4,name:'周天天',duty:'维修工',workTime:[
-                {time:'2018-8-8',title:'A',type:1},
-                {time:'2018-8-20',title:'B',type:2},
-            ]},
-            {id:5,pid:5,name:'李白清',duty:'维修工',workTime:[
-                {time:'2018-8-9',title:'A',type:1},
-                {time:'2018-8-19',title:'B',type:2},
-            ]},
-            {id:6,pid:6,name:'杜甫',duty:'维修工',workTime:[
-                {time:'2018-8-10',title:'A',type:1},
-                {time:'2018-8-18',title:'B',type:2},
-            ]},
-            {id:7,pid:7,name:'汪仔',duty:'维修工',workTime:[
-                 {time:'2018-8-5',title:'B',type:2},
-                {time:'2018-8-11',title:'A',type:1},
-                {time:'2018-8-17',title:'B',type:2},
-            ]},
-            {id:8,pid:8,name:'狗蛋儿',duty:'维修工',workTime:[
-                {time:'2018-8-12',title:'A',type:1},
-                {time:'2018-8-16',title:'B',type:2},
-            ]},
-            {id:9,pid:9,name:'娃哈哈',duty:'维修工',workTime:[
-                {time:'2018-8-13',title:'A',type:1},
-                {time:'2018-8-15',title:'B',type:2},
-            ]},
-        ],
-        pos:{
-            top:0,
-            left:0
-        },
-        over:[-5,-5]
-    }
-  },
-  methods:{
-      leaveOver(){
-          this.over = [];
-          this.over.push(-5);
-          this.over.push(-5);
-      },
-      changeOver(i,i0){
-          this.over = [];
-          this.over.push(i);
-          this.over.push(i0);
-      },
-        deletess(i){    //这儿需要弹框
-            this.dataLlists.splice(i,1);
-        },
-        tkChoose(val){ //弹框选择
-            this.isShow = val.isShow
-            let objs = this.dataLlists[this.ischange[0]];
-            objs.workTime[this.ischange[1]].title = this.ckTypes(val.value);
-            objs.workTime[this.ischange[1]].type = val.value;
-            this.ischange = [-1,-1];
-
-        },
-        ckTypes(id){
-            let res ='';
-            switch(id){
-                case 0:
-                    res = '休';
-                break;
-                case 1:
-                    res = 'A';
-                break;
-                case 2:
-                    res = 'B';
-                break;
-            }
-            return res;
-        },
-        changeIschange(i,i0,event){
-            this.ischange = [];
-            this.ischange.push(i);
-            this.ischange.push(i0);
-
-            var e = event || window.event;
-            this.pos = {
-                top : e.clientY+'px',
-                left:e.clientX - 15+'px'
-            }
-            this.$refs.tk.show();
-            // console.log(this.ischange,this.pos)
-        },
-        change2(val,i,i0){
-
-        },
-      //日期组件相关
-        change(val,i){  //修改人名
-            this.dataLlists[i].pid = val;
-            this.dataLlists[i].name = this.getItem(val).label;
-            this.dataLlists[i].duty = this.getItem(val).duty;
-            this.placeholder =this.getItem(val).label;
-        },
-        getItem(id){
-            let lens = this.pOption.length;
-            let res = {};
-            for(let i=0;i<lens;i++){
-                if(id==this.pOption[i].value){
-                   res =  this.pOption[i];
-                }
-            }
-            return res;
-        },
-        changes(val){
-            this.value7 = val;
-        },
-        deletes(){
-            let attrs = this.value7.split('-');
-            if(attrs[1]==1){
-                attrs[1] = 12;
-                attrs[0] = Number(attrs[0])-1;
-            }else{
-                attrs[1] = Number(attrs[1])-1;
-            }
-            this.value7 = attrs.join('-');
-        },
-        adds(){
-            if(this.cant){
-                return;
-            }
-            let attrs = this.value7.split('-');
-            if(attrs[1]==12){
-                attrs[1] = 1;
-                attrs[0] = Number(attrs[0])+1;
-            }else{
-                attrs[1] = Number(attrs[1])+1;
-            }
-            this.value7 = attrs.join('-');
-        },
-      botClick(type){ //底部按钮操作
-        let _this = this;
-
-        switch(type){
-             case 'exams'://审核通过
-               _this.active='examed'
-               _this.isShow = false;
-             case 'change'://修改
-               _this.isShow = true;
-               _this.active = 'saveing';
-             case 'saveing':
-               _this.active ='exams'
-             default:
-               _this.active = 'exams'
-           }
-           return _this.active
-      },
-      addPerson(){ //新增人员
-        if(this.pOptions.length==0){
-            return this.$message('没有新员工了！');
-        }
-        if(this.dataLlists[this.dataLlists.length-1].pid==0){ //阻止连续新增操作
-            return this.$message('请选择员工！');
-        }
-        let addPersonBase={
-            id:this.dataLlists.length,
-            pid:0,
-            isNew:true,
-            name:'',
-            duty:'',
-            workTime:[]
-        };
-        this.dataLlists[this.dataLlists.length-1].isNew = false;
-        this.isShow = true;
-        this.placeholder = '选择';
-        this.dataLlists.push(addPersonBase);
-      },
-      ckMonNum(year,mon){  //检查年月天数
-        let res = 0;
-        if((year%4==0) && mon==2){
-            res =29;
-        }else if((year%4!=0) && mon==2){
-            res =28;
-        }else if((mon==4||mon==6||mon==9||mon==11 )){
-            res =30;
-        }else{
-            res =31;
-        }
-         return res;
-      },
-      ckWeek(id){
-          let res ='';
-          switch(id){
-              case 0:
-                res = '日';
-              break;
-              case 1:
-                res = '一';
-              break;
-              case 2:
-                res = '二';
-              break;
-              case 3:
-                res = '三';
-              break;
-              case 4:
-                res = '四';
-              break;
-              case 5:
-                res = '五';
-              break;
-              case 6:
-                res = '六';
-              break;
-            }
-            return res;
-        }
-  },
   created() {
   },
   mounted() {
@@ -547,6 +549,11 @@ export default {
                 width:1.17vw;
             }
 
+       }
+       .backCurrMonth{
+            &:hover{
+                cursor:pointer;
+            }
        }
    }
    .tableBox{
@@ -811,7 +818,15 @@ export default {
        align-items: center;
        justify-content: center;
        div{
-        margin-right:1vw;
+         margin-right:1vw;
+       }
+       .btnBai2{
+            background-color: #3a84ee;
+            color: #fff;
+            border-color: #1989fa;
+            &:hover{
+                cursor:default;
+            }
        }
    }
 }

@@ -20,6 +20,7 @@
             <SelectBox 
               :options = 'jobs' 
               :value = "vJob" 
+              :icon="'el-icon-d-caret'"
               placeholder="专业岗位"
               @change = "change1"
             />
@@ -28,6 +29,7 @@
             <SelectBox 
               :options = 'names' 
               :value = "vName" 
+              :icon="'el-icon-d-caret'"
               placeholder="姓名" 
               @change = "change2"
             />
@@ -59,24 +61,27 @@
           <i class="el-icon-third-feiji"></i>
         </div>
       </div>
+      <Dialog wid="546" hei="606" ref="send"> 
+        <SendWork @sendInfosShow="sendInfosShow"/>
+      </Dialog> 
       <Dialog wid="1326" hei="640" ref="dialog">
         <WorkInfo @tableInfos2Show="tableInfos2Show"/>
       </Dialog> 
       <Dialog wid="910" hei="686" ref="tableInfos2">
-            <div class="tableInfos">
-                <div class="infoHead">
-                  <span class="infoName" v-text="infoItem.name"></span>
-                  <span class="infoState" v-text="this.infoTit(infoItem.state)"></span>
-                  <span class="infoType" v-text="infoItem.sType"></span>
-                </div>
-                <div class="infoWater">
+        <div class="tableInfos">
+          <div class="infoHead">
+            <span class="infoName" v-text="infoItem.name"></span>
+            <span class="infoState" v-text="this.infoTit(infoItem.state)"></span>
+            <span class="infoType" v-text="infoItem.sType"></span>
+          </div>
+          <div class="infoWater">
 
-                </div>
-                <div class="infoBoxs">
+          </div>
+          <div class="infoBoxs">
 
-                </div>
-            </div>
-        </Dialog>     
+          </div>
+        </div>
+      </Dialog>     
   </div>
 </template>
 
@@ -88,6 +93,7 @@ import SelectBox from '@/components/form/selectBox';
 import TimePickerT from './components/work/timePickerTit2';
 import Percentage from './components/work/Percentage';
 import WorkInfo from './components/work/workInfo';
+import SendWork from './components/work/sendWork';
 
 import Table from '@/components/common/table';
 export default {
@@ -95,7 +101,8 @@ export default {
     'Table':Table,
     'WorkInfo':WorkInfo,
     'SelectBox':SelectBox,
-    'TimePickerT':TimePickerT
+    'TimePickerT':TimePickerT,
+    'SendWork':SendWork
   },
   data () {
     return {
@@ -123,7 +130,7 @@ export default {
         ],
         vName:-1,
         //日期选择
-        value7:'2018-8-24',
+        value7:'8-24',
         cant:false,
         table:{
             // small:'small',
@@ -142,9 +149,10 @@ export default {
               {id:10,name:'白狗汪10',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:4,backApply:"-",fill:100},              
             ],
             th:[
+              {prop:'id',label:'序号'},
               {prop:'name',label:'名称'},
               {prop:'tel',label:'电话',wid:180},
-              {prop:'job',label:'工作岗位'},
+              {prop:'job',label:'专业岗位'},
               {prop:'sendNum',label:'派单量'},
               {prop:'dealing',label:'待处理'},
               {prop:'nocatch',label:'未接单'},
@@ -229,6 +237,9 @@ export default {
         // console.log(row);
       },
       sendWork(){
+        this.$refs.send.show();
+      },
+      sendInfosShow(){
 
       },
       tableInfos2Show(item){
@@ -272,7 +283,7 @@ export default {
 
 .workBox{
   .workHead{
-    width: 13.06rem;
+    width: 95.6vw;
     .vh(108);
     margin-left: 0.3rem;
     display: flex;
@@ -301,7 +312,7 @@ export default {
     }
   }
   .tableBoxs{
-    width: 13.06rem;
+    width: 95.6vw;
     .vh(407);
     .vhMT(20);
     margin-left: 0.3rem;

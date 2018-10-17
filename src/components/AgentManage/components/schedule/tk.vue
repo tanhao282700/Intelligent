@@ -1,7 +1,7 @@
 
 <template>
     <transition name="fade">
-        <div class = "tkBox" :style="{'left':pos.left,'top':pos.top}" v-show="isShow">
+        <div class = "tkBox" :style="{'left':pos.left,'top':pos.top}">
             <div class="sanjiao"></div>
             <ul>
                 <li v-for="(v,i) in lists" v-text="v.label" @click="choose(v.value)">
@@ -17,10 +17,10 @@
 
 // 封装失败
 export default {
-  props:['lists','left','pos','isShow'],
+  props:['lists','left','pos'],
   data () {
     return {
-      
+
     }
   },
   computed:{
@@ -28,8 +28,7 @@ export default {
   },
   methods:{
       choose(value){
-          this.$emit('change',{value:value,isShow:this.isShow});
-          //this.isShow =false;
+          this.$emit('change',value);
       },
       show(){
         

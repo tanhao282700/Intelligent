@@ -19,7 +19,7 @@
                 value-format = 'yyyy-M-d'  
                 @change = "changes()"                        
                 />   
-            <span v-text="value7.split('-')[0]+'年'+'      '+value7.split('-')[1]+'月'+value7.split('-')[2]+'日'"></span>
+            <span v-text="value7.split('-')[0]+'月'+'      '+value7.split('-')[1]+'日'"></span>
         </div>
         <div class="HeadTabBox">
             <div class="HeadTab HeadTab2" @click="adds()" :class="{'cantTab':cant}">

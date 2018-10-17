@@ -18,7 +18,7 @@
 import utils from '../../../assets/js/utils';
 
 export default {
-  props:['wid','hei','tit'],
+  props:['wid','hei','tit','color','align'],
   data () {
     return {
         isShow:false,

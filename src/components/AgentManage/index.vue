@@ -304,7 +304,7 @@ export default {
 
   }
   .msgBox{
-    width: 13.06rem;
+    width: 95.6vw;
     .vh(293);
     margin-left: 0.3rem;
     .vhMT(16);
@@ -401,7 +401,7 @@ export default {
   }
   .dealed{
     display: inline-block;
-    width: 6.43rem;
+    width: 47.2vw;
     .vh(293);
     margin-left: 0.3rem;
     .vhMT(20);
@@ -477,9 +477,9 @@ export default {
   }
   .workFrom{
     display: inline-block;
-    width: 6.43rem;
+    width: 47.2vw;
     .vh(293);
-    margin-left: 0.16rem;
+    margin-left:1.2vw;
     .vhMT(20);
     .EchartBarBox{
       width: 100%;

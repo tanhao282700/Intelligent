@@ -1,23 +1,8 @@
-/*
-选择框写法：chooseBox2000盒子定宽高
-<div class = "chooseBox2000">
-    <SelectBox
-        :options='areasOptions'
-        :value = 'valueArea'
-        placeholder = '选择区域'
-        @change = "change0"
-    />
-</div>
-
-change0(value0){
-    this.valueArea = value0;
-},
-*/  
 <template>
     <div class = "chooseBox2">
         <div class = "chooseBoxIn">
             <span v-text = 'searchVal(options,value0,placeholder)'></span>
-            <i class="el-icon-caret-bottom" style="padding-left:0.02rem;"></i>
+            <i :class="icon" style="padding-left:0.02rem;"></i>
         </div>
         <el-select 
             v-model="value0" 
@@ -25,7 +10,6 @@ change0(value0){
             :placeholder="placeholder"
             @change = 'change()'
             >
-
             <el-option                 
             v-for="item in options"
             :key="item.value"
@@ -40,7 +24,7 @@ change0(value0){
 
 // 封装失败
 export default {
-  props:['options','value','placeholder'],
+  props:['options','value','placeholder','icon'],
   data () {
     return {
         value0:''
@@ -71,7 +55,9 @@ export default {
     this.value0 = this.value;
   },
   mounted() {
-
+    if(!this.icon || this.icon==''){
+      this.icon='el-icon-caret-bottom';
+    }
   },
 }
 </script>
@@ -81,7 +67,6 @@ export default {
 @import '../../assets/css/comon.less';
  .chooseBox2{
     display:inline-block;
-    width:100%;
     height:100%;
     position:relative;
     .chooseBoxIn{
