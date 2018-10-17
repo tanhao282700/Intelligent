@@ -36,7 +36,9 @@
           </el-tabs>
           <transition name="fade">
             <div class="sceBtn btnBai1" v-show="activeName=='first'">
-              <i class="el-icon-download"></i>
+              <i class="downloadIcon">
+                <img src="../../assets/img/AgentManage/export.png">
+              </i>
               <span>导出排班表</span>              
             </div>
           </transition>
@@ -238,6 +240,10 @@ export default {
     font-size: 0.14rem;
     i{
       font-size: 0.15rem;
+      img{
+        width:1.02vw;
+        .vh(16)
+      }
     }
   }
 }

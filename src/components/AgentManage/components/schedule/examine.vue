@@ -8,7 +8,7 @@
                 <ul 
                     v-for="(v,i) in data" 
                     class="examBoxs boxs" 
-                    :class="{'examed':v.state!=-1,'examing pointer':v.state==-1}"
+                    :class="{'examed pointer':v.state!=-1,'examing pointer':v.state==-1}"
                     @click="showInfo(i,v)"
                 >
                     <li>
@@ -27,8 +27,8 @@
                         <label for="">班次</label>
                         <span v-text="v.time2"></span>
                     </li>
-                    <img v-show="v.state==0" src="../../../../assets/img/generation/isno.png" alt="">
-                    <img v-show="v.state==1" src="../../../../assets/img/generation/isok.png" alt="">
+                    <img v-show="v.state==0" class="examFlag" src="../../../../assets/img/generation/isno.png" alt="">
+                    <img v-show="v.state==1" class="examFlag" src="../../../../assets/img/generation/isok.png" alt="">
                     <li v-show="v.state==-1" class="btns">
                         <div class="btn btn1" @click="isNo(i,v)">驳回</div>
                         <Lines :hei="30" :top="2" />
@@ -53,9 +53,9 @@ export default {
   },
   methods:{
     showInfo(i,v){
-        if(v.state!==-1){
-            return;
-        }
+        // if(v.state!==-1){
+        //     return;
+        // }
         this.$emit('showInfo',i,v);
     },
      search(val){
@@ -158,11 +158,11 @@ export default {
                         color:#f9f9f9;
                         border: solid 0.01rem rgba(59, 137, 249, 0.2);
                         background-color: rgba(59, 137, 249, 0.2);  
-                        &:active{
-                           color:#3b89f9;
-                            background-color: rgba(255, 255, 255, 0.01);
-                            border-color:#3b89f9; 
-                        }
+                            &:active{
+                                color:#3b89f9;
+                                background-color: rgba(255, 255, 255, 0.01);
+                                border-color:#3b89f9; 
+                            }
                     }
                     .btn1{
                        margin-right: 0.15rem;                       

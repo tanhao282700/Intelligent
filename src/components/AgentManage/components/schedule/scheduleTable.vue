@@ -13,6 +13,10 @@
                 @deletes = 'deletes'
                 @adds    = 'adds'
             />
+            <span class="currMonth" v-show="backOrCurr">7月</span>
+            <span class="backCurrMonth" v-show="!backOrCurr" @click="backCurr">
+                <img src="../../../../assets/img/AgentManage/return.png" width="1.17vw">
+            </span>
         </div>
         <div class="tableBox">
             <div class="tableTit">
@@ -110,12 +114,14 @@
             </div>
         </div>
         <div class="tableBot">
+            
+            <div class="btnBai1" v-show="active=='exams' || active=='examed'" @click="botClick('change')">
+                修改排班表
+            </div>
             <div class="btnBai1" v-show="active=='exams'" @click="botClick('exams')">
                 审核通过
             </div>
-            <div class="btnBai1" v-show="active=='toChange'" @click="botClick('change')">
-                修改
-            </div>
+            <div class="btnBai1" v-show="active=='examed'">已审核</div>
             <div class="btnBai1" v-show="active=='saveing'" @click="botClick('save')">
                 保存
             </div>
@@ -124,6 +130,7 @@
             :lists="wOptions"
             @change="tkChoose"
             :pos = "pos"
+            :isShow="isShow"
             ref = "tk"
         />
     </div>
@@ -141,6 +148,9 @@ export default {
       'Tk':Tk
   },
     computed:{
+        backCurr(){//点击右上角返回当月按钮
+            
+        },
         year(){
            let year =  Number(this.value7.split('-')[0]);
            return year;
@@ -244,7 +254,9 @@ export default {
         loading:false,
         placeholder:'选择',
         value7:'2018-8',
+        backOrCurr:false,//右上角图标显示：返回当前月还是显示当前月
         cant:false,
+        isShow:false,
         active:'exams',
         ischange:[-1,-1],
         tableT:{
@@ -334,10 +346,12 @@ export default {
             this.dataLlists.splice(i,1);
         },
         tkChoose(val){ //弹框选择
-        let objs = this.dataLlists[this.ischange[0]];
-            objs.workTime[this.ischange[1]].title = this.ckTypes(val);
-            objs.workTime[this.ischange[1]].type = val;
+            this.isShow = val.isShow
+            let objs = this.dataLlists[this.ischange[0]];
+            objs.workTime[this.ischange[1]].title = this.ckTypes(val.value);
+            objs.workTime[this.ischange[1]].type = val.value;
             this.ischange = [-1,-1];
+
         },
         ckTypes(id){
             let res ='';
@@ -414,7 +428,21 @@ export default {
             this.value7 = attrs.join('-');
         },
       botClick(type){ //底部按钮操作
-        //   console.log(type)
+        let _this = this;
+
+        switch(type){
+             case 'exams'://审核通过
+               _this.active='examed'
+               _this.isShow = false;
+             case 'change'://修改
+               _this.isShow = true;
+               _this.active = 'saveing';
+             case 'saveing':
+               _this.active ='exams'
+             default:
+               _this.active = 'exams'
+           }
+           return _this.active
       },
       addPerson(){ //新增人员
         if(this.pOptions.length==0){
@@ -432,6 +460,7 @@ export default {
             workTime:[]
         };
         this.dataLlists[this.dataLlists.length-1].isNew = false;
+        this.isShow = true;
         this.placeholder = '选择';
         this.dataLlists.push(addPersonBase);
       },
@@ -488,7 +517,7 @@ export default {
 @import '../../../../assets/css/comon.less';
 
 .examineTable{
-   width: 13.06rem;
+   width: 95.6vw;
    .vh(578);
    .tableHead{
        .vh(100);
@@ -498,6 +527,27 @@ export default {
        display: flex;
        align-items: center;
        justify-content: center;
+       .currMonth,.backCurrMonth{
+            position:absolute;
+            right:0;
+            text-align:right;
+            padding-right:0.44vw;
+            color:#fff;
+            line-height:2vw;
+            font-weight:500;
+            top:0;
+            width:3.66vw;
+            height:3.66vw;
+            background:url('../../../../assets/img/AgentManage/MaskCopy.png')no-repeat;
+            background-size:cover;
+            img{
+                position: absolute;
+                top: 0.44vw;
+                right: 0.8vw;
+                width:1.17vw;
+            }
+
+       }
    }
    .tableBox{
        .vh(355);
@@ -760,6 +810,9 @@ export default {
        display: flex;
        align-items: center;
        justify-content: center;
+       div{
+        margin-right:1vw;
+       }
    }
 }
 

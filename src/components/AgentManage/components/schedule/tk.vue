@@ -17,10 +17,10 @@
 
 // 封装失败
 export default {
-  props:['lists','left','pos'],
+  props:['lists','left','pos','isShow'],
   data () {
     return {
-        isShow:false
+      
     }
   },
   computed:{
@@ -28,18 +28,17 @@ export default {
   },
   methods:{
       choose(value){
-          this.$emit('change',value);
-          this.isShow =false;
+          this.$emit('change',{value:value,isShow:this.isShow});
+          //this.isShow =false;
       },
       show(){
-          this.isShow =true;
+        
       }
   },
   created() {
     
   },
   mounted() {
-
   },
 }
 </script>
