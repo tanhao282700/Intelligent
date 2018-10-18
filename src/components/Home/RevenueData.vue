@@ -17,7 +17,20 @@
         </div>
         <div class="revenueEcharts2" id="revenueEcharts2"></div>
       </div>
-      <div class="revenueEcharts3" id="revenueEcharts3"></div>
+      <div class="revenueEcharts3" id="revenueEcharts3">
+        <div class="name">当前入住率</div>
+        <div class="pic">
+          <div class="containerBor">
+            <div class="container">
+              <div class="wave"></div>
+            </div>
+          </div>
+          <div class="info">
+            <span>入住率</span>
+            <span>98%</span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -52,6 +65,14 @@
         let revenueCharts2 = this.$echarts.init(document.getElementById("revenueEcharts2"));
         this.revenueCharts2 = revenueCharts2
         let option2 = {
+          title:{
+            text:'电',
+            textStyle:{
+              fontSize:14,
+              color:'white',
+            },
+            backgroundColor:'#46bcfc'
+          },
           tooltip : {
             trigger: 'axis',
           },
@@ -67,7 +88,7 @@
             textStyle:{
               color:'#eeeff1'
             },
-            top:10
+            top:6
           },
           calculable : true,
           xAxis : [
@@ -237,10 +258,108 @@
       }
       #revenueEcharts2{
         flex:1;
+        position:relative;
+        &:before{
+          content:'';
+          width:100%;
+          height:24px;
+          background:#0e2340;
+          position:absolute;
+          left:0;
+          top:0;
+        }
       }
     }
     #revenueEcharts3{
       flex:1;
+      display: flex;
+      flex-direction: column;
+      .name{
+        height:19.8%;
+        display: flex;
+        align-items: center;
+        color:white;
+      }
+      .pic{
+        flex:1;
+        position:relative;
+        .info{
+          position:absolute;
+          width:56px;
+          height:48px;
+          color:white;
+          display: flex;
+          flex-direction: column;
+          left:50%;
+          top:50%;
+          margin-left:-22px;
+          margin-top:-22px;
+          z-index:999;
+          justify-content: space-between;
+          align-items: center;
+          span:first-child{
+            font-size:12px;
+            margin-left:-3px;
+          }
+          span:last-child{
+            font-size:24px;
+            letter-spacing: 1px;
+          }
+        }
+        .containerBor{
+          width:103px;
+          height:103px;
+          border-radius:50%;
+          border:2px solid #167cc4;
+          position:absolute;
+          left:50%;
+          top:50%;
+          margin-left:-51px;
+          margin-top:-51px;
+        }
+        .container{
+          width:100px;
+          height:100px;
+          overflow:hidden;
+          border:4px solid #152b43;
+          border-radius:50%;
+          .wave{
+            position:relative;
+            width:100px;
+            height:100px;
+            background-color:#309ee9;
+            border-radius:50%;
+          }
+          .wave::before,.wave::after{
+            content:"";
+            position:absolute;
+            width:200px;
+            height:200px;
+            top:0;
+            left:50%;
+            background:#121e2e;
+            border-radius:38%;
+            transform:translate(-50%,-70%)rotate(0);
+            animation:rotate 6s linear infinite;
+            z-index: 10;
+          }
+          .wave::after{
+            border-radius:43%;
+            background-color:#121e2e;
+            transform:translate(-50%,-70%)rotate(0);
+            animation:rotate 10s linear -5s infinite;
+            z-index:20;
+          }
+          @keyframes rotate{
+            50%{
+              transform:translate(-50%,-73%)rotate(180deg)
+            }
+            100%{
+              transform:translate(-50%,-70%)rotate(360deg)
+            }
+          }
+        }
+      }
     }
   }
   }

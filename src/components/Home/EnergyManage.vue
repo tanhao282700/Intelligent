@@ -7,9 +7,11 @@
     </div>
     <div class="con">
       <div class="nergyEcharts" id="nergyEcharts"></div>
-      <div class="nergyEcharts2" id="nergyEcharts2"></div>
+      <div class="nergyEcharts2" id="nergyEcharts2">
+        <div class="logo"></div>
+      </div>
       <div class="button">
-        <span>水</span>
+        <span class="active">水</span>
         <span>电</span>
         <span>气</span>
       </div>
@@ -54,6 +56,7 @@
     watch:{
       isResize(){
         this.energyChart.resize()
+        this.energyChart2.resize()
       }
     },
     methods:{
@@ -161,10 +164,12 @@
         let option2 = {
           title:{
             text:'25%',
+            left:20,
             textStyle:{
-                  color:'#4be283',
+                fontSize:18,
+                color:'#4be283',
             },
-            backgroundColor:'#1d2d3a'
+            /*backgroundColor:'#1d2d3a'*/
           },
           grid: {
             top: 26,
@@ -179,7 +184,7 @@
             textStyle:{
               color:'#eeeff1'
             },
-            top:10
+            top:8
           },
           calculable : true,
           xAxis : [
@@ -315,6 +320,27 @@
       flex:1;
       /*background:#2d475e;*/
       margin-top:8%;
+      position:relative;
+      background:url(../../assets/img/home/conservation.png) no-repeat left top;
+      background-size:18px 28px;
+      &:before{
+        content:'';
+        width:100%;
+        height:28px;
+        background:#2d475e;
+        position:absolute;
+        left:0;
+        top:0;
+        z-index:-100;
+      }
+      /*.logo{
+        width:26px;
+        height:40px;
+        position:absolute;
+        left:0;
+        top:0;
+        background:pink;
+      }*/
     }
     .button{
       width:100%;
@@ -332,10 +358,12 @@
         color:#cdcdcd;
         margin-left:8px;
         &:hover{
-          background:#72a7f3;
-          color:white;
           cursor:pointer;
         }
+      }
+      .active{
+        background:#72a7f3;
+        color:white;
       }
     }
   }

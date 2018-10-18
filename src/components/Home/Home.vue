@@ -98,7 +98,7 @@
               </div>
             </div>
             <div class="shutIcon">
-              <span @click="openMonitor" v-if="index===0"></span>
+              <span @click="openMonitor" v-show="index===0"></span>
             </div>
           </div>
         </div>
@@ -193,16 +193,16 @@
               }],
               partsData:[{
                   id:"partOne",
-                  componentsName:'RevenueData'
+                  componentsName:'EnergyManage'
               },{
                 id:"partTwo",
-                componentsName:''
+                componentsName:'Door'
               },{
                 id:"partThree",
-                componentsName:''
+                componentsName:'Equipment'
               },{
                 id:"partFour",
-                componentsName:''
+                componentsName:'Conditioning'
               }],
               currentMudel:0,  //当前点击添加系统的模块
               isOperateModules:false,  //是否显示中间所有的系统
@@ -514,7 +514,9 @@
             }
             .shutIcon{
               height:100%;
-              width:5%;
+              /*width:5%;*/
+              width:30px;
+              margin-right:10px;
               display: flex;
               align-items: center;
               span{
@@ -775,5 +777,14 @@
   }
   .chart canvas{
     height:100%!important;
+  }
+  .conditioningComponent .chart{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .conditioningComponent .chart canvas{
+    margin-top:10px;
   }
 </style>
