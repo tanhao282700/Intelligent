@@ -49,7 +49,7 @@
               <i class="el-icon-location noLog maintainmanagement"></i>
               <span class="textPL">运维管理</span>
             </el-menu-item>
-            <el-menu-item class="noChildModule" index="fireAlarm/fireMonitor">
+            <el-menu-item class="noChildModule" index="fireAlarm">
               <i class="el-icon-location noLog alarmmanage"></i>
               <span class="textPL">告警管理</span>
             </el-menu-item>

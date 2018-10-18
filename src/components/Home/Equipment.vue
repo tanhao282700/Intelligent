@@ -247,9 +247,11 @@
       flex-basis: 33.333%;
     }*/
     #equipmentTwo{
+      padding-right:2%;
       height:34.985%;
     }
     #equipmentThree{
+      padding-left:2%;
       height:34.985%;
     }
     #equipmentOne{
