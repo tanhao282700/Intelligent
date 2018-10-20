@@ -7,7 +7,7 @@
         		<li>区域选择</li>
         		<li v-for="item in buildDatas">
 		            <el-select  v-model="item.n+'栋'">
-		                <el-option v-for="sItem in item.floors" :label="sItem.fName" :value="sItem.value"></el-option>
+		                <el-option v-for="(sItem,index) in item.floors" :label="sItem.fName" :value="sItem.value" :key="index"></el-option>
 		            </el-select>
         		</li>
         		<li class="floatRt">
