@@ -58,6 +58,7 @@ import reset from "./assets/css/reset.css";
 import common from "./assets/css/common.css";
 import './assets/icon/iconfont.css';
 import './assets/js/circleChart.js';
+import './assets/js/windowResize.js';
 
 /* eslint-disable no-new */
 new Vue({

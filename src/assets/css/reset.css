@@ -7,8 +7,9 @@ body{
     font-family:PingFangSC-Regular;
     color:#666;
     font-size:14px;
-    min-width: 1280px;
-    min-height: 728px;
+    width: 1366px;
+    height: 728px;
+    transform-origin: left top;
 }
 input,select,textarea{
     border:1px solid #eee;
@@ -39,12 +40,10 @@ img{
    fill: currentColor;
    overflow: hidden;
 }
-html,body{
-	height: 100%;
-  width: 100%;
-}
 html{
-    font-size: 100px;
+  font-size: 100px;
+  width: 100vw;
+  height: 100vh;
 }
 *{
 	box-sizing: border-box;

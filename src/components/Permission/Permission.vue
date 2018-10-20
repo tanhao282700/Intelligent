@@ -20,7 +20,8 @@
             id:0,
             lists:[
               {id:0,name:'用户设置',route:'/permission/user'},
-              {id:1,name:'角色设置',route:'/permission/role'}
+              {id:1,name:'角色设置',route:'/permission/role'},
+              {id:2,name:'登录日志',route:'/permission/loginLog'},
             ]
           }
         }

@@ -166,6 +166,9 @@
   height: 32px;
   width: 110px;
 }
+.userBox td{
+  color: #f4f4f4!important;
+}
 .tableAlignCenter th,.tableAlignCenter tr,.tableAlignCenter td{
   text-align: center!important;
 }
@@ -408,4 +411,135 @@
 }
 .el-select-dropdown__item.Hover,.el-tree-node__content:hover{
   background:rgba(25,137,250,0.25) !important;
+}
+
+/*登录日志日期选择*/
+.dateRangeBox.el-date-editor .el-range-input{
+  background-color: transparent;
+  color: #fff!important;
+  border-bottom: 1px solid #1989fa!important;
+  width: .9rem;
+  height: 24px;
+  padding-left: 4px;
+  text-align: left;
+}
+.dateRangeBox .el-icon-date,.dateRangeBox .el-range__close-icon{
+  display: none!important;
+}
+.dateRangeBox.el-date-editor .el-range-separator{
+  color: #fff;
+  line-height: 24px;
+  width: auto;
+  padding: 0 10px;
+}
+.dateRangeBox::before,.dateRangeBox::after{
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background: url("../../img/Permission/down.png") no-repeat center;
+  background-size: 100% 100%;
+  top:7px;
+}
+.dateRangeBox::before{
+  left: .96rem;
+}
+.dateRangeBox::after{
+  right: .22rem;
+}
+
+/*登录日志表格*/
+.loginLogTable .el-table--striped .el-table__body tr.el-table__row--striped td,.loginLogTable .el-table th{
+  background: rgba(0,138,255,.1);
+}
+.loginLogTable .el-table td,.loginLogTable .el-table th,.loginLogTable .el-table th.is-leaf{
+  border-top: 1px solid rgba(58, 137, 249, 0.3)!important;
+  border-left: 1px solid rgba(58, 137, 249, 0.3)!important;
+  text-align: center;
+}
+.loginLogTable .el-table td div,.loginLogTable .el-table th div{
+  padding: 0;
+}
+.loginLogBox .loginLogTable .el-table__body-wrapper {
+  margin-top: 0;
+}
+.loginLogTable .el-table{
+  margin-top: 10px;
+}
+.loginLogTable .el-table th{
+  height: .4rem;
+  line-height: .4rem;
+  color: #ddd;
+  text-align: center;
+}
+.loginLogBox .loginLogTable td:first-child{
+  padding: 0!important;
+}
+.loginLogBox .loginLogTable tr:hover td{
+  border-top: 1px solid rgba(255,255,255,.5) !important;
+}
+.loginLogTable .tableBtn{
+  text-decoration: none;
+  color: #4a90e2;
+}
+.loginLogTable .tableBtn:hover{
+  text-decoration: underline;
+}
+/*日志详情*/
+.loginLogDialogBox.dialogBox .el-dialog{
+  height: 5.6rem;
+  width: 10rem;
+  margin: 0!important;
+}
+.loginLogDialogBox .el-dialog__header{
+  text-align: left;
+  padding-left: .2rem;
+}
+.loginLogDialogBox .el-dialog__body{
+  padding: .2rem;
+  font-size: .14rem;
+  color: #f4f4f4;
+  height: 5.1rem;
+  overflow-y: auto;
+}
+.loginLogDialogBox .detailItem{
+  position: relative;
+  padding-left: .2rem;
+}
+.loginLogDialogBox .detailItem::before{
+  content: "";
+  position: absolute;
+  left: 0;
+  top:.08rem;
+  width: .14rem;
+  height: .14rem;
+  background-color: #fff;
+  border-radius: 100%;
+}
+.loginLogDialogBox .detailItem::after{
+  content: "";
+  position: absolute;
+  left: .06rem;
+  top:.22rem;
+  width: 2px;
+  height: .56rem;
+  background-color: #008AFF;
+}
+.detailItem .detailTitle{
+  line-height: .3rem;
+}
+.detailItem .detailDes{
+  line-height: .4rem;
+  font-size: .15rem;
+  padding: 0 .1rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background-color: #011f51;
+  border-radius: 4px;
+}
+.detailItem .detailTitle i{
+  margin: 0 .12rem ;
+  vertical-align: top;
+  color: #008AFF;
 }

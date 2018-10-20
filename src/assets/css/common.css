@@ -6,6 +6,7 @@
   width:100%;
   background:url('../../assets/img/fullBg.png') no-repeat center;
   background-size:110% 110%;
+  position: relative;
 }
 
 /* 面包屑通用样式 */

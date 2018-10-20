@@ -1,0 +1,161 @@
+.loginContainer{
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background: url("../../assets/img/login/bg.jpg") no-repeat center;
+  background-size: 100% 100%;
+}
+.loginFormBox{
+  height: 3.8rem;
+  width: 7.6rem;
+  padding-top: 1.04rem;
+  background: url("../../assets/img/login/companyLogo.png") no-repeat center top;
+  background-size: .74rem auto;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  color: #fff;
+}
+.sysName{
+  font-size: .4rem;
+  line-height: .48rem;
+  text-align: center;
+  font-weight: normal;
+}
+.sysName span{
+  width: 6px;
+  height: 6px;
+  border-radius: 100%;
+  background-color: #fff;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 10px;
+}
+.loginInfoBox{
+  margin: .8rem 0 .46rem;
+  height: .4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.inputItem{
+  width: 2.4rem;
+  height: .4rem;
+  border: 1px solid #fff;
+  border-radius: 4px;
+  box-shadow:0px 0px 4px 2px rgba(255,255,255,1) inset;
+  padding: 0;
+  line-height: .38rem;
+  font-size: .14rem;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.inputItem label{
+  width: 42px;
+  height: 100%;
+  text-align: justify;
+  text-align-last: justify;
+  display: inline-block;
+}
+.inputItem input{
+  border: none;
+  background: none;
+  height: .24rem;
+  width: 1.46rem;
+  color: #fff;
+}
+.inputItem input::-webkit-input-placeholder{
+  font-size: .14rem;
+  color: #fff!important;
+}
+.inputItem.code input{
+  width: .94rem;
+}
+.break{
+  display: inline-block;
+  width: 1px;
+  height: 14px;
+  background-color: #fff;
+  vertical-align: middle;
+}
+.break.breakWidth1{
+  margin: 0 16px 0 8px;
+}
+.break.breakWidth2{
+  margin: 0 20px 0 10px;
+}
+.codeImg{
+  width: .76rem;
+  height: .38rem;
+  line-height: .38rem;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.codeImg img{
+  width: 100%;
+  display: block;
+}
+.refreshBtn{
+  width: .18rem;
+  height: .18rem;
+  background: url("../../assets/img/login/refresh.png") no-repeat center;
+  background-size: 100% auto;
+}
+.forgetPw{
+  position: absolute;
+  font-size: .12rem;
+  height: .2rem;
+  line-height: .2rem;
+  width: .5rem;
+  text-align: right;
+  right: 0;
+  bottom: -.24rem;
+}
+.loginBtn{
+  margin: 0 auto;
+  text-align: center;
+  display: block;
+  cursor: pointer;
+}
+footer{
+  position: absolute;
+  bottom:.2rem;
+  left: 50%;
+  transform: translate(-50%,0);
+  font-size: .16rem;
+  height: .2rem;
+  line-height: .2rem;
+  text-align: center;
+  width: 2.82rem;
+  color: #fff;
+  letter-spacing: 2px;
+}
+footer span{
+  margin: 0 9px;
+}
+footer::before,footer::after{
+  content: "";
+  display: block;
+  position: absolute;
+  top: 9px;
+  height: 1px;
+  width: 16px;
+  background-color: #fff;
+}
+footer::before{
+  left: 0;
+}
+footer::after{
+  right: 0;
+}
+.forgetPwBox .el-dialog{
+  width: 3.64rem;
+  height: 2.16rem;
+  background:rgba(5,23,50,1);
+  box-shadow:0px 2px 8px 0px rgba(39,141,255,0.3),8px 24px 50px 0px rgba(113,166,241,0.1);
+}

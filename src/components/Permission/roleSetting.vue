@@ -21,12 +21,6 @@
               :value="item.value">
             </el-option>
           </el-select>
-          <!--<el-input
-            placeholder="请输入用户名称"
-            v-model="itemValue[3]"
-            class="userNameInput"
-            clearable>
-          </el-input>-->
           <div>
             <el-button class="queryDataBtn queryBoxBtn" @click="queryData"><i></i><span>查询</span></el-button>
           </div>
@@ -38,7 +32,7 @@
         </div>
       </div>
 
-      <!--用户表格-->
+      <!--角色表格-->
       <div class="userTableContainer">
         <el-table
           :data="curPageData"
