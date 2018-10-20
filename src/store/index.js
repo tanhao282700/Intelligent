@@ -5,6 +5,7 @@ Vue.use(vuex);
 
 export default new vuex.Store({
   state:{
-    bubbleShow:false
+    bubbleShow:false,
+    userInfoTotal:""
   }
 })

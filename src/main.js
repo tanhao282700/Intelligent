@@ -10,9 +10,9 @@ import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(ElementUI);
 
 /*  引入axios */
-import axios from 'axios';
-import VueAxios from 'vue-axios';
-Vue.use(VueAxios, axios);
+import axios from './http/axios';
+Vue.prototype.$http = axios;
+
 
 /* 引入jquery */
 import $ from 'jquery';
@@ -52,7 +52,7 @@ import Dialog from '@/components/common/dialog/index.js'; // 导入自定义组�
 Vue.use(Dialog);
 
 //引入Vuex
-import store from './store'
+import store from './store';
 
 import reset from "./assets/css/reset.css";
 import common from "./assets/css/common.css";

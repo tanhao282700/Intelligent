@@ -111,7 +111,11 @@ export default new Router({
         },
         {
           path: '/AgentManage/routing',
-          component:generationMRouting
+          component:generationMRouting,
+          children:[
+            { path: '/AgentManage/routing/first'},
+            { path: '/AgentManage/routing/second'}
+          ]
         },
         {
           path: '/AgentManage/report',
