@@ -1,13 +1,38 @@
 <template>
-
+	<div class="doorControl">
+		<sys-head :datas = "sData"></sys-head>
+		<router-view></router-view>
+	</div>
 </template>
 
 <script>
+
+	import sysHead from '../common/sysHead.vue'
+
     export default {
-        name: "hotel-status"
+        components:{
+        	'sys-head':sysHead,
+        },
+	    data() {
+	        return {
+		        sData:{
+		            lists:[
+		                {id:0,name:'酒店房态',route:'/HotelStatus/components/HotelRoomStatus'},
+		                {id:1,name:'房单',route:'/HotelStatus/components/roomLists'},
+		                {id:2,name:'报表',route:'/HotelStatus/components/roomCharts'},
+		            ]
+		        }
+	        };
+	    },
+	    methods: {
+ 
+	    }
     }
 </script>
 
-<style scoped>
+<style>
+ 
+	@import '../../assets/css/doorControl.css' ;
+
 
 </style>
