@@ -83,10 +83,11 @@
           legend: {
             data:['每餐位用能均值','每房用能均值'],
             orient:'horizontal',
-            right:0,
+            left:-10,
             padding:0,
             textStyle:{
-              color:'#eeeff1'
+              color:'#eeeff1',
+              fontSize:10
             },
             top:6
           },
@@ -169,7 +170,7 @@
     flex-direction:column;
     .title{
       height:8.9%;
-      background:#0e2340;
+      background:#000c27;
       display: flex;
       flex-direction: row;
       justify-content: center;
@@ -210,10 +211,10 @@
     flex-direction: column;
     padding:2.597% 6% 0 6%;
     .con-top{
-      background:#2d475e;
       height:50.974%;
       display: flex;
       flex-direction: column;
+      background:#000B1D;
       #revenueEcharts1{
         padding:0 5%;
         height:44.985%;

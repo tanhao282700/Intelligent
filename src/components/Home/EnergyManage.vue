@@ -182,7 +182,8 @@
             right:0,
             padding:0,
             textStyle:{
-              color:'#eeeff1'
+              color:'#eeeff1',
+              fontSize:12
             },
             top:8
           },
@@ -267,7 +268,7 @@
     flex-direction:column;
     .title{
       height:8.9%;
-      background:#0e2340;
+      background:#000c27;
       display: flex;
       flex-direction: row;
       justify-content: center;

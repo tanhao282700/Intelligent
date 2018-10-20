@@ -34,7 +34,7 @@
               </template>
               <el-menu-item-group>
                 <el-menu-item index="energy"><span class="textPL">能源管理系统</span></el-menu-item>
-                <el-menu-item disabled index="2-2"><span class="textPL">营收数据分析</span></el-menu-item>
+                <el-menu-item index="HotelStatus"><span class="textPL">营收数据分析</span></el-menu-item>
               </el-menu-item-group>
             </el-submenu>
             <!--<el-submenu index="3" >
