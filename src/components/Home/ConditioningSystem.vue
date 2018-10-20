@@ -7,8 +7,8 @@
     </div>
     <div class="con">
       <div class="con-top">
-        <div class="conditionEcharts1 chart" ref="conditionEcharts1" id="conditionEcharts1"></div>
-        <div class="conditionEcharts2 chart" ref="conditionEcharts2" id="conditionEcharts2"></div>
+        <div class="conditionEcharts1" ref="conditionEcharts1" id="conditionEcharts1"></div>
+        <div class="conditionEcharts2" ref="conditionEcharts2" id="conditionEcharts2"></div>
       </div>
       <div class="conditionEcharts3">
         <div class="type">
@@ -272,11 +272,24 @@
       flex:1;
       display: flex;
       flex-direction: row;
+      align-items: center;
+      justify-content: space-around;
       #conditionEcharts1{
         flex:1;
+        height:100%;
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        justify-content: center;
+        /*width:45%;*/
       }
       #conditionEcharts2{
         flex:1;
+        height:100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        /*width:45%;*/
       }
     }
     .conditionEcharts3{

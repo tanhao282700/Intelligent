@@ -26,11 +26,11 @@
         <img class="wetherIcon" src="../../assets/img/home/wethericon.png" ></img>
         <el-row class="block-col-2">
           <el-col :span="12">
-            <el-dropdown trigger="click" @command="handleCommand" >
+            <el-dropdown trigger="hover" @command="handleCommand" >
               <span class="el-dropdown-link">
                 <span @click="showPersonInfo" class="userIcon"></span>
               </span>
-              <el-dropdown-menu class="homeDropDown" slot="dropdown" >
+              <el-dropdown-menu class="homeDropDown" placement="top-right" slot="dropdown" >
                 <el-dropdown-item command="personInfo" class="homeDropdownItem" style="text-align:center;color:#f6f6f6">个人信息</el-dropdown-item>
                 <el-dropdown-item command="changePassword" class="homeDropdownItem" style="text-align:center;color:#f6f6f6">修改密码</el-dropdown-item>
                 <el-dropdown-item command="loginOut" class="homeDropdownItem" style="text-align:center;color:#f6f6f6">退出登录</el-dropdown-item>
@@ -110,11 +110,11 @@
         <span class="cor-r">电压告警：电压超过正常水平</span>
       </div>
       <div class="right">
-          <span>14:00</span>
-          <span>
+        <span>14:00</span>
+        <span>
               <i style="color:#f36b6d;">01</i>/05
           </span>
-          <span @click="openMonitor"></span>
+        <span @click="openMonitor"></span>
       </div>
     </div>
     <div class="modules" v-if="isOperateModules">
@@ -142,6 +142,9 @@
       </span>
     </el-dialog>
 
+
+
+
   </div>
 </template>
 
@@ -156,112 +159,120 @@
   import Conditioning from './ConditioningSystem.vue'
 
   export default {
-      name: "home",
-      components:{AgentManage,EnergyManage,Equipment,Banner,PersonInfo,Door,RevenueData,Conditioning},
-      data(){
-          return {
-              list:[{
-                id:1,
-                name:"代维管理系统",
-                src:"../../../static/img/agent.png",
-                componentsName:'AgentManage'
-              },{
-                id:2,
-                name:"设备情况",
-                src:"../../../static/img/equipment.png",
-                componentsName:'Equipment'
-              },{
-                id:3,
-                name:"中央空调系统",
-                src:"../../../static/img/conditioning.png",
-                componentsName:'Conditioning'
-              },{
-                id:4,
-                name:"营收数据分析",
-                src:"../../../static/img/revenueData.png",
-                componentsName:'RevenueData'
-              },{
-                id:5,
-                name:"能源管理系统",
-                src:"../../../static/img/energy.png",
-                componentsName:'EnergyManage'
-              },{
-                id:6,
-                name:"门禁系统",
-                src:"../../../static/img/doorManage.png",
-                componentsName:'Door'
-              }],
-              partsData:[{
-                  id:"partOne",
-                  componentsName:'EnergyManage'
-              },{
-                id:"partTwo",
-                componentsName:'Door'
-              },{
-                id:"partThree",
-                componentsName:'Equipment'
-              },{
-                id:"partFour",
-                componentsName:'Conditioning'
-              }],
-              currentMudel:0,  //当前点击添加系统的模块
-              isOperateModules:false,  //是否显示中间所有的系统
-              isOpenMonitor:false,  //是否展开实时监控
-              isResize:1,  //当前窗口是否重置，重绘canvas图标
-              partOneView:'',
-              partTwoView:'',
-              partThreeView:'',
-              partFourView:'',
-              showBannerParam:false,
-              personalCenter:{
-                  isShowBounced:false,
-                  isShowDialog:false,
-              },
-              personInfoOptions:{
-                    isPersonInfo:false,  //显示个人信息
-                    isEditInfo:false,    //编辑个人信息 传参只用传false
-                    isChangePassword:false  //修改密码
-              }
-          }
-      },
-      mounted(){
-        const that = this;
-        window.onresize = function(){
-          that.isResize++
+    name: "home",
+    components:{AgentManage,EnergyManage,Equipment,Banner,PersonInfo,Door,RevenueData,Conditioning},
+    data(){
+      return {
+        list:[{
+          id:1,
+          name:"代维管理系统",
+          src:"../../../static/img/agent.png",
+          componentsName:'AgentManage'
+        },{
+          id:2,
+          name:"设备情况",
+          src:"../../../static/img/equipment.png",
+          componentsName:'Equipment'
+        },{
+          id:3,
+          name:"中央空调系统",
+          src:"../../../static/img/conditioning.png",
+          componentsName:'Conditioning'
+        },{
+          id:4,
+          name:"营收数据分析",
+          src:"../../../static/img/revenueData.png",
+          componentsName:'RevenueData'
+        },{
+          id:5,
+          name:"能源管理系统",
+          src:"../../../static/img/energy.png",
+          componentsName:'EnergyManage'
+        },{
+          id:6,
+          name:"门禁系统",
+          src:"../../../static/img/doorManage.png",
+          componentsName:'Door'
+        }],
+        partsData:[{
+          id:1,
+          componentsName:''
+        },{
+          id:2,
+          componentsName:''
+        },{
+          id:3,
+          componentsName:''
+        },{
+          id:4,
+          componentsName:''
+        }],
+        currentMudel:0,  //当前点击添加系统的模块
+        isOperateModules:false,  //是否显示中间所有的系统
+        isOpenMonitor:false,  //是否展开实时监控
+        isResize:1,  //当前窗口是否重置，重绘canvas图标
+        showBannerParam:false,
+        personalCenter:{  //点击头像，出现个人中心
+          isShowBounced:false,
+          isShowDialog:false,
+        },
+        personInfoOptions:{
+          isPersonInfo:false,  //显示个人信息
+          isEditInfo:false,    //编辑个人信息 传参只用传false
+          isChangePassword:false  //修改密码
         }
+      }
+    },
+    mounted(){
+      const that = this;
+      window.onresize = function(){
+        that.isResize++
+      }
+
+      this.initModelId()
+    },
+    methods:{
+      initModelId(){
+        this.$http.get('/index_pc/pc/select/model',{
+
+        }).then(function (response) {
+          console.log(response);
+        })
+          .catch(function (error) {
+            console.log(error);
+          });
       },
-      methods:{
-        addModules(index){
-            this.currentMudel = index;
-            this.isOperateModules = true;
-        },
-        chooseSystem(item,index){
-          this.partsData[this.currentMudel].componentsName = item.componentsName
-          this.isOperateModules = false
-        },
-        openMonitor(){
-            this.isOpenMonitor = !this.isOpenMonitor
-        },
-        showBanerClick(){
-          this.showBannerParam = true
-        },
-        updateBannerParam(data){
-          this.showBannerParam = data
-        },
-        showPersonInfo(){
-          this.personalCenter.isShowBounced = !this.personalCenter.isShowBounced
-        },
-        handleCommand(command){
-          if(command == 'loginOut'){
-            this.personalCenter.isShowDialog = true
-          }else if(command==='personInfo'){
-              this.personInfoOptions.isPersonInfo = true
-          }else if(command == 'changePassword'){
-            this.personInfoOptions.isChangePassword = true
-          }
+      addModules(index){
+        this.currentMudel = index;
+        this.isOperateModules = true;
+      },
+      chooseSystem(item,index){
+        this.partsData[this.currentMudel].componentsName = item.componentsName
+        this.isOperateModules = false
+      },
+      openMonitor(){
+        this.isOpenMonitor = !this.isOpenMonitor
+      },
+      showBanerClick(){
+        this.showBannerParam = true
+      },
+      updateBannerParam(data){
+        this.showBannerParam = data
+      },
+      showPersonInfo(){
+        this.personalCenter.isShowBounced = !this.personalCenter.isShowBounced
+      },
+      handleCommand(command){
+        if(command == 'loginOut'){
+          this.personalCenter.isShowDialog = true
+        }else if(command==='personInfo'){
+          this.personInfoOptions.isPersonInfo = true
+        }else if(command == 'changePassword'){
+          this.personInfoOptions.isChangePassword = true
         }
       }
     }
+  }
 </script>
 
 <style scoped rel="stylesheet/less" lang="less">
@@ -335,9 +346,9 @@
           background:url(../../assets/img/home/logo.png) no-repeat center center;
           background-size:cover;
         }
-      &:hover{
-        cursor: pointer;
-       }
+        &:hover{
+          cursor: pointer;
+        }
         span:first-child{
 
         }
@@ -390,20 +401,20 @@
       position:absolute;
       background:#121e2e;
       opacity:.8;
-      .widl(30);
-      .wid(502);
-      .hei(674);
-      .heiT(829);
-      }
-    .partThree{
-      position:absolute;
-      background:#121e2e;
-      opacity:.8;
       .widl(2203);
       .wid(502);
       .hei(674);
       .heiT(137);
-      }
+    }
+    .partThree{
+      position:absolute;
+      background:#121e2e;
+      opacity:.8;
+      .widl(30);
+      .wid(502);
+      .hei(674);
+      .heiT(829);
+    }
     .partFour{
       position:absolute;
       background:#121e2e;
@@ -579,18 +590,18 @@
             justify-content:center;
             position:relative;
             &:hover{
-               cursor: pointer;
-               transform: scale(1.2);
-               box-shadow: 0px 6px 6px 6px
-               rgba(73, 143, 226, 0.22),
-               inset 1px 1px 2px 0px
-               rgba(248, 253, 255, 0.15),
-               inset 0px -1px 1px 0px
-               #498fe2;
-             }
+              cursor: pointer;
+              transform: scale(1.2);
+              box-shadow: 0px 6px 6px 6px
+              rgba(73, 143, 226, 0.22),
+              inset 1px 1px 2px 0px
+              rgba(248, 253, 255, 0.15),
+              inset 0px -1px 1px 0px
+              #498fe2;
+            }
             &:nth-child(5),&:nth-child(6),&:nth-child(7),&:nth-child(8){
-               margin-top:7.113%;
-             }
+              margin-top:7.113%;
+            }
             img{
               width:52%;
               height:52%;
@@ -693,12 +704,12 @@
 
 
 
-  .cor-r{
-    color:#994f5e;
-  }
-  .cor-y{
-    color:#f7a118;
-  }
+    .cor-r{
+      color:#994f5e;
+    }
+    .cor-y{
+      color:#f7a118;
+    }
 
 
   }
@@ -762,6 +773,8 @@
     background:#061733!important;
     border: 1px solid #4a90e2;
     margin-right:20px!important;
+    left:inherit!important;
+    right:0!important;
   }
   .homeDropDown .popper__arrow{
     left:68px!important;
@@ -786,5 +799,15 @@
   }
   .conditioningComponent .chart canvas{
     margin-top:10px;
+  }
+
+  #conditionEcharts1 canvas{
+    height:100%;
+    margin-top:4%;
+
+  }
+  #conditionEcharts2 canvas{
+    height:100%;
+    margin-top:4%;
   }
 </style>

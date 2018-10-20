@@ -43,76 +43,82 @@
 
         <!--用户表格-->
         <div class="userTableContainer">
-          <!--<el-table
+          <el-table
             :data="curPageData"
             style="width: 100%"
             height="500"
-            class="tableAlignCenter tableHeadBlue">
+            class=" tableHeadBlue">
             <el-table-column
               prop="code"
-              label="编号"
+              label="序号"
               min-width="7%">
             </el-table-column>
             <el-table-column
-              prop="userName"
-              label="用户名(手机号)"
-              min-width="10%">
+              prop="time"
+              label="日期"
+              min-width="14%">
             </el-table-column>
             <el-table-column
-              prop="nickName"
-              label="昵称"
+              prop="leval"
+              label="报警级别"
+              min-width="7%">
+            </el-table-column>
+            <el-table-column
+              prop="discription"
+              label="报警描述"
               min-width="19%">
             </el-table-column>
             <el-table-column
-              prop="department"
-              label="部门"
+              prop="son"
+              label="子系统"
               min-width="12%">
             </el-table-column>
             <el-table-column
-              prop="position"
-              label="职位"
+              prop="equipment"
+              label="设备"
               min-width="12%">
             </el-table-column>
             <el-table-column
-              prop="role"
-              label="角色"
+              prop="floor"
+              label="楼层"
+              min-width="7%">
+            </el-table-column>
+            <el-table-column
+              prop="lastTime"
+              label="持续时间"
               min-width="12%">
             </el-table-column>
             <el-table-column
-              prop="createTime"
-              label="创建时间"
-              min-width="19%">
-            </el-table-column>
-            <el-table-column
-              prop="operation"
-              label="操作"
+              prop="status"
+              label="维修状态"
               min-width="9%">
-              <template slot-scope="scope">
-                <a href="javascrtip:;" @click="editAccount(scope.row)" class="tableBtn">修改</a>
-                <a href="javascrtip:;" @click="deleteAccount(scope.row)" class="tableBtn">删除</a>
-              </template>
             </el-table-column>
-          </el-table>-->
+            <el-table-column
+              prop="man"
+              label="维修人"
+              min-width="9%">
+            </el-table-column>
+          </el-table>
 
           <!--分页器-->
-          <!--<div class="paginationBox">
-            <div class="totalPageNumBox">共{{totalPageNum}}页</div>
+          <div class="paginationBox">
+            <div class="totalPageNumBox">共{{pageBean.total}}页</div>
 
             <div class="el-input el-pagination__editor is-in-pagination curPageBox">
-              <input type="number" autocomplete="off" class="el-input__inner" v-model="currentPage">
+              <input type="number" autocomplete="off" class="el-input__inner" v-model="pageBean.currentPage">
               <span @click="toInputPage">GO</span>
             </div>
 
             <el-pagination
               @current-change="currentPageChange"
-              :current-page="currentPage"
-              :page-size="pageSize"
-              :page-count="totalPageNum"
+              :current-page="pageBean.currentPage"
+              :page-size="pageBean.pageSize"
+              :page-count="pageBean.pageNumber"
               layout="prev, pager, next"
-              :total="totalDataNumber">
+              :total="pageBean.total">
             </el-pagination>
 
-          </div>-->
+          </div>
 
         </div>
 
@@ -180,13 +186,33 @@
           }
         ],
         itemValue:[],
+        curPageData:[{
+          code:1,
+          time:'2018-12-15 24:00',
+          leval:'普通',
+          discription:'我是一只小小鸟',
+          son:'消防系统',
+          equipment:'空调',
+          floor:'4F',
+          lastTime:'19:14:22',
+          status:'已处理',
+          man:'德玛西亚'
+        }],
+        pageBean:{
+          total:1,
+          pageSize:20,
+          pageNumber:1,
+          currentPage:1
+        }
       }
     },
     methods:{
       search(param){
         console.log(param);
       },
-      queryData(){}
+      toInputPage(){},
+      queryData(){},
+      currentPageChange(){},
     },
     created(){
 
