@@ -24,6 +24,7 @@ import fireHistory from '@/components/Alarm/components/fireHistory';
 import permission from '@/components/Permission/Permission';
 import roleSetting from '@/components/Permission/roleSetting';
 import userSetting from '@/components/Permission/userSetting';
+import loginLog from '@/components/Permission/loginLog';
 
 //首页
 import Home from '@/components/Home/Home';
@@ -35,6 +36,15 @@ import tabsSys from '@/components/DoorControl/components/tabsSys';
 
 //视频监控
 import VideoSurveillance from '@/components/VideoSurveillance/VideoSurveillance';
+
+//登录页
+import LoginModel from '@/components/Login/login';
+
+//酒店管理
+import HotelStatus from '@/components/HotelStatus/HotelStatus';
+import HotelRoomStatus from '@/components/HotelStatus/components/HotelRoomStatus';
+import roomLists from '@/components/HotelStatus/components/roomLists';
+import roomCharts from '@/components/HotelStatus/components/roomCharts';
 
 Vue.use(Router);
 
@@ -50,8 +60,9 @@ export default new Router({
       component: permission,
       redirect:'/permission/user',
       children:[
-        { path: '/permission/user', component: userSetting,},
-        { path: '/permission/role', component: roleSetting,}
+        { path: '/permission/user', component: userSetting },
+        { path: '/permission/role', component: roleSetting },
+        { path: '/permission/loginLog', component: loginLog }
       ]
     },
     {
@@ -137,7 +148,21 @@ export default new Router({
       path: '/VideoSurveillance',
       component: VideoSurveillance,
     },
+    {
+      path:"/login",
+      component:LoginModel,
 
+    },
+    {
+      path: '/HotelStatus',
+      component:HotelStatus,
+      redirect: '/HotelStatus/components/HotelRoomStatus',
+      children:[
+        { path: '/HotelStatus/components/HotelRoomStatus',component: HotelRoomStatus},
+        { path: '/HotelStatus/components/roomLists',component: roomLists},
+        { path: '/HotelStatus/components/roomCharts',component: roomCharts},
+      ]
+    }
 
   ]
 })
