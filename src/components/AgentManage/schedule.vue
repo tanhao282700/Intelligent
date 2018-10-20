@@ -105,7 +105,7 @@
 
 <script>
 
-
+import '@/assets/css/fs_common.css'
 import utils from "../../assets/js/utils.js";
 import examine from './components/schedule/examine';
 import ScheduleTable from './components/schedule/scheduleTable';

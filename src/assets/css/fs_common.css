@@ -49,3 +49,34 @@
   border: 1px solid #051732 !important;
   box-shadow:0px 0px 1px 0px rgba(87,113,176,0.15),0px 1px 2px 0px rgba(0,0,0,0.5)
 }
+.el-tooltip__popper.is-dark{
+  background: #04152C !important;
+  box-shadow:0px 1px 2px 0px rgba(60,150,255,0.35) !important;
+  border:0px solid rgba(71,137,214,1)!important;
+}
+ .controlCont .el-textarea__inner{
+  background:transparent !important;
+  box-shadow:0px 0px 1px 0px rgba(87,113,176,0.15),0px 1px 2px 0px rgba(0,0,0,0.5);
+  border-radius:2px;
+  border:none!important;
+}
+.tabBoxs .el-tabs__nav-wrap::after{
+  background:none !important;
+}
+.el-tabs__header{
+  margin:0 !important;
+  padding: 0 0.33rem !important;
+}
+.routeRadio .el-radio-button__inner{
+  background:#001838; 
+  color:#fff;
+  display: inline-block;
+  width:3.66vw;
+  height:3.3vh;
+  line-height: 3.3vh;
+  border:none;
+  border-left: none !important;
+  box-shadow:5px 5px 5px rgba(0,0,0,0.5) inset;  
+  border-radius:1px;
+  padding:0 !important;  
+}

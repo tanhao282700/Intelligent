@@ -4,90 +4,111 @@
 -->
 <template>
   <div class="workBox">
-      <Crumbs :data ='crumbs'/>  
-      <div class="workHead boxs">
-        <div class="numBox" v-for="(v,i) in workH">
-          <div class="numBoxIn">
-            <p v-text="v.val" :style="{'color':v.color}"></p>
-            <span v-text="v.tit"></span>
-          </div>
-          <Lines :hei="60" :top="20" v-if="i!=3"/>
-        </div>
-      </div>
-      <div class="tableBoxs boxs">
-        <div class="tabHead">
-          <div class="jobBoxs">
-            <SelectBox 
-              :options = 'jobs' 
-              :value = "vJob" 
-              placeholder="专业岗位"
-              @change = "change1"
-            />
-          </div>
-          <div class="nameBoxs">
-            <SelectBox 
-              :options = 'names' 
-              :value = "vName" 
-              placeholder="姓名" 
-              @change = "change2"
-            />
-          </div>
-          <div class="searchBoxs">
-            <i class="el-icon-search"></i>
-            <span>筛选</span>
-          </div>
-          <div class="dateBox">
-            <TimePickerT 
-                :value7= "value7"
-                :cant  = 'cant'
-                @changes = "changes"
-                @deletes = 'deletes'
-                @adds    = 'adds'
-            />
-          </div>
-        </div>
-        <div class="tableIn">
-          <Table 
-            style="width:100%" 
-            :table = "table"
-            @rowClick = "rowClick"
-          />
-        </div>
-      </div>
-      <div class="dispatch">
-        <div class="dispatchBtn">
-          <i class="el-icon-third-feiji"></i>
-        </div>
-      </div>
-      <Dialog wid="1326" hei="640" ref="dialog">
-        <WorkInfo @tableInfos2Show="tableInfos2Show"/>
-      </Dialog> 
-      <Dialog wid="910" hei="686" ref="tableInfos2">
-            <div class="tableInfos">
-                <div class="infoHead">
-                  <span class="infoName" v-text="infoItem.name"></span>
-                  <span class="infoState" v-text="this.infoTit(infoItem.state)"></span>
-                  <span class="infoType" v-text="infoItem.sType"></span>
+      <Crumbs :data ='crumbs'/>
+      <el-tabs class="tabBoxs" v-model="activeName" @tab-click="handleClick">
+        <el-tab-pane name="first">
+            <span slot="label" class="tabItems">
+                巡检任务表
+            </span>
+            <div class="workHead boxs">
+              <div class="numBox" v-for="(v,i) in workH">
+                <div class="numBoxIn">
+                  <p v-text="v.val" :style="{'color':v.color}"></p>
+                  <span v-text="v.tit"></span>
                 </div>
-                <div class="infoWater">
-
-                </div>
-                <div class="infoBoxs">
-
-                </div>
+                <Lines :hei="60" :top="20" v-if="i!=3"/>
+              </div>
             </div>
-        </Dialog>     
+            <div class="tableBoxs boxs">
+              <div class="tabHead">
+                <div class="jobBoxs">
+                  <SelectBox 
+                    :options = 'jobs' 
+                    :value = "vJob" 
+                    :icon="'el-icon-d-caret'"
+                    placeholder="专业岗位"
+                    @change = "change1"
+                  />
+                </div>
+                <div class="nameBoxs">
+                  <SelectBox 
+                    :options = 'names' 
+                    :value = "vName" 
+                    :icon="'el-icon-d-caret'"
+                    placeholder="姓名" 
+                    @change = "change2"
+                  />
+                </div>
+                <div class="searchBoxs">
+                  <i class="el-icon-search"></i>
+                  <span>筛选</span>
+                </div>
+                <div class="dateBox">
+                  <TimePickerT 
+                      :value7= "value7"
+                      :cant  = 'cant'
+                      @changes = "changes"
+                      @deletes = 'deletes'
+                      @adds = 'adds'
+                  />
+                </div>
+              </div>
+              <div class="tableIn">
+                <Table 
+                  style="width:100%" 
+                  :table = "table"
+                  @rowClick = "rowClick"
+                />
+              </div>
+            </div>
+            <Dialog wid="1326" hei="640" ref="dialog">
+              <WorkInfo @tableInfos2Show="tableInfos2Show" :dtlObj="dtlObj"/>
+            </Dialog> 
+            <Dialog wid="910" hei="686" ref="tableInfos2">
+                <div class="tableInfos">
+                    <div class="infoHead">
+                      <span class="infoName" v-text="infoItem.name"></span>
+                      <span class="infoState" v-text="infoTit(infoItem.state)"></span>
+                      <div class="rightHead">
+                        <span class="infoBusy" v-text="'普通'"></span>
+                        <span class="infoSend" v-text="infoItem.sType"></span>
+                      </div>
+                    </div>
+                    <div class="infoWater">
+                      <RoutingTask :data="dtlObj.tableDtl.data[0]"></RoutingTask>
+                    </div>
+                    <div class="infoBoxs">
+                      <RoutingInfo :data="dtlObj.tableDtl.data[0]" :device="dtlObj"/>
+                    </div>
+                </div>
+            </Dialog>  
+        </el-tab-pane>
+        <el-tab-pane name="second" >
+            <span slot="label" class="tabItems">
+                巡检任务模板
+            </span>
+            <RoutingTakModdel v-show="activeName=='second'" @checkDetail="checkDetail" @updateDetail="updateDetail" @deleteDetail = "deleteDetail"/>
+        </el-tab-pane>      
+      </el-tabs>  
+      <Dialog wid="910" hei="622" ref="add" > <!-- 新增巡检模板 -->
+        <AddModel :data="rowData" :title="tempTitle"/>
+      </Dialog> 
   </div>
 </template>
 
 <script>
-
-
+import '@/assets/css/fs_common.css'
 import utils from "../../assets/js/utils.js";
 import SelectBox from '@/components/form/selectBox';
 import TimePickerT from './components/work/timePickerTit2';
 import Percentage from './components/work/Percentage';
 import WorkInfo from './components/work/workInfo';
+import State from './components/work/state';
+import deal from './components/work/deal';
+import RoutingTakModdel from './components/routing/routingTakModdel';
+import RoutingTask from './components/routing/routingTask';
+import RoutingInfo from './components/routing/routingInfo';
+import AddModel from './components/routing/addTemp';
 
 import Table from '@/components/common/table';
 export default {
@@ -95,16 +116,23 @@ export default {
     'Table':Table,
     'WorkInfo':WorkInfo,
     'SelectBox':SelectBox,
-    'TimePickerT':TimePickerT
+    'TimePickerT':TimePickerT,
+    'RoutingTakModdel':RoutingTakModdel,
+    'RoutingTask':RoutingTask,
+    'RoutingInfo':RoutingInfo,
+    'AddModel':AddModel
   },
   data () {
     return {
-        crumbs:['代维系统','巡检'],
+        tempTitle:'新增',//弹框的标题
+        activeName:'first',
+        rowData:{},
+        // crumbs:['代维系统','巡检'],
         workH:[
-          {id:1,tit:'今日在岗人数',val:"12",color:'#b5d7ff'},
-          {id:2,tit:'今日工单总数',val:"32",color:'#f38a00'},
-          {id:3,tit:'已完成数量',val:"32",color:'#4ae283'},
-          {id:4,tit:'今日工单完成率',val:"100%",color:'#4ae283'},
+          {id:1,tit:'今日在岗人数',val:"58",color:'#b5d7ff'},
+          {id:2,tit:'今日巡检数',val:"32",color:'#f38a00'},
+          {id:3,tit:'已完成数量',val:"43",color:'#4ae283'},
+          {id:4,tit:'今日巡检完成率',val:"70%",color:'#4ae283'},
         ],
         jobs:[
           {label:'给排水',value:1},
@@ -123,8 +151,125 @@ export default {
         ],
         vName:-1,
         //日期选择
-        value7:'2018-8-24',
+        value7:'8-24',
         cant:false,
+        dtlObj:{
+          title:'巡检单详情',
+          value7:'8-24',
+          
+          tabs:[{
+            'name':'今日巡检总数',
+            num:78
+          },{
+            'name':'已完成',
+            num:65
+          },{
+            'name':'未完成',
+            num:13
+          }],
+
+          tableDtl:{
+              hei:488, //table高度  设置后有滚动条
+              len:8, //总条数
+              dialogBoxs:{
+                  item:{name:''},
+                  state0:0, //1 同意，0拒绝
+                  txt:'是否允许退单'
+              },
+              data:[
+                  {id:1,u_id:1,name:'白狗汪11',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:-1,desc:'范珊看哪个阶段呢是范珊的咖啡店给你的肌肤喝点水放辣椒是非得失，反倒是',backExcuse:'范珊看哪个阶段呢是范珊的咖啡店给你的肌肤喝点水放辣椒是非得失，反倒是',
+                  imgs1:[{
+                      src:'../../../../assets/img/logo.png'
+                    },{
+                      src:'../../../../assets/img/logo.png'
+                    },{
+                      src:'../../../../assets/img/logo.png'
+                    },{
+                      src:'../../../../assets/img/logo.png'
+                    },{
+                      src:'../../../../assets/img/logo.png'
+                    }],
+                    imgs2:[{
+                      src:'../../../../assets/img/logo.png'
+                    },{
+                      src:'../../../../assets/img/logo.png'
+                    },{
+                      src:'../../../../assets/img/logo.png'
+                    },{
+                      src:'../../../../assets/img/logo.png'
+                    },{
+                      src:'../../../../assets/img/logo.png'
+                    }],
+                  steps:[{
+                    name:'派发时间',date:'2018/09/14',time:'09:13',areatime:'3h',
+                    },{
+                      name:'接单时间',date:'2018/09/16',time:'09:13',areatime:'48h'
+                    },{
+                      name:'派发时间',date:'2018/09/16',time:'11:15',areatime:'2h'
+                    }],
+                    device:[{
+                      label:'巡检人员',
+                      type:'田阿菊'
+                    },{
+                      label:'电话',
+                      type:'18876768766'
+                    },{
+                      label:'设备类型',
+                      type:'给排水系统'
+                    },{
+                      label:'设备地点',
+                      type:'这边自宽130PX'
+                    },{
+                      label:'巡检设备',
+                      type:'给排水泵房'
+                    }],
+                  }, 
+                  {id:2,u_id:1,name:'白狗汪1',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:2}, 
+                  {id:3,u_id:1,name:'白狗汪1',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:3}, 
+                  {id:4,u_id:1,name:'白狗汪1',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:-1}, 
+                  {id:5,u_id:1,name:'白狗汪1',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:2}, 
+                  {id:6,u_id:1,name:'白狗汪1',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:3}, 
+                  {id:7,u_id:1,name:'白狗汪1',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:3}, 
+                  {id:8,u_id:1,name:'白狗汪1',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:3}, 
+                  {id:9,u_id:1,name:'白狗汪1',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:3}, 
+                  {id:10,u_id:1,name:'白狗汪1',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:3}, 
+                  {id:11,u_id:1,name:'白狗汪1',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:3},                       
+              ],
+              th:[
+                {prop:'name',label:'名称'},
+                {prop:'type',label:'类别'},
+                {prop:'addr',label:'地点',wid:208}, 
+                {prop:'eName',label:'设备名称',wid:169},
+                {prop:'sTime',label:'派发时间',wid:165},
+                {prop:'info',label:'内容描述',wid:194},
+                {prop:'sType',label:'派发类别'},
+                {prop:'states',label:'状态',wid:146,
+                  operate: true, 
+                    render: (h, param)=> {
+                        const btnss = {
+                            fills:param.row.state,  
+                        };
+                        return h(State,{
+                        props: { state:btnss},
+                        on:{}
+                        });
+                    }},
+                {prop:'fill',label:'操作',wid:105,
+                  operate: true, 
+                    render: (h, param)=> {
+                        const btnss = {
+                            item:param.row, 
+                          //   id:param.row.id,  
+                        };
+                        return h(deal,{
+                        props: { btnss:btnss},
+                        on:{agree:this.agree,refult:this.refult}
+                        });
+                    } 
+                },
+              ]
+          }
+        },
         table:{
             // small:'small',
             hei:328, //table高度  设置后有滚动条
@@ -142,9 +287,10 @@ export default {
               {id:10,name:'白狗汪10',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:4,backApply:"-",fill:100},              
             ],
             th:[
+              {prop:'id',label:'序号'},
               {prop:'name',label:'名称'},
               {prop:'tel',label:'电话',wid:180},
-              {prop:'job',label:'工作岗位'},
+              {prop:'job',label:'专业岗位'},
               {prop:'sendNum',label:'派单量'},
               {prop:'dealing',label:'待处理'},
               {prop:'nocatch',label:'未接单'},
@@ -175,90 +321,142 @@ export default {
       this.vName = val;
     },
     changes(val){
-          this.value7 = val;
-      }, 
-      deletes(){
-          let attrs = this.value7.split('-');
-          // console.log(attrs)
-          if(attrs[2]==1){
-            if(attrs[1]==2 ||attrs[1]==4 || attrs[1]==6 ||attrs[1]==8 ||attrs[1]==9 ||attrs[1]==11 ||attrs[1]==1){
-                attrs[2]=31;
-            }else if(attrs[1]==5 ||attrs[1]==7 || attrs[1]==10 ){
-                attrs[2]=30;
-            }else if(attrs[1]==3 && Number(attrs[0])%4==0){
-                attrs[2]=29;
-            }else if(attrs[1]==3 && Number(attrs[0])%4!=0){
-                attrs[2]=28;
-            }
-            if(attrs[1]==1){
-                attrs[1] = 12;
-                attrs[0] = Number(attrs[0])-1;
-            }else{
-                attrs[1] = Number(attrs[1])-1;
-            }            
-          }else{
-              attrs[2] = Number(attrs[2])-1;
-          }
-          this.value7 = attrs.join('-'); 
-      },
-      adds(){
-          if(this.cant){
-              return;
-          }
-          let attrs = this.value7.split('-');
-
-          if(((attrs[1]==1 ||attrs[1]==3 || attrs[1]==5 ||attrs[1]==7 ||attrs[1]==8 ||attrs[1]==10 ||attrs[1]==12) && attrs[2]==31)
-              ||((attrs[1]==2 ||attrs[1]==6 || attrs[1]==9 ||attrs[1]==11) && attrs[2]==30) 
-              ||((attrs[1]==2 && Number(attrs[0])%4==0) && attrs[2]==29)
-              ||((attrs[1]==2 && Number(attrs[0])%4!=0) && attrs[2]==28)
-          ){
-              attrs[2] =1;
-              if(attrs[1]==12){
-                  attrs[1] = 1;
-                  attrs[0] = Number(attrs[0])+1;
-              }else{
-                  attrs[1] = Number(attrs[1])+1;
-              }   
-          }else{
-              attrs[2] = Number(attrs[2])+1;
-          }
-          this.value7 = attrs.join('-');    
-      }, 
-      rowClick(row){
-        this.$refs.dialog.show();
-        // console.log(row);
-      },
-      tableInfos2Show(item){
-        console.log(item)
-        this.infoItem = item;
-        this.$refs.tableInfos2.show();
-      },
-      infoTit(state){
-        let res = '';
-        switch(state){
-          case -1:
-            res = '申请退单';
-          break;
-          case 0:
-            res = '申请延期';
-          break;
-          case 1:
-            res = '延期单';
-          break;
-          case 2:
-            res = '处理中';
-          break;
-          case 3:
-          break;
+        this.value7 = val;
+    }, 
+    deletes(){
+      let attrs = this.value7.split('-');
+      // console.log(attrs)
+      if(attrs[2]==1){
+        if(attrs[1]==2 ||attrs[1]==4 || attrs[1]==6 ||attrs[1]==8 ||attrs[1]==9 ||attrs[1]==11 ||attrs[1]==1){
+            attrs[2]=31;
+        }else if(attrs[1]==5 ||attrs[1]==7 || attrs[1]==10 ){
+            attrs[2]=30;
+        }else if(attrs[1]==3 && Number(attrs[0])%4==0){
+            attrs[2]=29;
+        }else if(attrs[1]==3 && Number(attrs[0])%4!=0){
+            attrs[2]=28;
         }
-        return res;
-      } 
+        if(attrs[1]==1){
+            attrs[1] = 12;
+            attrs[0] = Number(attrs[0])-1;
+        }else{
+            attrs[1] = Number(attrs[1])-1;
+        }            
+      }else{
+          attrs[2] = Number(attrs[2])-1;
+      }
+      this.value7 = attrs.join('-'); 
+    },
+    adds(){
+      if(this.cant){
+          return;
+      }
+      let attrs = this.value7.split('-');
+
+      if(((attrs[1]==1 ||attrs[1]==3 || attrs[1]==5 ||attrs[1]==7 ||attrs[1]==8 ||attrs[1]==10 ||attrs[1]==12) && attrs[2]==31)
+          ||((attrs[1]==2 ||attrs[1]==6 || attrs[1]==9 ||attrs[1]==11) && attrs[2]==30) 
+          ||((attrs[1]==2 && Number(attrs[0])%4==0) && attrs[2]==29)
+          ||((attrs[1]==2 && Number(attrs[0])%4!=0) && attrs[2]==28)
+      ){
+          attrs[2] =1;
+          if(attrs[1]==12){
+              attrs[1] = 1;
+              attrs[0] = Number(attrs[0])+1;
+          }else{
+              attrs[1] = Number(attrs[1])+1;
+          }   
+      }else{
+          attrs[2] = Number(attrs[2])+1;
+      }
+      this.value7 = attrs.join('-');    
+    }, 
+    checkDetail(rowData){
+      this.$refs.add.show();
+    },
+    updateDetail(rowData){
+      this.tempTitle = '修改';
+      console.log(rowData)
+    },
+    deleteDetail(){
+      console.log(rowData)
+    },
+    rowClick(row){
+      this.rowData = row;
+      this.rowData.operate='check';
+      this.$refs.add.show();
+    },
+    agree(item){ //同意
+        console.log(item)
+    },
+    refult(item){//拒绝
+       console.log(item)
+    },
+    tableInfos2Show(item){
+      console.log(item)
+      this.infoItem = item;
+      this.infoItem.data = {
+          datas:[{date:'2018/10/12',time:'15:29'},{date:'2018/10/12',time:'17:29'}],
+          areatimes:['2h','4h'],
+          oneLine:[{
+            label:'类型',
+            type:'给排水系统',
+          },{
+            label:'设备类型',
+            type:'给排水系统',
+          },{
+            label:'设备地点',
+            type:'这边字款130PX',
+          },{
+            label:'工单处理人员',
+            type:'李宏源',
+          }]
+        }
+      this.$refs.tableInfos2.show();
+    },
+    handleClick(){
+      let activeName = this.activeName;
+        this.$router.replace({ path: `/AgentManage/routing/${activeName}`}); 
+    },
+    infoTit(state){
+      let res = '';
+      switch(state){
+        case -1:
+          res = '申请退单';
+        break;
+        case 2:
+          res = '处理中';
+        break;
+        case 3:
+        break;
+      }
+      return res;
+    } 
   },
   created() {
-    
+      let val = (this.$router.history.current.fullPath).split('/AgentManage/routing')[1];
+      if(val==''){
+          this.activeName = 'first';
+      }else{
+          // console.log( val.split('/')[1])
+          this.activeName = val.split('/')[1];
+      }
+  },
+  computed:{
+      crumbs(){
+        let res =['代维系统','巡检'];
+        switch(this.activeName){
+            case 'first':
+                res.push('巡检任务表');
+            break;
+            case 'second':
+                res.push('巡检任务模板');
+            break;
+        }
+        return res;
+    }
   },
   mounted() {
-    // this.$refs.dialog.show();
+      //console.log(this.dtlObj)
   },
 }
 </script>
@@ -266,14 +464,23 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="less" scoped='scoped' type="text/less">
 @import '../../assets/css/comon.less';
-
 .workBox{
+  width:100%;
+  .tabBoxs{
+    position:absolute;
+    top:11.5vh;
+    .tabItems{
+      color:#a7a7a7;
+    }
+  }
+  .firstBox{
+    .vhMT(45);
+  }
   .workHead{
-    width: 13.06rem;
+    width: 95.6vw;
     .vh(108);
     margin-left: 0.3rem;
     display: flex;
-    .vhMT(8);
     .numBox{
       flex:1;
       display: flex;      
@@ -298,7 +505,7 @@ export default {
     }
   }
   .tableBoxs{
-    width: 13.06rem;
+    width: 95.6vw;
     .vh(407);
     .vhMT(20);
     margin-left: 0.3rem;
@@ -415,7 +622,35 @@ export default {
       .infoType{
         font-size: 0.12rem;
       }
+      .rightHead{
+        position: absolute;
+        right: 0;
+        .vhLH(52);
+        top:0;
+        width: 12.59vw;
+        .infoBusy{
+          .vhMT(9);
+          display:inline-block;
+          .vhLH(24);
+          background:#008AFF;
+          width:4.98vw;
+          font-size:12px;
+          border-radius:2px;
+          text-align:center;
+        }
+        .infoSend{
+          .vhMT(9);
+          display:inline-block;
+          .vhLH(24);
+          background:#FA6074;
+          width:4.98vw;
+          border-radius:2px;
+          font-size:12px;
+          text-align:center;
+        }
+      }
     }
+
   }
 }
 </style>
