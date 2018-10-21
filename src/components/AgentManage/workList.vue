@@ -469,8 +469,7 @@ export default {
     
   },
   mounted() {
-    // this.$refs.dialog.show();
-  },
+  }
 }
 </script>
 
@@ -481,7 +480,7 @@ export default {
 .workBox{
   width:100%;height:100%;
   .workHead{
-    width: 95.6vw;
+    width: 95.6%;
     .vh(108);
     margin-left: 0.3rem;
     display: flex;
@@ -510,7 +509,7 @@ export default {
     }
   }
   .tableBoxs{
-    width: 95.6vw;
+    width: 95.6%;
     .vh(407);
     .vhMT(20);
     margin-left: 0.3rem;

@@ -81,7 +81,7 @@ export default {
 @import '../../../../assets/css/comon.less';
 
 .examine{
-    width: 13.06rem;
+    width: 95.6%;
     .vh(578);
     display: flex;
     flex-direction: column;

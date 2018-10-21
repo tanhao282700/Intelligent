@@ -519,7 +519,7 @@ export default {
 @import '../../../../assets/css/comon.less';
 
 .examineTable{
-   width: 95.6vw;
+   width: 95.6%;
    .vh(578);
    .tableHead{
        .vh(100);
@@ -595,11 +595,11 @@ export default {
                 height: 0.7rem;
             }
              .tableLeft{
-                width: 2.22rem;
+                width: 17.15%;
                 height: 100%;
                 float: left;
                 .nums{
-                    width: 0.35rem;
+                    width: 16.07%;
                      height: 100%;
                      line-height: 0.22rem;
                     color: #b5d7ff;
@@ -607,19 +607,19 @@ export default {
                     padding:0.13rem 0.1rem;
                 }
                 .names{
-                    width: 0.75rem;
+                    width:33.93%;
                      height: 100%;
                      line-height: 0.7rem;
                      color: #b5d7ff;
                 }
                 .works{
-                    width: 0.56rem;
+                    width: 25%;
                      height: 100%;
                      line-height: 0.7rem;
                      color: #b5d7ff;
                 }
                 .tableHB{
-                    width: 0.56rem;
+                    width: 25%;
                      height: 100%;
                      float: left;
                     .tableDT{
@@ -637,14 +637,14 @@ export default {
                 }
             }
             .tableRight{
-                width: 10.84rem;
+                width: 82.85%;
                 height: 100%;
                 float: left;
                 ul{
                     height: 0.35rem;
                     li{
-                        height: 0.35rem;
-                        width: 0.35rem;
+                        height:0.35rem;
+                        width:3.22%;
                         text-align: center;
                         line-height: 0.35rem;
                         float: left;
@@ -667,9 +667,10 @@ export default {
             }
             .tableB{
                 flex:1;
+                width:100%;
                 overflow: hidden;
                 li{
-                    height: 0.35rem;
+                    height:0.35rem;
                     width: 100%;
                     display: flex;
                     overflow: hidden;
@@ -682,7 +683,7 @@ export default {
                         }
                         span{
                             float: left;
-                            width: 0.33rem;
+                            width: 3.02%;
                             height: 0.33rem;
                             font-size: 0.16rem;
                             color: #439aff;
@@ -715,7 +716,7 @@ export default {
                         background: none;
                     }
                     .tableBNum{
-                        width: 0.35rem;
+                        width: 2.75%;
                         position: relative;
                         cursor: pointer;
                         span{
@@ -746,7 +747,7 @@ export default {
 
                     }
                     .tableBName{
-                        width:0.75rem;
+                        width:5.82%;
                         input{
                             width: 80%;
                             height: 0.24rem;
@@ -758,7 +759,7 @@ export default {
                         }
                     }
                     .tableBDuty{
-                        width: 1.12rem;
+                        width: 8.57%;
                         input{
                             width: 80%;
                             height: 0.24rem;
@@ -797,7 +798,7 @@ export default {
                 }
                 ul{
                     li{
-                        width: 0.35rem;
+                        width: 3.22%;
                         height: 0.35rem;
                         line-height: 0.35rem;
                         color: #008aff;

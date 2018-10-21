@@ -45,10 +45,15 @@
             <i class="el-icon-search"></i>
             <span>筛选</span>
           </div>
+          <div class="searchBoxs addBoxs" @click="addTemp">
+            <i></i>
+            <span>新增</span>
+          </div>
         </div> 
         <Table style="width:100%" 
               :table = "table"
-            @rowClick = "rowClick"/>
+            />
+            <!-- @rowClick = "rowClick" -->
     </div>
 </template>
 
@@ -132,8 +137,7 @@
                         fills:param.row.state,  
                     };
                     return h(State,{
-                      props: { state:btnss},
-                      on:{}
+                      props: { state:btnss}
                     });
                 }},
               {prop:'fill',label:'操作',wid:200,
@@ -144,7 +148,7 @@
                     };
                     return h(deal,{
                       props: { btnss:btnss},
-                      on:{update:this.update,deletes:this.deletes}
+                      on:{update:this.update,deletes:this.deletes,changeStatus:this.changeStatus}
                     });
                   } 
               },
@@ -165,14 +169,21 @@
           change3(val){ //选择
             this.vStatus = val;
           },
-          rowClick(rowData){
-            this.$emit('checkDetail',rowData);
-          },
+          // rowClick(rowData){
+          //   this.$emit('checkDetail',rowData);
+          // },
           update(item){
             this.$emit('updateDetail',item);
           },
           deletes(item){
              this.$emit('deleteDetail',item);
+          },
+          changeStatus(state){
+            //console.log(state);
+            this.$emit('changeStatus',state)
+          },
+          addTemp(){
+            this.$emit('addDetail');
           }
       },
       created() {
@@ -187,7 +198,7 @@
 <style lang="less" scoped="" type="text/less"> 
 @import '../../../../assets/css/comon.less';
 .routingTaskModdel{
-  width:95.6vw;
+  width:95.6%;
   margin-left: 0.33rem;
   .tabHead{
       width: 100%;
@@ -232,6 +243,18 @@
           font-size: 0.16rem;
           margin-right: 0.05rem;
           font-weight: 600;
+        }
+      }
+      .addBoxs{
+        float:right;
+        margin-right: 0.12rem;
+        i{
+          display:inline-block;
+          width:0.16rem;
+          height:0.16rem;
+          vertical-align:middle;
+          background:url(../../../../assets/img/AgentManage/add.png) no-repeat;
+          background-size:0.16rem;
         }
       }
       .dateBox{

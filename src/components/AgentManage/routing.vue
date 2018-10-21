@@ -87,7 +87,7 @@
             <span slot="label" class="tabItems">
                 巡检任务模板
             </span>
-            <RoutingTakModdel v-show="activeName=='second'" @checkDetail="checkDetail" @updateDetail="updateDetail" @deleteDetail = "deleteDetail"/>
+            <RoutingTakModdel v-show="activeName=='second'" @updateDetail="updateDetail" @deleteDetail = "deleteDetail" @addDetail="addDetail" :cancelAdd="cancelAdd" :saveAdd="saveAdd" @changeStatus="changeStatus"/>
         </el-tab-pane>      
       </el-tabs>  
       <Dialog wid="910" hei="622" ref="add" > <!-- 新增巡检模板 -->
@@ -371,14 +371,31 @@ export default {
       this.value7 = attrs.join('-');    
     }, 
     checkDetail(rowData){
+      this.rowData = rowData;
+      this.tempTitle = '查看';
       this.$refs.add.show();
     },
     updateDetail(rowData){
+      this.rowData = rowData;
       this.tempTitle = '修改';
+      this.$refs.add.show();
+    },
+    deleteDetail(rowData){
       console.log(rowData)
     },
-    deleteDetail(){
-      console.log(rowData)
+    addDetail(){
+      this.rowData = {};
+      this.tempTitle = '新增';
+      this.$refs.add.show();
+    },
+    cancelAdd(){
+      this.$refs.add.hide();
+    },
+    saveAdd(formData){
+      console.log(formData)
+    },
+    changeStatus(state){
+      console.log(state);
     },
     rowClick(row){
       this.rowData = row;
@@ -468,6 +485,7 @@ export default {
   width:100%;
   .tabBoxs{
     position:absolute;
+    width:100%;
     top:11.5vh;
     .tabItems{
       color:#a7a7a7;
@@ -477,7 +495,7 @@ export default {
     .vhMT(45);
   }
   .workHead{
-    width: 95.6vw;
+    width: 95.6%;
     .vh(108);
     margin-left: 0.3rem;
     display: flex;
@@ -505,7 +523,7 @@ export default {
     }
   }
   .tableBoxs{
-    width: 95.6vw;
+    width: 95.6%;
     .vh(407);
     .vhMT(20);
     margin-left: 0.3rem;

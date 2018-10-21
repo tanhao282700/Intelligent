@@ -304,10 +304,10 @@ export default {
 
   }
   .msgBox{
-    width: 95.6vw;
     .vh(293);
-    margin-left: 0.3rem;
     .vhMT(16);
+    width:95.6%;
+    margin:0 auto;
      .msgsIn0{
         width: 100%;
         .vh(253);
@@ -401,7 +401,7 @@ export default {
   }
   .dealed{
     display: inline-block;
-    width: 47.2vw;
+    width: 47.07%;
     .vh(293);
     margin-left: 0.3rem;
     .vhMT(20);
@@ -477,7 +477,7 @@ export default {
   }
   .workFrom{
     display: inline-block;
-    width: 47.2vw;
+    width: 47.07%;
     .vh(293);
     margin-left:1.2vw;
     .vhMT(20);

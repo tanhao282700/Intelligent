@@ -225,8 +225,9 @@ export default {
 @import '../../assets/css/comon.less';
 .schedule{
   position: relative;
+  width:100%;
   .tabBoxs{
-    padding-left: 0.33rem;
+    margin:0 2.2%;
   }
   .sceBtn{
     position: absolute;
