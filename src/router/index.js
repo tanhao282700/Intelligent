@@ -51,7 +51,12 @@ Vue.use(Router);
 export default new Router({
   routes: [
     {
-      path: '/',
+      path: "/",
+      name: "login",
+      component:LoginModel
+    },
+    {
+      path: '/home',
       name: 'Home',
       component: Home
     },
@@ -111,11 +116,7 @@ export default new Router({
         },
         {
           path: '/AgentManage/routing',
-          component:generationMRouting,
-          children:[
-            { path: '/AgentManage/routing/first'},
-            { path: '/AgentManage/routing/second'}
-          ]
+          component:generationMRouting
         },
         {
           path: '/AgentManage/report',
@@ -151,11 +152,6 @@ export default new Router({
     {
       path: '/VideoSurveillance',
       component: VideoSurveillance,
-    },
-    {
-      path:"/login",
-      component:LoginModel,
-
     },
     {
       path: '/HotelStatus',

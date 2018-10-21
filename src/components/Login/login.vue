@@ -5,15 +5,15 @@
           <div class="loginInfoBox">
             <div class="inputItem">
               <label for="userName">用户名</label><span class="break breakWidth1"></span>
-              <input v-model="userName" type="text" placeholder="请输入用户名" id="userName" />
+              <input v-model="userName" type="text" :placeholder="nameText" id="userName" :class="{error:isError}" />
             </div>
             <div class="inputItem">
               <label for="password">密码</label><span class="break breakWidth1"></span>
-              <input v-model="password" type="password" placeholder="请输入密码" id="password" />
+              <input v-model="password" type="password" :placeholder="pwText" id="password" :class="{error:isError}" />
               <div class="forgetPw" @click=" forgetPw = true">忘记密码</div>
             </div>
             <div class="inputItem code">
-              <input v-model="validateCode" type="text" placeholder="请输入验证码" id="validateCode" />
+              <input v-model="validateCode" type="text" :placeholder="codeText" id="validateCode" :class="{error:codeError}"/>
               <span class="break breakWidth2"></span>
               <div class="codeImg"><img :src="codeImgPath" alt=""></div>
               <div class="refreshBtn" @click="refrenshCode"></div>
@@ -23,8 +23,14 @@
       </div>
       <footer>智能改变生活<span></span>数据成就未来</footer>
 
-      <!--忘记密码-->
+
       <transition name="el-fade-in-linear">
+        <!--报错提示-->
+        <div class="errTipBox" v-html="errMsg" v-show="errorTipShow"></div>
+      </transition>
+
+      <transition name="el-fade-in-linear">
+        <!--忘记密码-->
         <div v-show="forgetPw" class="forgetPwBox">
           <div>
             <div class="text">忘记密码，请与管理员取得联系</div>
@@ -45,9 +51,17 @@
           userName:"",
           password:"",
           validateCode:"",
+          nameText:"请输入用户名",
+          pwText:"请输入密码",
+          codeText:"请输入验证码",
           imgApi:"https://tesing.china-tillage.com/users_manage/users_get_verifg_code",
           codeImgPath:"",
-          forgetPw:false
+          forgetPw:false,
+          isError:false,
+          codeError:false,
+          errorTipShow:false,
+          errMsg:"",
+          emptyInputs:true
         }
       },
       methods:{
@@ -56,26 +70,91 @@
           this.codeImgPath= this.imgApi + '?' + num;
         },
         userLogin(){
-          var name = this.userName;
-          var userPw = this.password;
-
-          var fd = new FormData()
-          fd.append('username', name);
-          fd.append('password', userPw);
-          let config = {
-            headers: {
-              'Content-Type': 'multipart/form-data'
-            }
+          var that = this;
+          that.verifyInput();
+        },
+        verifyInput(){
+          var that = this;
+          if(!this.userName){
+            this.showErr(this.nameText);
+            return;
           }
-          this.$http.post('/api/users_manage/user_login',fd,config).then(res=>{
-            console.log(res);
+          if(!this.password){
+            this.showErr(this.pwText);
+            return;
+          }
+          if(!this.validateCode){
+            this.showErr(this.codeText);
+            return;
+          }else {
+            this.requestCode();
+          }
+
+        },
+        showErr(msg){
+          this.errorTipShow = this.emptyInputs = true;
+          this.errMsg = msg;
+        },
+        closeErr(){
+          this.errorTipShow = this.codeError = this.isError = false;
+          this.errMsg = "";
+        },
+        requestCode(){
+          let that = this;
+          that.$http.post('users_manage/users_login_validation_code',{
+            code:that.validateCode
+          },{
+            'Content-Type': 'multipart/form-data'
+          }).then(res=>{
+            let data = res.data;
+            console.log(data);
+            if(data.code == '0'){
+              that.closeErr();
+              that.requestLogin();
+            }else {
+              that.codeError = true;
+              that.showErr(data.message);
+            }
+          }).catch(err=>{
+            console.log(err);
+          })
+        },
+        requestLogin(){
+          let that = this;
+          let config = {
+            username:this.userName,
+            password:this.password
+          }
+          let headers = {
+            'Content-Type': 'multipart/form-data'
+          }
+          this.$http.post('/users_manage/user_login',config,headers).then(res=>{
+            let data = res.data;
+            console.log(data);
+            if(data.code=='0'){
+              that.closeErr();
+
+              var dataObj = that.$store.state.userInfoTotal = data.data;
+              var AUTH_TOKEN = dataObj.userinfo.password + "_" + dataObj.projectInfo[0].project_id + "_" + dataObj.userinfo.id;
+              axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
+              that.$router.replace({ path: '/home', params: { isLogin: true} });
+            }else {
+              that.isError = true;
+              that.showErr(data.message);
+            }
           }).catch(err=>{
             console.log(err);
           })
         }
       },
       mounted(){
+        let that = this;
+
         this.codeImgPath = this.imgApi;
+
+        $("#validateCode").blur(function () {
+
+        })
       }
     }
 </script>
@@ -149,6 +228,7 @@
     height: .24rem;
     width: 1.46rem;
     color: #fff;
+    font-size: .14rem;
   }
   .inputItem input::-webkit-input-placeholder{
     font-size: .14rem;
@@ -271,6 +351,20 @@
     font-size: 14px;
     color: #fff;
     cursor: pointer;
+  }
+  .error{color: #f00!important;}
+  .errTipBox{
+    width: 2.29rem;
+    line-height: .48rem;
+    background-color: #051732;
+    border-radius: 4px;
+    text-align: center;
+    font-size: .14rem;
+    color: #fff;
+    position: absolute;
+    bottom: .7rem;
+    left:50%;
+    transform: translate(-50%,0);
   }
 
 </style>

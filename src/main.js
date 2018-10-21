@@ -13,7 +13,6 @@ Vue.use(ElementUI);
 import axios from './http/axios';
 Vue.prototype.$http = axios;
 
-
 /* 引入jquery */
 import $ from 'jquery';
 
