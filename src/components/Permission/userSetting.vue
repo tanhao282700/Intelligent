@@ -13,12 +13,28 @@
       <div class="itemsBox">
         <!--筛选查询-->
         <div class="queryBox">
-          <el-select placeholder="请选择" v-for="(items,index) in options" v-model="itemValue[index]" :key="index" class="querySelectItem">
+          <el-select placeholder="请选择" v-model="itemValue[0]" class="querySelectItem">
             <el-option
-              v-for="item in items"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
+              v-for="item in options[0]"
+              :key="item.id"
+              :label="item.title"
+              :value="item.id">
+            </el-option>
+          </el-select>
+          <el-select placeholder="请选择" v-model="itemValue[1]" class="querySelectItem">
+            <el-option
+              v-for="item in options[1]"
+              :key="item.id"
+              :label="item.title"
+              :value="item.id">
+            </el-option>
+          </el-select>
+          <el-select placeholder="请选择" v-model="itemValue[2]" class="querySelectItem">
+            <el-option
+              v-for="item in options[2]"
+              :key="item.id"
+              :label="item.title"
+              :value="item.id">
             </el-option>
           </el-select>
           <el-input
@@ -46,37 +62,37 @@
           height="500"
           class="tableAlignCenter tableHeadBlue">
           <el-table-column
-            prop="code"
+            type="index"
             label="编号"
-            min-width="7%">
+            min-width="10%">
           </el-table-column>
           <el-table-column
-            prop="userName"
+            prop="username"
             label="用户名(手机号)"
             min-width="10%">
           </el-table-column>
           <el-table-column
-            prop="nickName"
+            prop="username"
             label="昵称"
-            min-width="19%">
+            min-width="16%">
           </el-table-column>
           <el-table-column
-            prop="department"
+            prop="dept_title"
             label="部门"
             min-width="12%">
           </el-table-column>
           <el-table-column
-            prop="position"
+            prop="position_title"
             label="职位"
             min-width="12%">
           </el-table-column>
           <el-table-column
-            prop="role"
+            prop="role_title"
             label="角色"
             min-width="12%">
           </el-table-column>
           <el-table-column
-            prop="createTime"
+            prop="create_date"
             label="创建时间"
             min-width="19%">
           </el-table-column>
@@ -106,7 +122,7 @@
             :page-size="pageSize"
             :page-count="totalPageNum"
             layout="prev, pager, next"
-            :total="totalDataNumber">
+            >
           </el-pagination>
 
         </div>
@@ -127,21 +143,17 @@
           </el-form-item>
           <el-form-item :label="form.department.label" >
             <el-select v-model="form.department.key" placeholder="请选择">
-              <el-option label="工程部" value="department1"></el-option>
-              <el-option label="建设部" value="department2"></el-option>
+              <el-option :label="item.title" :value="item.id" v-for="item in options[0]" :key="item.id"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item :label="form.position.label" >
             <el-select v-model="form.position.key" placeholder="请选择">
-              <el-option label="经理" value="position1"></el-option>
-              <el-option label="主管" value="position2"></el-option>
-              <el-option label="员工" value="position3"></el-option>
+              <el-option :label="item.title" :value="item.id" v-for="item in options[1]" :key="item.id"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item :label="form.role.label" >
             <el-select v-model="form.role.key" placeholder="请选择">
-              <el-option label="强电运维" value="role1"></el-option>
-              <el-option label="强电测试" value="role2"></el-option>
+              <el-option :label="item.title" :value="item.id" v-for="item in options[2]" :key="item.id"></el-option>
             </el-select>
           </el-form-item>
         </el-form>
@@ -168,9 +180,8 @@
 </template>
 
 <script>
-    import queryData from './Data/queryGroupData.json';
-    import tableData from './Data/tableData.json';
     import bubbleTip from '@/components/common/bubbleTip';
+    import axios from 'axios';
 
     export default {
       components:{
@@ -179,13 +190,14 @@
       name: "user-setting",
       data(){
         return {
-          options: "",
-          itemValue:[],
-          tableData: [],
-          currentPage: 1,
-          pageSize: 20,
-          totalPageNum: '',
-          totalDataNumber:'',
+          sysInfo:{}, //系统信息
+          options: [], //下拉选项数组
+          itemValue:[], //点击查询数据时条件数组
+          tableData: [], //表格数据
+          currentPage: 1, //当前页码
+          pageSize: 20, //每页显示数量
+          totalPageNum: 1,
+          totalDataNumber: 20,
           curPageData:[],
           groupPageData:[],
           accountInfoDialog:false,
@@ -200,7 +212,9 @@
           formTitle:"",
           isAdd:true,
           bubbleTip:'',
-          isReset:false
+          isReset:false,
+          phoneRegexp:/^0?(13|14|15|17|18|19)[0-9]{9}$/,
+          curEditUserId:''
         }
       },
       methods:{
@@ -211,37 +225,14 @@
         currentPageChange(val) {
           /*当前页变动事件*/
           this.currentPage = val;
-          this.curPageData = this.groupPageData[val-1];
+          this.requestTableData(val);
         },
-        tabelDataGroupBy(){
+        getCurPageData(data){
           /*根据请求表格数据分组*/
           let that = this;
-          this.tableData = tableData;
-          this.totalDataNumber = this.tableData.length;
-          this.totalPageNum = Math.ceil(Number(this.totalDataNumber) / this.pageSize);
-          if(this.totalPageNum == 1){
-            this.curPageData = this.tableData;
-          }else {
-            let times = 0;
-            let curGroup = 1;
-            let tempArray = [];
-            let pageSize = this.pageSize;
-            for(let i=0;i<this.totalDataNumber;i++){
-              if(times<pageSize){
-                times++;
-              }else {
-                times = 1;
-                that.groupPageData.push(tempArray);
-                tempArray = [];
-                curGroup++;
-              }
-              tempArray.push(tableData[i]);
-              if(curGroup==that.totalPageNum && i==that.totalDataNumber-1){
-                that.groupPageData.push(tempArray);
-                that.curPageData = that.groupPageData[0];
-              }
-            }
-          }
+          that.tableData = data.data;
+          that.totalPageNum = data.paging.count;
+          that.curPageData = that.tableData;
         },
         toInputPage(){
           /*显示输入页表格数据*/
@@ -260,19 +251,50 @@
             if(!type && i=='password'){
               break;
             }
-            let temp = this.form[i].key;
+            let temp = that.form[i].key;
+
             if(!temp){
-              /*that.bubbleTipShow(this.form[i].label + "不能为空");*/
               that.bubbleTipShow("请完善信息");
               return;
+            }else {
+              if(i == 'name'){
+                if(!that.phoneRegexp.test(temp)){
+                  that.bubbleTipShow("用户名格式不正确");
+                  return;
+                };
+              }
             }
           }
-          let message = type?"保存成功":"修改成功";;
-          this.bubbleTipShow(message);
-          setTimeout(function () {
-            that.accountInfoDialog = false;
-            that.clearForm();
-          },2000)
+          let userId;
+          type?userId=0 : userId=that.curEditUserId;
+
+          let config = {
+            user_id : userId,
+            phone : that.form.name.key,
+            username : that.form.name.key,
+            pwd : that.form.password.key,
+            dept_id : that.form.department.key,
+            posit_id : that.form.position.key,
+            role_id : that.form.role.key,
+            address : ""
+          }
+
+          that.$http.post('users_manage/users_addmodify',config).then(res=>{
+            console.log(res);
+            if(res.data.code ='0'){
+              let message = type?"保存成功":"修改成功";;
+              that.bubbleTipShow(message);
+              setTimeout(function () {
+                that.accountInfoDialog = false;
+                that.clearForm();
+              },2000)
+            }else {
+              that.bubbleTipShow(res.data.message);
+            }
+          }).catch(err=>{
+            console.log(err);
+          })
+
         },
         editAccount(val){
           /*修改信息*/
@@ -280,29 +302,59 @@
           this.accountInfoDialog = true;
           this.formTitle = '修改信息';
           this.isAdd = false;
-          this.form.name.key = val.userName;
-          this.form.department.key = val.department;
-          this.form.position.key = val.position;
-          this.form.role.key = val.role;
+          this.form.name.key = val.username;
+          this.form.department.key = val.dept_title;
+          this.form.position.key = val.position_title;
+          this.form.role.key = val.role_title;
+          this.curEditUserId = val.user_id;
         },
         deleteAccount(val){
-          this.deleteInfoDialog = true;
+          var that = this;
+          that.deleteInfoDialog = true;
+          that.curEditUserId = val.user_id;
         },
         confirmDelete(){
           let that = this;
-          that.bubbleTipShow('删除成功');
-          setTimeout(function () {
-            that.deleteInfoDialog = false;
-          },2000)
+          let config = {
+            user_id : that.curEditUserId
+          }
+
+          that.$http.post('users_manage/users_delete',config).then(res=>{
+            console.log(res);
+            if(res.data.code ='0'){
+              that.isReset = false;
+              that.bubbleTipShow('删除成功');
+              setTimeout(function () {
+                that.deleteInfoDialog = false;
+              },2000)
+            }else {
+              that.bubbleTipShow(res.data.message);
+            }
+          }).catch(err=>{
+            console.log(err);
+          })
         },
         resetPw(){
           /*重置密码*/
           var that = this;
-          this.isReset = true;
-          setTimeout(function () {
-            that.isReset = false;
-            that.bubbleTipShow('重置成功');
-          },1000);
+          that.isReset = true;
+
+          let config = {
+            user_id : that.curEditUserId,
+            pwd : ""
+          }
+
+          that.$http.post('users_manage/users_reset_password',config).then(res=>{
+            console.log(res);
+            if(res.data.code ='0'){
+              that.isReset = false;
+              that.bubbleTipShow('重置成功');
+            }else {
+              that.bubbleTipShow(res.data.message);
+            }
+          }).catch(err=>{
+            console.log(err);
+          })
         },
         clearForm(){
           for(var i in this.form){
@@ -316,13 +368,58 @@
           setTimeout(function () {
             that.$store.state.bubbleShow = false;
           },3000)
+        },
+        requestOptions(){
+          /*获选下拉选项数据*/
+          let that  = this;
+          that.sysInfo.projectId = that.$store.state.projectId;
+          that.sysInfo.roleId = that.$store.state.userInfoTotal.role_info.role_id;
+          that.sysInfo.roleType = that.$store.state.userInfoTotal.usergrouprolesyslist[0].role_type;
+
+          axios.all([
+            that.$http.post('/users_manage/users_department',{
+              project_id: that.sysInfo.projectId
+            }),
+            that.$http.post('/users_manage/users_dept_position',{
+              project_id: that.sysInfo.projectId
+            }),
+            that.$http.post('/users_manage/users_roleinfo_list',{
+              user_role_id:that.sysInfo.roleId
+            })
+          ]).then(axios.spread(function (departResp, positionResp,roleResp) {
+
+            // 上面两个请求都完成后，才执行这个回调方法
+            that.$store.state.permission.options[0] = that.options[0] = departResp.data.data;
+            that.$store.state.permission.options[1] = that.options[1] = positionResp.data.data;
+            that.$store.state.permission.options[2] = that.options[2] = roleResp.data.data;
+            that.$forceUpdate();
+          }));
+        },
+        requestTableData(curPageNum){
+          /*请求表格数据*/
+          let that = this;
+          let config = {
+            project_id : that.sysInfo.projectId,
+            pagenumber : curPageNum,
+            pagesize : that.pageSize,
+            role_type : that.sysInfo.roleType,
+            dept_id : that.itemValue[0],
+            posit_id : that.itemValue[1],
+            role_id : that.itemValue[2],
+            username : that.itemValue[3],
+            user_role_id : that.sysInfo.roleId
+          }
+          that.$http.post('users_manage/usersinfo',config).then(res=>{
+            that.getCurPageData(res.data);
+          }).catch(err=>{
+            console.log(err);
+          })
         }
       },
       created(){
-        this.options = queryData;
-        if(tableData){
-          this.tabelDataGroupBy();
-        }
+        this.requestOptions();
+
+        this.requestTableData(1);
       },
       mounted(){
 
