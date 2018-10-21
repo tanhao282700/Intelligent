@@ -196,7 +196,7 @@
         }],
         partsData:[{
           id:1,
-          componentsName:'RevenueData'
+          componentsName:''
         },{
           id:2,
           componentsName:''
