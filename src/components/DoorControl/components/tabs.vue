@@ -17,17 +17,17 @@
             </div>
             <div class="tableBox">
                 <el-table :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)" style="width: 100%">
-                    <el-table-column prop="serialNumber" label="编号" align="cneter"></el-table-column>
-                    <el-table-column prop="policyName" label="ID卡号" align="cneter"></el-table-column>
+                    <el-table-column prop="show_id" label="编号" align="cneter"></el-table-column>
+                    <el-table-column prop="id_card" label="ID卡号" align="cneter"></el-table-column>
                     <el-table-column prop="name" label="姓名"  align="cneter"></el-table-column>
-                    <el-table-column prop="policyNumber" label="部门"  align="cneter"></el-table-column>
-                    <el-table-column prop="policyAttr" label="卡类型"  align="cneter"></el-table-column>
-                    <el-table-column prop="powerType" label="设备名称"  align="cneter"></el-table-column>
-                    <el-table-column prop="policyType" label="门名称" align="cneter"></el-table-column>
-                    <el-table-column prop="date" label="开门时间" width="200" align="cneter"></el-table-column>
+                    <el-table-column prop="department" label="部门"  align="cneter"></el-table-column>
+                    <el-table-column prop="card_type" label="卡类型"  align="cneter"></el-table-column>
+                    <el-table-column prop="device_name" label="设备名称"  align="cneter"></el-table-column>
+                    <el-table-column prop="door_name" label="门名称" align="cneter"></el-table-column>
+                    <el-table-column prop="open_datetime" label="开门时间" width="200" align="cneter"></el-table-column>
                     <el-table-column prop="tag" label="开门事件" width="100" > 
                         <template slot-scope="scope">
-                            <a class="cursor" @click="handleEdit(scope.$index, scope.row)">{{scope.row.tag}}</a>
+                            <a class="cursor" @click="handleEdit(scope.$index, scope.row)">{{scope.row.open_event}}</a>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -66,20 +66,21 @@
         methods:{
             getData(){
                 var that = this;
-                this.$http.get('../../../static/tableDemo.json').then(function(response){
+                this.$http.post('/entrance/record',{
+                    sys_menu_id:15,
+                    project_id:1,
+                    floor_id:1,
+                }).then(function(response){
                     // 响应成功回调
-                    console.log(response)
-                    console.log(response.data)
-                    that.tableData = response.data
+                    //console.log(response.data.data);
+                    that.tableData = response.data.data.entrance_guard_record;
                 }, function(response){
                     // 响应错误回调
-                    console.log("ccc")
-                    console.log(response)
                 });
             },
             doSearch(){},
             addPolicy(){},
-            handleEdit(index, row){ console.log(row.name) },
+            handleEdit(index, row){  },
             handleSizeChange: function (size) {
                 this.pagesize = size;
             },

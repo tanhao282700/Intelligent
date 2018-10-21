@@ -1,6 +1,6 @@
 <template>
     <div class="tabsDomBox0"> 
-        <div class="navCrumbs">首页 > 门禁系统 > <span>门禁记录</span></div>
+        <div class="navCrumbs">首页 > 门禁系统 > <span>系统平面</span></div>
         <div class="topShadow">
             <el-select v-model="buildingNumber" placeholder="楼号">
                 <el-option label="1栋" value="1"></el-option>
@@ -13,32 +13,38 @@
             <ul class="doorStatusBox">
                 <li>
                     <span>当前门禁数</span>
-                    <span class="doorAllN">12</span>
+                    <span class="doorAllN">{{totleDoors}}</span>
                 </li>
                 <li>
                     <span><i class="doorClose"></i>关闭</span>
-                    <span class="doorCloseN">12</span>
+                    <span class="doorCloseN">{{doorClose}}</span>
                 </li>
                 <li>
                     <span><i class="doorWarning"></i>异常</span>
-                    <span class="doorWarningN">1</span>
+                    <span class="doorWarningN">{{doorWarning}}</span>
                 </li>
                 <li>
                     <span><i class="doorOpen"></i>开启</span>
-                    <span class="doorOpenN">2</span>
+                    <span class="doorOpenN">{{doorOpenN}}</span>
                 </li>
             </ul>
         </div>
         <div class="bottomShadow">
             <div class="floorImgBox">
                 <img src="../../../assets/img/doorControl/bg_lc.png">
-                <i :class="[item.sta,'door'+(index+1)]" v-for="(item,index) in iList" @mouseenter = "popToggle(index,item.x,item.y)" @mouseout = "popHide" @click="doorInfoPanel(index)">{{item.num}}
-                    <pops  :info = "onMouseDoor"></pops>
+                <i :class="['doorSta'+item.device_state,'door'+(index+1)]" 
+                   v-for="(item,index) in iList" 
+                   @mouseenter = "popToggle(index,item.x,item.y,item.device_id,item.device_state)" 
+                   @mouseout = "popHide" 
+                   @click="doorInfoPanel(item.device_id,item)"
+                   :style="{left:item.position_x + 'px',top:item.position_y + 'px'}"
+                >{{item.device_name.slice(0,1)}}
+                    <pops  :info = "onMouseDoor" :infoSta = "infoSta" :controlDoorFun = "controlDoorFun"></pops>
                 </i>
                 
             </div>
         </div>
-        <door-info v-on:doorInfoHide="doorInfoHide" v-show="doorInfoShow" :hid = "doorInfoShow"></door-info>
+        <door-info v-on:doorInfoHide="doorInfoHide" :doorInfoId="doorInfoId" :doorInfomation="doorInfomation" v-show="doorInfoShow" :hid = "doorInfoShow"></door-info>
     </div>
 </template>
 <script>
@@ -49,26 +55,22 @@
     export default {
         data () {
         	return {
+                infoSta:'',
+                controlDoorFun:'',
+                onDoorName:'', //当前门禁名字
+                totleDoors:'', //当前门禁数量
+                doorClose:'', //关闭状态门数量
+                doorWarning:'', //警告状态门数量
+                doorOpenN:'', //打开门数量
+                doorInfoId:'', //pop弹框当前门id
+                doorInfomation:[], //当前门详细信息
                 doorInfoShow:false, //弹框显示隐藏
                 onMouseDoor:'', //当前滑过icon
                 xLeft:'', //x值
                 yTop:'', //y值
                 buildingNumber:"", //楼号
 				floorNumber:"", //层号
-                iList:[
-                    {num:1,x:68,y:74,sta:'close'},
-                    {num:2,x:114,y:180,sta:'close'},
-                    {num:3,x:212,y:277,sta:'close'},
-                    {num:4,x:320,y:260,sta:'open'},
-                    {num:5,x:270,y:72,sta:'warning'},
-                    {num:6,x:398,y:310,sta:'open'},
-                    {num:7,x:475,y:16,sta:'close'},
-                    {num:8,x:532,y:107,sta:'close'},
-                    {num:9,x:622,y:246,sta:'close'},
-                    {num:10,x:658,y:30,sta:'close'},
-                    {num:11,x:754,y:119,sta:'close'},
-                    {num:12,x:842,y:350,sta:'close'},
-                ]
+                iList:[]
 				
         	}
         },
@@ -77,22 +79,63 @@
             "doorInfo":doorInfo
         },
         mounted(){
+            this.getDoorData();
         },
         methods:{
-            popToggle(i,x,y){
+            popToggle(i,x,y,id,sta){
                 //this.popShow = true;
-                this.onMouseDoor = i+1;
+                this.onMouseDoor = id;
                 this.xLeft = x;
                 this.yTop = y;
+                if(sta == "0"){
+                    this.infoSta = "关闭";
+                    this.controlDoorFun = "远程开门";
+                }else if(sta == "1"){
+                    this.infoSta = "开启";
+                    this.controlDoorFun = "远程关门";
+                }else if(sta == "2"){
+                    this.infoSta = "异常";
+                    this.controlDoorFun = "远程开门";
+                }
             },
             popHide(){
-                //this.popShow = false;
+                
             },
-            doorInfoPanel(){
+            doorInfoPanel(id,item){
+                this.doorInfoId = id;
                 this.doorInfoShow = true;
+                var that = this;
+                this.$http.post('/entrance/record',{
+                    sys_menu_id:15,
+                    project_id:1,
+                    floor_id:1,
+                    device_id:id
+                }).then(function(response){
+                    // 响应成功回调
+                    that.doorInfomation = response.data.data.entrance_guard_record;
+                }, function(response){
+                    // 响应错误回调
+                });
+            
             },
             doorInfoHide(doorInfoHide){
                 this.doorInfoShow = doorInfoHide;
+            },
+            //获取页面数据
+            getDoorData(){
+                let that = this;
+                this.$http.post('/entrance/all_info',{
+                    sys_menu_id:15,
+                    project_id:1,
+                    floor_id:1,
+                }).then(function(data){
+                    console.log(data.data.data.entrance_guard_info.device_2d_pic_state_list);
+                    that.iList = data.data.data.entrance_guard_info.device_2d_pic_state_list;
+                    that.totleDoors = data.data.data.entrance_guard_info.entrance_guard_total_num;
+                    that.doorClose = data.data.data.entrance_guard_info.entrance_guard_close_num;
+                    that.doorWarning = data.data.data.entrance_guard_info.entrance_guard_anomaly_num;
+                    that.doorOpenN = data.data.data.entrance_guard_info.entrance_guard_open_num;
+                });
             }
         }
     }
