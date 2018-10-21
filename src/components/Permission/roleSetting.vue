@@ -13,12 +13,28 @@
       <div class="itemsBox">
         <!--筛选查询-->
         <div class="queryBox">
-          <el-select placeholder="请选择" v-for="(items,index) in options" v-model="itemValue[index]" :key="index" class="querySelectItem">
+          <el-select placeholder="请选择" v-model="itemValue[0]" class="querySelectItem">
             <el-option
-              v-for="item in items"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
+              v-for="item in options[0]"
+              :key="item.id"
+              :label="item.title"
+              :value="item.id">
+            </el-option>
+          </el-select>
+          <el-select placeholder="请选择" v-model="itemValue[1]" class="querySelectItem">
+            <el-option
+              v-for="item in options[1]"
+              :key="item.id"
+              :label="item.title"
+              :value="item.id">
+            </el-option>
+          </el-select>
+          <el-select placeholder="请选择" v-model="itemValue[2]" class="querySelectItem">
+            <el-option
+              v-for="item in options[2]"
+              :key="item.id"
+              :label="item.title"
+              :value="item.id">
             </el-option>
           </el-select>
           <div>
@@ -110,15 +126,12 @@
           </el-form-item>
           <el-form-item :label="form.department.label" >
             <el-select v-model="form.department.key" placeholder="请选择">
-              <el-option label="工程部" value="department1"></el-option>
-              <el-option label="建设部" value="department2"></el-option>
+              <el-option :label="item.title" :value="item.id" v-for="item in options[0]" :key="item.id"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item :label="form.position.label" >
             <el-select v-model="form.position.key" placeholder="请选择">
-              <el-option label="经理" value="position1"></el-option>
-              <el-option label="主管" value="position2"></el-option>
-              <el-option label="员工" value="position3"></el-option>
+              <el-option :label="item.title" :value="item.id" v-for="item in options[1]" :key="item.id"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item :label="form.powerRange.label" class="powerSelectBox">
@@ -172,13 +185,14 @@
     name: "role-setting",
     data(){
       return {
-        options: "",
-        itemValue:[],
-        tableData: [],
-        currentPage: 1,
-        pageSize: 20,
-        totalPageNum: '',
-        totalDataNumber:'',
+        sysInfo:{}, //系统信息
+        options: [], //下拉选项数组
+        itemValue:[], //点击查询数据时条件数组
+        tableData: [], //表格数据
+        currentPage: 1, //当前页码
+        pageSize: 20, //每页显示数量
+        totalPageNum: 1,
+        totalDataNumber: 20,
         curPageData:[],
         groupPageData:[],
         accountInfoDialog:false,
@@ -347,7 +361,12 @@
       }
     },
     created(){
-      this.options = queryData;
+      var that = this;
+      var option = this.$store.state.permission.options;
+      if(option){
+        that.options = option;
+      }
+
       if(tableData){
         this.tabelDataGroupBy();
       }

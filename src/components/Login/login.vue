@@ -135,7 +135,9 @@
               that.closeErr();
 
               var dataObj = that.$store.state.userInfoTotal = data.data;
-              var AUTH_TOKEN = dataObj.userinfo.password + "_" + dataObj.projectInfo[0].project_id + "_" + dataObj.userinfo.id;
+              var projeceId = that.$store.state.projectId = dataObj.projectInfo[0].project_id;
+              var userId = that.$store.state.userId = dataObj.userinfo.id
+              var AUTH_TOKEN = dataObj.userinfo.password + "_" + projeceId + "_" + userId;
               axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
               that.$router.replace({ path: '/home', params: { isLogin: true} });
             }else {

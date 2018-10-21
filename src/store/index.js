@@ -4,8 +4,13 @@ Vue.use(vuex);
 
 
 export default new vuex.Store({
-  state:{
-    bubbleShow:false,
-    userInfoTotal:""
+  state: {
+    bubbleShow : false,
+    userInfoTotal : "",
+    projectId : "",
+    userId : "",
+    permission: {
+      options: []
+    }
   }
 })

@@ -1,8 +1,9 @@
 <template>
   <div id="app">
-    <transition name="bounce" mode="out-in">
+    <router-view/>
+    <!--<transition name="bounce" mode="out-in">
       <router-view/>
-    </transition>
+    </transition>-->
   </div>
 </template>
 
