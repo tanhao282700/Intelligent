@@ -268,7 +268,7 @@
     flex-direction:column;
     .title{
       height:8.9%;
-      background:#000c27;
+      background:rgba(0,12,39,0.4);
       display: flex;
       flex-direction: row;
       justify-content: center;
@@ -311,6 +311,7 @@
     position:relative;
     .nergyEcharts{
       height:50%;
+      background:rgba(0,0,0,0.15);
       div{
         width:100%!important;
         height:100%!important;

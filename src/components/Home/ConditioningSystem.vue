@@ -225,7 +225,7 @@
     flex-direction:column;
     .title{
       height:8.9%;
-      background:#000c27;
+      background:rgba(0,12,39,0.4);
       display: flex;
       flex-direction: row;
       justify-content: center;
@@ -265,10 +265,9 @@
     display:flex;
     flex-direction: column;
     padding:2.597% 6% 0 6%;
-    background:#011530;
     .con-top{
       margin-top:1.623%;
-      background:#000000;
+      background:rgba(0,0,0,0.15);
       opacity:.8;
       /*height:29.22%;*/
       flex:1;
@@ -296,7 +295,7 @@
     }
     .conditionEcharts3{
       height:14.123%;
-      background:#000000;
+      background:rgba(0,0,0,0.15);
       margin-top:1.623%;
       display: flex;
       padding:0 2.272%;
@@ -313,7 +312,7 @@
           justify-content: center;
         }
         .typs{
-          background:#000c27;
+          background:rgba(0,12,39,0.4);
           height:52.87%;
           width:98%;
           flex-direction: row;
@@ -340,7 +339,7 @@
       display: flex;
       flex-direction: row;
       .broadL{
-        background:#000000;
+        background:rgba(0,0,0,0.3);
         width:12.64%;
         color:white;
         font-size:12px;
@@ -351,7 +350,7 @@
       }
       .broadR{
         flex:1;
-        background:#000000;
+        background:rgba(0,0,0,0.3);
         opacity: .8;
         overflow:hidden;
         padding:0 4.6%;

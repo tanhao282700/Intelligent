@@ -135,7 +135,7 @@
     flex-direction:column;
     .title{
       height:8.9%;
-      background:#000c27;
+      background:rgba(0,12,39,0.4);
       display: flex;
       flex-direction: row;
       justify-content: center;
@@ -182,10 +182,10 @@
       .doorPartOneCon{
         width:87.649%;
         height:81.25%;
-        background:#3b618e;
+        background:rgba(59,97,142,0.4);
         display: flex;
         flex-direction: column;
-        box-shadow:inset 0px 0px 6px 1px #000;;
+        box-shadow:inset 0px 0px 6px 1px rgba(0,12,39,0.7);
         span{
           flex: 50%;
         }
@@ -219,7 +219,7 @@
       }
       .partCon{
         height:80%;
-        background:#000c27;
+        background:rgba(0,0,0,0.15);
       }
     }
   }

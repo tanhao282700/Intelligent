@@ -170,7 +170,7 @@
     flex-direction:column;
     .title{
       height:8.9%;
-      background:#000c27;
+      background:rgba(0,12,39,0.4);
       display: flex;
       flex-direction: row;
       justify-content: center;
@@ -214,7 +214,7 @@
       height:50.974%;
       display: flex;
       flex-direction: column;
-      background:#000B1D;
+      background:rgba(0,0,0,0.15);
       #revenueEcharts1{
         padding:0 5%;
         height:44.985%;
@@ -230,7 +230,7 @@
         }
         .percent{
           height:37.143%;
-          background:#192f3d;
+          background:rgba(0,12,39,0.4);
           border-radius:4px;
           display: flex;
           flex-direction: row;
@@ -338,7 +338,7 @@
             height:200px;
             top:0;
             left:50%;
-            background:#121e2e;
+            background:rgba(1, 21, 48, 0.6);
             border-radius:38%;
             transform:translate(-50%,-70%)rotate(0);
             animation:rotate 6s linear infinite;
@@ -346,7 +346,7 @@
           }
           .wave::after{
             border-radius:43%;
-            background-color:#121e2e;
+            background:rgba(1, 21, 48, 0.6);
             transform:translate(-50%,-70%)rotate(0);
             animation:rotate 10s linear -5s infinite;
             z-index:20;

@@ -201,7 +201,7 @@
     flex-direction:column;
     .title{
       height:8.9%;
-      background:#000c27;
+      background:rgba(0,12,39,0.4);
       display: flex;
       flex-direction: row;
       justify-content: center;
@@ -243,7 +243,7 @@
     flex-direction: column;
     padding:0 3.187%;
     position:relative;
-    background:#011530;
+    /*background:#011530;*/
     /*.chart{
       flex-basis: 33.333%;
     }*/

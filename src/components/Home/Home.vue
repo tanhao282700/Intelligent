@@ -196,7 +196,7 @@
         }],
         partsData:[{
           id:1,
-          componentsName:''
+          componentsName:'RevenueData'
         },{
           id:2,
           componentsName:''
@@ -233,6 +233,7 @@
     },
     methods:{
       initModelId(){
+        console.log(this.$store.state)
         this.$http.get('/index_pc/pc/select/model').then(function (response) {
           console.log(response);
         })
@@ -388,8 +389,7 @@
     }
     .partOne{
       position:absolute;
-      background:#011530;
-      opacity:.7;
+      background:rgba(1,21,48,0.6);
       .widl(30);
       .wid(502);
       .hei(674);
@@ -397,8 +397,7 @@
     }
     .partTwo{
       position:absolute;
-      background:#011530;
-      opacity:.7;
+      background:rgba(1,21,48,.6);
       .widl(2203);
       .wid(502);
       .hei(674);
@@ -406,8 +405,7 @@
     }
     .partThree{
       position:absolute;
-      background:#011530;
-      opacity:.7;
+      background:rgba(1,21,48,.6);
       .widl(30);
       .wid(502);
       .hei(674);
@@ -415,8 +413,7 @@
     }
     .partFour{
       position:absolute;
-      background:#011530;
-      opacity:.7;
+      background:rgba(1,21,48,.6);
       .widl(2203);
       .wid(502);
       .hei(674);
@@ -431,8 +428,7 @@
       display: flex;
       flex-direction: row;
       justify-content: space-between;
-      opacity:.8;
-      background:#1e303a;
+      background:rgba(1, 21, 48, 0.15);
       border-radius:4px;
       .left{
         img{
@@ -465,8 +461,7 @@
     }
     .monitoring{
       position:absolute;
-      background:#274758;
-      opacity:.8;
+      background:rgba(1,21,48,0.6);
       .widl(560);
       .wid(1614);
       .hei(304);
@@ -476,7 +471,7 @@
       flex-direction: row;
       .monitoringName{
         width:4%;
-        background:#0d1e30;
+        background:rgba(0, 12, 39, 0.4);
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -511,7 +506,7 @@
               margin:0 10px;
               padding-left:16px;
               padding-right:8px;
-              background:#1e303a;
+              background:rgba(1, 21, 48, 0.15);
               display: flex;
               flex-direction: row;
               align-items: center;
@@ -645,7 +640,7 @@
       }
       .title{
         height:8.9%;
-        background:#000c27;
+        background:rgba(0,12,39,0.4);
         display: flex;
         flex-direction: row;
         justify-content: center;
@@ -663,7 +658,6 @@
         }
       }
       .addIcon{
-        background:#011530;
         flex:1;
         display: flex;
         font-size:60px;
