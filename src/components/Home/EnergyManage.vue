@@ -11,9 +11,9 @@
         <div class="logo"></div>
       </div>
       <div class="button">
-        <span class="active">水</span>
-        <span>电</span>
-        <span>气</span>
+        <span class="active" @click="change(1)">水</span>
+        <span @click="change(0)">电</span>
+        <span @click="change(2)">气</span>
       </div>
     </div>
   </div>
@@ -28,42 +28,83 @@
     },
     data(){
         return{
-          dataAxis:['今日','本月','本年'],
-          data:[{
-              time:'今日',
-              data1:20,
-              data2:30
-          },{
-            time:'本月',
-            data1:30,
-            data2:40
-          },{
-            time:'本年',
-            data1:699,
-            data2:499
-          }],
           energyChart:{},
-          energyChart2:{}
+          energyChart2:{},
+          option:{},
+          data:{
+              0:{},  //电
+              1:{},  //水
+              2:{}   //气
+          },
+          columnarData:{
+              plan:[],
+              current:[]
+          }
         }
     },
     components:{
 
     },
     mounted(){
-      this.drawEchart()
-      this.drawEchart2()
+
+
+        this.initData()
     },
     watch:{
       isResize(){
         this.energyChart.resize()
         this.energyChart2.resize()
+      },
+      columnarData:{
+          handler(newVal,oldVal){
+              console.log(this.option)
+              this.energyChart.clear()
+              this.energyChart.setOption(this.option,true)
+          },
+          deep: true
       }
     },
     methods:{
+        change(type){
+            if(type===1){ //水
+                this.columnarData.current = this.data[1].data.Columnar.value
+                this.columnarData.plan= this.data[1].data.Columnar.plan
+            }else if(type === 0){ //电
+                this.columnarData.current = this.data[0].data.Columnar.value
+                this.columnarData.plan = this.data[0].data.Columnar.plan
+            }else if(type === 2){  //气
+                this.columnarData.current = this.data[2].data.Columnar.value
+                this.columnarData.plan = this.data[2].data.Columnar.plan
+            }
+        },
+        initData(){
+            this.$http.get('/index_pc/pc/model',{self_id:2})
+                .then((response)=>{
+                if(response.data.code == 0){
+                  response.data.data.map((item,index)=>{
+                      if(item.type === 0){ //电
+                          this.data[0].data = item
+                      }else if(item.type === 1){  //水
+                          this.data[1].data = item
+                      }else if(item.type === 2){  //气
+                          this.data[2].data = item
+                      }
+                  })
+                  this.columnarData.current = this.data[1].data.Columnar.value  //初始化水，当前的数据
+                  this.columnarData.plan = this.data[1].data.Columnar.plan  //初始化水，计划的数据
+                  this.drawEchart()
+                  this.drawEchart2()
+                }else{
+
+                }
+            })
+        .catch((error)=>{
+                console.log(error);
+            });
+        },
       drawEchart(){
-        let energyChart = this.$echarts.init(document.getElementById("nergyEcharts"));
-        this.energyChart = energyChart
-        let option = {
+        this.energyChart = this.$echarts.init(document.getElementById("nergyEcharts"));
+        this.option = {
           title : {
             show:false,
             text: '能源管理',
@@ -124,7 +165,7 @@
                     }
                   }
               },
-              data:[655,455,605],
+              data:this.columnarData.current,
               barGap:0,
               barMinHeight:2,
               barMaxWidth:24
@@ -143,7 +184,7 @@
                       }
                   }
               },
-              data:[630,200,105],
+              data:this.columnarData.plan,
               barGap:0,
               barMinHeight:2,
               barMaxWidth:24
@@ -156,7 +197,7 @@
 
 
         // 绘制图表
-        energyChart.setOption(option);
+        this.energyChart.setOption(this.option);
       },
       drawEchart2(){
         let energyChart2 = this.$echarts.init(document.getElementById("nergyEcharts2"));
