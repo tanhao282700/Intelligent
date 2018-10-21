@@ -22,7 +22,7 @@
               <el-menu-item-group>
                 <!--<template slot="title">分组一</template>-->
                 <el-menu-item index="DoorControl"><span class="textPL">门禁系统</span></el-menu-item>
-                <el-menu-item disabled index="1-2"><span class="textPL">视频监控系统</span></el-menu-item>
+                <el-menu-item index="VideoSurveillance"><span class="textPL">视频监控系统</span></el-menu-item>
                 <el-menu-item index="fireAlarm/fireMonitor"><span class="textPL">消防系统</span></el-menu-item>
                 <el-menu-item disabled index="1-4"><span class="textPL">中央空调系统</span></el-menu-item>
               </el-menu-item-group>
@@ -34,7 +34,7 @@
               </template>
               <el-menu-item-group>
                 <el-menu-item index="energy"><span class="textPL">能源管理系统</span></el-menu-item>
-                <el-menu-item disabled index="2-2"><span class="textPL">营收数据分析</span></el-menu-item>
+                <el-menu-item index="HotelStatus"><span class="textPL">营收数据分析</span></el-menu-item>
               </el-menu-item-group>
             </el-submenu>
             <!--<el-submenu index="3" >

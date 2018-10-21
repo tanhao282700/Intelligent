@@ -7,8 +7,8 @@
     </div>
     <div class="con">
       <div class="con-top">
-        <div class="conditionEcharts1 chart" ref="conditionEcharts1" id="conditionEcharts1"></div>
-        <div class="conditionEcharts2 chart" ref="conditionEcharts2" id="conditionEcharts2"></div>
+        <div class="conditionEcharts1" ref="conditionEcharts1" id="conditionEcharts1"></div>
+        <div class="conditionEcharts2" ref="conditionEcharts2" id="conditionEcharts2"></div>
       </div>
       <div class="conditionEcharts3">
         <div class="type">
@@ -225,7 +225,7 @@
     flex-direction:column;
     .title{
       height:8.9%;
-      background:#0e2340;
+      background:#000c27;
       display: flex;
       flex-direction: row;
       justify-content: center;
@@ -265,23 +265,38 @@
     display:flex;
     flex-direction: column;
     padding:2.597% 6% 0 6%;
+    background:#011530;
     .con-top{
       margin-top:1.623%;
-      background:#2d475e;
+      background:#000000;
+      opacity:.8;
       /*height:29.22%;*/
       flex:1;
       display: flex;
       flex-direction: row;
+      align-items: center;
+      justify-content: space-around;
       #conditionEcharts1{
         flex:1;
+        height:100%;
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        justify-content: center;
+        /*width:45%;*/
       }
       #conditionEcharts2{
         flex:1;
+        height:100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        /*width:45%;*/
       }
     }
     .conditionEcharts3{
       height:14.123%;
-      background:#2d475e;
+      background:#000000;
       margin-top:1.623%;
       display: flex;
       padding:0 2.272%;
@@ -298,7 +313,7 @@
           justify-content: center;
         }
         .typs{
-          background:#1c2e44;
+          background:#000c27;
           height:52.87%;
           width:98%;
           flex-direction: row;
@@ -325,7 +340,7 @@
       display: flex;
       flex-direction: row;
       .broadL{
-        background:#2d475e;
+        background:#000000;
         width:12.64%;
         color:white;
         font-size:12px;
@@ -336,7 +351,8 @@
       }
       .broadR{
         flex:1;
-        background:#2d475e;
+        background:#000000;
+        opacity: .8;
         overflow:hidden;
         padding:0 4.6%;
         .item{

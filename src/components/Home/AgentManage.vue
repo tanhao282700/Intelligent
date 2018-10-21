@@ -9,7 +9,9 @@
       <div class="echarts" id="echarts"></div>
       <div class="info">
         <div class="day infoC">
-          <span class="category">日</span>
+          <div class="category">
+            <span>日</span>
+          </div>
           <div class="percent">
             <span>98%</span>
             <span>19/20</span>
@@ -17,7 +19,9 @@
           </div>
         </div>
         <div class="month infoC">
-          <span class="category">月</span>
+          <div class="category">
+            <span>月</span>
+          </div>
           <div class="percent">
             <span>98%</span>
             <span>19/20</span>
@@ -25,7 +29,9 @@
           </div>
         </div>
         <div class="year infoC">
-          <span class="category">年</span>
+          <div class="category">
+            <span>年</span>
+          </div>
           <div class="percent">
             <span>98%</span>
             <span>19/20</span>
@@ -83,12 +89,12 @@
             text: '工单统计',
             textStyle:{
                 color:"#fff",
-                fontSize:"18",
+                fontSize:"14",
                 fontWeight:"normal"
             }
           },
           grid:{
-              bottom:20
+              bottom:30
           },
           legend: {
             data:[
@@ -181,7 +187,7 @@
     flex-direction:column;
     .title{
       height:8.9%;
-      background:#0e2340;
+      background:#000c27;
       display: flex;
       flex-direction: row;
       justify-content: center;
@@ -223,53 +229,52 @@
     flex-direction: column;
     .echarts{
       height:52%;
+      background:#000000;
     }
     .info{
       flex:1;
       display:flex;
       flex-direction: row;
       .infoC{
-        flex-basis: 30%;
-        height:100%;
-        margin-left:2.5%;
-        flex-direction: column;
-        display:flex;
-        align-items:center;
+        width:27%;
+        margin-left:4.37%;
         .category{
-          border:1px solid #2c69bc;
-          width:4.2vw;
-          height:4.2vw;
-          border-radius:4vw;
-          line-height:4vw;
-          text-align:center;
-          color:#8aa5c3;
-          font-size:2vw;
-          font-weight:400;
-          margin-top:.8vw;
+          width:90%;
+          padding-bottom:90%;
+          position:relative;
+          margin-top:17.857%;
+          span{
+            width:100%;
+            height:100%;
+            border-radius:100%;
+            border:1px solid #2c69bc;
+            position:absolute;
+            color:#8aa5c3;
+            font-size:18px;
+            font-weight:600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
         }
         .percent{
-          flex:1;
-          margin-top:.8vw;
-          margin-bottom:.8vw;
-          background:#131e30;
-          display:flex;
+          height:49.5%;
+          display: flex;
           flex-direction: column;
-          align-items:center;
-          font-size:.4vw;
-          padding:.3vw 4px;
-          justify-content:space-between;
+          align-items: center;
+          justify-content: center;
+          font-size:12px;
           span:nth-child(1){
             color:#36a45d;
-            font-size:1vw;
-            /*margin-top:.4vw;*/
+            font-size:16px;
           }
           span:nth-child(2){
             color:#2d5e96;
-            /*margin-top:.4vw;*/
+            margin-top:2%;
           }
           span:nth-child(3){
             color:#62738d;
-            /*margin-top:.3vw;*/
+            margin-top:2%;
           }
         }
       }

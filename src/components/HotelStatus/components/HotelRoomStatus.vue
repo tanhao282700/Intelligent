@@ -30,7 +30,7 @@
     							<label class="labName">{{sItem.labName}}</label>
     						</div>
     					</li>
-    					<li style="clear:both;height:10px;"></li>
+    					<li style="clear:both;height:6px;"></li>
     				</ul>
     			</div>
     		</div>

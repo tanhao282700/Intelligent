@@ -135,7 +135,7 @@
     flex-direction:column;
     .title{
       height:8.9%;
-      background:#0e2340;
+      background:#000c27;
       display: flex;
       flex-direction: row;
       justify-content: center;
@@ -219,7 +219,7 @@
       }
       .partCon{
         height:80%;
-        background:#2d475e;
+        background:#000c27;
       }
     }
   }
