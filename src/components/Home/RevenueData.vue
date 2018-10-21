@@ -295,7 +295,7 @@
           top:50%;
           margin-left:-22px;
           margin-top:-22px;
-          z-index:999;
+          z-index:9;
           justify-content: space-between;
           align-items: center;
           span:first-child{
@@ -342,14 +342,14 @@
             border-radius:38%;
             transform:translate(-50%,-70%)rotate(0);
             animation:rotate 6s linear infinite;
-            z-index: 10;
+            z-index: 1;
           }
           .wave::after{
             border-radius:43%;
             background:rgba(1, 21, 48, 0.6);
             transform:translate(-50%,-70%)rotate(0);
             animation:rotate 10s linear -5s infinite;
-            z-index:20;
+            z-index:2;
           }
           @keyframes rotate{
             50%{
