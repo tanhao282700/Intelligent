@@ -196,7 +196,7 @@
         }],
         partsData:[{
           id:1,
-          componentsName:'EnergyManage'
+          componentsName:''
         },{
           id:2,
           componentsName:''
