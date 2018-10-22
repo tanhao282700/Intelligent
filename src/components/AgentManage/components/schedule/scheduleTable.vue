@@ -113,7 +113,7 @@
                 </div>
             </div>
         </div>
-        <div class="tableBot">
+        <div class="tableBot" v-show="isShowBtns=='yes'?true:false">
             <div class="btnBai1" v-show="active=='exams' || active=='examed' || active=='change'" @click="botClick('change')">
                 修改排班表
             </div>
@@ -141,7 +141,7 @@ import utils from '../../../../assets/js/utils'
 import SelectBox from './selectBox';
 import Tk from './tk';
 export default {
-  props:['data'],
+  props:['data','isShowBtns'],
   components:{
       'TimePickerT':TimePickerT,
       'SelectBox':SelectBox,

@@ -3,11 +3,9 @@
     白 2018-8-21
 -->
 <template>
-  <div class="generation">
-      <div class="autoComponent">
-        <SysHead :datas = "sData" v-on:searchCont="search"/>
-        <router-view></router-view>
-      </div>
+  <div class="generation autoComponent">
+      <SysHead :datas = "sData" v-on:searchCont="search"/>
+      <router-view></router-view>
   </div>
 </template>
 

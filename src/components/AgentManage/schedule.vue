@@ -10,7 +10,7 @@
                   <span slot="label" class="tabItems">
                       排班表
                   </span>
-                  <ScheduleTable/>
+                  <ScheduleTable :isShowBtns="'yes'"/>
               </el-tab-pane>
               <el-tab-pane name="second" >
                   <span slot="label" class="tabItems">
@@ -234,13 +234,16 @@ export default {
     right: 0.3rem;
     .vhTop(30);
     width: 9.81vw;
+    background:#3A84EE;
+    color:#fff;
     .vh(32);
     .vhLH(32);
     font-size: 0.14rem;
     img{
       width:1.02vw;
       .vh(16);
-      vertical-align:sub;
+      margin-right:0.05rem;
+      vertical-align:middle;
     }
   }
 }

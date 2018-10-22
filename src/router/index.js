@@ -15,6 +15,13 @@ import generationMWorkList from '@/components/AgentManage/workList';
 import generationMRouting from '@/components/AgentManage/routing';
 import generationMReport from '@/components/AgentManage/report';
 
+//代维系统普通端
+import normalIndex from '@/components/AgentManage/normalUser/index';
+import normalSchedule from '@/components/AgentManage/normalUser/schedule';
+import normalWorkList from '@/components/AgentManage/normalUser/workList';
+import normalRouting from '@/components/AgentManage/normalUser/routing';
+import normalReport from '@/components/AgentManage/normalUser/report';
+
 //消防报警
 import fireAlarm from '@/components/Alarm/fireAlarm';
 import fireMonitor from '@/components/Alarm/components/fireMonitor';
@@ -127,8 +134,27 @@ export default new Router({
           component:generationMReport
         },
       ]
-    },
-    {
+    },{//代维普通端
+      path: '/AgentManage/normalUser',
+      component: normalIndex
+    },{
+      path:'/AgentManage/normalUser/schedule',
+      component:normalSchedule,
+      children:[
+            { path: '/AgentManage/normalUser/schedule/first'},
+            { path: '/AgentManage/normalUser/schedule/second'},
+            { path: '/AgentManage/normalUser/schedule/thrid'}
+        ]
+    },{
+      path:'/AgentManage/normalUser/workList',
+      component:normalWorkList
+    },{
+      path:'/AgentManage/normalUser/routing',
+      component:normalRouting
+    },{
+      path:'/AgentManage/normalUser/report',
+      component:normalReport
+    },{
       path: '/fireAlarm',
       component: fireAlarm,
       children:[
