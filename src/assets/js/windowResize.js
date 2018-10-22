@@ -12,7 +12,6 @@ sysPage.body = $("body");
 
 $(function () {
   var tempPage = sysPage.getPageSize();
-  console.log(tempPage);
   sysPage.resizeWindow(tempPage);
 })
 
@@ -23,11 +22,9 @@ $(window).resize(function() {
 /*判断是否resize页面，解决页面模糊bug */
 sysPage.decideIsResize = function () {
   var temp = sysPage.getPageSize();
-  console.log(temp.w);
   var spaceW = Math.abs(temp.w - sysPage.tempPage.w);
   var spaceH = Math.abs(temp.h - sysPage.tempPage.h);
   if(spaceW > 5 || spaceH>5){
-    console.log("重新resize");
     sysPage.resizeWindow(temp);
   }
 }
