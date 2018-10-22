@@ -1,11 +1,14 @@
 <template>
-  <div class="agentComponent">
+  <div class="agentComponent" v-loading="loading"
+       element-loading-background="rgba(0, 0, 0, 0.5)"
+       element-loading-spinner="el-icon-loading"
+       element-loading-text="拼命加载中">
     <div class="title">
       <span class="titleIcon"></span>
       <span class="txt">设备情况</span>
       <img src="../../assets/img/home/close.png" alt="">
     </div>
-    <div class="con">
+    <div class="con" :class="{'hidden':loading==true}">
       <div class="chart" id="equipmentOne">
         <div class="tips">
           <div class="icon cor-r"></div>
@@ -13,13 +16,13 @@
           <div class="icon cor-b"></div>
           <div class="txt">设备总数</div>
         </div>
-        <div class="chartInfo">
+        <div class="chartInfo" :title="'故障总数'+data.fault+'台'">
           <div class="persent"></div>
         </div>
         <div class="counts">
           <span class="countsBg countsL"></span>
           <div class="info">
-            共&nbsp;<span>1000</span>&nbsp;台
+            共&nbsp;<span v-text="data.count">1000</span>&nbsp;台
           </div>
           <span class="countsBg countsR"></span>
         </div>
@@ -39,8 +42,10 @@
     },
     data(){
         return{
+          loading:true,
           equipmentChartOne:{},
-          equipmentChartTwo:{}
+          equipmentChartTwo:{},
+          data:{}
         }
     },
     components:{
@@ -48,8 +53,9 @@
     },
     mounted(){
       /*this.drawEchartOne()*/
-      this.drawEchartTwo()
-      this.drawEchartThree()
+
+
+      this.initData()
     },
     watch:{
       isResize(){
@@ -57,9 +63,31 @@
       }
     },
     methods:{
+        initData(){
+          this.$http.get('/index_pc/pc/model',{self_id:-1})
+            .then((response)=>{
+              if(response.data.code == 0){
+                this.data = response.data.data
+                this.loading = false
+                this.initWidth()
+                this.drawEchartTwo()
+                this.drawEchartThree()
+              }else{
+
+              }
+            })
+            .catch((error)=>{
+              console.log(error);
+            });
+        },
+      initWidth(){
+        let width = $(".chartInfo").width()
+        let persentWidth = width*this.data.fault/this.data.count
+        $(".persent").width(persentWidth)
+      },
       drawEchartThree(){
-        let height = this.$refs.equipmentThree.clientHeight
-        var option3 = {
+        let height = this.$refs.equipmentThree.clientHeight*1.3
+        let option3 = {
           width:height, //canvas宽度
           height:height, //canvas高度
           outCircleObj:{ //外环对象
@@ -84,7 +112,7 @@
             size:"14"
           },
           dataValue:{
-            text:"80%",
+            text:this.data.maintenance+'%',
             color:"#F7A51C",
             size:"20"
           }
@@ -92,7 +120,7 @@
         $("#equipmentThree").circleChart(option3);
       },
       drawEchartTwo(){
-        let height = this.$refs.equipmentTwo.clientHeight
+        let height = this.$refs.equipmentTwo.clientHeight*1.3
         var option2 = {
           width:height, //canvas宽度
           height:height, //canvas高度
@@ -118,7 +146,7 @@
             size:"14"
           },
           dataValue:{
-            text:"99%",
+            text:this.data.health+'%',
             color:"#F7A51C",
             size:"20"
           }
@@ -236,6 +264,9 @@
         font-size:16px;
       }
     }
+    .hidden{
+      visibility: hidden;
+    }
   .con{
     flex:1;
     /*padding:0 5.976%;*/
@@ -291,7 +322,7 @@
         flex-direction: row;
         .persent{
           height:100%;
-          width:20%;
+          /*width:20%;*/
           border-top-left-radius: 4px;
           border-bottom-left-radius: 4px;
           background:#f96074;

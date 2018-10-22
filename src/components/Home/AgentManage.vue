@@ -81,6 +81,19 @@
       this.drawEchart()
     },
     methods:{
+      initData(){
+        this.$http.get('/index_pc/pc/model',{self_id:-2})
+          .then(function (response) {
+            if(response.data.code == 0){
+              that.monitoringData = response.data.data
+            }else{
+
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      },
       drawEchart(){
         let agentChart = this.$echarts.init(document.getElementById("echarts"));
         this.agentChart = agentChart

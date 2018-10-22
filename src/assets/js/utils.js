@@ -104,7 +104,7 @@ const  utils = {
         },
         wid(num){  //计算宽度（用于某些插件需要px）
             let res = num;
-            let wids = document.documentElement.clientWidth;
+            let wids = document.getElementsByTagName('body')[0].clientWidth;
             res = num/1366*Number(wids);
             return res;
         },

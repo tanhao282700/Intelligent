@@ -53,6 +53,8 @@
     mounted(){
       this.drawEchart2()
       /*this.drawEchart3()*/
+
+      this.initData()
     },
     watch:{
       isResize(){
@@ -61,6 +63,19 @@
       }
     },
     methods:{
+        initData(){
+          this.$http.get('/index_pc/pc/model',{self_id:17})
+             .then((response)=>{
+               if(response.data.code == 0){
+                 console.log(response)
+               }else{
+
+               }
+             })
+            .catch((error)=>{
+                    console.log(error);
+                });
+      },
       drawEchart2(){
         let revenueCharts2 = this.$echarts.init(document.getElementById("revenueEcharts2"));
         this.revenueCharts2 = revenueCharts2

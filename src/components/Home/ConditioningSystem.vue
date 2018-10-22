@@ -105,6 +105,8 @@
       this.drawEchart1()
       this.drawEchart2()
       setInterval(this.scroll,1000);
+
+      this.initData()
     },
     watch:{
       isResize(){
@@ -112,6 +114,13 @@
       }
     },
     methods:{
+      initData(){
+        this.$http.get('/index_pc/pc/model',{self_id:-1})
+            .then((response)=>{
+              console.log(response)
+            })
+            .catch()
+      },
       scroll(){
         if(!this.isSystemHover){
           this.animate1 = true;

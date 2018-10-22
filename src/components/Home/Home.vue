@@ -87,13 +87,13 @@
       </div>
       <div class="monitoringCon">
         <div class="monitoringConL">
-          <div class="monitorItem" v-for="(i,index) in 5">
+          <div class="monitorItem" v-for="(i,index) in monitoringData" v-if="index<5">
             <div class="monitorItemCon">
-              <span :class="{'cor-r':i==1,'cor-y':i!=1}">电压告警：电压超过正常水平</span>
+              <span v-text="i.name+'：'+i.word" :class="{'cor-r':index==0,'cor-y':index!=0}"></span>
               <div class="time">
-                <span>14:00</span>
+                <span v-text="i.time">14:00</span>
                 <span>
-                  <i style="color:#f36b6d;">01</i>/05
+                  <i style="color:#f36b6d;" v-text="'0'+(index+1)"></i>/05
                 </span>
               </div>
             </div>
@@ -107,10 +107,10 @@
     <div class="smallMonitoring" v-if="!isOpenMonitor">
       <div class="left">
         <img src="../../assets/img/home/smallAlarm.png" alt="">
-        <span class="cor-r">电压告警：电压超过正常水平</span>
+        <span class="cor-r" v-text="monitoringData[0].name+'：'+monitoringData[0].word">电压告警：电压超过正常水平</span>
       </div>
       <div class="right">
-        <span>14:00</span>
+        <span v-text="monitoringData[0].time">14:00</span>
         <span>
               <i style="color:#f36b6d;">01</i>/05
           </span>
@@ -220,7 +220,8 @@
           isPersonInfo:false,  //显示个人信息
           isEditInfo:false,    //编辑个人信息 传参只用传false
           isChangePassword:false  //修改密码
-        }
+        },
+        monitoringData:[{}]  //实时监控数据
       }
     },
     mounted(){
@@ -230,14 +231,29 @@
       }
 
       this.initModelId()
+      this.initAlarm()
     },
     methods:{
       initModelId(){
-        console.log(this.$store.state)
-        this.$http.get('/index_pc/pc/select/model').then(function (response) {
-          console.log(response);
-        })
+        /*console.log(this.$store.state)*/
+        this.$http.get('/index_pc/pc/select/model')
+          .then((response)=>{
+
+          })
           .catch(function (error) {
+            console.log(error);
+          });
+      },
+      initAlarm(){
+        this.$http.get('/index_pc/pc/model',{self_id:-2})
+          .then((response)=>{
+            if(response.data.code == 0){
+              this.monitoringData = response.data.data
+            }else{
+
+            }
+          })
+          .catch((error)=>{
             console.log(error);
           });
       },
@@ -799,6 +815,7 @@
   #equipmentTwo canvas{
     float:right;
     margin-right:1%;
+    margin-top:2%;
   }
   .chart canvas{
     height:100%!important;

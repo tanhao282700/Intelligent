@@ -116,6 +116,9 @@ export default {
   created() {
      
   },
+  mounted(){
+    this.activeName = this.datas.active;
+  }
 }
 
 </script>
