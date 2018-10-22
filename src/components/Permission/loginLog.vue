@@ -19,6 +19,7 @@
               start-placeholder="开始日期"
               end-placeholder="结束日期"
               format="yyyy-M-d"
+              value-format="yyyy-MM-dd"
               class="dateRangeBox">
             </el-date-picker>
             <div>
@@ -40,12 +41,12 @@
               min-width="8%">
             </el-table-column>
             <el-table-column
-              prop="account"
+              prop="username"
               label="帐号"
               min-width="20%">
             </el-table-column>
             <el-table-column
-              prop="department"
+              prop="dept_name"
               label="所属部门"
               min-width="20%">
             </el-table-column>
@@ -55,11 +56,12 @@
               min-width="20%">
             </el-table-column>
             <el-table-column
-              prop="loginTime"
+              prop="login_date"
               label="登录时间"
               min-width="20%">
             </el-table-column>
             <el-table-column
+              prop="keys"
               label="操作"
               min-width="12%">
               <template slot-scope="scope">
@@ -73,7 +75,7 @@
             <div class="totalPageNumBox">共{{totalPageNum}}页</div>
 
             <div class="el-input el-pagination__editor is-in-pagination curPageBox">
-              <input type="number" autocomplete="off" class="el-input__inner" v-model="currentPage">
+              <input type="number" autocomplete="off" class="el-input__inner" v-model="toPageNum">
               <span @click="toInputPage">GO</span>
             </div>
 
@@ -93,7 +95,7 @@
         <!--日志详情弹窗-->
         <el-dialog :title="logDetailTitle+' 日志详情'" :visible.sync="logDetailDialog" class="dialogBox loginLogDialogBox" :close-on-click-modal="false">
           <div class="detailItem" v-for="item in detailData">
-            <div class="detailTitle"><span>{{item.time}}</span><i>|</i><span>{{item.userName}}</span></div>
+            <div class="detailTitle"><span>{{item.login_date}}</span><i>|</i><span>{{item.username}}</span></div>
             <div class="detailDes">{{item.content}}</div>
           </div>
         </el-dialog>
@@ -111,27 +113,29 @@
       name: "login-log",
       data(){
           return{
-            dateRangeValue:"",
+            dateRangeValue:[''],
             tableData: [],
             currentPage: 1,
             pageSize: 20,
-            totalPageNum: '',
-            totalDataNumber:'',
+            totalPageNum: 1,
+            totalDataNumber:0,
             curPageData:[],
             groupPageData:[],
             logDetailDialog:false,
-            logDetailTitle:"",
-            detailData:logDetailData
+            logDetailTitle: "" ,
+            toPageNum:"",
+            detailData:""
           }
       },
       methods:{
         queryData(){
           /*根据日期区间查询*/
+          this.requestTableData(1);
         },
         currentPageChange(val) {
           /*当前页变动事件*/
           this.currentPage = val;
-          this.curPageData = this.groupPageData[val-1];
+          this.requestTableData(val);
         },
         tabelDataGroupBy(){
           /*根据请求表格数据分组*/
@@ -165,17 +169,71 @@
         },
         toInputPage(){
           /*显示输入页表格数据*/
-          this.curPageData = this.groupPageData[this.currentPage-1];
+          console.log(this.toPageNum);
+          this.currentPage = this.toPageNum;
         },
         lookDetail(val){
+          console.log(val);
+          let that = this;
           this.logDetailDialog = true;
-          this.logDetailTitle = val.account;
+          this.logDetailTitle = val.username;
+
+          let config = {
+            keys : val.keys
+          }
+          that.$http.post('users_manage/users_login_log_details',config).then(res=>{
+            console.log(res);
+            that.detailData = res.data.data;
+          }).catch(err=>{
+            console.log(err);
+          })
+
+        },
+        requestTableData(curPageNum){
+          /*请求表格数据*/
+          let that = this;
+          let config = {
+            pagenumber : curPageNum,
+            pagesize : that.pageSize,
+            date_s : that.dateRangeValue[0],
+            date_e : that.dateRangeValue[1]
+          }
+          that.$http.post('users_manage/users_login_log',config).then(res=>{
+            console.log(res);
+            that.getCurPageData(res.data);
+          }).catch(err=>{
+            console.log(err);
+          })
+        },
+        getCurPageData(data){
+          /*根据请求表格数据分组*/
+          let that = this;
+          that.curPageData = data.data;
+          that.totalDataNumber = data.paging.count;
+          that.totalPageNum =  Math.ceil(Number(that.totalDataNumber) / that.pageSize);
+        },
+        getNowFormatDate() {
+          var date = new Date();
+          var seperator1 = "-";
+          var year = date.getFullYear();
+          var month = date.getMonth() + 1;
+          var strDate = date.getDate();
+          if (month >= 1 && month <= 9) {
+            month = "0" + month;
+          }
+          if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+          }
+          var Nowdate = year + seperator1 + month + seperator1 + strDate;
+          var startDate = year + seperator1 + month + seperator1 + (strDate - 7);
+          this.dateRangeValue[1] = Nowdate;
+          this.dateRangeValue[0] = startDate;
+          this.requestTableData(1);
         }
       },
       created(){
-        if(tableData){
-          this.tabelDataGroupBy();
-        }
+        this.getNowFormatDate();
+
       },
       mounted(){
 

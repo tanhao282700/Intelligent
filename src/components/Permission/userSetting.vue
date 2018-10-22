@@ -13,7 +13,7 @@
       <div class="itemsBox">
         <!--筛选查询-->
         <div class="queryBox">
-          <el-select placeholder="请选择" v-model="itemValue[0]" class="querySelectItem">
+          <el-select placeholder="请选择" v-model="itemValue[0]" class="querySelectItem" clearable >
             <el-option
               v-for="item in options[0]"
               :key="item.id"
@@ -21,7 +21,7 @@
               :value="item.id">
             </el-option>
           </el-select>
-          <el-select placeholder="请选择" v-model="itemValue[1]" class="querySelectItem">
+          <el-select placeholder="请选择" v-model="itemValue[1]" class="querySelectItem" clearable >
             <el-option
               v-for="item in options[1]"
               :key="item.id"
@@ -29,7 +29,7 @@
               :value="item.id">
             </el-option>
           </el-select>
-          <el-select placeholder="请选择" v-model="itemValue[2]" class="querySelectItem">
+          <el-select placeholder="请选择" v-model="itemValue[2]" class="querySelectItem" clearable >
             <el-option
               v-for="item in options[2]"
               :key="item.id"
@@ -198,29 +198,30 @@
           pageSize: 20, //每页显示数量
           totalPageNum: 1,
           totalDataNumber: 20,
-          curPageData:[],
+          curPageData:[], //当前页面数据
           groupPageData:[],
-          accountInfoDialog:false,
-          deleteInfoDialog:false,
+          accountInfoDialog:false, //新增修改账号弹窗标记
+          deleteInfoDialog:false, //删除账号窗口标记
           form: {
             name: {label:"用户名", key:""},
             password:{label:"密码", key:""},
             department: {label:"部门", key:""},
             position: {label:"职位", key:""},
             role: {label:"角色", key:""}
-          },
-          formTitle:"",
-          isAdd:true,
+          }, //新增修改窗口数据对象
+          formTitle:"", //新增修改窗口标题
+          isAdd:true, //新增账号标记
           bubbleTip:'',
-          isReset:false,
+          isReset:false, //重置密码标记
           phoneRegexp:/^0?(13|14|15|17|18|19)[0-9]{9}$/,
-          curEditUserId:''
+          curEditUserId:'', //修改账号id
+          curEditUserPw:'' //修改账号密码
         }
       },
       methods:{
         queryData(){
           /*根据筛选条件查询数据*/
-          console.log(this.itemValue);
+          this.requestTableData(1);
         },
         currentPageChange(val) {
           /*当前页变动事件*/
@@ -229,10 +230,11 @@
         },
         getCurPageData(data){
           /*根据请求表格数据分组*/
+
           let that = this;
-          that.tableData = data.data;
-          that.totalPageNum = data.paging.count;
-          that.curPageData = that.tableData;
+          that.curPageData = data.data;
+          that.totalDataNumber = data.paging.count;
+          that.totalPageNum =  Math.ceil(Number(that.totalDataNumber) / that.pageSize);
         },
         toInputPage(){
           /*显示输入页表格数据*/
@@ -282,11 +284,12 @@
           that.$http.post('users_manage/users_addmodify',config).then(res=>{
             console.log(res);
             if(res.data.code ='0'){
-              let message = type?"保存成功":"修改成功";;
+              let message = type?"保存成功":"修改成功";
               that.bubbleTipShow(message);
               setTimeout(function () {
                 that.accountInfoDialog = false;
                 that.clearForm();
+                that.requestTableData(1);
               },2000)
             }else {
               that.bubbleTipShow(res.data.message);
@@ -303,9 +306,9 @@
           this.formTitle = '修改信息';
           this.isAdd = false;
           this.form.name.key = val.username;
-          this.form.department.key = val.dept_title;
-          this.form.position.key = val.position_title;
-          this.form.role.key = val.role_title;
+          this.form.department.key = "";
+          this.form.position.key = "";
+          this.form.role.key = "";
           this.curEditUserId = val.user_id;
         },
         deleteAccount(val){
@@ -326,6 +329,7 @@
               that.bubbleTipShow('删除成功');
               setTimeout(function () {
                 that.deleteInfoDialog = false;
+                that.requestTableData(1);
               },2000)
             }else {
               that.bubbleTipShow(res.data.message);
@@ -338,13 +342,15 @@
           /*重置密码*/
           var that = this;
           that.isReset = true;
+          var autoPw = (that.form.name.key).substr(5);
 
           let config = {
             user_id : that.curEditUserId,
-            pwd : ""
+            pwd : autoPw
           }
+          console.log(config);
 
-          that.$http.post('users_manage/users_reset_password',config).then(res=>{
+          /*that.$http.post('users_manage/users_reset_password',config).then(res=>{
             console.log(res);
             if(res.data.code ='0'){
               that.isReset = false;
@@ -354,7 +360,7 @@
             }
           }).catch(err=>{
             console.log(err);
-          })
+          })*/
         },
         clearForm(){
           for(var i in this.form){
@@ -372,9 +378,6 @@
         requestOptions(){
           /*获选下拉选项数据*/
           let that  = this;
-          that.sysInfo.projectId = that.$store.state.projectId;
-          that.sysInfo.roleId = that.$store.state.userInfoTotal.role_info.role_id;
-          that.sysInfo.roleType = that.$store.state.userInfoTotal.usergrouprolesyslist[0].role_type;
 
           axios.all([
             that.$http.post('/users_manage/users_department',{
@@ -392,6 +395,7 @@
             that.$store.state.permission.options[0] = that.options[0] = departResp.data.data;
             that.$store.state.permission.options[1] = that.options[1] = positionResp.data.data;
             that.$store.state.permission.options[2] = that.options[2] = roleResp.data.data;
+            console.log(that.options);
             that.$forceUpdate();
           }));
         },
@@ -417,7 +421,16 @@
         }
       },
       created(){
-        this.requestOptions();
+        var that = this;
+        that.sysInfo.projectId = that.$store.state.projectId;
+        that.sysInfo.roleId = that.$store.state.userInfoTotal.role_info.role_id;
+        that.sysInfo.roleType = that.$store.state.userInfoTotal.usergrouprolesyslist[0].role_type;
+        var option = this.$store.state.permission.options;
+        if(option.length){
+          that.options = option;
+        }else {
+          that.requestOptions();
+        }
 
         this.requestTableData(1);
       },

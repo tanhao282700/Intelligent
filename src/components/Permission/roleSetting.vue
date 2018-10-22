@@ -56,37 +56,27 @@
           height="500"
           class="tableAlignCenter tableHeadBlue roleSetTable">
           <el-table-column
-            prop="code"
+            type="index"
             label="编号"
             min-width="7%">
           </el-table-column>
           <el-table-column
-            prop="role"
+            prop="title"
             label="角色"
             min-width="11%">
           </el-table-column>
           <el-table-column
-            prop="powerRange"
+            prop="sys_menu"
             label="权限查看"
             min-width="33%">
           </el-table-column>
           <el-table-column
-            prop="department"
-            label="部门"
-            min-width="12%">
-          </el-table-column>
-          <el-table-column
-            prop="position"
-            label="职位"
-            min-width="12%">
-          </el-table-column>
-          <el-table-column
-            prop="createTime"
+            prop="create_date"
             label="创建时间"
             min-width="14%">
           </el-table-column>
           <el-table-column
-            prop="operation"
+            prop="id"
             label="操作"
             min-width="11%">
             <template slot-scope="scope">
@@ -252,12 +242,19 @@
       },
       queryData(){
         /*根据筛选条件查询数据*/
-        console.log(this.itemValue);
+        this.requestTableData(1);
       },
       currentPageChange(val) {
         /*当前页变动事件*/
         this.currentPage = val;
-        this.curPageData = this.groupPageData[val-1];
+        this.requestTableData(val);
+      },
+      getCurPageData(data){
+        /*根据请求表格数据分组*/
+        let that = this;
+        that.curPageData = data.data;
+        that.totalDataNumber = data.paging.count;
+        that.totalPageNum =  Math.ceil(Number(that.totalDataNumber) / that.pageSize);
       },
       tabelDataGroupBy(){
         /*根据请求表格数据分组*/
@@ -358,18 +355,61 @@
         setTimeout(function () {
           that.$store.state.bubbleShow = false;
         },3000)
+      },
+      requestOptions(){
+        /*获选下拉选项数据*/
+        let that  = this;
+        that.sysInfo.projectId = that.$store.state.projectId;
+        that.sysInfo.roleId = that.$store.state.userInfoTotal.role_info.role_id;
+        that.sysInfo.roleType = that.$store.state.userInfoTotal.usergrouprolesyslist[0].role_type;
+
+        axios.all([
+          that.$http.post('/users_manage/users_department',{
+            project_id: that.sysInfo.projectId
+          }),
+          that.$http.post('/users_manage/users_dept_position',{
+            project_id: that.sysInfo.projectId
+          }),
+          that.$http.post('/users_manage/users_roleinfo_list',{
+            user_role_id:that.sysInfo.roleId
+          })
+        ]).then(axios.spread(function (departResp, positionResp,roleResp) {
+
+          // 上面两个请求都完成后，才执行这个回调方法
+          that.$store.state.permission.options[0] = that.options[0] = departResp.data.data;
+          that.$store.state.permission.options[1] = that.options[1] = positionResp.data.data;
+          that.$store.state.permission.options[2] = that.options[2] = roleResp.data.data;
+          that.$forceUpdate();
+        }));
+      },
+      requestTableData(curPageNum){
+        /*请求表格数据*/
+        let that = this;
+        let config = {
+          pagenumber : curPageNum,
+          pagesize : that.pageSize,
+          user_role_id : that.$store.state.userInfoTotal.role_info.role_id,
+          role_id : that.itemValue[2]
+        }
+        console.log(config);
+        that.$http.post('users_manage/users_role_manage',config).then(res=>{
+          console.log(res);
+          that.getCurPageData(res.data);
+        }).catch(err=>{
+          console.log(err);
+        })
       }
     },
     created(){
       var that = this;
       var option = this.$store.state.permission.options;
-      if(option){
+      if(option.length){
         that.options = option;
+      }else {
+        that.requestOptions();
       }
 
-      if(tableData){
-        this.tabelDataGroupBy();
-      }
+      that.requestTableData(1);
     },
     mounted(){
 

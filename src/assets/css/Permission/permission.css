@@ -174,7 +174,6 @@
 }
 .userBox .tableAlignCenter th:first-child,.userBox .tableAlignCenter td:first-child{
   text-align: left!important;
-  padding-left: 10px;
 }
 .tableHeadBlue th{
   background-color: rgba(0,0,0,.25)!important;
