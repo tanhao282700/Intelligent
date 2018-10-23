@@ -542,3 +542,7 @@
   vertical-align: top;
   color: #008AFF;
 }
+
+.roleBox .el-table .cell{
+  line-height: 16px;
+}

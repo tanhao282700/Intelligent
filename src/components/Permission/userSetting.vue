@@ -112,7 +112,7 @@
           <div class="totalPageNumBox">共{{totalPageNum}}页</div>
 
           <div class="el-input el-pagination__editor is-in-pagination curPageBox">
-            <input type="number" autocomplete="off" class="el-input__inner" v-model="currentPage">
+            <input type="number" autocomplete="off" class="el-input__inner" v-model="toPageNum">
             <span @click="toInputPage">GO</span>
           </div>
 
@@ -215,7 +215,8 @@
           isReset:false, //重置密码标记
           phoneRegexp:/^0?(13|14|15|17|18|19)[0-9]{9}$/,
           curEditUserId:'', //修改账号id
-          curEditUserPw:'' //修改账号密码
+          curEditUserPw:'', //修改账号密码
+          toPageNum:""
         }
       },
       methods:{
@@ -238,7 +239,9 @@
         },
         toInputPage(){
           /*显示输入页表格数据*/
-          this.curPageData = this.groupPageData[this.currentPage-1];
+          var num = Number(this.toPageNum);
+          this.requestTableData(num);
+          this.currentPage = num;
         },
         addAccount(){
           /*打开新增帐号弹窗*/
@@ -406,14 +409,17 @@
             project_id : that.sysInfo.projectId,
             pagenumber : curPageNum,
             pagesize : that.pageSize,
-            role_type : that.sysInfo.roleType,
+            role_type : "",
             dept_id : that.itemValue[0],
             posit_id : that.itemValue[1],
             role_id : that.itemValue[2],
             username : that.itemValue[3],
-            user_role_id : that.sysInfo.roleId
+            user_role_id : Number(that.sysInfo.roleId)
           }
+
+          console.log(config);
           that.$http.post('users_manage/usersinfo',config).then(res=>{
+            console.log(res.data);
             that.getCurPageData(res.data);
           }).catch(err=>{
             console.log(err);

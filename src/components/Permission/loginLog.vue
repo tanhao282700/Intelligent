@@ -137,40 +137,11 @@
           this.currentPage = val;
           this.requestTableData(val);
         },
-        tabelDataGroupBy(){
-          /*根据请求表格数据分组*/
-          let that = this;
-          this.tableData = tableData;
-          this.totalDataNumber = this.tableData.length;
-          this.totalPageNum = Math.ceil(Number(this.totalDataNumber) / this.pageSize);
-          if(this.totalPageNum == 1){
-            this.curPageData = this.tableData;
-          }else {
-            let times = 0;
-            let curGroup = 1;
-            let tempArray = [];
-            let pageSize = this.pageSize;
-            for(let i=0;i<this.totalDataNumber;i++){
-              if(times<pageSize){
-                times++;
-              }else {
-                times = 1;
-                that.groupPageData.push(tempArray);
-                tempArray = [];
-                curGroup++;
-              }
-              tempArray.push(tableData[i]);
-              if(curGroup==that.totalPageNum && i==that.totalDataNumber-1){
-                that.groupPageData.push(tempArray);
-                that.curPageData = that.groupPageData[0];
-              }
-            }
-          }
-        },
         toInputPage(){
           /*显示输入页表格数据*/
-          console.log(this.toPageNum);
-          this.currentPage = this.toPageNum;
+          var num = Number(this.toPageNum);
+          this.requestTableData(num);
+          this.currentPage = num;
         },
         lookDetail(val){
           console.log(val);

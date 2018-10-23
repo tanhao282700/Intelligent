@@ -13,7 +13,7 @@
       <div class="itemsBox">
         <!--筛选查询-->
         <div class="queryBox">
-          <el-select placeholder="请选择" v-model="itemValue[0]" class="querySelectItem">
+          <!--<el-select placeholder="请选择" v-model="itemValue[0]" class="querySelectItem">
             <el-option
               v-for="item in options[0]"
               :key="item.id"
@@ -28,8 +28,8 @@
               :label="item.title"
               :value="item.id">
             </el-option>
-          </el-select>
-          <el-select placeholder="请选择" v-model="itemValue[2]" class="querySelectItem">
+          </el-select>-->
+          <el-select placeholder="请选择" v-model="itemValue[0]" class="querySelectItem">
             <el-option
               v-for="item in options[2]"
               :key="item.id"
@@ -91,7 +91,7 @@
           <div class="totalPageNumBox">共{{totalPageNum}}页</div>
 
           <div class="el-input el-pagination__editor is-in-pagination curPageBox">
-            <input type="number" autocomplete="off" class="el-input__inner" v-model="currentPage">
+            <input type="number" autocomplete="off" class="el-input__inner" v-model="toPageNum">
             <span @click="toInputPage">GO</span>
           </div>
 
@@ -114,7 +114,7 @@
           <el-form-item :label="form.role.label" >
             <el-input v-model="form.role.key" autocomplete="off" placeholder="输入角色名称"></el-input>
           </el-form-item>
-          <el-form-item :label="form.department.label" >
+          <!--<el-form-item :label="form.department.label" >
             <el-select v-model="form.department.key" placeholder="请选择">
               <el-option :label="item.title" :value="item.id" v-for="item in options[0]" :key="item.id"></el-option>
             </el-select>
@@ -123,7 +123,7 @@
             <el-select v-model="form.position.key" placeholder="请选择">
               <el-option :label="item.title" :value="item.id" v-for="item in options[1]" :key="item.id"></el-option>
             </el-select>
-          </el-form-item>
+          </el-form-item>-->
           <el-form-item :label="form.powerRange.label" class="powerSelectBox">
             <el-select v-model="form.powerRange.key" placeholder="选择权限"  @visible-change="powerSelectBlur" ref="powerSelectEl">
               <el-option :value="powerValue">
@@ -143,7 +143,7 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="saveNewAccount(isAdd)" class="saveBtn">保存</el-button>
-          <el-button @click="accountInfoDialog = false" class="cancleBtn">取消</el-button>
+          <el-button @click="cancleSave" class="cancleBtn">取消</el-button>
         </div>
         <bubbleTip :tipText="bubbleTip"/>
       </el-dialog>
@@ -188,38 +188,23 @@
         accountInfoDialog:false,
         deleteInfoDialog:false,
         isAdd:false,
+        curEditRoleId:"",
+        toPageNum:"",
         form: {
           role: {label:"角色名", key:""},
-          department: {label:"部门", key:""},
-          position: {label:"职位", key:""},
           powerRange: {label:"权限设置", key:""}
+          /*department: {label:"部门", key:""},
+          position: {label:"职位", key:""},*/
         },
         formTitle:"",
         bubbleTip:'',
         powerValue:"",
-        powerArray:[
-          {
-            id:1,
-            label:"能源管理系统",
-            children:[
-              {id:4,label:"全景查看"},
-              {id:5,label:"运行情况"}
-            ]
-          },
-          {
-            id:2,
-            label:"酒店管理系统",
-            children:[
-              {id:6,label:"酒店房态"},
-              {id:7,label:"房单"},
-              {id:8,label:"报表"}
-            ]
-          }
-        ],
+        powerArray:[],
         defaultProps: {
-          children: 'children',
-          label: 'label'
-        }
+          children: 'child',
+          label: 'title'
+        },
+        role_sys_list:[]
       }
     },
     methods:{
@@ -229,16 +214,50 @@
           this.$refs.powerSelectEl.blur();
         }
       },
+      cancleSave(){
+        this.clearNodes();
+        this.accountInfoDialog = false;
+      },
       nodeChange(){
         let that = this;
-        let nodes = this.$refs.tree.getCheckedNodes();
-        let temp = '';
-        if(nodes.length){
-          for(var v in nodes){
-            v!=0?temp +="/"+nodes[v].label:temp=nodes[0].label;
+        var sysList = [];
+        let nodes = that.$refs.tree.getCheckedNodes(false,true);
+        let tempObj = { ids:[] };
+        let Len = nodes.length;
+        let tempValue = "";
+
+        if(Len){
+          for(var i=0; i<Len; i++) {
+            var temp = nodes[i];
+            i?tempValue+="/"+temp.title:tempValue=temp.title;
+
+            if(temp.hasOwnProperty("sys_id")){
+              if(i == 0){
+                tempObj.sys_id = temp.sys_id;
+                tempObj.role_string = temp.role_string;
+              }else {
+                sysList.push(tempObj);
+                tempObj = { ids:[] };
+                tempObj.sys_id = temp.sys_id;
+                tempObj.role_string = temp.role_string;
+              }
+            }else {
+              tempObj.ids.push(temp.id);
+              if(i==Len-1){
+                sysList.push(tempObj);
+                that.role_sys_list = sysList;
+                that.powerValue = tempValue;
+                return;
+              }
+            }
           }
-          that.powerValue = temp;
         }
+
+      },
+      clearNodes(){
+        let that = this;
+        that.$refs.tree.setCheckedNodes([]);
+        that.role_sys_list = [];
       },
       queryData(){
         /*根据筛选条件查询数据*/
@@ -256,39 +275,11 @@
         that.totalDataNumber = data.paging.count;
         that.totalPageNum =  Math.ceil(Number(that.totalDataNumber) / that.pageSize);
       },
-      tabelDataGroupBy(){
-        /*根据请求表格数据分组*/
-        let that = this;
-        this.tableData = tableData;
-        this.totalDataNumber = this.tableData.length;
-        this.totalPageNum = Math.ceil(Number(this.totalDataNumber) / this.pageSize);
-        if(this.totalPageNum == 1){
-          this.curPageData = this.tableData;
-        }else {
-          let times = 0;
-          let curGroup = 1;
-          let tempArray = [];
-          let pageSize = this.pageSize;
-          for(let i=0;i<this.totalDataNumber;i++){
-            if(times<pageSize){
-              times++;
-            }else {
-              times = 1;
-              that.groupPageData.push(tempArray);
-              tempArray = [];
-              curGroup++;
-            }
-            tempArray.push(tableData[i]);
-            if(curGroup==that.totalPageNum && i==that.totalDataNumber-1){
-              that.groupPageData.push(tempArray);
-              that.curPageData = that.groupPageData[0];
-            }
-          }
-        }
-      },
       toInputPage(){
         /*显示输入页表格数据*/
-        this.curPageData = this.groupPageData[this.currentPage-1];
+        var num = Number(this.toPageNum);
+        this.requestTableData(num);
+        this.currentPage = num;
       },
       addAccount(){
         /*打开新增帐号弹窗*/
@@ -302,37 +293,76 @@
         for(var i in that.form){
           let temp = that.form[i].key;
           if(!temp){
-            /*that.bubbleTipShow(this.form[i].label + "不能为空");*/
             that.bubbleTipShow("请完善信息");
             return;
           }
         }
-        let message = type?"保存成功":"修改成功";;
-        this.bubbleTipShow(message);
-        setTimeout(function () {
-          that.accountInfoDialog = false;
-          that.clearForm();
-        },2000)
+        var idFlag;
+        type?idFlag=0 : idFlag=that.curEditRoleId;
+
+        let config = {
+          project_id : that.$store.state.projectId,
+          id : idFlag,
+          role_name : that.form.role.key,
+          role_sys_list : that.role_sys_list,
+          role_type : ""
+        }
+        console.log(config);
+
+        that.$http.post('users_manage/users_role_addmodify',config).then(res=>{
+          console.log(res);
+          if(res.data.code ='0'){
+            let message = type?"保存成功":"修改成功";
+            that.bubbleTipShow(message);
+            setTimeout(function () {
+              that.accountInfoDialog = false;
+              that.clearForm();
+              that.clearNodes();
+              that.requestTableData(1);
+            },2000)
+          }else {
+            that.bubbleTipShow(res.data.message);
+          }
+        }).catch(err=>{
+          console.log(err);
+        })
+
       },
       editAccount(val){
         /*修改信息*/
         this.isAdd = false;
         this.accountInfoDialog = true;
         this.formTitle = '修改角色';
-        this.form.role.key = val.role;
-        this.form.department.key = val.department;
-        this.form.position.key = val.position;
-        this.form.powerRange.key = val.powerRange;
+        this.form.role.key = val.title;
+        this.form.powerRange.key = val.sys_menu;
+        this.curEditRoleId = val.id;
       },
       deleteAccount(val){
         this.deleteInfoDialog = true;
+        this.curEditRoleId = val.id;
       },
       confirmDelete(){
         let that = this;
-        that.bubbleTipShow('删除成功');
-        setTimeout(function () {
-          that.deleteInfoDialog = false;
-        },2000)
+        let config = {
+          role_id: that.curEditRoleId
+        }
+        console.log(config);
+
+        that.$http.post('users_manage/users_role_delete',config).then(res=>{
+          console.log(res);
+          if(res.data.code ='0'){
+            that.bubbleTipShow('删除成功');
+            that.requestTableData(1);
+            setTimeout(function () {
+              that.deleteInfoDialog = false;
+            },2000)
+          }else {
+            that.bubbleTipShow(res.data.message);
+          }
+        }).catch(err=>{
+          console.log(err);
+        })
+
       },
       resetPw(){
         /*重置密码*/
@@ -389,12 +419,28 @@
           pagenumber : curPageNum,
           pagesize : that.pageSize,
           user_role_id : that.$store.state.userInfoTotal.role_info.role_id,
-          role_id : that.itemValue[2]
+          role_id : that.itemValue[0]
         }
-        console.log(config);
         that.$http.post('users_manage/users_role_manage',config).then(res=>{
           console.log(res);
           that.getCurPageData(res.data);
+        }).catch(err=>{
+          console.log(err);
+        })
+      },
+      requestPowerList(){
+        let that = this;
+        let config = {
+          project_id:that.$store.state.projectId
+        }
+
+        that.$http.post('users_manage/users_setRole',config).then(res=>{
+          console.log(res);
+          if(res.data.code ='0'){
+            that.powerArray = res.data.data;
+          }else {
+            that.bubbleTipShow(res.data.message);
+          }
         }).catch(err=>{
           console.log(err);
         })
@@ -412,6 +458,7 @@
       that.requestTableData(1);
     },
     mounted(){
+      this.requestPowerList();
 
     }
   }
