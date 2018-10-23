@@ -132,23 +132,24 @@
     </div>
 
     <component :isShowBannerParam="showBannerParam" @changeBannerParam="updateBannerParam" is="Banner"></component>
-    <component is="PersonInfo" :options="personInfoOptions"></component>
+    <component is="PersonInfo" @showTips="personInfoShowTips" :options="personInfoOptions"></component>
 
     <el-dialog :visible.sync="personalCenter.isShowDialog" width="364px" top="30vh" custom-class="homeLoginDialog">
       <span>是否确定退出此账号登录</span>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="personalCenter.isShowDialog = false">确 定</el-button>
+        <el-button type="primary" @click="loginOut">确 定</el-button>
         <el-button @click="personalCenter.isShowDialog = false">取 消</el-button>
       </span>
     </el-dialog>
 
 
-
+  <bubbleTip :tipText="bubbleTip"/>
 
   </div>
 </template>
 
 <script>
+  import bubbleTip from '@/components/common/bubbleTip';
   import Banner from '../common/banner/Banner.vue'
   import PersonInfo from '../common/personInfo/PersonInfo'
   import AgentManage from './AgentManage.vue'
@@ -160,7 +161,7 @@
 
   export default {
     name: "home",
-    components:{AgentManage,EnergyManage,Equipment,Banner,PersonInfo,Door,RevenueData,Conditioning},
+    components:{bubbleTip,AgentManage,EnergyManage,Equipment,Banner,PersonInfo,Door,RevenueData,Conditioning},
     data(){
       return {
         list:[{
@@ -221,7 +222,8 @@
           isEditInfo:false,    //编辑个人信息 传参只用传false
           isChangePassword:false  //修改密码
         },
-        monitoringData:[{}]  //实时监控数据
+        monitoringData:[{}],  //实时监控数据
+        bubbleTip:'' //提示信息
       }
     },
     mounted(){
@@ -235,10 +237,10 @@
     },
     methods:{
       initModelId(){
-        /*console.log(this.$store.state)*/
+        console.log(this.$store.state)
         this.$http.get('/index_pc/pc/select/model')
           .then((response)=>{
-
+            console.log(response)
           })
           .catch(function (error) {
             console.log(error);
@@ -256,6 +258,20 @@
           .catch((error)=>{
             console.log(error);
           });
+      },
+      bubbleTipShow(tip){
+        this.bubbleTip = tip;
+        this.$store.state.bubbleShow = true;
+        var that = this;
+        setTimeout(function () {
+          that.$store.state.bubbleShow = false;
+        },3000)
+      },
+      personInfoShowTips(tips){   //个人信息修改提示信息
+        this.bubbleTipShow(tips)
+      },
+      loginOut(){
+          this.$router.push('./')
       },
       addModules(index){
         this.currentMudel = index;

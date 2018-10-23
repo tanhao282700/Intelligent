@@ -21,10 +21,10 @@
               </template>
               <el-menu-item-group>
                 <!--<template slot="title">分组一</template>-->
-                <el-menu-item index="DoorControl"><span class="textPL">门禁系统</span></el-menu-item>
-                <el-menu-item index="VideoSurveillance"><span class="textPL">视频监控系统</span></el-menu-item>
-                <el-menu-item index="fireAlarm/fireMonitor"><span class="textPL">消防系统</span></el-menu-item>
-                <el-menu-item disabled index="1-4"><span class="textPL">中央空调系统</span></el-menu-item>
+                <el-menu-item :disabled="!userRouterInfo[14]" index="DoorControl"><span class="textPL">门禁系统</span></el-menu-item>
+                <el-menu-item :disabled="!userRouterInfo[5]" index="VideoSurveillance"><span class="textPL">视频监控系统</span></el-menu-item>
+                <el-menu-item :disabled="!userRouterInfo[16]" index="fireAlarm/fireMonitor"><span class="textPL">消防系统</span></el-menu-item>
+                <el-menu-item :disabled="!userRouterInfo[1]" index="1-4"><span class="textPL">中央空调系统</span></el-menu-item>
               </el-menu-item-group>
             </el-submenu>
             <el-submenu index="2">
@@ -33,18 +33,10 @@
                 <span class="textPL">运营管理</span>
               </template>
               <el-menu-item-group>
-                <el-menu-item index="energy"><span class="textPL">能源管理系统</span></el-menu-item>
+                <el-menu-item :disabled="!userRouterInfo[2]" index="energy"><span class="textPL">能源管理系统</span></el-menu-item>
                 <el-menu-item index="HotelStatus"><span class="textPL">营收数据分析</span></el-menu-item>
               </el-menu-item-group>
             </el-submenu>
-            <!--<el-submenu index="3" >
-              <template slot="title">
-                <i class="el-icon-location"></i>
-                <span>运维管理</span>
-              </template>
-              <el-menu-item disabled index="3-1">普通人员</el-menu-item>
-              <el-menu-item index="AgentManage">管理人员</el-menu-item>
-            </el-submenu>-->
             <el-menu-item class="noChildModule" index="AgentManage">
               <i class="el-icon-location noLog maintainmanagement"></i>
               <span class="textPL">运维管理</span>
@@ -73,7 +65,8 @@
     },
     data(){
       return{
-        isUserRouter:true
+        isUserRouter:true,
+        userRouterInfo:{}
       }
     },
     components:{
@@ -86,6 +79,11 @@
           this.$parent.showBannerParam = false
           }
         });*/
+      console.log(this.$store.state)
+      this.$store.state.userInfoTotal.usergrouprolesyslist[0].syslist.map((item,index)=>{
+        this.userRouterInfo[item.self_id] = item
+      })
+      console.log(this.userRouterInfo)
     },
     methods:{
       showBanerClick(){
