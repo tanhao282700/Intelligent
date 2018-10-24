@@ -33,7 +33,7 @@
       <div v-if="options.isChangePassword" class="personInfoCon changePassword">
         <div class="formInput">
           <span>原密码</span>
-          <input readonly type="password" value="123456789">
+          <input type="password" v-model="oldPassword">
         </div>
         <div class="formInput">
           <span>新密码</span>
@@ -65,7 +65,8 @@
           role_info:{}
         },
         newPassword1:'',
-        newPassword2:''
+        newPassword2:'',
+        oldPassword:''
       }
     },
     components:{
@@ -124,15 +125,17 @@
         })
       },
       changePassword(){
-        console.log(this.newPassword1)
-        console.log(this.newPassword2)
+        if(!this.oldPassword){
+          this.$emit('showTips', '请输入原密码！');
+          return
+        }
         if(this.newPassword1 != this.newPassword2){
           this.$emit('showTips', '密码不一致，请重新输入！');
           return
         }
         this.$http.post('users_manage/users_updateLoginPwd',{
           user_id:this.$store.state.userInfoTotal.userinfo.id,
-          org_pass:this.$store.state.userInfoTotal.userinfo.password,
+          org_pass:this.oldPassword,
           password:this.newPassword2
         }).then(res=>{
           console.log(res);

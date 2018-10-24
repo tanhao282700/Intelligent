@@ -10,7 +10,7 @@ if(debug){
 }else{
   baseurl = 'https://tesing.china-tillage.com'
 }
-
+/*baseurl = 'https://tesing.china-tillage.com'*/
 
 /*axios.interceptors.request.use(config => {    // 这里的config包含每次请求的内容
   // 判断localStorage中是否存在api_token
@@ -31,15 +31,17 @@ axios.interceptors.response.use(response => {
 
 function checkStatus (response) {
   // 如果http状态码正常，则直接返回数据
+  console.log(response)
   if (response && (response.status === 200 || response.status === 304 ||
     response.status === 400)) {
     return response
   }
   // 异常状态下，把错误信息返回去
-  return {
+  return response
+  /*return {
     status: -404,
     msg: '网络异常'
-  }
+  }*/
 }
 
 function checkCode (res) {
@@ -62,8 +64,8 @@ export default {
       data: qs.stringify(data),
       timeout: 5000,
       headers: {
-        'X-Requested-With': 'XMLHttpRequest',
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        'x-requested-with': 'XMLHttpRequest',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
       }
     }).then(
       (response) => {
@@ -83,7 +85,7 @@ export default {
       params, // get 请求时带的参数
       timeout: 5000,
       headers: {
-        'X-Requested-With': 'XMLHttpRequest'
+        'X-Requested-With': 'XMLHttpRequest',
       }
     }).then(
       (response) => {

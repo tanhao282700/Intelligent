@@ -21,9 +21,9 @@
               </template>
               <el-menu-item-group>
                 <!--<template slot="title">分组一</template>-->
-                <el-menu-item :disabled="!userRouterInfo[14]" index="DoorControl"><span class="textPL">门禁系统</span></el-menu-item>
-                <el-menu-item :disabled="!userRouterInfo[5]" index="VideoSurveillance"><span class="textPL">视频监控系统</span></el-menu-item>
-                <el-menu-item :disabled="!userRouterInfo[16]" index="fireAlarm/fireMonitor"><span class="textPL">消防系统</span></el-menu-item>
+                <el-menu-item :disabled="!userRouterInfo[14]" index="/DoorControl"><span class="textPL">门禁系统</span></el-menu-item>
+                <el-menu-item :disabled="!userRouterInfo[4]" index="/VideoSurveillance"><span class="textPL">视频监控系统</span></el-menu-item>
+                <el-menu-item :disabled="!userRouterInfo[16]" index="/fireAlarm/fireMonitor"><span class="textPL">消防系统</span></el-menu-item>
                 <el-menu-item :disabled="!userRouterInfo[1]" index="1-4"><span class="textPL">中央空调系统</span></el-menu-item>
               </el-menu-item-group>
             </el-submenu>
@@ -33,19 +33,19 @@
                 <span class="textPL">运营管理</span>
               </template>
               <el-menu-item-group>
-                <el-menu-item :disabled="!userRouterInfo[2]" index="energy"><span class="textPL">能源管理系统</span></el-menu-item>
-                <el-menu-item index="HotelStatus"><span class="textPL">营收数据分析</span></el-menu-item>
+                <el-menu-item :disabled="!userRouterInfo[2]" index="/energy"><span class="textPL">能源管理系统</span></el-menu-item>
+                <el-menu-item :disabled="!userRouterInfo[17]" index="/HotelStatus"><span class="textPL">营收数据分析</span></el-menu-item>
               </el-menu-item-group>
             </el-submenu>
-            <el-menu-item class="noChildModule" index="AgentManage">
+            <el-menu-item class="noChildModule" :index="agentPath">
               <i class="el-icon-location noLog maintainmanagement"></i>
               <span class="textPL">运维管理</span>
             </el-menu-item>
-            <el-menu-item class="noChildModule" index="fireAlarm">
+            <el-menu-item class="noChildModule" index="/fireAlarm">
               <i class="el-icon-location noLog alarmmanage"></i>
               <span class="textPL">告警管理</span>
             </el-menu-item>
-            <el-menu-item class="noChildModule" index="permission">
+            <el-menu-item :disabled="!isPermissionPath" class="noChildModule" index="/permission">
               <i class="el-icon-location noLog Authoritymanagement"></i>
               <span class="textPL">权限管理</span>
             </el-menu-item>
@@ -66,33 +66,31 @@
     data(){
       return{
         isUserRouter:true,
-        userRouterInfo:{}
+        userRouterInfo:{},
+        agentPath:'',
+        isPermissionPath:false
       }
     },
     components:{
 
     },
     mounted(){
-      /*$('.banerCon').on('click', (event) => event.stopPropagation());
-      $(document).on('click', () => {
-        if(this.$parent.showBannerParam){
-          this.$parent.showBannerParam = false
-          }
-        });*/
-      console.log(this.$store.state)
       this.$store.state.userInfoTotal.usergrouprolesyslist[0].syslist.map((item,index)=>{
         this.userRouterInfo[item.self_id] = item
       })
-      console.log(this.userRouterInfo)
+      if(this.$store.state.userInfoTotal.permissions_manage.per_id==0){  //没有管理权限
+          this.agentPath = '/AgentManage/normalUser'
+          this.isPermissionPath = false
+      }
+      if(this.$store.state.userInfoTotal.permissions_manage.per_id=='-1'){  //有管理权限
+        this.agentPath = '/AgentManage'
+        this.isPermissionPath = true
+      }
     },
     methods:{
       showBanerClick(){
         this.$emit('changeBannerParam', !this.isShowBannerParam);
       },
-      goRoute(link){
-          console.log(11)
-        this.$router.push(link);
-      }
     }
   }
 </script>
@@ -123,7 +121,7 @@
     padding-left:10px;
   }
   .noLog:before{
-    content:'';
+    content:''!important;
   }
   .wisdomManagement{
     width:22px!important;

@@ -234,6 +234,7 @@
 
       this.initModelId()
       this.initAlarm()
+      this.initRouterInfo()
     },
     methods:{
       initModelId(){
@@ -246,11 +247,13 @@
             console.log(error);
           });
       },
+      initRouterInfo(){},
       initAlarm(){
         this.$http.get('/index_pc/pc/model',{self_id:-2})
           .then((response)=>{
             if(response.data.code == 0){
               this.monitoringData = response.data.data
+              console.log(this.monitoringData)
             }else{
 
             }
