@@ -520,9 +520,9 @@ export default {
 
 .examineTable{
    width: 95.6%;
-   .vh(578);
+   height:5.48rem;
    .tableHead{
-       .vh(100);
+       height:1rem;
        width: 100%;
        background: rgba(0,0,0,0.2);
        position:relative;
@@ -557,13 +557,13 @@ export default {
        }
    }
    .tableBox{
-       .vh(355);
+       height:3.56rem;
        width: 100%;
         background:rgba(74,144,226,0.05);
         .tableTit{
             width: 100%;
-            .vh(40);
-            .vhLH(40);
+            height:0.4rem;
+            line-height:0.4rem;
             span{
                 font-size: 0.16rem;
                 padding-left: 0.5rem;
@@ -574,7 +574,7 @@ export default {
             }
         }
         .tableBody{
-            .vh(315);
+            height:3.15rem;
             width: 100%;
             display: flex;
             flex-direction: column;
@@ -813,13 +813,13 @@ export default {
         }
    }
    .tableBot{
-       .vh(123);
+       height:1rem;
        width: 100%;
        display: flex;
        align-items: center;
        justify-content: center;
        div{
-         margin-right:1vw;
+         margin-right:0.1rem;
        }
        .btnBai2{
             background-color: #3a84ee;

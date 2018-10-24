@@ -249,7 +249,7 @@ export default {
   height: 100%;
   .boxsTitG{
     width: 100%;
-    .vh(40);
+    height:0.4rem;
     background: rgba(0,0,0,.2);
     padding-left: 0.16rem;
     padding-right: 0.2rem;
@@ -258,23 +258,22 @@ export default {
       font-size: 0.16rem;
       color:@color-blue;
       font-family: PingFangSC-Medium;
-      .vh(40);
-      .vhLH(40);
+      height:0.4rem;
+      line-height:0.4rem;
     }
     .btnDate{
       float: right;
       width: 0.56rem;
-      .vh(26);
+      height:60%;
       background: rgba(255,255,255,0.01);
       border-radius: 0.02rem;
       border: solid 0.01rem #1989fa;
       text-align: center;
-      .vhLH(24);
       margin-left: 0.1rem;
       color: #b5d7ff;
       font-size: 0.14rem;
       cursor: pointer;
-      .vhMT(7);
+      margin-top:0.07rem;
       &.active{
         cursor:auto;
         background: #1575d9;
@@ -284,19 +283,19 @@ export default {
     .totalNum{
       display: inline-block;
       margin-left: 0.16rem;
-      .vh(40);
-      .vhLH(40);
+      height:0.40rem;
+      line-height:0.4rem;
       font-size: 0.16rem;
       color: #b5d7ff;
       padding-left: 0.12rem;
       position: relative;
       .lines{
         width: 0.02rem;
-        .vh(16);
+        line-height:0.16rem;
         background: #008aff;
         position: absolute;
         left:0;
-        .vhTop(12);
+        top:0.12rem;
         font-family: PingFangSC-Light;
       }
 
@@ -304,50 +303,46 @@ export default {
 
   }
   .msgBox{
-    .vh(293);
-    .vhMT(16);
+    height:2.54rem;
+    margin-top:0.16rem;
     width:95.6%;
     margin:0 auto;
      .msgsIn0{
         width: 100%;
-        .vh(253);
         display: flex;
         .msgsIn{
           flex: 1;
           display: flex;
           flex-direction: column;
           .msgsInTit{
-            .vh(26);
+            height:0.26rem;
             color:#b5d7ff;
             text-indent: 0.16rem;
             font-size: 0.16rem;
             font-family: PingFangSC-Light;
-            .vhLH(36);
           }
           .msgsInBoxs{
             flex:1;
             padding-left: 0.4rem;
             .msgsInCircle{
-              width: 2.16rem;
-              .vh(214);
+              width: 1.56rem;
+              height:1.56rem;
               float: left;
             }
             .msgsInTable{
               background: rgba(0,0,0,.1);
               border: solid 0.01rem rgba(45, 148, 240, 0.2);
-              .vh(148);
-              .vhMT(33);
+              height:1.48rem;
+              margin-top:0.2rem;
               width: 3.4rem;
               float: left;
               padding: 0 0.1rem;
-              .vhPT(10);
               flex-direction: column;
               display: flex;
               li{
                 flex:1;
                 align-items: center;
                 display: flex;
-                .vhPB(10);
                 label{
                   width: 0.74rem;
                   font-size: 0.16rem;
@@ -356,7 +351,7 @@ export default {
                 .numBox{
                   flex:1;
                   background: rgba(0, 0, 0, 0.2);
-                  height: 100%;
+                  height: 0.36rem;
                   display: flex;
                   align-items: center;
                   span{
@@ -368,28 +363,28 @@ export default {
                     flex:1;
                     padding-right: 0.1rem;
                     height: 100%;
-                    .vhPT(7);
-                    .vhPB(7);
+                    padding-top:0.07rem;
+                    padding-bottom:0.07rem;
                     .numLines{
                       height: 100%;
                       background: #008aff;
                       color:#fff;
                       text-align:right;
                       padding-right:5*100/1366vw;
-                      .vhLH(24);
+                      line-height:0.22rem;
                     }
                     .numLines2{
                       height: 100%;
                       background: #f56c6c;
                       color:#fff;
                       text-align:right;
-                      .vhLH(24);
+                      line-height:0.22rem;
                       padding-right:5*100/1366vw;
                     }
                   }
                   img{
                     width: 0.14rem;
-                    .vh(20);
+                    height:0.24rem;
                     margin-right: 0.09rem;
                   }
                 }
@@ -402,12 +397,12 @@ export default {
   .dealed{
     display: inline-block;
     width: 47.07%;
-    .vh(293);
+    height:2.94rem;
     margin-left: 0.3rem;
-    .vhMT(20);
+    margin-top:0.20rem;
     .workBox1{
       width: 100%;
-      .vh(253);
+      height:2.53rem;
       padding: 0 0.05rem;
       display: flex;
       .workBox1In{
@@ -420,19 +415,19 @@ export default {
           text-align: center;
           p{
             text-align: center;
-            .vh(67);
-            .vhLH(75);
+            height:0.67rem;
+            line-height:0.75rem;
             font-size: 0.35rem;
             color:#fff;
             &.marginTop{
-              .vhMT(17);
+              margin-top:0.17rem;
             }
           }
           span{
             display: inline-block;
             width: 1.14rem;
-            .vh(24);
-            .vhLH(22);
+            height:0.24rem;
+            line-height:0.22rem;
             border: solid 0.01rem;
             font-size: 0.12rem;
             text-align: center;
@@ -478,12 +473,12 @@ export default {
   .workFrom{
     display: inline-block;
     width: 47.07%;
-    .vh(293);
+    height:2.94rem;
     margin-left:1.2vw;
-    .vhMT(20);
+    margin-top:0.2rem;
     .EchartBarBox{
       width: 100%;
-      .vh(253);
+      height:2.53rem;
     }
   }
 }

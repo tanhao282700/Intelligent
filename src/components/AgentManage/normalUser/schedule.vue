@@ -11,153 +11,282 @@
             <span slot="label" class="tabItems">
                 排班表
             </span>
-            <ScheduleTable :isShowBtns="'no'"/>
+            <ScheduleTable :isShowBtns="'no'" style="width:100%;"/>
         </el-tab-pane>
         <el-tab-pane name="second" >
-            <span slot="label" class="tabItems">
-                申请换班
-            </span>
-            <div class="boxs applyJob">
-              <div class="leftpeo">
-                <div>
-                  <img :src="applyJob.img1" >
+          <span slot="label" class="tabItems">
+              申请换班
+          </span>
+          <div class="boxs">
+            <div class="pBody">
+              <div class="pBox">
+                <div class="imgBox">
+                  <img :src="dia.img1" alt="">
                 </div>
-                <div class="peoDetail">
-                  <div class="demo-input-suffix">
-                    申请人：
-                    <span>{{applyJob.name}}</span>
+                <div class="nameBox boxs">
+                  <div class="labelBox">
+                    <label for="">申请人：</label>
+                    <span v-text="dia.name1"></span>
                   </div>
-                  <div class="demo-input-suffix">
-                    联系电话：<span>{{applyJob.tel1}}</span>
+                  <div class="labelBox">
+                    <label for="">联系电话：</label>
+                    <span v-text="dia.tel1"></span>
                   </div>
-                  <div class="demo-input-suffix">
-                    申请人班次：<selectBox
-                      class="selectDtl"
-                      :options = 'peos' 
-                      :value = "vpeo" 
-                      placeholder="选择人员"
-                      @change = 'change1'
-                      />
-                  </div>
-                </div>
-              </div>
-              <Lines :top="20" :hei="150" class="centerLine"/>
-              <div class="rightpeo">
-                <div class="">
-                  <div>
-                    <img :src="applyJob.img1" >
-                  </div>
-                  <div class="peoDetail">
-                    <div class="demo-input-suffix">
-                      换班人：
-                      <SelectBox 
+                  <div class="labelBox">
+                    <label for="">申请人班次：</label>
+                    <SelectBox 
                         :options = 'peos' 
-                         class="selectDtl"
                         :value = "vpeo" 
+                        class="selectStyle"
                         :icon="'el-icon-d-caret'"
                         placeholder="选择人员"
-                        @change = "change1"
-                      />
-                    </div>
-                    <div class="demo-input-suffix">
-                      联系电话：
-                      <span></span>
-                    </div>
-                    <div class="demo-input-suffix">
-                      换班班次：
-                      <selectBox
-                        class="selectDtl"
-                      :options = 'peos' 
-                      :value = "vpeo" 
-                      placeholder="选择时间段"
-                      @change = 'change2'/>
-                    </div>
+                        @change = 'change1'
+                    />
+                  </div>
+                </div>
+              </div>
+              <Lines :hei="125" :top="20" />
+              <div class="pBox">
+                <div class="imgBox">
+                  <img :src="dia.img2" alt="">
+                </div>
+                <div class="nameBox boxs">
+                  <div class="labelBox">
+                    <label for="">换班人：</label>
+                    <SelectBox 
+                        :options = 'peos' 
+                        :value = "vpeo" 
+                        class="selectStyle"
+                        :icon="'el-icon-d-caret'"
+                        placeholder="选择人员"
+                        @change = 'change1'
+                    />
+                  </div>
+                  <div class="labelBox">
+                    <label for="">联系电话：</label>
+                    <span v-text="dia.tel2"></span>
+                  </div>
+                  <div class="labelBox">
+                    <label for="">换班人班次：</label>
+                    <SelectBox 
+                        :options = 'peos' 
+                        :value = "vpeo" 
+                        class="selectStyle"
+                        :icon="'el-icon-d-caret'"
+                        placeholder="选择时间段"
+                        @change = 'change1'
+                    />
                   </div>
                 </div>
               </div>
             </div>
-            <div class="hbExcuse">
-                <div>换班原因</div>
-                <el-input  type="textarea" v-model="excuse"></el-input>
+            <div class="reason">
+              <div class="diaTit2">换班原因</div>
+              <div class="reasonBox" >
+                <el-input type="textarea" v-model="dia.reason"></el-input>
+              </div>
             </div>
+            <div style="text-align:center;">
+              <el-button class="submitApply" @click="submitApply">提交申请</el-button>
+            </div>
+            
+          </div>
         </el-tab-pane>
-        <el-tab-pane name="thrid" >
+        <el-tab-pane name="thrid"  class="tabChilds">
             <span slot="label" class="tabItems">
                 申请状态
             </span>
-            <el-radio-group v-model="radio3">
-              <el-radio-button label="待审核"></el-radio-button>
-              <el-radio-button label="已审核"></el-radio-button>
-              <el-radio-button label="我的处理"></el-radio-button>
-            </el-radio-group>
+            <div class="statusTabs">
+              <el-radio-group v-model="tabPosition" @change="changeStatus">
+                <el-radio-button label="待审核">待审核</el-radio-button>
+                <Lines :hei="30" :top="0" />
+                <el-radio-button label="已审核">已审核</el-radio-button>
+                <Lines :hei="30" :top="0" />
+                <el-radio-button label="我的处理">我的处理</el-radio-button>
+              </el-radio-group>
+            </div>
+            <div>
+                <ul v-show="tabPosition=='待审核'" class="tabLists">
+                  <li class="boxs ">
+                    <div class="pBox">
+                      <div class="imgBox">
+                        <img :src="dia.img1" alt="">
+                      </div>
+                      <div class="descBox">
+                        <div class="nameBox">
+                          <div class="labelBox">
+                            <label for="">申请人：</label>
+                            <span v-text="dia.name1"></span>
+                          </div>
+                          <div class="labelBox">
+                            <label for="">联系电话：</label>
+                            <span v-text="dia.tel1"></span>
+                          </div>
+                          <div class="labelBox">
+                            <label for="">班次：</label>
+                            <span v-text="dia.time1"></span>
+                          </div>
+                        </div>
+                        <div class="nameBox">
+                          <div class="labelBox">
+                            <label for="">换班人：</label>
+                            <span v-text="dia.name1"></span>
+                          </div>
+                          <div class="labelBox">
+                            <label for="">联系电话：</label>
+                            <span v-text="dia.tel1"></span>
+                          </div>
+                          <div class="labelBox">
+                            <label for="">班次：</label>
+                            <span v-text="dia.time1"></span>
+                          </div>
+                        </div>
+                        <div class="nameBox">
+                          <div class="labelBox">
+                            <label for="">换班原因：</label>
+                            <span v-text="excuse" class="hbExcuse"></span>
+                          </div>
+                        </div>
+                        <div class="nameBox">
+                          <div class="labelBox">
+                            <label for="">申请时间：</label>
+                            <span v-text="dia.name1"></span>
+                          </div>
+                        </div>
+                        <div style="clear:both"></div>
+                        <div class="nameBox">
+                          <div class="labelBox">
+                            <label for="">当前状态：</label>
+                            <span v-text="dia.name1" class="dqStatus"></span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+                <ul v-show="tabPosition=='已审核'" class="tabLists">
+                  <li class="boxs">
+                    <div class="pBox">
+                      <div class="imgBox">
+                        <img :src="dia.img1" alt="">
+                      </div>
+                      <div class="descBox">
+                        <div class="nameBox">
+                          <div class="labelBox">
+                            <label for="">申请人：</label>
+                            <span v-text="dia.name1"></span>
+                          </div>
+                          <div class="labelBox">
+                            <label for="">联系电话：</label>
+                            <span v-text="dia.tel1"></span>
+                          </div>
+                          <div class="labelBox">
+                            <label for="">班次：</label>
+                            <span v-text="dia.time1"></span>
+                          </div>
+                        </div>
+                        <div class="nameBox">
+                          <div class="labelBox">
+                            <label for="">换班人：</label>
+                            <span v-text="dia.name1"></span>
+                          </div>
+                          <div class="labelBox">
+                            <label for="">联系电话：</label>
+                            <span v-text="dia.tel1"></span>
+                          </div>
+                          <div class="labelBox">
+                            <label for="">班次：</label>
+                            <span v-text="dia.time1"></span>
+                          </div>
+                        </div>
+                        <div class="nameBox">
+                          <div class="labelBox">
+                            <label for="">换班原因：</label>
+                            <span v-text="excuse" class="hbExcuse"></span>
+                          </div>
+                        </div>
+                        <div class="nameBox">
+                          <div class="labelBox">
+                            <label for="">申请时间：</label>
+                            <span v-text="dia.name1"></span>
+                          </div>
+                        </div>
+                        <div style="clear:both"></div>
+                        <div class="nameBox">
+                          <div class="labelBox">
+                            <label for="">当前状态：</label>
+                            <span v-text="dia.name1" class="dqStatus"></span>
+                          </div>
+                          <div class="labelBox">
+                            <label for="">审核人：</label>
+                            <span v-text="dia.name1"></span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+                <ul v-show="tabPosition=='我的处理'" class="tabLists">
+                    <li class="boxs">
+                    <div class="pBox">
+                      <div class="imgBox">
+                        <img :src="dia.img1" alt="">
+                      </div>
+                      <div class="descBox">
+                        <div class="nameBox">
+                          <div class="labelBox">
+                            <label for="">申请人：</label>
+                            <span v-text="dia.name1"></span>
+                          </div>
+                          <div class="labelBox">
+                            <label for="">联系电话：</label>
+                            <span v-text="dia.tel1"></span>
+                          </div>
+                          <div class="labelBox">
+                            <label for="">班次：</label>
+                            <span v-text="dia.time1"></span>
+                          </div>
+                        </div>
+                        <div class="nameBox">
+                          <div class="labelBox">
+                            <label for="">换班人：</label>
+                            <span v-text="dia.name1"></span>
+                          </div>
+                          <div class="labelBox">
+                            <label for="">联系电话：</label>
+                            <span v-text="dia.tel1"></span>
+                          </div>
+                          <div class="labelBox">
+                            <label for="">班次：</label>
+                            <span v-text="dia.time1"></span>
+                          </div>
+                        </div>
+                        <div class="nameBox">
+                          <div class="labelBox">
+                            <label for="">换班原因：</label>
+                            <span v-text="excuse" class="hbExcuse"></span>
+                          </div>
+                        </div>
+                        <div class="nameBox">
+                          <div class="labelBox">
+                            <label for="">申请时间：</label>
+                            <span v-text="dia.name1"></span>
+                          </div>
+                        </div>
+                        <div style="clear:both"></div>
+                        <div class="nameBox">
+                          <div class="labelBox">
+                            <el-button class="refuseHb">拒绝换班</el-button>
+                            <el-button class="agreeHb">同意换班</el-button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+            </div>
         </el-tab-pane>
       </el-tabs>
-      <transition name="fade">
-        <div class="sceBtn btnBai1" v-show="activeName=='first'">
-          <img src="../../../assets/img/AgentManage/export.png">
-          <span>导出排班表</span>              
-        </div>
-      </transition>
-        <Dialog ref="dialog" wid="910" hei="536" class="dialog">
-          <div class="diaHei">换班申请</div>
-          <div class="pBody">
-            <div class="pBox">
-              <div class="imgBox boxs">
-                <img :src="dia.img1" alt="">
-              </div>
-              <div class="nameBox boxs">
-                <div class="labelBox">
-                  <label for="">申请人：</label>
-                  <span v-text="dia.name1"></span>
-                </div>
-                <div class="labelBox">
-                  <label for="">联系电话：</label>
-                  <span v-text="dia.tel1"></span>
-                </div>
-                <div class="labelBox">
-                  <label for="">申请人班次：</label>
-                  <span v-text="dia.time1"></span>
-                </div>
-              </div>
-            </div>
-            <Lines :hei="125" :top="20" />
-            <div class="pBox">
-              <div class="imgBox boxs">
-                <img :src="dia.img2" alt="">
-              </div>
-              <div class="nameBox boxs">
-                <div class="labelBox">
-                  <label for="">换班人：</label>
-                  <span v-text="dia.name2"></span>
-                </div>
-                <div class="labelBox">
-                  <label for="">联系电话：</label>
-                  <span v-text="dia.tel2"></span>
-                </div>
-                <div class="labelBox">
-                  <label for="">换班人班次：</label>
-                  <span v-text="dia.time2"></span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="reason">
-            <div class="diaTit2">换班原因</div>
-            <div class="reasonBox" v-text="dia.reason"></div>
-          </div>
-          <div class="time">
-            <div class="diaTit2">申请时间</div>
-            <span v-text="dia.applyTime"></span>
-          </div>
-          <div class="examFlag">
-            <img class="rightBotm" v-show="dia.state==0" src="../../../assets/img/generation/isno.png" alt="">
-            <img class="rightBotm" v-show="dia.state==1" src="../../../assets/img/generation/isok.png" alt="">
-          </div>
-          <div class="diaBtns" v-show="dia.state==-1">
-            <div class="diabtn diabtn22" @click="isNo(indexNow,dia)">驳回</div>
-            <div class="diabtn"  @click="isOk(indexNow,dia)">同意</div>
-          </div>
-        </Dialog>
   </div>
 </template>
 
@@ -196,7 +325,8 @@ export default {
   },
   data () {
     return {
-        excuse:'Ant Design是一个服务于企业级产品的设计体系，基于『确定』和『自然』的设计价值观和模块化的解决方案，让设计者专注 于更好的用户体验。',
+        tabPosition:'待审核',
+        excuse:'语雀是一款优雅高效的在线文档编辑与协同工具，让每个企业轻松拥有文档中心阿里巴巴集团内部使用多年，众多中小企业首选。',
         peos:[
           {},
           {}
@@ -244,19 +374,11 @@ export default {
       change1(){
 
       },
-      change2(){
+      submitApply(){
 
       },
-      showInfo(i,item){
-        this.dia = item;
-        this.indexNow = i;
-        this.$refs.dialog.show();
-      },
-      showInfoed(i,item){
-        console.log(i)
-        this.dia = item;
-        this.$refs.dialog.show();
-        console.log(this.$refs)
+      changeStatus(){
+
       }
   },
   created() {
@@ -282,52 +404,171 @@ export default {
 .schedule{
   position: relative;
   width:100%;
+  height:100%;
   .tabBoxs{
     margin:0 2.2%;
-    width:95.6%;
-  }
-  .hbExcuse{
-    color:#4F648B;
-    .vhLH(30);
-  }
-  .applyJob{
-    width:100%;
-    .vh(140);
-    .vhLH(140);
-    overflow:hidden;
-    .leftpeo,.rightpeo{
-      float:left;
-      width:49.92%;
-      padding:0 1.53%;
-      img{
-        width:11.48%;
-        float:left;
-        .vh(110);
-        margin-top:3.06%;
-        margin-right:3.06%;
+    height :6.78rem;
+    .reason{
+      padding:0.1rem 0.2rem;
+      .diaTit2{
+        .vh(44);
+        .vhLH(44);
+        color:#4F648B;
       }
-      .peoDetail{
-        width:76.22%;
-        float:left;
-        .vh(110);
-        margin-top:3.06%;
-        .demo-input-suffix{
-          .vh(34);
-          .vhLH(34);
-          width:100%;
-          color:#4F648B;
-          span{
-            color:#93B7E2;
-          }
-          .selectDtl{
-            width:47.86%;
-          }
-        }
+      .reasonBox{
+        .vh(114);
+        width:96.78%;
+        margin-left: 0.2rem;
+        background-color: #001838;
+        box-shadow: 0px 0px 2px 0px 
+          rgba(87, 113, 176, 0.15), 
+          inset 0px 1px 3px 0px 
+          rgba(0, 0, 0, 0.5);
+          padding: 0 0.1rem;
+          color: #ffa414;
+          font-size: 0.14rem;
+          .vhLH(24);
+          .vhMT(10);
+          .vhPT(5);
+          .vhPB(5);
+          .vhMB(20);
+      }
+    } 
+    .submitApply{
+      width:2.2rem;
+      height:0.44rem;
+      font-size:0.26rem;
+      margin:0.63rem 0 0.2rem;
+      border:none;
+      color:#174BA2;
+      background:rgba(51,51,51,0.2);
+      box-shadow:0px 2px 5px 0px rgba(74,144,226,0.4),1px 1px 1px 0px rgba(248,253,255,0.15),0px 0px 1px 0px rgba(74,144,226,1);
+      border-radius:2px;
+      &:hover{
+        background:linear-gradient(360deg,rgba(39,114,227,1) 0%,rgba(75,148,249,1) 100%);
+        color:#fff;
       }
     }
-    .centerLine{
-      float:left;
-      margin:1.53% 0;
+    .pBody{
+      .vh(165);
+      width: 100%;
+      display: flex;
+      .pBox{
+        flex: 1;
+        display: flex;
+        height :100%;
+        padding-left: 0.2rem;
+        padding-right: 0.2rem;
+        .vhPT(20);
+        .imgBox{
+          width: 1.26rem;
+          .vh(150);
+          border-radius: 0.02rem;
+          display: flex;
+          overflow:hidden;
+          justify-content: center;
+          img{
+            .vh(150);
+          }
+
+        }
+        .nameBox{
+          margin-left: 0.11rem;
+          width: 82.5%;
+          .vh(150);
+           border-radius: 0.02rem;
+           padding-left: 0.2rem;
+           .vhPT(10);
+           font-size: 0.14rem;
+           .labelBox{
+             .vh(40);
+             .vhLH(40);
+             label{
+               color: #4f648b;
+               display:inline-block;
+             }
+             .selectStyle{
+                width:2.34rem;
+                .vh(36);
+                .vhLH(36);
+             }
+             span{
+               color: #93b7e2;
+               text-indent: 0.1rem;
+               display:inline-block;
+             }
+           }
+        }
+
+      }  
+    }
+    .statusTabs{
+      width:6rem;
+      height:0.36rem;
+      line-height:0.36rem;
+      margin:0.16rem auto;
+    }
+    .tabLists{
+      width:95%;
+      margin:0 0.26rem;
+      flex: 1;
+      display: flex;
+      height :100%;
+      li{
+        width:100%;
+        border:0px solid rgba(181,215,255,0.25);
+        background:rgba(74,144,226,0.05);
+        .imgBox{
+          float:left;
+          padding:0.26rem;
+          border:1px solid rgba(181,215,255,0.25);
+          background:rgba(74,144,226,0.05);
+          img{
+            width:1.26rem;
+            height:1.5rem;
+          }
+        }
+        .descBox{
+            padding:0.17rem 0  0.17rem 0.26rem;
+            width:82.68%;
+            overflow:hidden;
+            .nameBox{
+              float:left;
+              line-height:0.32rem;
+              .labelBox{
+                float:left;
+                margin-right:0.5rem;
+                label{
+                  color:#4F648B;
+                }
+                span{
+                  color:#93B7E2;
+                }
+                .hbExcuse{
+                  color:#FFA414;
+                }
+                .dqStatus{
+                  color:#FA6074;
+                }
+                .refuseHb{
+                  height:0.34rem;
+                  color:#F9F9F9;
+                  background:rgba(59,137,249,0.2);
+                  border:none;
+                  line-height:0.2;
+                }
+                .agreeHb{
+                  height:0.32rem;
+                  color:#3B89F9;
+                  border:0.01rem solid rgba(59,137,249,1);
+                  background:transparent;
+                  line-height:0.2;
+                }
+              }
+            }
+        }
+        
+      }
     }
   }
   .sceBtn{
@@ -347,130 +588,5 @@ export default {
       vertical-align:middle;
     }
   }
-}
-.dialog{
-  .diaHei{
-    .vh(50);
-    background: rgba(0, 0, 0, 0.2);
-    color: #fff;
-    font-size: 0.16rem;
-    text-indent: 0.20rem;
-    .vhLH(50);
-  }
-  .examFlag{
-    .rightBotm{
-      position:absolute;
-      bottom:0;
-      right:0;
-    }
-  }
-  .pBody{
-    .vh(165);
-    width: 100%;
-    display: flex;
-
-    .pBox{
-      flex: 1;
-      display: flex;
-      padding-left: 0.2rem;
-      padding-right: 0.2rem;
-      .vhPT(20);
-      .imgBox{
-        width: 1rem;
-        .vh(125);
-        border-radius: 0.02rem;
-        display: flex;
-        justify-content: center;
-        img{
-          .vh(125);
-        }
-
-      }
-      .nameBox{
-        margin-left: 0.11rem;
-        width: 3.05rem;
-        .vh(125);
-         border-radius: 0.02rem;
-         padding-left: 0.2rem;
-         .vhPT(10);
-         font-size: 0.14rem;
-         .labelBox{
-           .vh(34);
-           .vhLH(34);
-           label{
-             color: #4f648b;
-           }
-           span{
-             color: #93b7e2;
-             text-indent: 0.1rem;
-           }
-         }
-      }
-    }   
-  }
-  .diaTit2{
-      font-size: 0.14rem;
-      padding-left: 0.2rem;
-      color: #4f648b;
-      .vh(14);
-      .vhLH(14);
-    }
-    .reason{
-      .reasonBox{
-        .vh(114);
-        width:8.75rem;
-        margin-left: 0.2rem;
-        background-color: #001838;
-        box-shadow: 0px 0px 2px 0px 
-          rgba(87, 113, 176, 0.15), 
-          inset 0px 1px 3px 0px 
-          rgba(0, 0, 0, 0.5);
-          padding: 0 0.1rem;
-          color: #ffa414;
-          font-size: 0.14rem;
-          .vhLH(24);
-          overflow-y: scroll;
-          .vhMT(10);
-          .vhPT(5);
-          .vhPB(5);
-          .vhMB(20);
-      }
-    }
-    .time{
-      span{
-        display: inline-block;
-        color: #b5d7ff;
-        font-size: 0.14rem;
-        .vhLH(14);
-        .vhPT(10);
-        text-indent: 0.2rem;
-      }
-    }
-    .diaBtns{
-      position: absolute;
-      .vhMB(30);
-      bottom: 0;
-      right:0.3rem;
-      .diabtn{
-        float: left;
-        text-align: center;
-        .vhLH(32);       
-        width: 0.9rem;
-       .vh(32);
-        border-radius: 0.04rem;
-        border: solid 0.01rem ;
-        color: #fff;
-        background-color: #164488;
-        border-color: #164488;
-        cursor: pointer;
-        &:active{
-          background-color: #3a84ee;
-          border-color: #1989fa;
-        }
-        &.diabtn22{
-          margin-right: 0.12rem;
-        }
-      }
-    }
 }
 </style>

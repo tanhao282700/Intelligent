@@ -55,17 +55,20 @@
   border:0px solid rgba(71,137,214,1)!important;
 }
  .controlCont .el-textarea__inner{
-  background:transparent !important;
-  box-shadow:0px 0px 1px 0px rgba(87,113,176,0.15),0px 1px 2px 0px rgba(0,0,0,0.5);
-  border-radius:2px;
-  border:none!important;
+    background:transparent !important;
+    box-shadow:0px 0px 1px 0px rgba(87,113,176,0.15),0px 1px 2px 0px rgba(0,0,0,0.5) !important;
+    border-radius:2px;
+    border:none!important;
+}
+.controlCont2 .el-textarea__inner{
+  height:0.7rem !important;
 }
 .tabBoxs .el-tabs__nav-wrap::after{
   background:none !important;
 }
 .el-tabs__header{
   margin:0 !important;
-  padding: 0 0.33rem !important;
+ /* padding: 0 0.33rem !important;*/
 }
 .routeRadio .el-radio-button__inner{
   background:#001838; 
@@ -98,10 +101,42 @@
 .addContInput .chooseBox2{
   width:100%;
 }
-.hbExcuse .el-textarea__inner{
-  color:#FFA414;
-  background-color:rgba(0,24,56,1)!important;
-  box-shadow:0px 0px 1px 0px rgba(87,113,176,0.15),0px 1px 2px 0px rgba(0,0,0,0.5);
+.reasonBox .el-textarea__inner{
+  background-color: transparent;
+  background:rgba(5,23,50,1);
   border:none;
-  height: 114px;
+  width: 100%;
+  color: #FFA414;
+  height: 0.9rem;
+}
+.submitApply.el-button span{
+  font-size: 0.16rem !important;
+}
+.statusTabs .el-radio-button__inner{
+  padding: 0 !important;
+  display: inline-block;
+  width:1.98rem;
+  background: transparent;
+  border: none !important;
+  color: #a7a7a7;
+  height: 0.34rem;
+  line-height: 0.34rem;
+}
+.statusTabs .el-radio-button__orig-radio:checked+.el-radio-button__inner{
+    color: #1989FA;
+    background-color: #000;
+    border: none !important;
+    height: 0.32rem;
+    border-left: none;
+    line-height: 0.32rem;
+    margin-top: -0.02rem;
+}
+.statusTabs .el-radio-group{
+  height:0.34rem;
+  line-height: 0.34rem;
+  border: 1px solid #1989FA;
+  border-radius: 0.02rem;
+}
+.statusTabs .el-radio-button{
+  vertical-align: text-bottom;
 }

@@ -82,7 +82,7 @@ export default {
 
 .examine{
     width: 95.6%;
-    .vh(578);
+    height:5.48rem;
     display: flex;
     flex-direction: column;
     .searchBox0{
@@ -92,22 +92,22 @@ export default {
         padding-left: 0.2rem;
     }
     .listBoxs{
-        .vh(508);
-        .vhPT(3);  
+        height:5.08rem;
+        padding-top:0.03rem;  
         .examBoxs{
             width: 3rem;
             background: rgba(0,0,0,0.25);
             margin-left:0.21rem;
             float: left;
             position: relative;
-            .vhPT(10);
+            padding-top:0.1rem;
             padding-left: 0.15rem;
-            .vhMB(21);
+            margin-bottom:0.21rem;
             &.examed{
-                .vh(121);
+                height:1.21rem;
             }
             &.examing{
-                .vh(170);
+                height:1.7rem;
             }
             &:hover{
                 background: rgba(59,137,249,0.05);
@@ -123,7 +123,7 @@ export default {
             }
             li{
                 display: flex;
-                .vh(24);
+                height:0.24rem;
                 font-size: 0.14rem;
                 position: relative;
                 z-index: 98;
@@ -132,26 +132,26 @@ export default {
                     display: inline-block;
                     width: 0.52rem;
                     height: 100%;
-                    .vhLH(24);
+                    line-height:0.24rem;
                 }
                 span{
                     flex:1;
                     height: 100%;
-                    .vhLH(24);
+                    line-height:0.24rem;
                     color:#93b7e2;
                 }
                 &.margin5{
-                    .vhMT(5);
+                    margin-top:0.05rem;
                 }
                 &.btns{
-                    .vh(34);
-                    .vhMT(15);
+                    height:0.34rem;
+                    margin-top:0.15rem;
                     padding-right: 0.15rem;
                     display: flex;
                     .btn{
                         flex:1;
                         text-align: center;
-                        .vhLH(32);
+                        line-height:0.32rem;
                         border-radius: 0.02rem;
                         cursor: pointer;
                         font-size: 0.14rem;                      

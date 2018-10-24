@@ -1,6 +1,6 @@
 <!--
     代维系统 工单
-    白 2018-8-24
+    范珊 2018-10-23
 -->
 <template>
   <div class="workBox autoComponent">
@@ -51,32 +51,102 @@
       <Dialog wid="910" hei="686" ref="tableInfos2">
         <div class="tableInfos">
           <div class="infoHead">
-            <span class="infoName" v-text="infoItem.name"></span>
-            <span class="infoState" v-text="this.infoTit(infoItem.state)"></span>
+            <span class="infoState" v-text="'人工派发'"></span>
           </div>
           <div class="rightHead">
             <span class="infoBusy" v-text="'普通'"></span>
-            <span class="infoSend" v-text="infoItem.sType" v-show="true"></span>
-            <span class="infoPer" v-text="'人工派发'" v-show="!true"></span>
-          </div>
-          <div class="infoWater">
-              <RoutingTask :data="infoItem"></RoutingTask>
           </div>
           <div class="infoBoxs">
-              <RoutingInfo :data="infoItem"/>
+            <div class="statusTabs">
+              <el-radio-group v-model="tabPosition" @change="changeStatus">
+                <el-radio-button label="正常处理">正常处理</el-radio-button>
+                <Lines :hei="30" :top="0" />
+                <el-radio-button label="延期处理">延期处理</el-radio-button>
+                <Lines :hei="30" :top="0" />
+              </el-radio-group>
+            </div>
+            <div>
+              <div v-show="tabPosition=='正常处理'" class="tabLists">
+                <ul>
+                  <li v-for="(item,index) in dtlObj.tableDtl.data[0].device" :key="index">
+                    <span class="taskLabel">{{item.label}}</span>
+                    <span class="taskCont">{{item.type}}</span>
+                  </li>
+                  </ul>
+                </el-row>  
+                <div>
+                  <div class="contLabel">详情描述</div>
+                  <el-input
+                    type="textarea"
+                    class="controlCont controlCont1"
+                    :rows="2"
+                    placeholder="请输入内容"
+                    v-model="dtlObj.tableDtl.data[0].desc">
+                  </el-input>
+                </div> 
+                <ul>
+                  <li>
+                    <span class="taskLabel">派发人员</span>
+                    <span class="taskCont">本姑娘</span>
+                  </li>
+                  <li>
+                    <span class="taskLabel">联系电话</span>
+                    <span class="taskCont">18767678765</span>
+                  </li>
+                </ul>
+                <div style="clear:both">
+                  <div class="contLabel">现场处理情况</div>
+                  <el-input
+                    type="textarea"
+                    :rows="2"
+                    class="controlCont controlCont2"
+                    placeholder="请输入内容"
+                    v-model="dtlObj.tableDtl.data[0].backExcuse">
+                  </el-input>
+                </div>
+                <div class="dealimg">
+                  <el-row :gutter="20">
+                    <el-col :span="12">
+                      <div>处理前</div>
+                    </el-col>
+                    <el-col :span="12">
+                      <div>处理后</div>
+                    </el-col>
+                  </el-row>
+                  <div>
+                    <div class="imgs1">
+                      <img :src="item.src" v-for="item in dtlObj.tableDtl.data[0].imgs1">
+                    </div>
+                    <Lines :top="0" :hei="100" class="lines"/>
+                    <div class="imgs2">
+                      <img :src="item.src" v-for="item in dtlObj.tableDtl.data[0].imgs2">
+                    </div>
+                  </div>
+                </div>
+                <div class="btnsgroups">
+                  <span class="infoBusy" v-text="'退单'"></span>
+                  <span class="infoSend" v-text="'取消'"></span>
+                  <span class="infoSubmit" v-text="'提交'"></span>
+                </div>
+              </div>
+              <div v-show="tabPosition=='延期处理'" class="tabLists">
+                
+              </div>
+            </div>
           </div>
         </div>
       </Dialog>  
-      <Dialog wid="364" hei="216" ref="isRefult"><!-- 同意退单 -->
+      <Dialog wid="3.64rem" hei="2.16rem" ref="isRefult"><!-- 同意退单 -->
           <div v-text="dialogBoxs.txt" class="isRefTxt"></div>
           <div class="isRbtnBoxs">
               <span @click="submitOk">确定</span>
               <span @click="submitNo">取消</span>
           </div>
       </Dialog> 
-      <Dialog wid="564" hei="286" ref="isRefult2" tit="退单原因"><!-- 同意退单 -->
-          <div class="isRefTxt" style="text-align:left;font-size:12px;padding:0 5.86%">
-            <span>{{dialogBoxs.txt}}</span>
+      <Dialog wid="564" hei="286" ref="isRefult2"><!-- 同意退单 -->
+          <div class="isRefTit">退单原因</div>
+          <div class="isRefDesc">
+            <span>语雀是一款优雅高效的在线文档编辑与协同工具， 让每个企业轻松拥有文档中心阿里巴巴集团内部使用多年，众多中小企业首选。</span>
           </div>
           <div class="isRbtnBoxs2">
               <span @click="submitBack">提交</span>
@@ -139,6 +209,7 @@ export default {
               {id:4,name:'完成情况',route:'/AgentManage/normalUser/report'},
           ]
         },
+        tabPosition:'正常处理',
         crumbs:['代维系统','工单'],
         workH:[
           {id:1,tit:'今日工单总数',val:"12",color:'#f38a00'},
@@ -340,6 +411,9 @@ export default {
     change2(val){ //选择
       this.vName = val;
     },
+    changeStatus(val){//切换正常处理、延期处理
+      console.log(val);
+    },
     changes(val){
           this.value7 = val;
       }, 
@@ -391,8 +465,8 @@ export default {
           this.value7 = attrs.join('-');    
       }, 
       rowClick(row){
-        this.$refs.dialog.show();
-        // console.log(row);
+        this.infoItem = row;
+        this.$refs.tableInfos2.show();
       },
       agree(item){ //同意
         alert('接单')
@@ -411,11 +485,11 @@ export default {
       submitOk(){ //确认
         this.$refs.isRefult.hide();
         this.$refs.isRefult2.show();
-        this.dialogBoxs2 = {
-                item:item,
-                state0:0,
-                txt:'反正就是一大堆文字咯'
-            };
+        // this.dialogBoxs2 = {
+        //         item:item,
+        //         state0:0,
+        //         txt:'反正就是一大堆文字咯'
+        //     };
       },
       submitBack(){
         this.$refs.isRefult2.hide();
@@ -431,10 +505,6 @@ export default {
       },
       sendInfosShow(){
 
-      },
-      tableInfos2Show(item){
-        this.infoItem = item;
-        this.$refs.tableInfos2.show();
       },
       infoTit(state){
         let res = '';
@@ -475,7 +545,7 @@ export default {
   .workHead{
     width: 95.6%;
     .vh(108);
-    margin-left: 0.3rem;
+    margin-left: 2.2%;
     display: flex;
     .vhMT(8);
     .numBox{
@@ -617,7 +687,8 @@ export default {
       }
       .infoState{
         padding-left: 0.20rem;
-        border-left: 0.01rem solid #4a90e2;
+        color:#FFA414;
+        font-size:0.16rem;
       }
       .infoType{
         font-size: 0.12rem;
@@ -625,11 +696,10 @@ export default {
     }
     .rightHead{
         position: absolute;
-        right: 0;
+        right: 0.3rem;
         .vhLH(52);
         color:#fff;
         top:0;
-        width: 12.59vw;
         .infoBusy{
           .vhMT(9);
           display:inline-block;
@@ -640,25 +710,110 @@ export default {
           border-radius:2px;
           text-align:center;
         }
-        .infoSend{
-          .vhMT(9);
-          display:inline-block;
-          .vhLH(24);
-          background:#FA6074;
-          width:4.98vw;
-          border-radius:2px;
-          font-size:12px;
-          text-align:center;
+      }
+      .infoBoxs{
+        padding-top:0.22rem;
+        text-align:center;
+        .statusTabs{
+          margin-bottom:0.44rem;
         }
-        .infoPer{
-          .vhMT(9);
-          display:inline-block;
-          .vhLH(24);
-          background:#F38A00;
-          width:4.98vw;
-          border-radius:2px;
-          font-size:12px;
-          text-align:center;
+        .tabLists{
+          padding:0 0.2rem;
+          ul{
+            li{
+              float:left;
+              text-align:left;
+              width:25%;
+              line-height:0.34rem;
+            }
+          }
+          .dealimg{
+            width:8.1rem;
+            text-align:left;
+            margin-top:0.2rem;
+            color:#4F648B;
+            line-height:0.24rem;
+            overflow:hidden;
+            .lines{
+              width:0.01rem;
+              float:left;
+              margin:0 0.1rem;
+            }
+            .imgs1,.imgs2{
+              float:left;
+              width:3.9rem;
+              height:1rem;
+              white-space: nowrap;
+              overflow:hidden;
+              img{
+                width:0.9rem;
+                height:0.9rem;
+                margin:0.015rem;
+              }
+            }
+          }
+          .btnsgroups{
+            margin-top:0.7rem;
+            text-align:right;
+            color:#fff;
+            .infoBusy{
+              display:inline-block;
+              width:0.96rem;
+              text-align:center;
+              background:rgba(58,132,238,0);
+              border-radius:2px;
+              height:0.32rem;
+              line-height:0.32rem;
+              border:1px solid rgba(25,137,250,1)
+            }
+            .infoSend{
+              display:inline-block;
+              width:0.96rem;
+              text-align:center;
+              background:rgba(22,68,136,1);
+              border-radius:2px;
+              height:0.32rem;
+              line-height:0.32rem;
+            }
+            .infoSubmit{
+              text-align:center;
+              display:inline-block;
+              width:0.96rem;
+              background:rgba(58,132,238,1);
+              border-radius:2px;
+              height:0.32rem;
+              line-height:0.32rem;
+              border:1px solid rgba(25,137,250,1)
+            }
+          }
+          .controlCont1{
+            background:rgba(0,24,56,1);
+            box-shadow:0px 0px 1px 0px rgba(87,113,176,0.15),0px 1px 2px 0px rgba(0,0,0,0.5);
+            border-radius:1px;
+            height:0.5rem;
+          }
+          .controlCont2{
+            background:rgba(0,36,85,1);
+            box-shadow:0px 0px 1px 0px rgba(87,113,176,0.15),0px 1px 2px 0px rgba(0,0,0,0.5);
+            border-radius:1px;
+            height:0.7rem;
+            border:1px solid rgba(0,47,132,1);
+          }
+          .taskLabel{
+            padding:0;
+            color:#4F648B;
+            text-align:left;
+            margin-right:0.1rem;
+          }
+          .contLabel{
+            text-align:left;
+            color:#4F648B;
+            line-height:0.34rem;
+          }
+          .taskCont{
+            color:#fff;
+            text-align:left;
+          }
         }
       }
   }
@@ -699,16 +854,16 @@ export default {
     }
 }
 .isRefTxt{
-    .vh(170);
+    height:1.72rem;
     width: 100%;
     text-align: center;
     font-size: 0.18rem;
     color: #b5d7ff;
-    .vhLH(145);
+    line-height:1.72rem;
 }
 .isRbtnBoxs{
     width: 100%;
-    .vh(45);
+    height:0.44rem;
     display:flex;
     overflow: hidden;
     border: 0.01rem solid #4a90e2;
@@ -717,17 +872,30 @@ export default {
     span{
         flex: 1;
         text-align: center;
-        .vhLH(45);            
+        line-height:0.44rem;           
         font-size: 0.16rem;
         color: #fff;
         cursor: pointer;
         &:nth-child(1){
             border-right: 0.01rem solid #4a90e2;
         }
-        &:active{
+        &:hover{
             background: #3b85ef;
         }
     }
+}
+.isRefTit{
+  text-align:left;
+  height:0.5rem;
+  line-height:0.5rem;
+  color:#fff;
+  padding:0 0.2rem;
+  font-size:0.16rem;
+}
+.isRefDesc{
+  padding:0.26rem 0.34rem 0.24rem;
+  color:#fff;
+  line-height:0.26rem;
 }
 .isRbtnBoxs2{
     width: 100%;
@@ -739,7 +907,7 @@ export default {
     border: 0.01rem solid #4a90e2;
     background:#3B85EF;
     border-radius: 0.02rem;
-    margin:0 auto;
+    margin:1.08rem auto 0;
     span{
         flex: 1;
         text-align: center;

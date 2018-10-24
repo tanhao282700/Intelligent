@@ -267,7 +267,7 @@ export default {
           active:'item3',
           lists:[
               {id:0,name:'首页',route:'/AgentManage/normalUser'},
-              {id:1,name:'排班表',route:'/AgentManage/normalUser/schedule'},
+              {id:1,name:'排班表',route:'/AgentManage/normalUser/schedules'},
               {id:2,name:'工单',route:'/AgentManage/normalUser/workList'},
               {id:3,name:'巡检',route:'/AgentManage/normalUser/routing'},
               {id:4,name:'完成情况',route:'/AgentManage/normalUser/report'},

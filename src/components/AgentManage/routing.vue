@@ -395,7 +395,7 @@ export default {
       console.log(formData)
     },
     changeStatus(state){
-      console.log(state);
+      //console.log(state);
     },
     rowClick(row){
       this.rowData = row;
@@ -487,17 +487,17 @@ export default {
     position:absolute;
     width:100%;
     top:11.5vh;
+    left:2.2%;
     .tabItems{
       color:#a7a7a7;
     }
   }
   .firstBox{
-    .vhMT(45);
+    margin-top:0.45rem;
   }
   .workHead{
     width: 95.6%;
-    .vh(108);
-    margin-left: 0.3rem;
+    height:1.08rem;
     display: flex;
     .numBox{
       flex:1;
@@ -509,8 +509,8 @@ export default {
         flex: 1;
         p{
           display: block;
-          .vh(86);
-          .vhLH(100);
+          height:0.86rem;
+          line-height:1rem;
           font-size: 0.48rem;
           font-family: PingFangSC-Light;
         }
@@ -524,18 +524,17 @@ export default {
   }
   .tableBoxs{
     width: 95.6%;
-    .vh(407);
-    .vhMT(20);
-    margin-left: 0.3rem;
+    height:4.07rem;
+    margin-top:0.2rem;
     .tabHead{
       width: 100%;
       position: relative;
-      .vh(59);
-      .vhPT(20);
+      height:0.59rem;
+      padding-top:0.2rem;
       .jobBoxs{
         float: left;
         width: 1.15rem;
-        .vh(32);
+        height:0.32rem;
         background-color: rgba(255, 255, 255, 0.01);
         border-radius: 0.02rem;
         border: solid 0.01rem #1989fa;
@@ -545,7 +544,7 @@ export default {
       .nameBoxs{
         float: left;
          width: 0.87rem;
-        .vh(32);
+        height:0.32rem;
         background-color: rgba(255, 255, 255, 0.01);
         border-radius: 0.02rem;
         border: solid 0.01rem #1989fa;
@@ -556,8 +555,8 @@ export default {
         float: left;
         margin-left: 0.12rem;
         width: 0.93rem;
-        .vh(32);
-        .vhLH(32);
+        height:0.32rem;
+        line-height:0.32rem;
         color: #fff;
         font-size: 0.14rem;
         text-align: center;
@@ -580,7 +579,7 @@ export default {
     }
     .tableIn{
       width: 99%;
-      .vh(328);
+      height:3.28rem;
       margin-left: 1%;
       .tableBox{
          margin-left:0;
@@ -589,11 +588,11 @@ export default {
   }
   .dispatch{
     width: 100%;
-    .vh(100);
+    height:1rem;
     display: flex;
     // align-items: center;
     justify-content: center;
-    .vhPT(20);
+    padding-top:0.2rem;
     .dispatchBtn{
       width: 0.6rem;
       height: 0.6rem;
@@ -619,7 +618,7 @@ export default {
     width: 100%;
     height: 100%;
     .infoHead{
-      .vh(52);
+      height:0.52rem;
       width: 100%;
       background: rgba(0,0,0,0.2);
       padding-left: 0.2rem;
@@ -643,13 +642,13 @@ export default {
       .rightHead{
         position: absolute;
         right: 0;
-        .vhLH(52);
+        line-height:0.52rem;
         top:0;
         width: 12.59vw;
         .infoBusy{
-          .vhMT(9);
+          margin-top:0.09rem;
           display:inline-block;
-          .vhLH(24);
+          line-height:0.24rem;
           background:#008AFF;
           width:4.98vw;
           font-size:12px;
@@ -657,9 +656,9 @@ export default {
           text-align:center;
         }
         .infoSend{
-          .vhMT(9);
+          margin-top:0.09rem;
           display:inline-block;
-          .vhLH(24);
+          line-height:0.24rem;
           background:#FA6074;
           width:4.98vw;
           border-radius:2px;

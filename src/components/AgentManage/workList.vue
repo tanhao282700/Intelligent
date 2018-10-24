@@ -481,10 +481,10 @@ export default {
   width:100%;height:100%;
   .workHead{
     width: 95.6%;
-    .vh(108);
+    height:1.08rem;
     margin-left: 0.3rem;
     display: flex;
-    .vhMT(8);
+    margin-top:0.08rem;
     .numBox{
       flex:1;
       display: flex;      
@@ -495,8 +495,8 @@ export default {
         flex: 1;
         p{
           display: block;
-          .vh(86);
-          .vhLH(100);
+          height:0.86rem;
+          line-height:1rem;
           font-size: 0.48rem;
           font-family: PingFangSC-Light;
         }
@@ -510,18 +510,19 @@ export default {
   }
   .tableBoxs{
     width: 95.6%;
-    .vh(407);
-    .vhMT(20);
+    height:3.76rem;
+    margin-top:0.2rem;
     margin-left: 0.3rem;
     .tabHead{
       width: 100%;
       position: relative;
-      .vh(59);
-      .vhPT(20);
+      height:0.59rem;
+      margin-top:0.1rem;
+      paddidng-top:0.2rem;
       .jobBoxs{
         float: left;
         width: 1.15rem;
-        .vh(32);
+        height:0.32rem;
         background-color: rgba(255, 255, 255, 0.01);
         border-radius: 0.02rem;
         border: solid 0.01rem #1989fa;
@@ -531,7 +532,7 @@ export default {
       .nameBoxs{
         float: left;
          width: 0.87rem;
-        .vh(32);
+        height:0.32rem;
         background-color: rgba(255, 255, 255, 0.01);
         border-radius: 0.02rem;
         border: solid 0.01rem #1989fa;
@@ -542,8 +543,8 @@ export default {
         float: left;
         margin-left: 0.12rem;
         width: 0.93rem;
-        .vh(32);
-        .vhLH(32);
+        height:0.32rem;
+        line-height:0.32rem;
         color: #fff;
         font-size: 0.14rem;
         text-align: center;
@@ -560,13 +561,13 @@ export default {
       }
       .dateBox{
         position: absolute;
-        .vhTop(24);
+        margin-top:0.24rem;
         left: 4.95rem;
       }
     }
     .tableIn{
       width: 99%;
-      .vh(328);
+      height:3.28rem;
       margin-left: 1%;
       .tableBox{
          margin-left:0;
@@ -575,12 +576,12 @@ export default {
   }
   .dispatch{
     width: 100%;
-    .vh(100);
+    height:1rem;
     display: flex;
     // align-items: center;
     justify-content: center;
-    .vhPT(20);
     .dispatchBtn{
+      margin-top:0.2rem;
       width: 0.6rem;
       height: 0.6rem;
       border-radius: 50%;
@@ -608,7 +609,7 @@ export default {
     width: 100%;
     height: 100%;
     .infoHead{
-      .vh(52);
+      height:0.52rem;
       width: 100%;
       background: rgba(0,0,0,0.2);
       padding-left: 0.2rem;
@@ -633,14 +634,14 @@ export default {
     .rightHead{
         position: absolute;
         right: 0;
-        .vhLH(52);
+        line-height:0.52rem;
         color:#fff;
         top:0;
         width: 12.59vw;
         .infoBusy{
-          .vhMT(9);
+          margin-top:0.09rem;
           display:inline-block;
-          .vhLH(24);
+          line-height:0.24rem;
           background:#008AFF;
           width:4.98vw;
           font-size:12px;
@@ -648,9 +649,9 @@ export default {
           text-align:center;
         }
         .infoSend{
-          .vhMT(9);
+          margin-top:0.09rem;
           display:inline-block;
-          .vhLH(24);
+          line-height:0.24rem;
           background:#FA6074;
           width:4.98vw;
           border-radius:2px;
@@ -658,9 +659,9 @@ export default {
           text-align:center;
         }
         .infoPer{
-          .vhMT(9);
+          margin-top:0.09rem;
           display:inline-block;
-          .vhLH(24);
+          line-height:0.24rem;
           background:#F38A00;
           width:4.98vw;
           border-radius:2px;
@@ -670,28 +671,28 @@ export default {
       }
   }
   .sendWork2{
-      .vh(197);
+      height:1.97rem;
       width: 100%;
-      .vhPT(13);
+      paddidng-top:0.13rem;
       padding-left: 0.20rem;
       .oldName,.newName{
           width: 100%;
           font-size: 0.14rem;
           label{
-              .vh(32);
-              .vhLH(32); 
+              height:0.32rem;
+              line-height:0.32rem; 
               color: #4f648b;   
           }
           span.namess{
               color: #ffa414;
           }
           .ChooseBox{
-              .vh(40);
+              height:0.4rem;
               width: 2.24rem;
               background-color: rgba(255, 255, 255, 0.01);
               border-radius: 0.04rem;
               border: solid 1px #1989fa;
-              .vhMT(7);
+              margin-top:0.07rem;
               span{
                   font-size: 0.14rem !important;
                   color: green!important;
@@ -701,21 +702,21 @@ export default {
     }
     .sendWork2Boxs{
         width: 3.84rem;
-        .vh(43);
+        height:0.43rem;
         margin-left: 0.15rem;
     }
 }
 .isRefTxt{
-    .vh(170);
+    height:1.7rem;
     width: 100%;
     text-align: center;
     font-size: 0.18rem;
     color: #b5d7ff;
-    .vhLH(145);
+    line-height:1.45rem;
 }
 .isRbtnBoxs{
     width: 100%;
-    .vh(45);
+    height:0.45rem;
     display:flex;
     overflow: hidden;
     border: 0.01rem solid #4a90e2;
@@ -724,7 +725,7 @@ export default {
     span{
         flex: 1;
         text-align: center;
-        .vhLH(45);            
+        line-height:0.45rem;            
         font-size: 0.16rem;
         color: #fff;
         cursor: pointer;

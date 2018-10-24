@@ -39,7 +39,7 @@
                       @change = "changeDay"
                     />
                   </div>
-                  <div class="searchBoxs">
+                  <div class="checkBox">
                     <i class="el-icon-search"></i>
                     <span>查询</span>
                   </div>
@@ -195,8 +195,8 @@ export default {
     float: right;
     margin-right: 2.2%;
     width: 0.93rem;
-    .vh(32);
-    .vhLH(32);
+    height:0.32rem;
+    line-height:0.32rem;
     color: #fff;
     font-size: 0.14rem;
     text-align: center;
@@ -218,35 +218,34 @@ export default {
     position:absolute;
     width:100%;
     top:11.5vh;
+    left:2.2%;
     .tabItems{
       color:#a7a7a7;
     }
   }
   .tableBoxs{
     width:95.6%;
-    margin:0 2.2%;
-    .vh(480);
-    margin-left: 0.3rem;
+    height:4.80rem;
     .tabHead{
       width: 100%;
       position: relative;
-      .vh(59);
-      .vhPT(20);
+      height:0.59rem;
+      padding-top:0.2rem;
       .jobBoxs{
         float: left;
-        .vh(32);
+        height:0.32rem;
         background-color: rgba(255, 255, 255, 0.01);
         border-radius: 0.02rem;
         border: solid 0.01rem #1989fa;
         text-align: center;
         margin-left: 0.2rem;
       }
-      .searchBoxs{
+      .checkBox{
         float: left;
         margin-left: 0.12rem;
         width: 0.93rem;
-        .vh(32);
-        .vhLH(32);
+        height:0.32rem;
+        line-height:0.32rem;
         color: #fff;
         font-size: 0.14rem;
         text-align: center;
@@ -264,7 +263,7 @@ export default {
     }
     .tableIn{
       width: 99%;
-      .vh(328);
+      height:3.28rem;
       margin-left: 1%;
       .tableBox{
          margin-left:0;

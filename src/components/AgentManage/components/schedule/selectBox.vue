@@ -71,6 +71,8 @@ export default {
     display:inline-block;
     width:100%;
     height:100%;
+    border:1px solid #1989FA;
+    border-radius:3px;
     position:relative;
     .chooseBoxIn{
       position:absolute;
@@ -83,8 +85,8 @@ export default {
       display:flex;
       flex-direction:row;
       align-items:center;
-      justify-content: center;
-      font-size:0.16rem;
+      font-size:0.14rem;
+      padding-left:0.1rem;
       color:#b5d7ff;
       i{
           position: absolute;

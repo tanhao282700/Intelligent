@@ -60,7 +60,8 @@ export default {
 <style lang="less" scoped="" type="text/less"> 
 @import '../../../../assets/css/comon.less';
 .myChartBox{
-    .vh(220);
+    width:1.58rem;
+    height:1.58rem;
     width:100%;
     position:relative; 
     .myChart{

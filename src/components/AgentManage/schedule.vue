@@ -232,16 +232,17 @@ export default {
   .sceBtn{
     position: absolute;
     right: 0.3rem;
-    .vhTop(30);
+    top:0;
+    margin-top:0.3rem;
     width: 9.81vw;
     background:#3A84EE;
     color:#fff;
-    .vh(32);
-    .vhLH(32);
+    height:0.32rem;
+    line-height:0.32rem;
     font-size: 0.14rem;
     img{
       width:1.02vw;
-      .vh(16);
+      height:0.16rem;
       margin-right:0.05rem;
       vertical-align:middle;
     }
@@ -249,12 +250,12 @@ export default {
 }
 .dialog{
   .diaHei{
-    .vh(50);
+    height:0.5rem;
     background: rgba(0, 0, 0, 0.2);
     color: #fff;
     font-size: 0.16rem;
     text-indent: 0.20rem;
-    .vhLH(50);
+    line-height:0.5rem;
   }
   .examFlag{
     .rightBotm{
@@ -264,7 +265,7 @@ export default {
     }
   }
   .pBody{
-    .vh(165);
+    height:1.65rem;
     width: 100%;
     display: flex;
 
@@ -273,29 +274,29 @@ export default {
       display: flex;
       padding-left: 0.2rem;
       padding-right: 0.2rem;
-      .vhPT(20);
+      padding-top:0.2rem;
       .imgBox{
         width: 1rem;
-        .vh(125);
+        height:1.25rem;
         border-radius: 0.02rem;
         display: flex;
         justify-content: center;
         img{
-          .vh(125);
+          height:1.25rem;
         }
 
       }
       .nameBox{
         margin-left: 0.11rem;
         width: 3.05rem;
-        .vh(125);
+        height:1.25rem;
          border-radius: 0.02rem;
          padding-left: 0.2rem;
-         .vhPT(10);
+         padding-top:0.1rem;
          font-size: 0.14rem;
          .labelBox{
-           .vh(34);
-           .vhLH(34);
+           height:0.34rem;
+           line-height:0.34rem;
            label{
              color: #4f648b;
            }
@@ -311,12 +312,12 @@ export default {
       font-size: 0.14rem;
       padding-left: 0.2rem;
       color: #4f648b;
-      .vh(14);
-      .vhLH(14);
+      height:0.14rem;
+      line-height:0.14rem;
     }
     .reason{
       .reasonBox{
-        .vh(114);
+        height:1.14rem;
         width:8.75rem;
         margin-left: 0.2rem;
         background-color: #001838;
@@ -327,12 +328,12 @@ export default {
           padding: 0 0.1rem;
           color: #ffa414;
           font-size: 0.14rem;
-          .vhLH(24);
+          line-height:0.24rem;
           overflow-y: scroll;
-          .vhMT(10);
-          .vhPT(5);
-          .vhPB(5);
-          .vhMB(20);
+          margin-top:0.1rem;
+          padding-top:0.05rem;
+          padding-bottom:0.05rem;
+          mrgin-bottom:0.2rem;
       }
     }
     .time{
@@ -340,22 +341,22 @@ export default {
         display: inline-block;
         color: #b5d7ff;
         font-size: 0.14rem;
-        .vhLH(14);
-        .vhPT(10);
+        line-height:0.14rem;
+        padding-top:0.1rem;
         text-indent: 0.2rem;
       }
     }
     .diaBtns{
       position: absolute;
-      .vhMB(30);
+      margin-bottom:0.3rem;
       bottom: 0;
       right:0.3rem;
       .diabtn{
         float: left;
         text-align: center;
-        .vhLH(32);       
+        line-height:0.32rem;       
         width: 0.9rem;
-       .vh(32);
+        height:0.32rem; 
         border-radius: 0.04rem;
         border: solid 0.01rem ;
         color: #fff;

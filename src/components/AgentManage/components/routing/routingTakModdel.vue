@@ -199,7 +199,6 @@
 @import '../../../../assets/css/comon.less';
 .routingTaskModdel{
   width:95.6%;
-  margin-left: 0.33rem;
   .tabHead{
       width: 100%;
       position: relative;
