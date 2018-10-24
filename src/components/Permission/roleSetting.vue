@@ -202,7 +202,7 @@
           children: 'child',
           label: 'title'
         },
-        role_sys_list:[]
+        role_sys_list:''
       }
     },
     methods:{
@@ -243,7 +243,7 @@
               tempObj.ids.push(temp.id);
               if(i==Len-1){
                 sysList.push(tempObj);
-                that.role_sys_list = sysList;
+                that.role_sys_list = JSON.stringify(sysList);
                 that.powerValue = tempValue;
                 return;
               }
@@ -298,7 +298,7 @@
         var idFlag;
         type?idFlag=0 : idFlag=that.curEditRoleId;
 
-        let sysList = JSON.stringify(that.role_sys_list);
+        let sysList = that.role_sys_list;
 
         let config = {
           project_id : that.$store.state.projectId,
@@ -331,7 +331,7 @@
         this.accountInfoDialog = true;
         this.formTitle = '修改角色';
         this.form.role.key = val.title;
-        this.form.powerRange.key = val.sys_menu;
+        this.form.powerRange.key = this.role_sys_list = val.sys_menu;
         this.curEditRoleId = val.id;
       },
       deleteAccount(val){
