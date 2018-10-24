@@ -3,6 +3,15 @@
 import axios from 'axios'
 import qs from 'qs'
 
+const debug = process.env.NODE_ENV != 'production'
+let baseurl = ''
+if(debug){
+  baseurl = './api'
+}else{
+  baseurl = 'https://tesing.china-tillage.com'
+}
+
+
 /*axios.interceptors.request.use(config => {    // 这里的config包含每次请求的内容
   // 判断localStorage中是否存在api_token
   if (localStorage.getItem('api_token')) {
@@ -48,7 +57,7 @@ export default {
   post (url, data) {  //  post
     return axios({
       method: 'post',
-      baseURL: '/api',
+      baseURL: baseurl,
       url,
       data: qs.stringify(data),
       timeout: 5000,
@@ -69,7 +78,7 @@ export default {
   get (url, params) {  // get
     return axios({
       method: 'get',
-      baseURL: '/api',
+      baseURL: baseurl,
       url,
       params, // get 请求时带的参数
       timeout: 5000,
