@@ -11,11 +11,11 @@
 		</div>
         <div class="tableBox">
             <el-table :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)" style="width: 100%">
-                <el-table-column prop="serialNumber" label="序号" align="cneter"></el-table-column>
-                <el-table-column prop="policyName" label="预定大厅" align="cneter"></el-table-column>
-                <el-table-column prop="name" label="预定日期"  align="cneter"></el-table-column>
-                <el-table-column prop="policyNumber" label="预定人"  align="cneter"></el-table-column>
-                <el-table-column prop="policyAttr" label="预定人手机号"  align="cneter"></el-table-column>
+                <el-table-column type="index" label="序号" align="cneter"></el-table-column>
+                <el-table-column prop="descript" label="预定大厅" align="cneter"></el-table-column>
+                <el-table-column prop="biz_date" label="预定日期"  align="cneter"></el-table-column>
+                <el-table-column prop="res_name" label="预定人"  align="cneter"></el-table-column>
+                <el-table-column prop="phone" label="预定人手机号"  align="cneter"></el-table-column>
             </el-table>
             <el-pagination 
                 @size-change="handleSizeChange" 
@@ -60,15 +60,16 @@
 	    methods: {
             getData(){
                 var that = this;
-                this.$http.get('../../../static/tableDemo.json').then(function(response){
-                    // 响应成功回调
-                    console.log(response)
-                    console.log(response.data)
-                    that.tableData = response.data
-                }, function(response){
+                this.$http.post('/hotel/singe_room',{
+                    page:1,
+                    // type:0,
+                    num:10,
+                }).then(function(data){
+                    //响应成功回调
+                    console.log(data);
+                    that.tableData = data.data.data;
+                }, function(data){
                     // 响应错误回调
-                    console.log("ccc")
-                    console.log(response)
                 });
             },
             doSearch(){},

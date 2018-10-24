@@ -7,7 +7,7 @@
 	            <span><a :class="isActive2==true?'on':''" @click="toggleTabs(second)">宴会厅订单<i></i></a></span>
 	            <span><a :class="isActive3==true?'on':''" @click="toggleTabs(third)">今日已退房单<i></i></a></span>
 	        </nav>
-	        <tabs :is="currentView" class="roomListsTabDomBox" keep-alive></tabs>
+	        <tabs :is="currentView" class="roomListsTabDomBox"  keep-alive ></tabs>
 		</div>
 
 

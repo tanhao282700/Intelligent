@@ -37,7 +37,7 @@
                    @mouseenter = "popToggle(index,item.x,item.y,item.device_id,item.device_state)" 
                    @mouseout = "popHide" 
                    @click="doorInfoPanel(item.device_id,item)"
-                   :style="{left:item.position_x + 'px',top:item.position_y + 'px'}"
+                   :style="{left:item.position_x*1.74 + 'px',top:item.position_y*1.74 + 'px'}"
                 >{{item.device_name.slice(0,1)}}
                     <pops  :info = "onMouseDoor" :infoSta = "infoSta" :controlDoorFun = "controlDoorFun"></pops>
                 </i>
