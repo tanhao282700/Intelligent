@@ -164,8 +164,6 @@
 </template>
 
 <script>
-  import queryData from './Data/queryGroupData.json';
-  import tableData from './Data/tableData.json';
   import bubbleTip from '@/components/common/bubbleTip';
 
   export default {
@@ -300,17 +298,16 @@
         var idFlag;
         type?idFlag=0 : idFlag=that.curEditRoleId;
 
+        let sysList = JSON.stringify(that.role_sys_list);
+
         let config = {
           project_id : that.$store.state.projectId,
           id : idFlag,
           role_name : that.form.role.key,
-          role_sys_list : that.role_sys_list,
-          role_type : ""
+          role_sys_list : sysList
         }
-        console.log(config);
 
         that.$http.post('users_manage/users_role_addmodify',config).then(res=>{
-          console.log(res);
           if(res.data.code ='0'){
             let message = type?"保存成功":"修改成功";
             that.bubbleTipShow(message);
@@ -349,7 +346,6 @@
         console.log(config);
 
         that.$http.post('users_manage/users_role_delete',config).then(res=>{
-          console.log(res);
           if(res.data.code ='0'){
             that.bubbleTipShow('删除成功');
             that.requestTableData(1);
@@ -422,7 +418,6 @@
           role_id : that.itemValue[0]
         }
         that.$http.post('users_manage/users_role_manage',config).then(res=>{
-          console.log(res);
           that.getCurPageData(res.data);
         }).catch(err=>{
           console.log(err);
@@ -435,7 +430,6 @@
         }
 
         that.$http.post('users_manage/users_setRole',config).then(res=>{
-          console.log(res);
           if(res.data.code ='0'){
             that.powerArray = res.data.data;
           }else {

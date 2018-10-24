@@ -326,7 +326,6 @@
           }
 
           that.$http.post('users_manage/users_delete',config).then(res=>{
-            console.log(res);
             if(res.data.code ='0'){
               that.isReset = false;
               that.bubbleTipShow('删除成功');
@@ -351,10 +350,8 @@
             user_id : that.curEditUserId,
             pwd : autoPw
           }
-          console.log(config);
 
-          /*that.$http.post('users_manage/users_reset_password',config).then(res=>{
-            console.log(res);
+          that.$http.post('users_manage/users_reset_password',config).then(res=>{
             if(res.data.code ='0'){
               that.isReset = false;
               that.bubbleTipShow('重置成功');
@@ -363,7 +360,7 @@
             }
           }).catch(err=>{
             console.log(err);
-          })*/
+          })
         },
         clearForm(){
           for(var i in this.form){
@@ -398,7 +395,6 @@
             that.$store.state.permission.options[0] = that.options[0] = departResp.data.data;
             that.$store.state.permission.options[1] = that.options[1] = positionResp.data.data;
             that.$store.state.permission.options[2] = that.options[2] = roleResp.data.data;
-            console.log(that.options);
             that.$forceUpdate();
           }));
         },
@@ -417,9 +413,7 @@
             user_role_id : Number(that.sysInfo.roleId)
           }
 
-          console.log(config);
           that.$http.post('users_manage/usersinfo',config).then(res=>{
-            console.log(res.data);
             that.getCurPageData(res.data);
           }).catch(err=>{
             console.log(err);

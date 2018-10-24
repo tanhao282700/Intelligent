@@ -106,8 +106,6 @@
 </template>
 
 <script>
-  import tableData from './Data/loginData.json';
-  import logDetailData from './Data/logDetailData.json';
 
     export default {
       name: "login-log",
@@ -153,7 +151,6 @@
             keys : val.keys
           }
           that.$http.post('users_manage/users_login_log_details',config).then(res=>{
-            console.log(res);
             that.detailData = res.data.data;
           }).catch(err=>{
             console.log(err);
@@ -169,8 +166,8 @@
             date_s : that.dateRangeValue[0],
             date_e : that.dateRangeValue[1]
           }
+
           that.$http.post('users_manage/users_login_log',config).then(res=>{
-            console.log(res);
             that.getCurPageData(res.data);
           }).catch(err=>{
             console.log(err);
