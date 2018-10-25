@@ -1,5 +1,5 @@
 exports.install = function (Vue, options) {
-  Vue.prototype.setStorage = function (key,value){//全局函数1
+  Vue.prototype.setStorage = function (key,value){
     window.localStorage.setItem(key,value);
   };
 

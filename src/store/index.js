@@ -12,6 +12,6 @@ export default new vuex.Store({
     permission: { //权限管理
       options: [] //下拉列表数组
     },
-    sysList:{} //用户所拥有权限的系统列表
+    sysList:{}, //用户所拥有权限的系统列表
   }
 })

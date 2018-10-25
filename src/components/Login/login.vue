@@ -161,8 +161,7 @@
       },
       mounted(){
         let that = this;
-
-        that.codeImgPath = this.imgApi;
+        that.codeImgPath = that.imgApi;
       }
     }
 </script>
@@ -224,7 +223,7 @@
     position: relative;
   }
   .inputItem label{
-    width: 42px;
+    width: .42rem;
     height: 100%;
     text-align: justify;
     text-align-last: justify;
