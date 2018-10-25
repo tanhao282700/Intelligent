@@ -425,7 +425,7 @@
         that.sysInfo.projectId = that.$store.state.projectId;
         that.sysInfo.roleId = that.$store.state.userInfoTotal.role_info.role_id;
         that.sysInfo.roleType = that.$store.state.userInfoTotal.usergrouprolesyslist[0].role_type;
-        var option = this.$store.state.permission.options;
+        var option = that.$store.state.permission.options;
         if(option.length){
           that.options = option;
         }else {
