@@ -106,7 +106,7 @@
           </div>
           <div class="workBox1Cir">
             <div class="workBox1CirIn">
-              <EchartPie :data="barData"></EchartPie>
+              <EchartPie :data="circleData"></EchartPie>
             </div>
           </div>
         </div>
@@ -175,10 +175,9 @@ export default {
       },
       barData:{
           id:'barData',
-          style:{marginLeft:'0.1rem',marginTop:10*100/728+'vh'},
-          data:[57, 33, 20],
-          total:110,
-          xData:['系统派发','人工派发','外报维修']
+          data:[57, 33],
+          total:0,
+          xData:['系统派发','人工派发']
       },
       fillBoxs:[
         {id:'year',name:'年'},
@@ -192,30 +191,36 @@ export default {
         {id:'monYear',name:'月/年'},
       ],
       idNow2:'dayWeek',
-       echartCirData3:{
-            id:'echart3',
-            color:[
-              '#f56c6c','#008aff'
-            ],
-            size:[0,'72.89%'],
-            total:112,
-            data:[
-              {value:24, name:Math.floor(29/(71+29)*100)+'%',tit:'未完成数'},
-              {value:88, name:Math.floor(71/(71+29)*100)+'%',tit:'已完成数'},
-            ],
-        },
-        echartCirData4:{
-            id:'echart4',
-            color:[
-              '#f56c6c','#008aff'
-            ],
-            size:[0,'72.89%'],
-            total:102,
-            data:[
-              {value:2, name:Math.floor(39/(71+29)*100)+'%',tit:'未完成数'},
-              {value:100, name:Math.floor(81/(71+29)*100)+'%',tit:'已完成数'},
-            ],
-        },
+      circleData:{
+        id:'canvas',
+        style:{marginLeft:'0.1rem',marginTop:42*100/728+'vh'},
+        data:['56.2','23.5'],
+        average:45.3
+      },
+      echartCirData3:{
+        id:'echart3',
+        color:[
+          '#f56c6c','#008aff'
+        ],
+        size:[0,'72.89%'],
+        total:0,
+        data:[
+          {value:0, name:0+'%',tit:'未完成数'},
+          {value:0, name:0+'%',tit:'已完成数'},
+        ],
+      },
+      echartCirData4:{
+        id:'echart4',
+        color:[
+          '#f56c6c','#008aff'
+        ],
+        size:[0,'72.89%'],
+        total:0,
+        data:[
+          {value:0, name:0+'%',tit:'未完成数'},
+          {value:0, name:0+'%',tit:'已完成数'},
+        ],
+      },
 
     }
   },
@@ -232,12 +237,48 @@ export default {
       }
       this.idNow2 =id;
     },
+    getEchartData(){
+      let _this =this;
+      this.$http.post('/pc_ims/index',{user_id:21,flg:2})
+      .then(function(res){
+          console.log(res)
+          if(res.data.code==0){
+             _this.echartCirData3.total = res.data.data.job.count;
+             let gongdanwei = res.data.data.gongdan.wei;
+             let gongdanwan = res.data.data.gongdan.wan;
+             let xunjianwei = res.data.data.xunjian.wei;
+             let xunjianwan = res.data.data.xunjianwan;
+             //工单
+             _this.echartCirData3.data  = [
+                {value:res.data.data.job.wan,name:Math.floor(gongdanwan/(gongdanwan+gongdanwei)*100)+'%',tit:'已完成数'},
+                {value:res.data.data.job.wei,name:Math.floor(gongdanwei/(gongdanwan+gongdanwei)*100)+'%',tit:'未完成数'}];
+                //巡检
+            _this.echartCirData4.total = res.data.data.xunjian.count;
+            _this.echartCirData4.data = [
+              {value:res.data.data.xunjian.wan,name:Math.floor(xunjianwan/(xunjianwan+xunjianwei)*100)+'%',tit:'已完成数'},
+              {value:res.data.data.xunjian.wei,name:Math.floor(xunjianwei/(xunjianwei+xunjianwan)*100)+'%',tit:'未完成数'}];
+              //工单来源
+            _this.barData.data = [res.data.data.sys,res.data.data.people]
+            _this.barData.total = res.data.data.count;
+             console.log(res.data.data.gongdan)  //工单的数据
+             console.log(res.data.data.xunjian) //巡检的数据
+             // console.log(res.data.data.now) //日/月 巡检&工单总完成率 根据筛选条件决定
+             // console.log(res.data.data.old) //周/年 巡检&工单总完成率 根据筛选条件决定
+             // console.log(res.data.data.percentage_count)//巡检&工单总完成率
+          }else{
+            _this.$message({
+              type:'error',
+              message:res.data.msg
+            })
+          }
+      });
+    }
   },
   created() {
 
   },
   mounted() {
-
+    this.getEchartData();
   },
 }
 </script>

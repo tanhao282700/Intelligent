@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import echarts from 'echarts';
 export default {
   props:['data'],
   data () {
@@ -14,9 +15,10 @@ export default {
   },
   methods:{
       drawLine(){
+        let _this = this;
         let data = this.data;
         let myChart = this.$echarts.init(document.getElementById(data.id));
-        var dataAxis = ['系统派发', '人工派发', '外报维修'];
+        var dataAxis =this.data.xData;
         var yMax = 500;
         var dataShadow = [];
 
@@ -25,63 +27,127 @@ export default {
         }
 
         let option = {
+            grid:{
+                left:10,
+                top:10,
+                bottom:10,
+                right:10,
+                containLabel: true
+            },
             xAxis: {
-                data: dataAxis,
+                type: 'category',
+                boundaryGap: true,
+                axisLine: {show:false},
+                axisTick: {show:false},
+                splitLine: {show:false},
                 axisLabel: {
                     textStyle: {
-                        color: '#fff'
+                        color: '#708FBE'
                     }
                 },
-                axisTick: {
-                    show: false
-                },
-                axisLine: {
-                    show: false
-                },
-                z: 10
+                data:dataAxis
             },
             yAxis: {
-                axisLine: {
-                    show: false
+                // show:false,
+                axisLine: {show:false},
+                axisTick: {show:false},
+                splitLine: {show:false},
+                axisLabel: {show:false},
+                splitArea: {
+                    show:true,
+                    areaStyle: {color:['rgba(142,187,255,.1)','rgba(142,187,255,.05)']},
+
                 },
-                axisTick: {
-                    show: false
-                },
-                axisLabel: {
-                    textStyle: {
-                        color: '#999'
-                    }
-                }
+                type: 'value'
             },
             dataZoom: [
                 {
                     type: 'inside'
                 }
             ],
-            series: [
-                { // For shadow
-                    type: 'bar',
-                    itemStyle: {
-                        normal: {color: 'transparent'}
+
+            series: [{
+                label: {
+                    show: true,
+                    position: 'insideTop',
+                    distance: 5,
+                    textStyle:{
+                        color:'#fff'
                     },
-                    barGap:'-100%',
-                    barCategoryGap:'40%',
-                    data: dataShadow,
-                    animation: false
+                    formatter:'{c}%'
                 },
-                {
-                    type: 'bar',
+                type: 'bar',
+                barGap:'-100%',
+                barCategoryGap:'40%',
+                animation: false,
+                data:[{
+                    value:10,
                     itemStyle: {
                         normal: {
-                            color:[]   
+                            color: new echarts.graphic.LinearGradient(
+                                0, 0, 0, 1,
+                                [
+                                    {offset: 0, color: '#00C1FF'},
+                                    {offset: 1, color: '#008EFE'}
+                                ]
+                            )
                         },
                         emphasis: {
-                            color: []
+                            color: new echarts.graphic.LinearGradient(
+                                0, 0, 0, 1,
+                                [
+                                    {offset: 0, color: '#008EFE'},
+                                    {offset: 1, color: '#00C1FF'}
+                                ]
+                            )
                         }
                     },
-                    data: data
-                }
-            ]
+                },{
+                    value:20,
+                    itemStyle: {
+                        normal: {
+                            color: new echarts.graphic.LinearGradient(
+                                0, 0, 0, 1,
+                                [
+                                    {offset: 0, color: '#FF9A6A'},
+                                    {offset: 1, color: '#FE5E83'}
+                                ]
+                            )
+                        },
+                        emphasis: {
+                            color: new echarts.graphic.LinearGradient(
+                                0, 0, 0, 1,
+                                [
+                                    {offset: 0, color: '#FE5E83'},
+                                    {offset: 1, color: '#FF9A6A'}
+                                ]
+                            )
+                        }
+                    }
+                },{
+                    value:30,
+                    itemStyle: {
+                        normal: {
+                            color: new echarts.graphic.LinearGradient(
+                                0, 0, 0, 1,
+                                [
+                                    {offset: 0, color: '#FEE7BB'},
+                                    {offset: 1, color: '#FFD08E'}
+                                ]
+                            )
+                        },
+                        emphasis: {
+                            color: new echarts.graphic.LinearGradient(
+                                0, 0, 0, 1,
+                                [
+                                    {offset: 0, color: '#FFD08E'},
+                                    {offset: 1, color: '#FEE7BB'}
+                                ]
+                            )
+                        }
+                    }
+                }]
+            }]
         };
 
         // Enable data zoom when user click bar.
@@ -97,8 +163,6 @@ export default {
         myChart.setOption(option);
     }
   },
-  created() {
-  },
   mounted() {
        this.drawLine();
   },
@@ -109,12 +173,12 @@ export default {
 <style lang="less" scoped="" type="text/less"> 
 @import '../../../../assets/css/comon.less';
 .barChart{
-    .vh(220);
+    height:2.1rem;
     width:100%;
     position:relative; 
     .myChart{
       height:100%;
-        width:100%;  
+      width:100%;  
     } 
 }
 

@@ -16,7 +16,7 @@
         </div>
         <div class="msgsIn0">
           <div class="msgsIn">
-            <div class="msgsInTit" v-text="`本${msgsInTit}工单数`"></div>
+            <div class="msgsInTit" v-text="`本日工单数`"></div>
             <div class="msgsInBoxs">
               <div class="msgsInCircle">
                 <EchartCirFull ref="echartCirData3"  :echartCirData = "echartCirData3"/>
@@ -94,29 +94,29 @@
         <div class="workBox1">
           <div class="workBox1In">
             <div class="workBox1In1">
-              <p class="marginTop" v-text="crate.monW+'%'"></p>
-              <span class="colorY">本月工单完成率</span>
+              <p class="marginTop" v-text="circleData.crate.monW+'%'"></p>
+              <span class="colorY" v-text="`本${yearWeek[0]}工单完成率`"></span>
             </div>
             <Lines type="h" :wid="148" :left="35"/>
             <div class="workBox1In1">
-              <p v-text="crate.monR+'%'"></p>
-              <span class="colorR">本月巡检完成率</span>
+              <p v-text="circleData.crate.monR+'%'"></p>
+              <span class="colorR"  v-text="`本${yearWeek[0]}巡检完成率`"></span>
             </div>
           </div>
           <div class="workBox1Cir">
             <div class="workBox1CirIn">
-              <EchartPie :data="barData"></EchartPie>
+              <EchartPie :data="circleData"></EchartPie>
             </div>
           </div>
           <div class="workBox1In">
             <div class="workBox1In1">
-              <p class="marginTop" v-text="crate.yearW+'%'"></p>
-              <span class="colorG">本年工单完成率</span>
+              <p class="marginTop" v-text="circleData.crate.yearW+'%'"></p>
+              <span class="colorG" v-text="`本${yearWeek[1]}工单完成率`"></span>
             </div>
             <Lines type="h" :wid="148" :left="35"/>
             <div class="workBox1In1">
-              <p v-text="crate.yearR+'%'"></p>
-              <span class="colorB">本年巡检完成率</span>
+              <p v-text="circleData.crate.yearR+'%'"></p>
+              <span class="colorB" v-text="`本${yearWeek[1]}工单完成率`"></span>
             </div>
           </div>
         </div>
@@ -127,11 +127,11 @@
           <div class="totalNum">
             <div class="lines"></div>
             <span>总数：</span>
-            <span>100单</span>
+            <span>{{barData.total}}单</span>
           </div>
         </div>
         <div class="EchartBarBox">
-          <EchartBar :data= "barData"/>
+          <EchartBar :data= "barData" />
         </div>
       </div>
   </div>
@@ -161,22 +161,38 @@ export default {
         }
       }
       return res;
+    },
+    yearWeek(){
+      let lens =this.fillBoxs2.length,res = [];
+      for(let i=0;i<lens;i++){
+        if(this.fillBoxs2[i].id == this.idNow2){
+          let name = this.fillBoxs2[i].name.split('/');
+          res = [name[0],name[1]];
+        }
+      }
+      return res;
     }
   },
   data () {
     return {
       crumbs:['代维系统'],
-      crate:{
-        monW:'56.2',
-        monR:'78.9',
-        yearW:'88.9',
-        yearR:'71.9'
+      circleData:{
+        id:'canvas',
+        style:{width:'1.98rem',height:'1.98rem'},
+        total:0,//总完成率
+        data:[0,0,0,0],
+        crate:{
+          monW:'56.2',
+          monR:'78.9',
+          yearW:'88.9',
+          yearR:'71.9'
+        },
       },
-      barData:{
+      barData:{//工单&巡检完成率的数据
           id:'barData',
-          style:{marginLeft:'0.1rem',marginTop:10*100/728+'vh'},
-          data:[57, 33, 20],
-          total:110,
+          style:{width:'94%',height:'2.1rem','marginLeft':'3%','marginTop':'3%'},
+          data:[100,230,490],
+          total:0,
           xData:['系统派发','人工派发','外报维修']
       },
       fillBoxs:[
@@ -187,32 +203,32 @@ export default {
       ],
       idNow:'day',
       fillBoxs2:[
-        {id:'dayWeek',name:'日/周'},
         {id:'monYear',name:'月/年'},
+        {id:'dayWeek',name:'日/周'}
       ],
       idNow2:'dayWeek',
-       echartCirData3:{
+       echartCirData3:{//工单的数据
             id:'echart3',
             color:[
               '#f56c6c','#008aff'
             ],
             size:[0,'72.89%'],
-            total:112,
+            total:0,
             data:[
-              {value:24, name:Math.floor(29/(71+29)*100)+'%',tit:'未完成数'},
-              {value:88, name:Math.floor(71/(71+29)*100)+'%',tit:'已完成数'},
+              {value:24, name:0+'%',tit:'已完成数'},
+              {value:88, name:0+'%',tit:'未完成数'},
             ],
         },
-        echartCirData4:{
+        echartCirData4:{//巡检的数据
             id:'echart4',
             color:[
               '#f56c6c','#008aff'
             ],
             size:[0,'72.89%'],
-            total:102,
+            total:0,
             data:[
-              {value:2, name:Math.floor(39/(71+29)*100)+'%',tit:'未完成数'},
-              {value:100, name:Math.floor(81/(71+29)*100)+'%',tit:'已完成数'},
+              {value:2, name:0+'%',tit:'未完成数'},
+              {value:100, name:0+'%',tit:'已完成数'},
             ],
         },
 
@@ -224,20 +240,83 @@ export default {
         return;
       }
       this.idNow =id;
+      this.getEchartData();
     },
     changeDateType2(id){
       if(this.idNow2==id){
         return;
       }
       this.idNow2 =id;
+      console.log(this.idNow2)
+      this.getEchartData(id)
     },
-  },
-  created() {
-
+    getEchartData(){
+      let timearea = ''
+      let dayOrMonth = ''
+      switch(this.msgsInTit){
+        case '日':
+          timearea=0;
+          break;
+        case '周':
+          timearea=1;
+          break;
+        case '月':
+          timearea=2;
+          break;
+        case '年':
+          timearea=3;
+          break;
+      }
+      switch(this.idNow2){
+        case 'dayWeek':
+          dayOrMonth=0;
+          break;
+        case 'monYear':
+          dayOrMonth=1;
+          break;
+      }
+      let _this = this;
+      this.$http.post('/pc_ims/index',{above_type:timearea,below_type:dayOrMonth,flg:1})
+      .then(function(res){
+        if(res.data.code==0){
+           _this.echartCirData3.total = res.data.data.gongdan.gongdan_count;
+           let gongdanwei = res.data.data.gongdan.wei;
+           let gongdanwan = res.data.data.gongdan.wan;
+           let xunjianwei = res.data.data.xunjian.wei;
+           let xunjianwan = res.data.data.xunjianwan;
+           //工单
+           _this.echartCirData3.data  = [
+              {value:res.data.data.gongdan.wan,name:Math.floor(gongdanwan/(gongdanwan+gongdanwei)*100)+'%',tit:'已完成数'},
+              {value:res.data.data.gongdan.wei,name:Math.floor(gongdanwei/(gongdanwan+gongdanwei)*100)+'%',tit:'未完成数'}];
+              //巡检
+          _this.echartCirData4.total = res.data.data.xunjian.xunjian_count;
+          _this.echartCirData4.data = [
+            {value:res.data.data.xunjian.wan,name:Math.floor(xunjianwan/(xunjianwan+xunjianwei)*100)+'%',tit:'已完成数'},
+            {value:res.data.data.xunjian.wei,name:Math.floor(xunjianwei/(xunjianwei+xunjianwan)*100)+'%',tit:'未完成数'}];
+            //工单来源
+          //_this.barData.data = [res.data.data.sys,res.data.data.people,res.data.data.complain]
+          //console.log(res.data.data.now)
+          _this.barData.total = res.data.data.form_count;
+          _this.circleData.crate = {
+            monW:res.data.data.now.job,
+            monR:res.data.data.now.ins,
+            yearW:res.data.data.old.job,
+            yearR:res.data.data.old.ins
+          }
+          _this.circleData.data = [res.data.data.now.job,res.data.data.now.ins,res.data.data.old.job,res.data.data.old.ins];
+          _this.circleData.total = res.data.data.percentage_count;//巡检&工单总完成率
+        }else{
+          _this.$message({
+            type:'error',
+            message:res.data.msg
+          })
+        }
+      });
+    }
   },
   mounted() {
-
-  },
+    this.getEchartData();
+  }
 }
 </script>
 
