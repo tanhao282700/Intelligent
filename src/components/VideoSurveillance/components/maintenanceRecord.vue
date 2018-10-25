@@ -3,8 +3,8 @@
     	<el-scrollbar>
 		    <ul class="devHistryList">
 		    	<li v-for="item in deviceInfos">
-		    		<span class="dateHistryBox">{{item.lab}}<a><i></i>{{item.personName}}</a></span>
-		    		<span class="maintenanceContent">{{item.labVal}}</span>
+		    		<span class="dateHistryBox">{{item.c_datetime}}<a><i></i>{{item.show_name}}</a></span>
+		    		<span class="maintenanceContent">{{item.show_content}}</span>
 		    	</li>
 		    </ul>
     	</el-scrollbar>
@@ -15,16 +15,27 @@
     export default {
 		data() {
 	        return {
-	        	deviceInfos:[
-	        		{lab:'2017年4月20日:',personName:'张三',labVal:'xxxxx'},
-	        		{lab:'2017年6月20日:',personName:'张三',labVal:'xxxxx'},
-	        		{lab:'2017年7月20日:',personName:'张三',labVal:'xxxxx'},
-	        		{lab:'2017年8月20日:',personName:'张三',labVal:'xxxxx'},
-	        		{lab:'2017年9月20日:',personName:'张三',labVal:'xxxxx'},
-	        		{lab:'2017年10月20日:',personName:'张三',labVal:'xxxxx'},
-	        	]
+	        	deviceInfos:[]
 	        }
-	    }
+	    },
+        mounted(){
+            this.getData();
+        },
+	    methods: {
+            getData(){
+                var that = this;
+                this.$http.post('/video_monitoring/video_maintenance',{
+                    device_id:16,
+                }).then(function(data){
+                    //响应成功回调
+                    console.log(data.data.data);
+                    that.deviceInfos = data.data.data;
+
+                }, function(data){
+                    // 响应错误回调
+                });
+            },
+        }
     }
 </script>
 

@@ -5,9 +5,14 @@
         <div class="mainContentBox">
         	<ul class="videoConditionsBox">
         		<li>区域选择</li>
-        		<li v-for="item in buildDatas">
-		            <el-select  v-model="item.n+'栋'">
-		                <el-option v-for="(sItem,index) in item.floors" :label="sItem.fName" :value="sItem.value" :key="index"></el-option>
+        		<li v-for="(item,index) in buildDatas">
+		            <el-select v-model="selectedValue" :placeholder="item.title">
+		                <el-option
+					      v-for="(items,index2) in item.child"
+					      :key="index2"
+					      :label="items.title"
+					      :value="item.floor_id">
+					    </el-option>
 		            </el-select>
         		</li>
         		<li class="floatRt">
@@ -18,7 +23,7 @@
 	        <div class="bottomShadow">
 	            <div class="floorImgBox">
 	                <img src="../../assets/img/doorControl/bg_lc.png">
-	                <span v-for="item in iList" :style="{left:(item.x+'px'),top:(item.y+'px')}" @click="viewLiveVideo"><label>{{item.num}}</label></span>
+	                <span v-for="item in iList" :style="{left:(item.position_x*1.74+'px'),top:(item.position_y*1.74+'px')}" @click="viewLiveVideo(item.device_id)"><label>{{item.device_id}}</label></span>
 	            </div>
 	        </div>
         </div>
@@ -27,16 +32,16 @@
         	<div class="videoPopBg">
         		<i clase="closevideoShowBoxIcon" @click="isVideoShowBoxShow = false">×</i>
 	        	<div class="videoDeviceTitle">
-	        		<span class="deviceaAcription">1栋1层1号视屏设备</span>
+	        		<span class="deviceaAcription">1栋1层{{onVideoId}}号视屏设备</span>
 	        		<span class="dateBox">2018-10-15</span>
-	        		<button class="videoDeviceInfo floatRt" @click="deviceInfoGet">设备信息</button>
+	        		<button class="videoDeviceInfo floatRt" @click="deviceInfoGet(onVideoId)">设备信息</button>
 	        	</div>
-	        	<div class="videoPanelBox"></div>
+	        	<div class="videoPanelBox">{{videoPanelBox}}</div>
         	</div>
         	<div class="deviceInfoPop" v-show="isDeviceInfoPopShow">
         		<div class="deviceInfoBgBox">
         			<i clase="closeDeviceInfoIcon" @click="isDeviceInfoPopShow = false">×</i>
-        			<span>1号视频设备</span>
+        			<span>{{onVideoId}}号视频设备</span>
         			<div class="deviceTabBox">
 				        <nav class="tabNav">
 				            <span><a :class="isActive1==true?'on':''" @click="toggleTabs(first)">设备信息</a></span>
@@ -64,8 +69,19 @@
         },
 	    data() {
 	        return {
+	        	selectedValue:'',
+	        	floorNumber:'1栋',
+	        	buld1:'2栋',
+	        	buld2:'3栋',
+	        	buld3:'4栋',
+	        	buld4:'5栋',
+	        	buld5:'6栋',
+	        	buld6:'7栋',
+	        	buld7:'8栋',
 	        	isDeviceInfoPopShow:false,
 	        	isVideoShowBoxShow:false,
+	        	onVideoId:'',//当前设备ID
+	        	videoPanelBox:'',
 	        	//tab切换状态
                 first:'first',
                 second:'second',
@@ -115,22 +131,7 @@
 	        			{fName:"3层",value:3},
 	        		]},
 	        	],
-                iList:[
-                    {num:1,x:108,y:74,sta:'close'},
-                    {num:2,x:108,y:180,sta:'close'},
-                    {num:3,x:108,y:277,sta:'close'},
-                    {num:4,x:240,y:25,sta:'open'},
-                    {num:5,x:266,y:152,sta:'warning'},
-                    {num:6,x:378,y:50,sta:'open'},
-                    {num:7,x:475,y:16,sta:'close'},
-                    {num:8,x:452,y:107,sta:'close'},
-                    {num:9,x:462,y:246,sta:'close'},
-                    {num:10,x:568,y:110,sta:'close'},
-                    {num:11,x:658,y:30,sta:'close'},
-                    {num:12,x:574,y:280,sta:'close'},
-                    {num:13,x:760,y:210,sta:'close'},
-                    {num:14,x:212,y:370,sta:'close'},
-                ],
+                iList:[],
 		        sData:{
 		            lists:[
 		                {id:0,name:'查看视频',route:''},
@@ -138,12 +139,61 @@
 		        }
 	        };
 	    },
+        mounted(){
+            this.getData();
+            this.getbuildData();
+        },
 	    methods: {
-	    	viewLiveVideo(){
+            getData(){
+                var that = this;
+                this.$http.post('/video_monitoring/video_index_view',{
+                    sys_menu_id:13,
+                    floor_id:115,
+                }).then(function(data){
+                    //响应成功回调
+                    console.log(data);
+                    console.log(data.data.data);
+                    that.iList = data.data.data.floor_device;
+
+                }, function(data){
+                    // 响应错误回调
+                });
+            },
+            getbuildData(){
+                var that = this;
+                this.$http.post('/video_monitoring/video_floorinfo',{
+                    sys_menu_id:13
+                }).then(function(data){
+                    //响应成功回调
+                    console.log(data.data.data)
+                    that.buildDatas = data.data.data;
+                    //that.iList = data.data.data.floor_device;
+
+                }, function(data){
+                    // 响应错误回调
+                });
+            },
+	    	viewLiveVideo(id){
 	    		this.isVideoShowBoxShow = true;
+	    		this.onVideoId = id;
+
+
+                var that = this;
+                this.$http.post('/video_monitoring/video_view_details',{
+                    device_id:id,
+                }).then(function(data){
+                    //响应成功回调
+                    
+                    that.videoPanelBox = data.data.data.device_state_pic;
+
+                }, function(data){
+                    // 响应错误回调
+                });
+
 	    	},
-	    	deviceInfoGet(){
+	    	deviceInfoGet(id){
 	    		this.isDeviceInfoPopShow = true;
+	    		console.log(id);
 	    	},
             toggleTabs(tabText){
                 if(tabText == "first"){

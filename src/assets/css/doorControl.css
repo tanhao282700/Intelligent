@@ -125,9 +125,9 @@ nav.tabNav span a.on{color:#008aff;}
 .deviceInfoDom{width:100%;height:100%;padding:10px 20px 0 20px;}
 .deviceInfoDom>ul{width:100%;height:100%;padding:0;}
 .deviceInfoDom>ul>li{width:50%;height:34px;line-height: 34px;float: left;}
-.deviceInfoDom>ul>li span{color:#fff;font-size: 12px;}
+.deviceInfoDom>ul>li span{color:#fff;font-size: 12px;display: inline-block;float: left;height: 34px;line-height: 34px;}
 .deviceInfoDom>ul>li:nth-child(even) span{display: inline-block;width:86px;}
-.deviceInfoDom>ul>li span.devNameSpan{color:#4f648b;padding-right:10px;}
+.deviceInfoDom>ul>li span.devNameSpan{color:#4f648b;padding-right:10px;display: inline-block;width: 86px;text-overflow: ellipsis;white-space: nowrap;overflow:hidden;}
 
 .maintenanceRecord{width:100%;height:100%;padding:10px 20px 0 16px;}
 .maintenanceRecord ul.devHistryList{width:100%;height:auto;padding:0;padding-left: 4px;}
