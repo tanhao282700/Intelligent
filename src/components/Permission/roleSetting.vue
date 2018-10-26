@@ -188,7 +188,7 @@
         deleteInfoDialog:false,
         isAdd:false,
         curEditRoleId:"",
-        toPageNum:"",
+        toPageNum: 1,
         form: {
           role: {label:"角色名", key:""},
           powerRange: {label:"权限设置", key:""}
@@ -264,7 +264,7 @@
       },
       currentPageChange(val) {
         /*当前页变动事件*/
-        this.currentPage = val;
+        this.currentPage = this.toPageNum = val;
         this.requestTableData(val);
       },
       getCurPageData(data){

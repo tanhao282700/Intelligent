@@ -133,10 +133,10 @@
       <el-dialog :title="formTitle" :visible.sync="accountInfoDialog" class="dialogBox" :close-on-click-modal="false" @close="clearForm">
         <el-form :model="form">
           <el-form-item :label="form.name.label" >
-            <el-input v-model="form.name.key" autocomplete="off" placeholder="请输入用户名可以默认手机号"></el-input>
+            <el-input v-model="form.name.key" autocomplete="off" placeholder="请输入用户名可以默认手机号" id="userPhoneInput"></el-input>
           </el-form-item>
           <el-form-item :label="form.password.label" v-if="isAdd">
-            <el-input v-model="form.password.key" type="password" autocomplete="off" placeholder="请设置初始密码"></el-input>
+            <el-input v-model="form.password.key" type="password" autocomplete="off" placeholder="请设置初始密码" :disabled="true" ></el-input>
           </el-form-item>
           <el-form-item :label="form.password.label" v-else>
             <el-button @click="resetPw" class="queryBoxBtn resetPwBtn" :class="{ loading: isReset }"><i></i>重 置</el-button>
@@ -216,22 +216,30 @@
           phoneRegexp:/^0?(13|14|15|17|18|19)[0-9]{9}$/,
           curEditUserId:'', //修改账号id
           curEditUserPw:'', //修改账号密码
-          toPageNum:""
+          toPageNum: 1
         }
       },
       methods:{
+        verifyPhone(){
+          let that = this;
+          let phone = that.form.name.key;
+          console.log(phone);
+          if(that.phoneRegexp.test(phone)){
+            that.form.password.key = phone.substr(5);
+            console.log(that.form.password.key);
+          }
+        },
         queryData(){
           /*根据筛选条件查询数据*/
           this.requestTableData(1);
         },
         currentPageChange(val) {
           /*当前页变动事件*/
-          this.currentPage = val;
+          this.currentPage = this.toPageNum = val;
           this.requestTableData(val);
         },
         getCurPageData(data){
           /*根据请求表格数据分组*/
-
           let that = this;
           that.curPageData = data.data;
           that.totalDataNumber = data.paging.count;
@@ -252,9 +260,9 @@
         saveNewAccount(type){
           /*保存新增帐号*/
           let that = this;
-          for(var i in this.form){
+          for(var i in that.form){
             if(!type && i=='password'){
-              break;
+              continue;
             }
             let temp = that.form[i].key;
 
@@ -435,7 +443,10 @@
         this.requestTableData(1);
       },
       mounted(){
-
+        let that = this;
+        $("#userPhoneInput").blur(function () {
+          that.verifyPhone();
+        })
       }
     }
 </script>

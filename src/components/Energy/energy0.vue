@@ -1,8 +1,3 @@
-<!--
-    能源系统 主界面
-    made by 白富友
-    start in 2018-8-2
--->
 <template>
   <div class="energyBase autoComponent">
     <SysHead :datas = "sData"/>
@@ -21,16 +16,18 @@ export default {
       "SysHead":SysHead
   },
   name: 'energyBase',
-  
+
   data () {
     return {
       activeName: 'first',
       sData:{
             id:2,
             lists:[
-                {id:1,name:'全景查看',route:'/energy/fullLook'},
-                {id:2,name:'运行情况',route:'/energy/runMsg'},
-                {id:3,name:'监控告警',route:'/energy/alarm'},
+                {id:1,name:'全景查看',route:'/energy/allViews'},
+                {id:2,name:'用能分析',route:'/energy/analysis'},
+                {id:3,name:'三表远抄',route:'/energy/metersRead'},
+                {id:4,name:'用能预设',route:'/energy/preset'},
+                {id:5,name:'用能报表',route:'/energy/report'}
             ]
         }
     }
@@ -38,7 +35,7 @@ export default {
   methods:{
   },
   created() {
-      
+
   },
   mounted() {
 
@@ -51,7 +48,7 @@ export default {
 @import '../../assets/css/tabs.less';
   .energyBase{
       width:100%;
-      height:100%; 
+      height:100%;
       display: flex;
       flex-direction: column;
       .energyBody{

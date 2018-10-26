@@ -121,7 +121,7 @@
             groupPageData:[],
             logDetailDialog:false,
             logDetailTitle: "" ,
-            toPageNum:"",
+            toPageNum: 1,
             detailData:""
           }
       },
@@ -132,7 +132,7 @@
         },
         currentPageChange(val) {
           /*当前页变动事件*/
-          this.currentPage = val;
+          this.currentPage = this.toPageNum = val;
           this.requestTableData(val);
         },
         toInputPage(){

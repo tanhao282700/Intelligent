@@ -3,9 +3,12 @@ import Router from 'vue-router';
 
 //能源
 import energy from '@/components/Energy/energy0';         //能源组件
-import energyFullLook from '@/components/Energy/energy';  //全景查看子组件
-import RunMsg from '@/components/Energy/runMsg';          //运行情况子组件
-import Alarm from '@/components/Energy/alarm';
+import allViews from '@/components/Energy/energy01/allViews';  //全景查看子组件
+import energyAnalysis from '@/components/Energy/energy02/energyAnalysis';  //用能分析子组件
+import metersRead from '@/components/Energy/energy03/metersRead';  //三表远抄子组件
+import energyPreset from '@/components/Energy/energy04/energyPreset';  //用能预设子组件
+import energyReport from '@/components/Energy/energy05/energyReport';  //用能报表子组件
+
 
 //代维系统管理端
 import generationMIndex0 from '@/components/AgentManage/index0';
@@ -80,22 +83,13 @@ export default new Router({
     {
       path: '/energy',
       component: energy,
+      redirect:'/energy/allViews',
       children:[
-        { path: '/energy/fullLook', component: energyFullLook,
-          children:[
-            { path: '/energy/fullLook/first'},
-            { path: '/energy/fullLook/second'},
-            { path: '/energy/fullLook/thrid'},
-          ]
-        },
-        { path: '/energy/runMsg', component: RunMsg,
-          children:[
-            { path: '/energy/runMsg/first'},
-            { path: '/energy/runMsg/second'},
-            { path: '/energy/runMsg/thrid'},
-          ]
-        },
-        { path: '/energy/alarm', component: Alarm}
+        { path: '/energy/allViews', component: allViews },
+        { path: '/energy/analysis', component: energyAnalysis },
+        { path: '/energy/metersRead', component: metersRead },
+        { path: '/energy/preset', component: energyPreset },
+        { path: '/energy/report', component: energyReport },
       ]
 
     },

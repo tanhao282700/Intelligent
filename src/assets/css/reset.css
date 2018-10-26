@@ -53,3 +53,7 @@ html{
 @media screen and (max-width: 1366px) {
   html{font-size: 100px;}
 }
+input:-webkit-autofill {
+  -webkit-text-fill-color: #fff !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
