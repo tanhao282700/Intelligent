@@ -113,12 +113,23 @@ export default {
 
       }
   },
-  created() {
-     
+  watch:{
+     activeName(val){
+      this.activeName = val;
+      localStorage.setItem('activeItem',val);
+    }
   },
   mounted(){
-    this.activeName = this.datas.active;
+    if(this.datas.active){
+      this.activeName = this.datas.active;
+    }
+    if(!this.activeName || this.activeName==' '){
+      this.activeName = 'item0';
+    }else{
+      this.activeName = localStorage.getItem('activeItem')
+    }
   }
+
 }
 
 </script>
