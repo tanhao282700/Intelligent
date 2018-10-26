@@ -9,12 +9,12 @@
   width: 100%;
 }
 .contentBox{
-  height: calc(100% - 40px);
+  height: calc(100% - .4rem);
   position: relative;
 }
 .itemsBox,.queryBox{
-  height: 52px;
-  padding: 10px 16px;
+  height: .52rem;
+  padding: .1rem .16rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -113,15 +113,20 @@
 }
 .userTableContainer{
   padding: 0 1px;
+  position: relative;
+  height: calc(100% - .52rem);
 }
 
 /*分页器样式*/
 .paginationBox{
-  padding: 0 20px;
-  margin: 24px 0;
+  padding: 0 .2rem;
   font-size: .12rem;
-  height: .22rem;
+  height: .22rem!important;
   line-height: .22rem;
+  position: absolute;
+  width: 100%;
+  bottom: .1rem;
+  left: 0;
 }
 .paginationBox .el-pagination{
   padding: 0;
@@ -168,6 +173,16 @@
 }
 .userBox td{
   color: #f4f4f4!important;
+}
+.tableAlignCenter,.loginLogTable>div{
+  height: calc(100% - .45rem);
+}
+.userTableContainer .el-table__body-wrapper{
+  height: calc(100% - .55rem);
+  overflow-y: auto!important;
+}
+.loginLogTable{
+  height: calc(100% - .62rem);
 }
 .tableAlignCenter th,.tableAlignCenter tr,.tableAlignCenter td{
   text-align: center!important;
