@@ -165,6 +165,7 @@
 
 <script>
   import bubbleTip from '@/components/common/bubbleTip';
+  import axios from 'axios';
 
   export default {
     components:{
@@ -311,6 +312,7 @@
           if(res.data.code ='0'){
             let message = type?"保存成功":"修改成功";
             that.bubbleTipShow(message);
+            if(type){that.requestOptions()};
             setTimeout(function () {
               that.accountInfoDialog = false;
               that.clearForm();
@@ -343,7 +345,6 @@
         let config = {
           role_id: that.curEditRoleId
         }
-        console.log(config);
 
         that.$http.post('users_manage/users_role_delete',config).then(res=>{
           if(res.data.code ='0'){

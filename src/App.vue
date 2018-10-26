@@ -10,7 +10,16 @@
 <script>
   import './assets/css/animate.css'
   export default {
-    name: 'App'
+    name: 'App',
+    mounted(){
+      let that = this;
+      let isRefresh = window.localStorage.getItem("isRefresh");
+      if(isRefresh){
+        that.$router.replace({ path: '/'});
+      }else {
+        window.localStorage.setItem("isRefresh",true);
+      }
+    }
   }
 </script>
 

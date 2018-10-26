@@ -139,6 +139,16 @@
               var userId = that.$store.state.userId = dataObj.userinfo.id
               var AUTH_TOKEN = dataObj.userinfo.password + "_" + projeceId + "_" + userId;
               axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
+
+              var sysList = data.data.usergrouprolesyslist[0].syslist;
+              var listLen = sysList.length;
+              var tempObj = {};
+              for(var i=0;i<listLen;i++){
+                var id = sysList[i].self_id;
+                tempObj[id] = sysList[i];
+                i<listLen-1,that.$store.state.sysList = tempObj;
+              }
+
               that.$router.replace({ path: '/home', params: { isLogin: true} });
             }else {
               that.isError = true;
@@ -151,12 +161,7 @@
       },
       mounted(){
         let that = this;
-
-        this.codeImgPath = this.imgApi;
-
-        $("#validateCode").blur(function () {
-
-        })
+        that.codeImgPath = that.imgApi;
       }
     }
 </script>
@@ -218,7 +223,7 @@
     position: relative;
   }
   .inputItem label{
-    width: 42px;
+    width: .42rem;
     height: 100%;
     text-align: justify;
     text-align-last: justify;
