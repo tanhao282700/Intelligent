@@ -21,10 +21,10 @@
               </template>
               <el-menu-item-group>
                 <!--<template slot="title">分组一</template>-->
-                <el-menu-item :disabled="!userRouterInfo[14]" index="/DoorControl"><span class="textPL">门禁系统</span></el-menu-item>
-                <el-menu-item :disabled="!userRouterInfo[4]" index="/VideoSurveillance"><span class="textPL">视频监控系统</span></el-menu-item>
-                <el-menu-item :disabled="!userRouterInfo[16]" index="/fireAlarm/fireMonitor"><span class="textPL">消防系统</span></el-menu-item>
-                <el-menu-item :disabled="!userRouterInfo[1]" index="1-4"><span class="textPL">中央空调系统</span></el-menu-item>
+                <el-menu-item v-if="userRouterInfo[14]" index="/DoorControl"><span class="textPL">门禁系统</span></el-menu-item>
+                <el-menu-item v-if="userRouterInfo[5]" index="/VideoSurveillance"><span class="textPL">视频监控系统</span></el-menu-item>
+                <el-menu-item v-if="userRouterInfo[16]" index="/fireAlarm/fireMonitor"><span class="textPL">消防系统</span></el-menu-item>
+                <el-menu-item v-if="userRouterInfo[1]" index="1-4"><span class="textPL">中央空调系统</span></el-menu-item>
               </el-menu-item-group>
             </el-submenu>
             <el-submenu index="2">
@@ -33,8 +33,8 @@
                 <span class="textPL">运营管理</span>
               </template>
               <el-menu-item-group>
-                <el-menu-item :disabled="!userRouterInfo[2]" index="/energy"><span class="textPL">能源管理系统</span></el-menu-item>
-                <el-menu-item :disabled="!userRouterInfo[17]" index="/HotelStatus"><span class="textPL">营收数据分析</span></el-menu-item>
+                <el-menu-item v-if="userRouterInfo[2]" index="/energy"><span class="textPL">能源管理系统</span></el-menu-item>
+                <el-menu-item v-if="userRouterInfo[17]" index="/HotelStatus"><span class="textPL">营收数据分析</span></el-menu-item>
               </el-menu-item-group>
             </el-submenu>
             <el-menu-item class="noChildModule" :index="agentPath">
@@ -74,16 +74,18 @@
     components:{
 
     },
-    mounted(){
-      this.$store.state.userInfoTotal.usergrouprolesyslist[0].syslist.map((item,index)=>{
-        this.userRouterInfo[item.self_id] = item
-      })
-      if(this.$store.state.userInfoTotal.permissions_manage.per_id==0){  //没有管理权限
-          this.agentPath = '/AgentManage/normalUser'
-          this.isPermissionPath = false
+    created(){
+      this.userRouterInfo = this.$store.state.sysList
+      if(this.userRouterInfo[12].role_string[0] == 1){
+          //有代维管理权限
+          this.agentPath = '/AgentManage'
+      }else{
+        this.agentPath = '/AgentManage/normalUser'
       }
-      if(this.$store.state.userInfoTotal.permissions_manage.per_id=='-1'){  //有管理权限
-        this.agentPath = '/AgentManage'
+      //权限管理
+      if(this.$store.state.userInfoTotal.permissions_manage.per_id==0){
+        this.isPermissionPath = false  //没有管理权限
+      }else{
         this.isPermissionPath = true
       }
     },
