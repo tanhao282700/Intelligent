@@ -154,6 +154,16 @@
               },
               fontSize: 10,
             },
+            axisTick:{
+                show:false
+            },
+            splitLine:{
+              show:true,
+              lineStyle: {
+                opacity:0.1
+              },
+              interval:1
+            },
             data: this.datas.xDate,
           },
           yAxis: {
