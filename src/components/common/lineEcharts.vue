@@ -225,7 +225,7 @@
       display: flex;
       justify-content: flex-start;
       width: 100%;
-      .vh(40);
+      .vh(34);
       background-color: rgba(0, 0, 0, 0.2);
       padding: 0 0.16rem;
       .title{

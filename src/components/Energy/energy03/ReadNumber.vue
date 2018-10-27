@@ -44,16 +44,61 @@
     </div>
     <div class="con">
       <div class="parts">
-        <div class="part boxs"></div>
         <div class="part boxs">
-          <lineEcharts :datas ='bb.echarts' ref = "lineEchartssss"  :key = "bb.id"/>
+          <div class="boxsTit">实时能耗</div>
+          <div class="fir">
+            <div class="box">
+              <div class="cont">
+                <div class="numbers">
+                  <span v-for="i in 10">9</span>
+                </div>
+                <div class="danwei">m³</div>
+              </div>
+              <div class="types">用水总量</div>
+            </div>
+            <div class="box">
+              <div class="cont">
+                <div class="numbers">
+                  <span v-for="i in 10">9</span>
+                </div>
+                <div class="danwei">kw/h</div>
+              </div>
+              <div class="types">用电总量</div>
+            </div>
+            <div class="box">
+              <div class="cont">
+                <div class="numbers">
+                  <span v-for="i in 10">9</span>
+                </div>
+                <div class="danwei">m³</div>
+              </div>
+              <div class="types">用气总量</div>
+            </div>
+          </div>
+        </div>
+        <div class="part boxs">
+          <lineEcharts :datas ='bb.echarts' ref="lineEchartssss1"  :key = "bb.id"/>
         </div>
       </div>
       <div class="parts">
-        <div class="part boxs"></div>
-        <div class="part boxs"></div>
+        <div class="part boxs">
+          <lineEcharts :datas ='cc.echarts' ref="lineEchartssss2"  :key = "cc.id"/>
+        </div>
+        <div class="part boxs">
+          <lineEcharts :datas ='dd.echarts' ref="lineEchartssss3"  :key = "dd.id"/>
+        </div>
       </div>
     </div>
+
+    <Dialog wid = "5.76rem" hei = "3.37rem" ref = "dialog" tit = "记录详情">
+      <el-scrollbar style="height:100%">
+        <div class="showBox2">
+
+        </div>
+      </el-scrollbar>
+    </Dialog>
+
+
   </div>
 </template>
 <script>
@@ -73,8 +118,40 @@
             style:{width:'100%',height:'100%'},
             xDate:['16:00','17:00','18:00','16:00','17:00','18:00','17:00','18:00','17:00','18:00','17:00','18:00'],
             list:[
-              {name:'能耗值',data:[10,20,30,50,40,60,30,50,30,50,40,60]},
-              {name:'碳排放',data:[50,40,60,10,20,30,10,20,10,20,40,60]},
+              {name:'碳排放',data:[10,20,30,50,40,60,30,50,30,50,40,60]},
+              {name:'能耗值',data:[50,40,60,10,20,30,10,20,10,20,40,60]},
+            ]
+          }
+        },
+        cc:{
+          id:2,
+          echarts:{
+            id:'lineEchartQi',
+            type:'qi',
+            unit:'m³',
+            title:'气',
+            // titShow:false,
+            style:{width:'100%',height:'100%'},
+            xDate:['16:00','17:00','18:00','16:00','17:00','18:00','17:00','18:00','17:00','18:00','17:00','18:00'],
+            list:[
+              {name:'碳排放',data:[10,20,30,50,40,60,30,50,30,50,40,60]},
+              {name:'能耗值',data:[50,40,60,10,20,30,10,20,10,20,40,60]},
+            ]
+          }
+        },
+        dd:{
+          id:3,
+          echarts:{
+            id:'lineEchartDian',
+            type:'dian',
+            unit:'m³',
+            title:'电',
+            // titShow:false,
+            style:{width:'100%',height:'100%'},
+            xDate:['16:00','17:00','18:00','16:00','17:00','18:00','17:00','18:00','17:00','18:00','17:00','18:00'],
+            list:[
+              {name:'碳排放',data:[10,20,30,50,40,60,30,50,30,50,40,60]},
+              {name:'能耗值',data:[50,40,60,10,20,30,10,20,10,20,40,60]},
             ]
           }
         },
@@ -97,6 +174,9 @@
           }],
       }
     },
+    created(){
+        window.addEventListener('resize',this.resizeWindow)
+    },
     components:{
       'LineEcharts':LineEcharts
     },
@@ -104,16 +184,24 @@
 
     },
     mounted(){
-
+        this.$refs.dialog.show()
+    },
+    destroyed(){
+        window.removeEventListener('resize',this.resizeWindow)
     },
     methods:{
+      resizeWindow(){
+        this.$refs.lineEchartssss1.drawLine();
+        this.$refs.lineEchartssss2.drawLine();
+        this.$refs.lineEchartssss3.drawLine();
+      }
 
     }
   }
 </script>
 <style>
   .readNumber .el-input{
-    height:90%;
+    height:90%!important;
   }
   .readNumber .querySelectItem{
     margin-left:10px;
@@ -121,6 +209,7 @@
   .readNumber .el-input .el-input__inner{
     border:none!important;
     border-bottom:1px solid #1989fa!important;
+    height:90%!important;
     /*padding:0!important;*/
   }
 </style>
@@ -210,8 +299,80 @@
         }
         .part{
           flex:1;
+          display: flex;
+          flex-direction: column;
           &:last-child{
             margin-left:1.6%;
+          }
+          .boxsTit{
+            .vh(34);
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 0 0.16rem;
+            color: #008aff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            font-size: 0.16rem;
+          }
+          .fir{
+            flex:1;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            .box{
+              width:24.11%;
+              .cont{
+                width:100%;
+                padding-bottom:100%;
+                margin-top:6%;
+                position:relative;
+                .numbers{
+                  position:absolute;
+                  width:82.667%;
+                  height:10.667%;
+                  top:48%;
+                  left:9%;
+                  display: flex;
+                  flex-direction: row;
+                  span{
+                    flex:1;
+                    border:1px solid white;
+                    color:white;
+                    display: flex;
+                    align-items: center;
+                    background:#4f5d77;
+                    justify-content: center;
+                    font-size:.12rem;
+                  }
+                }
+                .danwei{
+                  position:absolute;
+                  color:white;
+                  font-size:.12rem;
+                  right:6%;
+                  top:39%;
+                }
+              }
+              .types{
+                color:#005eb0;
+                font-size:.14rem;
+                text-align: center;
+                margin-top:4%;
+                font-weight: 500;
+              }
+              &:nth-child(1) .cont{
+                background:url(../../../assets/img/Energy/water-total.png) no-repeat;
+                background-size:100% 100%;
+              }
+              &:nth-child(2) .cont{
+                background:url(../../../assets/img/Energy/electric-total.png) no-repeat;
+                background-size:100% 100%;
+              }
+              &:nth-child(3) .cont{
+                background:url(../../../assets/img/Energy/gas-total.png) no-repeat;
+                background-size:100% 100%;
+              }
+            }
           }
         }
       }
