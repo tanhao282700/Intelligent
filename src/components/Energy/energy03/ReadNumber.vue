@@ -10,7 +10,10 @@
         </span>
         <span>系统</span>
       </div>
-      <!--<div class=""></div>-->
+      <div class="search">
+        <div class="limition"></div>
+        <div class="btn"></div>
+      </div>
     </div>
     <div class="con">
       <div class="parts">
@@ -98,6 +101,14 @@
         .active{
           background:rgba(0, 0, 0, 0.2);
         }
+      }
+      .search{
+        width:31.17%;
+        height:100%;
+        position:absolute;
+        right:0;
+        top:0;
+        display:flex;
       }
     }
     .con{

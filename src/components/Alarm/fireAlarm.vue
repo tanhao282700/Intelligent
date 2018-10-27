@@ -306,6 +306,10 @@
     display: flex;
     flex-direction: column;
   }
+  .paginationBox{
+    position:static!important;
+    margin-top: 20px!important;
+  }
 </style>
 <style>
   .fireAlarm .el-range-input{

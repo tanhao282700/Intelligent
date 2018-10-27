@@ -161,7 +161,7 @@
     width:250px;
     height:100%;
     position:fixed;
-    z-index:10;
+    z-index:99999;
     left:-250px;
     top:0;
     background:#061b3a;
