@@ -11,14 +11,43 @@
         <span>系统</span>
       </div>
       <div class="search">
-        <div class="limition"></div>
-        <div class="btn"></div>
+        <div class="limition">
+          <el-select :placeholder="items.placeHolder" v-for="(items,index) in options" v-model="aa" :key="index+1" class="querySelectItem">
+            <el-option
+              v-for="item in items.data"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+          <el-select :placeholder="items.placeHolder" v-for="(items,index) in options" v-model="aa1" :key="index+2" class="querySelectItem">
+            <el-option
+              v-for="item in items.data"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+          <el-select :placeholder="items.placeHolder" v-for="(items,index) in options" v-model="aa2" :key="index+3" class="querySelectItem">
+            <el-option
+              v-for="item in items.data"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </div>
+        <div class="btn">
+          <el-button type="primary" icon="el-icon-search">查询</el-button>
+        </div>
       </div>
     </div>
     <div class="con">
       <div class="parts">
         <div class="part boxs"></div>
-        <div class="part boxs"></div>
+        <div class="part boxs">
+          <lineEcharts :datas ='bb.echarts' ref = "lineEchartssss"  :key = "bb.id"/>
+        </div>
       </div>
       <div class="parts">
         <div class="part boxs"></div>
@@ -28,16 +57,48 @@
   </div>
 </template>
 <script>
-
+  import LineEcharts from '@/components/common/lineEcharts';
   export default{
     name:'ReadNumber',
     data(){
       return{
-
+        bb:{
+          id:1,
+          echarts:{
+            id:'lineEchartShui',
+            type:'shui',
+            unit:'m³',
+            title:'水',
+            // titShow:false,
+            style:{width:'100%',height:'100%'},
+            xDate:['16:00','17:00','18:00','16:00','17:00','18:00','17:00','18:00','17:00','18:00','17:00','18:00'],
+            list:[
+              {name:'能耗值',data:[10,20,30,50,40,60,30,50,30,50,40,60]},
+              {name:'碳排放',data:[50,40,60,10,20,30,10,20,10,20,40,60]},
+            ]
+          }
+        },
+        aa:'',
+        aa1:'',
+        aa2:'',
+        options: [
+          {
+            placeHolder: '选择楼层',
+            data: [{
+              "value": 0,
+              "label": "预警"
+            }, {
+              "value": 1,
+              "label": "提醒"
+            }, {
+              "value": 2,
+              "label": '告警'
+            }]
+          }],
       }
     },
     components:{
-
+      'LineEcharts':LineEcharts
     },
     watch:{
 
@@ -50,6 +111,19 @@
     }
   }
 </script>
+<style>
+  .readNumber .el-input{
+    height:90%;
+  }
+  .readNumber .querySelectItem{
+    margin-left:10px;
+  }
+  .readNumber .el-input .el-input__inner{
+    border:none!important;
+    border-bottom:1px solid #1989fa!important;
+    /*padding:0!important;*/
+  }
+</style>
 <style lang="less" rel="stylesheet/less" scoped>
   @import '../../../assets/css/comon.less';
   .readNumber{
@@ -109,6 +183,17 @@
         right:0;
         top:0;
         display:flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        .limition{
+          width:70%;
+          border:1px solid #3b84ed;
+          border-radius:2px;
+          height:55.17%;
+          display: flex;
+          flex-direction: row;
+        }
       }
     }
     .con{
