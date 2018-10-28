@@ -5,13 +5,42 @@
   	<div class="boxs chartTables">
   		<div class="chartTit">
   			<div class="chartLeftTit">
-  				区域能耗 | 
-  				
+  				<div class="tit1">区域能耗 | </div>
+                <div class="analysisBoxs analysisBoxs1">
+                    <SelectBox 
+                        :options = 'analysis' 
+                        :value = "vanalysis" 
+                        :icon="'el-icon-d-caret'"
+                        placeholder="月"
+                        @change = 'change1'
+                    />
+                </div>
+                <div class="analysisBoxs">
+                    <SelectBox 
+                        :options = 'analysis' 
+                        :value = "vanalysis" 
+                        :icon="'el-icon-d-caret'"
+                        placeholder="2018-08-01"
+                        @change = 'change1'
+                    />
+                </div>
+                <div class="hrline">-</div>
+                <div class="analysisBoxs">
+                    <SelectBox 
+                        :options = 'analysis' 
+                        :value = "vanalysis" 
+                        :icon="'el-icon-d-caret'"
+                        placeholder="2018-09-26"
+                        @change = 'change1'
+                    />
+                </div>
+                <div class="searchBoxs">
+                    <i class="el-icon-search"></i>
+                    <span>查询</span>
+                </div>   
   			</div>
   			<div class="chartRightTit">
-  				<el-tabs type="border-card">
-				  	
-				</el-tabs>
+			  <el-button type="default" :class="{currData:iscur==index}" :key="index" v-for="(item,index) in tabs" @click="loadBarData(index)">{{item.name}}</el-button>
   			</div>
   		</div>
   		<EchartsAnalysis :data="data"/>
@@ -19,7 +48,39 @@
   	<div class="boxs chartTables2">
   		<div class="chartTit">
   			<div class="chartLeftTit">
-  				设备能耗 | 
+  				<div class="tit1">设备能耗 | </div>
+  				<div class="analysisBoxs analysisBoxs1">
+                    <SelectBox 
+                        :options = 'analysis' 
+                        :value = "vanalysis" 
+                        :icon="'el-icon-d-caret'"
+                        placeholder="月"
+                        @change = 'change1'
+                    />
+                </div>
+                <div class="analysisBoxs">
+                    <SelectBox 
+                        :options = 'analysis' 
+                        :value = "vanalysis" 
+                        :icon="'el-icon-d-caret'"
+                        placeholder="2018-08-01"
+                        @change = 'change1'
+                    />
+                </div>
+                <div class="hrline">-</div>
+                <div class="analysisBoxs">
+                    <SelectBox 
+                        :options = 'analysis' 
+                        :value = "vanalysis" 
+                        :icon="'el-icon-d-caret'"
+                        placeholder="2018-09-26"
+                        @change = 'change1'
+                    />
+                </div>
+                <div class="searchBoxs">
+                    <i class="el-icon-search"></i>
+                    <span>查询</span>
+                </div> 
   			</div>
   			<div class="chartContent">
   				<div class="charts2Left" id="deviceLeft">
@@ -46,17 +107,20 @@
         data(){
         	return {
         		crumbs:['能源管理系统','用能分析'],
-        		navs:['电','水','气'],
+        		iscur:0,
+        		tabs: [{name: "电"}, {name: "水"} ,{name: "气"}],
         		data:{
         			custom:[1212,3434,5566,2323,3423,54,67,85,34,23,45,56,67,89,90,43,54,54,6,67,3,34,65,34,56,76,43,56,78,23,78],
-        			party:[67,89,90,43,54,54,6,67,3,34,65,34,56,76,43,56,78,23,7812,34,56,23,34,54,67,85,34,23,45,56],
+        			party:[],
         			dinneroom:[],
-        			dinner:[12,45,56,67,89,90,43,54,54,6,67,3,34,65,34,56,76,43,56,78,23,78,34,56,23,34,54,67,85,34,23],
+        			dinner:[],
         			publicarea:[],
-        			airconditioner:[12,34,56,23,34,54,67,85,34,23,45,56,67,89,90,43,54,54,6,67,3,34,65,34,56,76,43,56,78,23,78],
+        			airconditioner:[],
         			mainframe:[],
         			occupancy:[]
-        		}
+        		},
+        		vanalysis:'',
+        		analysis:[]
         	}
         },
         methods:{
@@ -191,7 +255,14 @@
 				};
 				chart.setOption(option3);
 				chart2.setOption(option2);
+	        },
+	        loadBarData(i){
+	        	this.iscur = i;
+	        },
+	        change1(){
+
 	        }
+
         },
         mounted(){
         	this.getBottomEcharts();
@@ -229,7 +300,6 @@
 				}
 				.chartRightTit{
 					width:13.78%;
-
 				}
 			}
 		}
@@ -240,11 +310,18 @@
 			display:flex;
 			flex-direction:column;
 			.chartTit{
+				padding-left:0.18rem;
+				color:#008AFF;
+				font-size:0.16rem;
 				height:0.4rem;
 				line-height:0.4rem;
 				width:100%;
 				background:rgba(0,0,0,0.2);
 				border-radius:2px 0px 0px 0px;
+				.chartRightTit .el-button.currData{
+				  background:rgba(142,187,255,.05);
+				  color:#B5D7FF;
+				}
 			}
 			.chartContent{
 				display:flex;
@@ -261,6 +338,30 @@
 				}
 			}
 		}
+		.tit1,.hrline{
+			float:left;
+		}
+		.hrline{
+			margin:0 0.1rem;
+			color:#fff;
+		}
+		.analysisBoxs{
+	        float: left;
+	        width:1rem;
+	        height:0.32rem;
+	        background-color: rgba(255, 255, 255, 0.01);
+	        border-bottom: solid 0.01rem #1989fa;
+	        text-align: center;
+	      }
+	     .analysisBoxs1{
+	     	margin: 0 0.1rem 0 0.16rem;
+	     	width:0.4rem;
+	     }
+	     .searchBoxs{
+	     	color:#fff;
+	     	float:left;
+	     	margin-left:0.16rem;
+	     }
 		.chartTables2{
 			margin-top:0.2rem;
 		}

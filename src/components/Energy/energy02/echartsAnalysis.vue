@@ -2,15 +2,9 @@
 <template>
   <!-- 用能分析图表 -->
   <div class="echartsAnalysis">
-  	<div class="lineEcharts" id="lines">
-
-  	</div>
-  	<div class="pieEcharts" id="pies">
-
-  	</div>
-  	<div class="barEcharts" id="bars">
-
-  	</div>
+  	<div class="lineEcharts" id="lines"></div>
+  	<div class="pieEcharts" id="pies"></div>
+  	<div class="barEcharts" id="bars"></div>
   </div>
 </template>
 
@@ -32,6 +26,31 @@
         		let chart = this.$echarts.init(document.getElementById('lines'));
         		let chart2 = this.$echarts.init(document.getElementById('pies'));
         		let chart3 = this.$echarts.init(document.getElementById('bars'));
+        		let legendData = ['2018年9月', '2017年9月','2018年8月'];
+		        let bgColorList = ["#F35E5E","#EEB66E","#008AFF"];
+		        let axisLabel = ['客房', '餐饮厨房', '公共区域', '设备', '区域一', '区域二', '1-5号主机'];
+		        let seriesValue = [];
+		        for (var i = 0; i < legendData.length; i++) {
+		            var arrData = [];
+		            var seriesDataVal = null;
+		            for (var j = 0; j < axisLabel.length; j++) {
+		                arrData.push(Math.floor(Math.random() * 100));
+		            }
+		            seriesDataVal = {
+		                barWidth: 8,//柱状条宽度
+		                name:legendData[i],
+		                type:'bar',
+		                itemStyle: {
+		                    normal: {
+		                        show: true,//鼠标悬停时显示label数据
+		                        barBorderRadius: [2, 2, 2, 2],//柱形图圆角，初始化效果
+		                        color: bgColorList[i]
+		                    }
+		                },
+		                data:arrData
+		            };
+		            seriesValue.push(seriesDataVal);
+		        }
 		        let option = {
 				    tooltip : {
 				        trigger: 'axis',
@@ -238,7 +257,62 @@
 				        }
 				    ]
 				};
-				let option3={};
+				let option3={
+		            tooltip: {
+		                trigger: 'axis',
+		                axisPointer: {
+		                    type: 'shadow'//阴影，若需要为直线，则值为'line'
+		                }
+		            },
+		            toolbox: {
+		                show: false,
+		                feature: {
+		                    saveAsImage: {show: true}
+		                }
+		            },
+		            legend: {
+		                data: legendData,
+		                y: 'top',//图例说明文字设置
+		                textStyle:{
+		                	color:'#fff'
+		                }
+		            },
+		            grid: {
+		                left: '3%',
+		                right: '4%',
+		                bottom: '10%',
+		                top:'10%',
+		                containLabel: false
+		            },
+		            xAxis: [{
+		                min: 0,
+		                type: 'category', //纵向柱状图，若需要为横向，则此处值为'value'， 下面 yAxis 的type值为'category'
+		                data: axisLabel,
+		                axisLabel:{
+		                	color:'#708FBE'
+		                }
+		            }],
+		            yAxis: [{
+		                min: 0,
+		                type: 'value',
+		                axisLine: {show:false},
+				        axisTick: {show:false},
+				        splitLine: {show:false},
+		                splitArea: {
+				        	show:true,
+				        	areaStyle: {color:['rgba(142,187,255,.1)','rgba(142,187,255,.05)']},
+				        },
+		            }],
+		            label: {
+		                normal: { //显示bar数据
+		                    show: true,
+		                    position: 'top'
+		                }
+		            },
+		            series: seriesValue
+		        };
+
+
 		        chart.setOption(option);
 		        chart2.setOption(option2);
 		        chart3.setOption(option3);
@@ -267,7 +341,6 @@
 		.barEcharts{
 			width:3.8rem;
 			height:2.4rem;
-			border:1px solid blue;
 		}
 	}
 </style>
