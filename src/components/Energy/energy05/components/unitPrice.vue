@@ -16,19 +16,19 @@
     			<ul v-for="(item,index) in uls" class="itemsBox">
     				<li><i class="liCloseBox el-icon-circle-close" @click="removLi(index)"></i>{{index+1}}</li>
     				<li>
-			            <el-select v-model="form.energyType" placeholder="类型">
+			            <el-select v-model="item.energyType" placeholder="类型">
 			                <el-option label="电" value="1"></el-option>
 			                <el-option label="水" value="2"></el-option>
 			            </el-select>
     				</li>
     				<li>
-			            <el-select v-model="form.energyTo" placeholder="类型">
+			            <el-select v-model="item.energyTo" placeholder="类型">
 			                <el-option label="电" value="1"></el-option>
 			                <el-option label="水" value="2"></el-option>
 			            </el-select>
     				</li>
     				<li>
-			            <el-select v-model="form.energyWhere" placeholder="类型">
+			            <el-select v-model="item.energyWhere" placeholder="类型">
 			                <el-option label="电" value="1"></el-option>
 			                <el-option label="水" value="2"></el-option>
 			            </el-select>
@@ -36,7 +36,7 @@
     				<li>
     					<el-time-picker
 						    is-range
-						    v-model="form.dateRange"
+						    v-model="item.dateRange"
 						    range-separator="-"
 						    start-placeholder="开始时间"
 						    end-placeholder="结束时间"
@@ -57,15 +57,12 @@
         data(){
         	return{
         		uls:[
-        			{val:888},
-        			{val:999},
-        			{val:111},
+        			{val:888,energyType:'',energyWhere:'',energyTo:'',dateRange:'',},
+        			{val:999,energyType:'',energyWhere:'',energyTo:'',dateRange:'',},
+        			{val:111,energyType:'',energyWhere:'',energyTo:'',dateRange:'',},
         		],
         		form:{
-        			energyType:'',
-        			energyTo:'',
-        			energyWhere:'',
-        			dateRange:'',
+        			
         		}
         	}
         },
