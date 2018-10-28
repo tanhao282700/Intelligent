@@ -1,6 +1,6 @@
 <template>
     <transition name="fade">
-        <div class="modalBox" v-show = "isShow">
+        <div class="modalBox" v-if = "isShow">
             <div class="modalBg"></div>
             <transition name="moveTop">
                 <div class="modalBoxIn" :style = "{width:wids,height:heis}" v-if = "isShow">
