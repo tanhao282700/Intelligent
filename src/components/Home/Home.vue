@@ -48,7 +48,7 @@
         </div>
         <div class="addIcon">+</div>
       </div>
-      <component v-if="partsData[0].componentsName" :is="partsData[0].componentsName" :isResize="isResize"></component>
+      <component v-if="partsData[0].componentsName" @deletClick="deletModels" :is="partsData[0].componentsName" :isResize="isResize"></component>
     </div>
     <div class="partTwo dragEle">
       <div class="add" v-if="!partsData[1].componentsName" @click="addModules(1)">
@@ -58,7 +58,7 @@
         </div>
         <div class="addIcon">+</div>
       </div>
-      <component v-if="partsData[1].componentsName" :is="partsData[1].componentsName" :isResize="isResize"></component>
+      <component v-if="partsData[1].componentsName" @deletClick="deletModels" :is="partsData[1].componentsName" :isResize="isResize"></component>
     </div>
     <div class="partThree dragEle">
       <div class="add" v-if="!partsData[2].componentsName" @click="addModules(2)">
@@ -68,7 +68,7 @@
         </div>
         <div class="addIcon">+</div>
       </div>
-      <component v-if="partsData[2].componentsName" :is="partsData[2].componentsName" :isResize="isResize"></component>
+      <component v-if="partsData[2].componentsName" @deletClick="deletModels" :is="partsData[2].componentsName" :isResize="isResize"></component>
     </div>
     <div class="partFour dragEle" >
       <div class="add" v-if="!partsData[3].componentsName" @click="addModules(3)" >
@@ -78,7 +78,7 @@
         </div>
         <div class="addIcon">+</div>
       </div>
-      <component v-if="partsData[3].componentsName" :is="partsData[3].componentsName" :isResize="isResize"></component>
+      <component v-if="partsData[3].componentsName" @deletClick="deletModels" :is="partsData[3].componentsName" :isResize="isResize"></component>
     </div>
     <div class="monitoring" v-if="isOpenMonitor">
       <div class="monitoringName">
@@ -123,7 +123,15 @@
       </div>
       <div class="modeCon">
         <div class="modeBox">
-          <div class="modeDetail boxs" @click="chooseSystem(i,index)" v-for="(i,index) in list">
+          <div class="modeDetail boxs" @click="chooseSystem(12,'AgentManage')" v-if="routerInfo[12].role_string[0]!=0" >
+            <img src="../../../static/img/agent.png" alt="">
+            <span>代维管理系统</span>
+          </div>
+          <div class="modeDetail boxs" @click="chooseSystem('-1','Equipment')" >
+            <img src="../../../static/img/equipment.png" alt="">
+            <span>设备情况</span>
+          </div>
+          <div class="modeDetail boxs" v-if="routerInfo[i.id]" @click="chooseSystem(i.id,i.componentsName)" v-for="(i,index) in list">
             <img :src="i.src" alt="">
             <span v-text="i.name"></span>
           </div>
@@ -166,36 +174,64 @@
       return {
         list:[{
           id:1,
-          name:"代维管理系统",
-          src:"../../../static/img/agent.png",
-          componentsName:'AgentManage'
-        },{
-          id:2,
-          name:"设备情况",
-          src:"../../../static/img/equipment.png",
-          componentsName:'Equipment'
-        },{
-          id:3,
           name:"中央空调系统",
           src:"../../../static/img/conditioning.png",
           componentsName:'Conditioning'
         },{
-          id:4,
+          id:17,
           name:"营收数据分析",
           src:"../../../static/img/revenueData.png",
           componentsName:'RevenueData'
         },{
-          id:5,
+          id:2,
           name:"能源管理系统",
           src:"../../../static/img/energy.png",
           componentsName:'EnergyManage'
         },{
-          id:6,
+          id:14,
           name:"门禁系统",
           src:"../../../static/img/doorManage.png",
           componentsName:'Door'
         }],
-        partsData:[{
+        allComponents:{
+            12:{
+              id:12,
+              name:"代维管理系统",
+              src:"../../../static/img/agent.png",
+              componentsName:'AgentManage'
+            },
+          '-1':{
+              id:'-1',
+              name:"设备情况",
+              src:"../../../static/img/equipment.png",
+              componentsName:'Equipment'
+            },
+          1:{
+            id:1,
+            name:"中央空调系统",
+            src:"../../../static/img/conditioning.png",
+            componentsName:'Conditioning'
+          },
+          2:{
+            id:2,
+            name:"能源管理系统",
+            src:"../../../static/img/energy.png",
+            componentsName:'EnergyManage'
+          },
+          14:{
+            id:14,
+            name:"门禁系统",
+            src:"../../../static/img/doorManage.png",
+            componentsName:'Door'
+          },
+          17:{
+            id:17,
+            name:"营收数据分析",
+            src:"../../../static/img/revenueData.png",
+            componentsName:'RevenueData'
+          }
+        },  //所有模块信息
+        partsData:[{   //四个模块id及信息
           id:1,
           componentsName:''
         },{
@@ -223,8 +259,13 @@
           isChangePassword:false  //修改密码
         },
         monitoringData:[{}],  //实时监控数据
-        bubbleTip:'' //提示信息
+        bubbleTip:'', //提示信息
+        routerInfo:{}  //权限信息
       }
+    },
+    created(){
+        console.log(this.$store.state.sysList)
+      this.routerInfo = this.$store.state.sysList
     },
     mounted(){
       const that = this;
@@ -237,18 +278,33 @@
       this.initRouterInfo()
     },
     methods:{
-      initModelId(){
-        console.log(this.$store.state)
+      deletModels(data){//模块中点击删除按钮
+        this.partsData.map((item)=>{
+              if(item.componentsName==data.componentsName){
+                  item.componentsName = ''
+              }
+        })
+      },
+      initModelId(){  //初始化用户设置的模块信息
         this.$http.get('/index_pc/pc/select/model')
           .then((response)=>{
             console.log(response)
+            if(response.data.code =='0'){
+              response.data.data.map((item)=>{
+                  if(item.id!=5){ //实时监控模块不写入数据
+                    this.partsData[item.id-1].componentsName = this.allComponents[item.self_id].componentsName
+                  }
+              })
+            }else{
+              this.bubbleTipShow(response.data.message)
+            }
           })
           .catch(function (error) {
             console.log(error);
           });
       },
       initRouterInfo(){},
-      initAlarm(){
+      initAlarm(){  //实时监控数据
         this.$http.get('/index_pc/pc/model',{self_id:-2})
           .then((response)=>{
             if(response.data.code == 0){
@@ -276,13 +332,30 @@
       loginOut(){
           this.$router.push('./')
       },
-      addModules(index){
+      addModules(index){   //点击模块加号显示所有模块，记录当前模块索引
         this.currentMudel = index;
         this.isOperateModules = true;
       },
-      chooseSystem(item,index){
-        this.partsData[this.currentMudel].componentsName = item.componentsName
-        this.isOperateModules = false
+      chooseSystem(id,componentsName){  //点击系统选中，显示到相应的模块中
+        this.$http.get('/index_pc/pc/set/model',{
+          id:this.currentMudel+1,
+          self_id:id
+        })
+          .then((response)=>{
+            if(response.data.code =='0'){
+              this.bubbleTipShow('设置成功')
+              this.partsData[this.currentMudel].componentsName = componentsName
+              this.isOperateModules = false
+              console.log(this.partsData)
+            }else{
+              this.bubbleTipShow(response.data.message)
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+        /*this.partsData[this.currentMudel].componentsName = item.componentsName
+        this.isOperateModules = false*/
       },
       openMonitor(){
         this.isOpenMonitor = !this.isOpenMonitor

@@ -1,9 +1,12 @@
 <template>
-  <div class="conditioningComponent">
+  <div class="conditioningComponent" v-loading="loading"
+       element-loading-background="rgba(0, 0, 0, 0.5)"
+       element-loading-spinner="el-icon-loading"
+       element-loading-text="拼命加载中">
     <div class="title">
       <span class="titleIcon"></span>
       <span class="txt">中央空调系统</span>
-      <img src="../../assets/img/home/close.png" alt="">
+      <img @click="deletCli" src="../../assets/img/home/close.png" alt="">
     </div>
     <div class="con">
       <div class="con-top">
@@ -68,6 +71,7 @@
           revenueCharts1:{},
           animate1:false,
           animate2:false,
+          loading:false,
           isSystemHover:false,
           isEquipmentHover:false,
           broadOneList:[{
@@ -104,7 +108,7 @@
     mounted(){
       this.drawEchart1()
       this.drawEchart2()
-      setInterval(this.scroll,1000);
+      setInterval(this.scroll,5000);
 
       this.initData()
     },
@@ -114,8 +118,11 @@
       }
     },
     methods:{
+      deletCli(){  //右上角关闭按钮
+        this.$emit('deletClick',{self_id:1,componentsName:'Conditioning'})
+      },
       initData(){
-        this.$http.get('/index_pc/pc/model',{self_id:-1})
+        this.$http.get('/index_pc/pc/model',{self_id:1})
             .then((response)=>{
               console.log(response)
             })

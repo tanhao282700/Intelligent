@@ -1,9 +1,12 @@
 <template>
-  <div class="revenueComponent">
+  <div class="revenueComponent" v-loading="loading"
+       element-loading-background="rgba(0, 0, 0, 0.5)"
+       element-loading-spinner="el-icon-loading"
+       element-loading-text="拼命加载中">
     <div class="title">
       <span class="titleIcon"></span>
       <span class="txt">营收数据分析</span>
-      <img src="../../assets/img/home/close.png" alt="">
+      <img @click="deletCli" src="../../assets/img/home/close.png" alt="">
     </div>
     <div class="con">
       <div class="con-top">
@@ -27,7 +30,7 @@
           </div>
           <div class="info">
             <span>入住率</span>
-            <span>98%</span>
+            <span v-text="revenueData.occupancy"></span>
           </div>
         </div>
       </div>
@@ -44,7 +47,9 @@
     },
     data(){
         return{
-          revenueCharts1:{}
+          revenueCharts1:{},
+          loading:true,
+          revenueData:{}
         }
     },
     components:{
@@ -63,11 +68,16 @@
       }
     },
     methods:{
+      deletCli(){  //右上角关闭按钮
+        this.$emit('deletClick',{self_id:17,componentsName:'RevenueData'})
+      },
         initData(){
           this.$http.get('/index_pc/pc/model',{self_id:17})
              .then((response)=>{
                if(response.data.code == 0){
                  console.log(response)
+                  this.revenueData = response.data.data
+            this.loading = false
                }else{
 
                }

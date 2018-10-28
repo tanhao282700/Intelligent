@@ -1,15 +1,18 @@
 <template>
-  <div class="door">
+  <div class="door" v-loading="loading"
+       element-loading-background="rgba(0, 0, 0, 0.5)"
+       element-loading-spinner="el-icon-loading"
+       element-loading-text="拼命加载中">
     <div class="title">
       <span class="titleIcon"></span>
       <span class="txt">门禁系统</span>
-      <img src="../../assets/img/home/close.png" alt="">
+      <img @click="deletCli" src="../../assets/img/home/close.png" alt="">
     </div>
     <div class="con">
       <div class="doorPartOne">
         <div class="doorPartOneCon">
           <span>当前门禁总数</span>
-          <span>888</span>
+          <span v-text="data.count"></span>
         </div>
       </div>
       <div class="doorPartTwo">
@@ -29,7 +32,9 @@
     },
     data(){
         return {
-          doorControlChart:{}
+          doorControlChart:{},
+          loading:true,
+          data:{}
         }
     },
     watch:{
@@ -41,12 +46,31 @@
 
     },
     mounted(){
-      this.drawEchart()
+      this.initData()
     },
     methods:{
+      deletCli(){  //右上角关闭按钮
+        this.$emit('deletClick',{self_id:14,componentsName:'Door'})
+      },
+      initData(){
+        this.$http.get('/index_pc/pc/model',{self_id:14})
+          .then((response)=>{
+          if(response.data.code == 0){
+          this.data = response.data.data
+          this.drawEchart()
+          this.loading = false
+          }else{
+
+          }
+        })
+      .catch((error)=>{
+          console.log(error);
+        });
+      },
       drawEchart(){
         let doorControlChart = this.$echarts.init(document.getElementById("doorControlEcharts"));
         this.doorControlChart = doorControlChart
+        let serviceData = this.data
         let option = {
           legend: {
             bottom: 10,
@@ -69,13 +93,13 @@
                 var index = 0;
               let data = [{
                 name:'开启数',
-                value: 510
+                value: serviceData.start
               },{
                 name:'异常数',
-                value: 634
+                value: serviceData.fault
               },{
                 name:'关闭数',
-                value: 735
+                value: serviceData.close
               }];
               data.forEach(function(value,i){
                 if(value.name == name){
@@ -96,9 +120,9 @@
                 length2:6
               },
               data: [//此处传入两遍数组为关键处,百分比和指示线文字为两张饼图,叠加在一起显示效果
-                {value:510, name: '开启数'},
-                {value:634, name: '异常数'},
-                {value:735, name: '关闭数'}
+                {value:serviceData.start, name: '开启数'},
+                {value:serviceData.fault, name: '异常数'},
+                {value:serviceData.close, name: '关闭数'}
               ]
             },
             {
@@ -112,9 +136,9 @@
                 formatter: '{d}%'
               },
               data:[
-                {value:510, name: '开启数'},
-                {value:634, name: '异常数'},
-                {value:735, name: '关闭数'}
+                {value:serviceData.start, name: '开启数'},
+                {value:serviceData.fault, name: '异常数'},
+                {value:serviceData.close, name: '关闭数'}
               ],
             },
           ],
