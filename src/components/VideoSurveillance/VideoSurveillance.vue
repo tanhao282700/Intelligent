@@ -70,14 +70,6 @@
 	    data() {
 	        return {
 	        	selectedValue:'',
-	        	floorNumber:'1栋',
-	        	buld1:'2栋',
-	        	buld2:'3栋',
-	        	buld3:'4栋',
-	        	buld4:'5栋',
-	        	buld5:'6栋',
-	        	buld6:'7栋',
-	        	buld7:'8栋',
 	        	isDeviceInfoPopShow:false,
 	        	isVideoShowBoxShow:false,
 	        	onVideoId:'',//当前设备ID
@@ -89,48 +81,7 @@
                 isActive1:true,
                 isActive2:false,
 
-	        	buildDatas:[
-	        		{n:1,floors:[
-	        			{fName:"1层",value:1},
-	        			{fName:"2层",value:2},
-	        			{fName:"3层",value:3},
-	        		]},
-	        		{n:2,floors:[
-	        			{fName:"1层",value:1},
-	        			{fName:"2层",value:2},
-	        		]},
-	        		{n:3,floors:[
-	        			{fName:"1层",value:1},
-	        			{fName:"2层",value:2},
-	        			{fName:"3层",value:3},
-	        			{fName:"4层",value:4},
-	        		]},
-	        		{n:4,floors:[
-	        			{fName:"1层",value:1},
-	        			{fName:"2层",value:2},
-	        			{fName:"3层",value:3},
-	        		]},
-	        		{n:5,floors:[
-	        			{fName:"1层",value:1},
-	        			{fName:"2层",value:2},
-	        			{fName:"3层",value:3},
-	        		]},
-	        		{n:6,floors:[
-	        			{fName:"1层",value:1},
-	        			{fName:"2层",value:2},
-	        			{fName:"3层",value:3},
-	        		]},
-	        		{n:7,floors:[
-	        			{fName:"1层",value:1},
-	        			{fName:"2层",value:2},
-	        			{fName:"3层",value:3},
-	        		]},
-	        		{n:8,floors:[
-	        			{fName:"1层",value:1},
-	        			{fName:"2层",value:2},
-	        			{fName:"3层",value:3},
-	        		]},
-	        	],
+	        	buildDatas:[],
                 iList:[],
 		        sData:{
 		            lists:[
