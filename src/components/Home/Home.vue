@@ -19,8 +19,8 @@
         <span>泰立智汇</span>
       </div>
       <div class="info">
-        <span>22/08</span>
-        <span>七月二十号</span>
+        <span v-text="dateInfo.numbers"></span>
+        <span v-text="dateInfo.chinese"></span>
         <span>多云</span>
         <span>34℃</span>
         <img class="wetherIcon" src="../../assets/img/home/wethericon.png" ></img>
@@ -172,7 +172,7 @@
     components:{bubbleTip,AgentManage,EnergyManage,Equipment,Banner,PersonInfo,Door,RevenueData,Conditioning},
     data(){
       return {
-        list:[{
+        list:[{   //可选子系统信息
           id:1,
           name:"中央空调系统",
           src:"../../../static/img/conditioning.png",
@@ -193,7 +193,7 @@
           src:"../../../static/img/doorManage.png",
           componentsName:'Door'
         }],
-        allComponents:{
+        allComponents:{   //所有模块信息
             12:{
               id:12,
               name:"代维管理系统",
@@ -230,7 +230,7 @@
             src:"../../../static/img/revenueData.png",
             componentsName:'RevenueData'
           }
-        },  //所有模块信息
+        },
         partsData:[{   //四个模块id及信息
           id:1,
           componentsName:''
@@ -260,12 +260,15 @@
         },
         monitoringData:[{}],  //实时监控数据
         bubbleTip:'', //提示信息
-        routerInfo:{}  //权限信息
+        routerInfo:{},  //权限信息
+        dateInfo:{}   //日期信息
       }
     },
     created(){
         console.log(this.$store.state.sysList)
       this.routerInfo = this.$store.state.sysList
+
+      this.dateInfoInit()
     },
     mounted(){
       const that = this;
@@ -278,6 +281,35 @@
       this.initRouterInfo()
     },
     methods:{
+        dateInfoInit(){   //日期信息初始化
+          let date = new Date()
+          let day = date.getDate()
+          let month = date.getMonth()+1
+          if (month >= 1 && month <= 9) {
+            month = "0" + month;
+          }
+          this.dateInfo.numbers = day+'/'+month
+          let str = new Array("○","一","二","三","四","五","六","七","八","九");
+          function number(num){
+            let tostr = "" + num;
+            if(num < 10 ){
+              return str[num];
+            }else if(num == 10){
+              return "十";
+            }else if(num < 20){
+              return "十" + str[tostr.charAt(1)];
+            }else if(num == 20){
+              return "二十";
+            }else if(num <30){
+              return "二十" + str[tostr.charAt(1)];
+            }else if(num == 30){
+              return "三十";
+            }else if(num > 30){
+              return "三十" + str[tostr.charAt(1)];
+            }
+          }
+          this.dateInfo.chinese = number(month)+"月"+number(day)+"号"
+        },
       deletModels(data){//模块中点击删除按钮
         this.partsData.map((item)=>{
               if(item.componentsName==data.componentsName){

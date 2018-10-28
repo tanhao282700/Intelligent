@@ -37,7 +37,7 @@
             </el-option>
           </el-select>
         </div>
-        <div class="btn">
+        <div class="btn22">
           <el-button type="primary" icon="el-icon-search">查询</el-button>
         </div>
       </div>
