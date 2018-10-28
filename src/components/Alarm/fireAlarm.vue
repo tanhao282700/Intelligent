@@ -1,5 +1,8 @@
 <template>
-  <div class="permissionBox autoComponent fireAlarm">
+  <div class="permissionBox autoComponent fireAlarm" v-loading="loading"
+       element-loading-background="rgba(0, 0, 0, 0.5)"
+       element-loading-spinner="el-icon-loading"
+       element-loading-text="拼命加载中">
     <SysHead :datas = "routerData" v-on:searchCont="search"/>
     <div class="userBox">
       <!--面包屑-->
@@ -14,7 +17,7 @@
         <div class="itemsBox">
           <!--筛选查询-->
           <div class="queryBox">
-            <el-select :placeholder="items.placeHolder" v-for="(items,index) in options" v-model="itemValue[index]" :key="index" class="querySelectItem">
+            <el-select :placeholder="items.placeHolder" v-for="(items,index) in options" v-model="formData.level" :key="index" class="querySelectItem">
               <el-option
                 v-for="item in items.data"
                 :key="item.value"
@@ -22,36 +25,61 @@
                 :value="item.value">
               </el-option>
             </el-select>
+            <el-select placeholder="子系统" @change="choseSys" v-model="formData.sys_id" class="querySelectItem">
+              <el-option
+                v-for="item in sysData"
+                :key="item.sys_id"
+                :label="item.name"
+                :value="item.sys_id">
+              </el-option>
+            </el-select>
+            <el-select placeholder="楼层" @change="choseFloor" v-model="formData.floor_id" class="querySelectItem">
+              <el-option
+                v-for="item in floorData"
+                :key="item.floor_id"
+                :label="item.floor_name"
+                :value="item.floor_id">
+              </el-option>
+            </el-select>
+            <el-select placeholder="设备" v-model="formData.device_id" class="querySelectItem">
+              <el-option
+                v-for="item in deviceData"
+                :key="item.device_id"
+                :label="item.device_name"
+                :value="item.device_id">
+              </el-option>
+            </el-select>
             <el-date-picker
-              v-model="itemValue[4]"
+              v-model="timeValue"
               type="daterange"
               size="mini"
               range-separator="-"
+              value-format="yyyy-MM-dd HH:mm:ss"
               start-placeholder="开始日期"
               end-placeholder="结束日期">
             </el-date-picker>
             <div>
-              <el-button class="queryDataBtn queryBoxBtn" ><i></i><span>查询</span></el-button>
+              <el-button @click="queryForm" class="queryDataBtn queryBoxBtn" ><i></i><span>查询</span></el-button>
             </div>
           </div>
 
           <!--导出-->
           <div>
-            <el-button class="addNewUserBtn queryBoxBtn export" ><i></i><span>导出</span></el-button>
+            <el-button @click="exports" class="addNewUserBtn queryBoxBtn export" ><i></i><span>导出</span></el-button>
           </div>
         </div>
 
         <!--用户表格-->
-        <div class="userTableContainer">
+        <div class="userTableContainer fireAlarmTable" style="flex:1;display: flex;flex-direction: column">
           <el-table
             :data="curPageData"
-            style="width: 100%"
+            style="width: 100%;flex:1;"
             height="500"
             class=" tableHeadBlue">
             <el-table-column
-              prop="code"
+              type="index"
               label="序号"
-              min-width="7%">
+              min-width="9%">
             </el-table-column>
             <el-table-column
               prop="time"
@@ -59,42 +87,42 @@
               min-width="14%">
             </el-table-column>
             <el-table-column
-              prop="leval"
+              prop="level"
               label="报警级别"
               min-width="7%">
             </el-table-column>
             <el-table-column
-              prop="discription"
+              prop="word"
               label="报警描述"
               min-width="19%">
             </el-table-column>
             <el-table-column
-              prop="son"
+              prop="sys_name"
               label="子系统"
               min-width="12%">
             </el-table-column>
             <el-table-column
-              prop="equipment"
+              prop="device_name"
               label="设备"
               min-width="12%">
             </el-table-column>
             <el-table-column
-              prop="floor"
+              prop="floor_name"
               label="楼层"
               min-width="7%">
             </el-table-column>
             <el-table-column
-              prop="lastTime"
+              prop="recovery_time"
               label="持续时间"
-              min-width="12%">
+              min-width="9%">
             </el-table-column>
             <el-table-column
-              prop="status"
+              prop="now_state"
               label="维修状态"
               min-width="9%">
             </el-table-column>
             <el-table-column
-              prop="man"
+              prop="control_user"
               label="维修人"
               min-width="9%">
             </el-table-column>
@@ -102,20 +130,19 @@
 
           <!--分页器-->
           <div class="paginationBox">
-            <div class="totalPageNumBox">共{{pageBean.total}}页</div>
+            <div class="totalPageNumBox">共{{formData.pageCount}}页</div>
 
             <div class="el-input el-pagination__editor is-in-pagination curPageBox">
-              <input type="number" autocomplete="off" class="el-input__inner" v-model="pageBean.currentPage">
+              <input type="number" autocomplete="off" class="el-input__inner" v-model="formData.pagenumber">
               <span @click="toInputPage">GO</span>
             </div>
 
             <el-pagination
               @current-change="currentPageChange"
-              :current-page="pageBean.currentPage"
-              :page-size="pageBean.pageSize"
-              :page-count="pageBean.pageNumber"
+              :current-page="formData.pagenumber"
+              :page-size="formData.pagesize"
               layout="prev, pager, next"
-              :total="pageBean.total">
+              :total="formData.total">
             </el-pagination>
 
           </div>
@@ -140,6 +167,22 @@
     name: "fireAlarm",
     data(){
       return {
+        loading:true,
+        formData:{
+          level:'',
+          sys_id:'',
+          floor_id:'',
+          device_id:'',
+          start_time:'',
+          end_time:'',
+          pagesize:20,
+          pagenumber:1,
+          total:0,
+          pageCount:0
+        },
+        sysData:[],  //子系统数据
+        floorData:[],  //楼层数据
+        deviceData:[], //设备数据
         routerData: {
           id: 0,
           lists: [
@@ -150,80 +193,124 @@
           {
             placeHolder: '报警级别',
             data: [{
-              "value": "工程部",
-              "label": "工程部"
+              "value": 0,
+              "label": "预警"
             }, {
-              "value": "酒店部",
-              "label": "酒店部"
-            }]
-          }, {
-            placeHolder: '子系统',
-            data: [{
-              "value": "工程部",
-              "label": "工程部"
+              "value": 1,
+              "label": "提醒"
             }, {
-              "value": "酒店部",
-              "label": "酒店部"
+              "value": 2,
+              "label": '告警'
             }]
-          }, {
-            placeHolder: '楼层',
-            data: [{
-              "value": "工程部",
-              "label": "工程部"
-            }, {
-              "value": "酒店部",
-              "label": "酒店部"
-            }]
-          }, {
-            placeHolder: '设备',
-            data: [{
-              "value": "工程部",
-              "label": "工程部"
-            }, {
-              "value": "酒店部",
-              "label": "酒店部"
-            }]
-          }
-        ],
-        itemValue:[],
-        curPageData:[{
-          code:1,
-          time:'2018-12-15 24:00',
-          leval:'普通',
-          discription:'我是一只小小鸟',
-          son:'消防系统',
-          equipment:'空调',
-          floor:'4F',
-          lastTime:'19:14:22',
-          status:'已处理',
-          man:'德玛西亚'
-        }],
-        pageBean:{
-          total:1,
-          pageSize:20,
-          pageNumber:1,
-          currentPage:1
-        }
+          }],
+        timeValue:[],
+        curPageData:[],
       }
     },
-    methods:{
-      search(param){
-        console.log(param);
-      },
-      toInputPage(){},
-      queryData(){},
-      currentPageChange(){},
-    },
     created(){
-
+      this.initData()
+      this.initTitle()
     },
     mounted(){
 
-    }
+    },
+    methods:{
+      initData(){
+        this.$http.get('/index_pc/pc/select/alarm',this.formData).then((response)=>{
+          this.curPageData = response.data.data
+          this.formData.total = response.data.paging
+          this.formData.pageCount = Math.ceil(response.data.paging/this.formData.pagesize)
+          this.loading = false
+        })
+          .catch(function (error) {
+            console.log(error);
+          });
+      },
+      initTitle(){
+        this.$http.get('/index_pc/pc/select/alarm/title')
+          .then((response)=>{
+            this.sysData = response.data.data
+        })
+          .catch(function (error) {
+            console.log(error);
+          });
+      },
+      choseSys(){
+        this.sysData.map((item,index)=>{
+            if(item.sys_id == this.formData.sys_id){
+                this.floorData = item.floors
+                this.formData.floor_id = ''
+                this.deviceData = []
+                this.formData.device_id = ''
+                return
+            }
+        })
+      },
+      choseFloor(){
+          this.floorData.map((item,index)=>{
+              if(item.floor_id==this.formData.floor_id){
+                  this.deviceData = item.device
+                  this.formData.device_id = ''
+              }
+          })
+      },
+      queryForm(){
+          this.loading = true
+          if(this.timeValue && this.timeValue.length>0){
+            this.formData.start_time = this.timeValue[0]
+            this.formData.end_time = this.timeValue[1]
+          }else{
+            this.formData.start_time = ''
+            this.formData.end_time = ''
+          }
+          this.initData()
+      },
+      search(param){
+        /*console.log(param);*/
+      },
+      toInputPage(){
+        this.loading = true
+        if(this.formData.pagenumber > this.formData.pageCount){
+          this.formData.pagenumber = this.formData.pageCount
+        }
+        this.initData()
+      },
+      currentPageChange(aa){
+        this.loading = true
+        this.formData.pagenumber = aa
+        this.initData()
+      },
+      exports(){
+        if(this.timeValue && this.timeValue.length>0){
+          this.formData.start_time = this.timeValue[0]
+          this.formData.end_time = this.timeValue[1]
+        }else{
+          this.formData.start_time = ''
+          this.formData.end_time = ''
+        }
+        this.$http.get('/index_pc/pc/select/alarm/excel',this.formData).then((response)=>{
+          console.log(response)
+        })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
+    },
   }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+  .contentBox{
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .paginationBox{
+    position:static!important;
+    margin-top: 20px!important;
+  }
+</style>
 <style>
   .fireAlarm .el-range-input{
     width:80px!important;

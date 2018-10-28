@@ -53,10 +53,9 @@
         <el-table
           :data="curPageData"
           style="width: 100%"
-          height="500"
           class="tableAlignCenter tableHeadBlue roleSetTable">
           <el-table-column
-            type="index"
+            prop="code"
             label="编号"
             min-width="7%">
           </el-table-column>

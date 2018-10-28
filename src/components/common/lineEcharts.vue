@@ -35,15 +35,15 @@
         num:0,
         // titShow:true,
         legends:[
-          {img:require('../../assets/img/echart/lineZ.png')},          
+          {img:require('../../assets/img/echart/lineZ.png')},
           {img:require('../../assets/img/echart/lineG.png')},
-          {img:require('../../assets/img/echart/lineB.png')},            
+          {img:require('../../assets/img/echart/lineB.png')},
         ],
         color:[
-            {color1:'rgba(69,50,138,1)',color2:'rgba(69,50,138,0.69)'},            
+            {color1:'rgba(69,50,138,1)',color2:'rgba(69,50,138,0.69)'},
             {color1:'rgba(46,204,223,1)',color2:'rgba(46,204,223,0.69)'},
             {color1:'rgba(55, 42, 191,1)',color2:'rgba(55, 42, 191,0.69)'},
-          ],        
+          ],
       }
     },
     methods:{
@@ -51,7 +51,6 @@
         // console.log(this.datas)
         // 基于准备好的dom，初始化echarts实例
         let myChart = this.$echarts.init(document.getElementById(this.datas.id));
-
         let series=[];
         let datas = this.datas;
          let lens = datas.list.length;
@@ -86,11 +85,11 @@
                   globalCoord: false // 缺省为 false
                 }
               }
-            }; 
+            };
             series.push(obj)
          }
         let tops  = this.titShow!==undefined && !this.titShow?'5%':'29%';
-        let option = {     
+        let option = {
           dataZoom: [
             {
               show: false,
@@ -127,7 +126,7 @@
                   let span = `<span style = "padding:0 4px;color:${params[i].color}">${params[i].value}</span>`;
                     span0 += span;
                 }
-                
+
               return `<span>${span0}</span>`;
             },
             backgroundColor: "#fff",
@@ -154,6 +153,16 @@
                 color: '#708FBE'
               },
               fontSize: 10,
+            },
+            axisTick:{
+                show:false
+            },
+            splitLine:{
+              show:true,
+              lineStyle: {
+                opacity:0.1
+              },
+              interval:1
             },
             data: this.datas.xDate,
           },
@@ -226,7 +235,7 @@
       display: flex;
       justify-content: flex-start;
       width: 100%;
-      .vh(40);
+      .vh(34);
       background-color: rgba(0, 0, 0, 0.2);
       padding: 0 0.16rem;
       .title{
@@ -274,7 +283,7 @@
       .unit{
         position: absolute;
         left: 0.16rem;
-        .vhTop(53);
+        .vhTop(42);
         font-family: PingFangSC-Regular;
         font-size: 0.12rem;
         font-weight: normal;

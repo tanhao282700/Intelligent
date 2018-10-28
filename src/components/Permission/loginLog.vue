@@ -33,10 +33,9 @@
           <el-table
             :data="curPageData"
             style="width: 100%"
-            height="482"
             stripe>
             <el-table-column
-              type="index"
+              prop="code"
               label="序号"
               min-width="8%">
             </el-table-column>

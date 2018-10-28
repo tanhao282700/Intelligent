@@ -59,10 +59,9 @@
         <el-table
           :data="curPageData"
           style="width: 100%"
-          height="500"
           class="tableAlignCenter tableHeadBlue">
           <el-table-column
-            type="index"
+            prop="code"
             label="编号"
             min-width="10%">
           </el-table-column>
@@ -133,7 +132,7 @@
       <el-dialog :title="formTitle" :visible.sync="accountInfoDialog" class="dialogBox" :close-on-click-modal="false" @close="clearForm">
         <el-form :model="form">
           <el-form-item :label="form.name.label" >
-            <el-input v-model="form.name.key" autocomplete="off" placeholder="请输入用户名可以默认手机号" id="userPhoneInput"></el-input>
+            <el-input v-model="form.name.key" autocomplete="off" placeholder="请输入用户名可以默认手机号" id="userPhoneInput" ></el-input>
           </el-form-item>
           <el-form-item :label="form.password.label" v-if="isAdd">
             <el-input v-model="form.password.key" type="password" autocomplete="off" placeholder="请设置初始密码" :disabled="true" ></el-input>
@@ -142,8 +141,8 @@
             <el-button @click="resetPw" class="queryBoxBtn resetPwBtn" :class="{ loading: isReset }"><i></i>重 置</el-button>
           </el-form-item>
           <el-form-item :label="form.department.label" >
-            <el-select v-model="form.department.key" placeholder="请选择">
-              <el-option :label="item.title" :value="item.id" v-for="item in options[0]" :key="item.id"></el-option>
+            <el-select v-model="form.department.key" placeholder="请选择" >
+              <el-option :label="item.title" :value="item.id" v-for="item in options[0]" :key="item.id" ></el-option>
             </el-select>
           </el-form-item>
           <el-form-item :label="form.position.label" >
@@ -220,15 +219,6 @@
         }
       },
       methods:{
-        verifyPhone(){
-          let that = this;
-          let phone = that.form.name.key;
-          console.log(phone);
-          if(that.phoneRegexp.test(phone)){
-            that.form.password.key = phone.substr(5);
-            console.log(that.form.password.key);
-          }
-        },
         queryData(){
           /*根据筛选条件查询数据*/
           this.requestTableData(1);
@@ -422,6 +412,7 @@
           }
 
           that.$http.post('users_manage/usersinfo',config).then(res=>{
+            console.log(res);
             that.getCurPageData(res.data);
           }).catch(err=>{
             console.log(err);
@@ -443,10 +434,7 @@
         this.requestTableData(1);
       },
       mounted(){
-        let that = this;
-        $("#userPhoneInput").blur(function () {
-          that.verifyPhone();
-        })
+
       }
     }
 </script>
