@@ -115,9 +115,89 @@
 
 
 
-    <Dialog wid = "578" hei = "536" style="display: flex;flex-direction: column" ref = "Historydialog" tit = "dialogTit">
-      <div class="showBox2" style="height:486px;">
-        <div>asdasdasd</div>
+    <Dialog wid = "578" hei = "536" style="display: flex;flex-direction: column" ref = "Historydialog" :tit = "dialogTit">
+      <div class="showBox2 historyBox" style="height:486px;padding-left:20px;">
+        <div>
+          <div class="formGroup">
+            <div class="name">类型<i></i></div>
+            <div class="inpArea">
+              <el-select :placeholder="items.placeHolder" v-for="(items,index) in options1" v-model="bb" :key="index+1" class="querySelectItem">
+                <el-option
+                  v-for="item in items.data"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </div>
+          </div>
+          <div class="formGroup">
+            <div class="name">设备<i></i></div>
+            <div class="inpArea">
+              <el-select :placeholder="items.placeHolder" v-for="(items,index) in options1" v-model="cc" :key="index+1" class="querySelectItem">
+                <el-option
+                  v-for="item in items.data"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </div>
+          </div>
+          <div class="formGroup" style="height:60px;">
+            <div class="name">上传<i></i></div>
+            <div class="inpArea">
+              <el-upload
+                class="upload-demo"
+                ref="upload"
+                action="https://jsonplaceholder.typicode.com/posts/"
+                :file-list="fileList"
+                :on-change="beforeUpload"
+                :auto-upload="false">
+                <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+              </el-upload>
+            </div>
+          </div>
+          <div class="formGroup">
+            <div class="name" >选择sheet<i></i></div>
+            <div class="inpArea">
+              <el-select :placeholder="items.placeHolder" v-for="(items,index) in options2" v-model="dd" :key="index+1" class="querySelectItem">
+                <el-option
+                  v-for="item in items.data"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </div>
+          </div>
+          <div class="formGroup">
+            <div class="name">日期<i></i></div>
+            <div class="inpArea">
+              <el-date-picker
+                v-model="value1"
+                type="datetime"
+                placeholder="选择日期时间">
+              </el-date-picker>
+            </div>
+          </div>
+          <div class="formGroup">
+            <div class="name">用量<i></i></div>
+            <div class="inpArea">
+              <el-input placeholder="请输入" v-model="formData.name"></el-input>
+            </div>
+          </div>
+          <div class="formGroup">
+            <div class="name">费用<i></i></div>
+            <div class="inpArea">
+              <el-input placeholder="请输入" v-model="formData.val"></el-input>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="historyBtn">
+        <span>取消</span>
+        <span>确定</span>
       </div>
     </Dialog>
 
@@ -130,8 +210,41 @@
   name:'History',
     data(){
       return{
+        fileList:[],
+        value1:'',
         dialogTit:"单个录入",
+        bb:'',
+        cc:'',
+        dd:'',
         formData:{},
+        options1: [
+          {
+            placeHolder: '选择楼层',
+            data: [{
+              "value": 0,
+              "label": "预警"
+            }, {
+              "value": 1,
+              "label": "提醒"
+            }, {
+              "value": 2,
+              "label": '告警'
+            }]
+          }],
+        options2: [
+          {
+            placeHolder: '选择楼层',
+            data: [{
+              "value": 0,
+              "label": "预警"
+            }, {
+              "value": 1,
+              "label": "提醒"
+            }, {
+              "value": 2,
+              "label": '告警'
+            }]
+          }],
         options: [
           {
             placeHolder: '报警级别',
@@ -167,6 +280,12 @@
 
     },
     methods:{
+      beforeUpload(file,fileList){
+        this.fileList = [file]
+      },
+      submitUpload() {
+        this.$refs.upload.submit();
+      },
       takeIn(type){
           if(type==='one'){
               this.dialogTit = '单个录入'
@@ -181,6 +300,69 @@
     }
   }
 </script>
+<style>
+  .historyBtn{
+    width:100%;
+    height:73px;
+    position:absolute;
+    right:0;
+    bottom:0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  .historyBtn span{
+    display: inline-block;
+    width:88px;
+    height:32px;
+    border:1px solid #3a84ed;
+    color:white;
+    font-size:0.12rem;
+    text-align: center;
+    line-height: 32px;
+    border-radius:2px;
+  }
+  .historyBtn span:last-child{
+    background:#3a84ed;
+    margin-right:22px;
+  }
+  .historyBtn span:first-child{
+    margin-right:10px;
+  }
+  .historyBtn span:hover{
+    cursor: pointer;
+  }
+  .historyBox .formGroup{
+    width:100%;
+    height:34px;
+    margin-top:0.2rem;
+    display: flex;
+  }
+  .historyBox .formGroup .name{
+    width:0.66rem;
+    text-align: justify;
+    line-height: 34px;
+    color:#324667;
+    font-size:0.14rem;
+  }
+  .historyBox .formGroup .name i{
+    display:inline-block;
+    width:100%;
+  }
+  .historyBox .formGroup .inpArea{
+    margin-left:12px;
+    width:200px;
+    height:100%;
+  }
+  .historyBox .formGroup .inpArea .querySelectItem{
+    height:34px!important;
+  }
+  .historyBox .formGroup .inpArea .el-input__inner{
+    height:34px!important;
+    width:200px!important;
+  }
+</style>
 <style lang="less" rel="stylesheet/less" scoped>
   .history{
     width:100%;

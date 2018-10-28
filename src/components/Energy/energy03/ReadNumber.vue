@@ -224,7 +224,7 @@
 
     },
     mounted(){
-        /*this.$refs.dialog.show()*/
+        this.$refs.dialog.show()
     },
     destroyed(){
         window.removeEventListener('resize',this.resizeWindow)
