@@ -37,7 +37,8 @@ nav.tabNav span a.on{color:#008aff;}
 .tabsDomBox0 .el-select:nth-child(2){margin-left: 10px;}
 .floorImgBox i:hover .pop{display: block;}
 .el-table td, .el-table th{padding:2px 0;}
-.el-table th>.cell{text-align: center;}
+.el-table .cell{font-size: 12px;text-align: center;}
+.el-table th>.cell{text-align: center;font-size: 12px!important;padding: 0!important;}
 .el-table .el-table__body td{padding:0;font-size: 12px;color:#f4f4f4;}
 .el-table .el-table__body td .cell{font-size: 12px;color:#f4f4f4;text-align: center;}
 .doorInfoBgBox .tableBox .el-table__header{background:rgba(0,0,0,0);}
@@ -214,3 +215,53 @@ nav.tabNav span a.on{color:#008aff;}
 .roomListDatePicker .el-date-editor .el-range-separator{line-height: 22px;padding:0;color:#d8d8d8;font-size: 12px;}
 
 /* 视频监控  e*/
+
+
+/* 能源管理-用能报表 s*/
+.unitPriceBtn{display:inline-block;width:100px;text-align:center;line-height:28px;height:28px;background:rgba(51,51,51,0.2);box-shadow:0px 2px 5px 0px rgba(74,144,226,0.4),1px 1px 1px 0px rgba(248,253,255,0.15),0px 0px 1px 0px rgba(74,144,226,1);border-radius:2px;position: absolute;right:20px;top:10px;color:#fff;font-size: 12px;cursor:pointer;}
+.energyReport{width:100%;height:100%;position: relative;padding-top:30px;}	
+.energyReport .navCrumbs{left:20px;top:5px;}
+.reportTabBox{width:100%;height:100%;position: relative;padding:50px 20px 20px 20px;}
+.reportTabBox>nav.tabNav{position: absolute;top:0;left:0;display: block;}
+.reportTabBox>nav.tabNav span{padding-left: 20px;}
+.reportTabBox>nav.tabNav span a{padding:0;padding-bottom:8px;}
+.reportTabBox>nav.tabNav span a.on{border-bottom: 1px solid #008aff;}
+.reportTabBoxs{position:relative;display:block;width:100%;height:100%;box-shadow:0px 2px 5px 0px rgba(74,144,226,0.22),1px 1px 1px 0px rgba(248,253,255,0.15),0px 0px 1px 0px rgba(74,144,226,1);border-radius:4px;position: relative;padding-top:50px;}
+.reportTabBoxsHead{height:50px;position:absolute;left:0;top:0;display:block;width:100%;padding-left: 10px;padding-top:10px;}
+.reportTabBoxsHead .el-select input.el-input__inner{width:70px;height:32px;}
+.reportTabBoxsHead .dateBox{display: inline-block;margin-left: 5px;margin-right:10px;}
+.reportTabBoxsHead .dateBox .el-input__inner{width:70px!important;height:32px!important;padding-left: 15px;text-align: left!important;}
+.reportTabBoxsHead .el-input__suffix{display: none!important;}
+.reportTabBoxsHead .el-input__prefix{left:44px;}
+.el-table thead.is-group th{background: rgba(0,0,0,0);}
+.el-table--border, .el-table--group{border:0px;}
+.el-table--border td{border-right:1px solid rgba(45, 148, 240, 0.2);}
+.el-table--border::after, .el-table--group::after{width:0;}
+.el-table thead.is-group th{border-right:1px solid rgba(45, 148, 240, 0.2);border-top: 1px solid rgba(45, 148, 240, 0.2);}
+.el-table--group.el-table .el-table__body tr:first-child td{border-top: 1px solid rgba(45, 148, 240, 0.2);}
+.el-table .el-table__body td.cellMonth .cell{color:#2DF0E0!important;}
+.el-table .el-table__body td.darkBl .cell{color:#439AFF!important;}
+.el-table .el-table__body td.darkOr .cell{color:#FFA414!important;}
+.el-table__footer-wrapper tbody td{background:rgba(0,0,0,0);color:#fff;}
+.el-table__footer-wrapper td{border-top:1px solid rgba(58, 137, 249, 0.3);}
+.reportLeader{background:rgba(74,144,226,0.05);}
+.unitDomBox{position:absolute;left:0;top:0;display: block;width:100%;height:100%;padding:19px;background:rgba(0,0,0,.2);}
+
+.unitPrice{width:100%;height:100%;background:#051732;border-radius:4px;position: relative;}
+.unitHeadBox{width:100%;height:40px;background:rgba(0,0,0,.2);padding-left: 20px;font-size: 14px;border-radius:4px 4px 0 0;line-height: 40px;color:#fff;}
+.unitPrice .el-form{margin-top: 30px;}
+.el-form ul{position: relative;padding:0;padding-left: 40px;border-top:1px solid rgba(181, 215, 255, 0.25);height:30px;}
+.el-form ul li:first-child{position:absolute;left:0;top:0;display: block;width:40px;}
+.el-form ul li{float: left;width:20%;text-align: center;color:#fff;font-size: 12px;border-left:1px solid rgba(181, 215, 255, 0.25);border-bottom:1px solid rgba(181, 215, 255, 0.25);height:30px;line-height: 30px;}
+.el-form ul li .el-input__inner{height:30px;border:0!important;color:#008AFF!important;}
+.el-form ul.itemsBox li:first-child{cursor: pointer;}
+.addMode{width:100%;height:30px;line-height: 30px;text-align: center;border:1px solid #1989fa;background:rgba(58,132,238,0.2);}
+.addMode span{cursor:pointer;color:#fff;}
+.addMode span .el-icon-circle-plus{display: inline-block;font-size: 14px;color:#3A84EE;cursor: pointer;padding-right:10px;}
+.el-form ul.itemsBox li:first-child .liCloseBox{position:absolute;left:0;top:0;width:40px;height:30px;display: none;text-align: center;line-height: 30px;color:#e4393c;background:rgba(58,132,238,1);font-size:16px;}
+.el-form ul.itemsBox li:first-child:hover .liCloseBox{display: block;}
+.el-form ul.itemsBox li .el-range-editor .el-range-input{background:none;color:#FFA414;}
+.el-form ul.itemsBox li .el-date-editor .el-range-separator{padding:0;line-height: 22px;}
+
+/* 能源管理-用能报表 e*/
+
