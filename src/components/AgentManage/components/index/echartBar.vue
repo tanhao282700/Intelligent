@@ -74,14 +74,14 @@ export default {
                     textStyle:{
                         color:'#fff'
                     },
-                    formatter:'{c}%'
+                    formatter:'{c}'
                 },
                 type: 'bar',
                 barGap:'-100%',
                 barCategoryGap:'40%',
                 animation: false,
                 data:[{
-                    value:10,
+                    value:_this.data.data[0],
                     itemStyle: {
                         normal: {
                             color: new echarts.graphic.LinearGradient(
@@ -103,7 +103,7 @@ export default {
                         }
                     },
                 },{
-                    value:20,
+                    value:_this.data.data[1],
                     itemStyle: {
                         normal: {
                             color: new echarts.graphic.LinearGradient(
@@ -125,7 +125,7 @@ export default {
                         }
                     }
                 },{
-                    value:30,
+                    value:_this.data.data[2],
                     itemStyle: {
                         normal: {
                             color: new echarts.graphic.LinearGradient(
@@ -153,7 +153,6 @@ export default {
         // Enable data zoom when user click bar.
         var zoomSize = 6;
         myChart.on('click', function (params) {
-            console.log(dataAxis[Math.max(params.dataIndex - zoomSize / 2, 0)]);
             myChart.dispatchAction({
                 type: 'dataZoom',
                 startValue: dataAxis[Math.max(params.dataIndex - zoomSize / 2, 0)],

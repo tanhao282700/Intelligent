@@ -294,7 +294,7 @@ export default {
             {value:res.data.data.xunjian.wan,name:Math.floor(xunjianwan/(xunjianwan+xunjianwei)*100)+'%',tit:'已完成数'},
             {value:res.data.data.xunjian.wei,name:Math.floor(xunjianwei/(xunjianwei+xunjianwan)*100)+'%',tit:'未完成数'}];
             //工单来源
-          //_this.barData.data = [res.data.data.sys,res.data.data.people,res.data.data.complain]
+          _this.barData.data = [res.data.data.sys,res.data.data.people,res.data.data.complain]
           //console.log(res.data.data.now)
           _this.barData.total = res.data.data.form_count;
           _this.circleData.crate = {

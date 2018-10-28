@@ -106,7 +106,7 @@
           </div>
           <div class="workBox1Cir">
             <div class="workBox1CirIn">
-              <EchartPie :data="circleData"></EchartPie>
+              <EchartPie :data="circleData" :style="{width:'1.98rem',height:'1.98rem'}"></EchartPie>
             </div>
           </div>
         </div>
@@ -121,7 +121,7 @@
           </div>
         </div>
         <div class="EchartBarBox">
-          <EchartBar :data= "barData"/>
+          <EchartBar :data= "barData" />
         </div>
       </div>
   </div>
@@ -195,7 +195,7 @@ export default {
         id:'canvas',
         style:{marginLeft:'0.1rem',marginTop:42*100/728+'vh'},
         data:['56.2','23.5'],
-        average:45.3
+        total:45.3
       },
       echartCirData3:{
         id:'echart3',
@@ -258,10 +258,11 @@ export default {
               {value:res.data.data.xunjian.wan,name:Math.floor(xunjianwan/(xunjianwan+xunjianwei)*100)+'%',tit:'已完成数'},
               {value:res.data.data.xunjian.wei,name:Math.floor(xunjianwei/(xunjianwei+xunjianwan)*100)+'%',tit:'未完成数'}];
               //工单来源
-            _this.barData.data = [res.data.data.sys,res.data.data.people]
-            _this.barData.total = res.data.data.count;
-             console.log(res.data.data.gongdan)  //工单的数据
-             console.log(res.data.data.xunjian) //巡检的数据
+             _this.barData.data = [res.data.data.sys,res.data.data.people]
+             _this.barData.total = res.data.data.count;
+             _this.circleData = res.data.data.
+             _this.circleData.total = res.data.data.percent;
+             console.log(res.data.data)  //工单的数据
              // console.log(res.data.data.now) //日/月 巡检&工单总完成率 根据筛选条件决定
              // console.log(res.data.data.old) //周/年 巡检&工单总完成率 根据筛选条件决定
              // console.log(res.data.data.percentage_count)//巡检&工单总完成率
