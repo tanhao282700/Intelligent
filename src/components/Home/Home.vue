@@ -337,25 +337,33 @@
         this.isOperateModules = true;
       },
       chooseSystem(id,componentsName){  //点击系统选中，显示到相应的模块中
-        this.$http.get('/index_pc/pc/set/model',{
-          id:this.currentMudel+1,
-          self_id:id
-        })
-          .then((response)=>{
-            if(response.data.code =='0'){
-              this.bubbleTipShow('设置成功')
-              this.partsData[this.currentMudel].componentsName = componentsName
-              this.isOperateModules = false
-              console.log(this.partsData)
-            }else{
-              this.bubbleTipShow(response.data.message)
+        let isSet = true
+        this.partsData.map((item)=>{
+            if(item.componentsName == componentsName){
+              isSet = false
+              this.bubbleTipShow('已显示该模块！')
+              return
             }
+        })
+        if(isSet){
+          this.$http.get('/index_pc/pc/set/model',{
+            id:this.currentMudel+1,
+            self_id:id
           })
-          .catch(function (error) {
-            console.log(error);
-          });
-        /*this.partsData[this.currentMudel].componentsName = item.componentsName
-        this.isOperateModules = false*/
+            .then((response)=>{
+              if(response.data.code =='0'){
+                this.bubbleTipShow('设置成功')
+                this.partsData[this.currentMudel].componentsName = componentsName
+                this.isOperateModules = false
+                console.log(this.partsData)
+              }else{
+                this.bubbleTipShow(response.data.message)
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        }
       },
       openMonitor(){
         this.isOpenMonitor = !this.isOpenMonitor
