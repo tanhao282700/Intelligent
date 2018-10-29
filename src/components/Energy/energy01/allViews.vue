@@ -84,7 +84,7 @@
           <header>
             <div class="titleBox">能耗趋势</div>
             <div class="energyArea2Tabs">
-              <el-tabs v-model="energyArea2Type" type="card" @tab-click="handleClick">
+              <el-tabs v-model="energyArea2Type" type="card" @tab-click="viewsTrendTypeChange">
                 <el-tab-pane label="电" name="0"></el-tab-pane>
                 <el-tab-pane label="水" name="1"></el-tab-pane>
                 <el-tab-pane label="气" name="2"></el-tab-pane>
@@ -276,7 +276,7 @@
           id: 'energyTrendChart1',
           echarts:{
             id:"lineEchartShui1",
-            type:'shui',
+            type:'电',
             unit:"",
             title:"单位：月份/KW/h",
             style:{
@@ -295,9 +295,9 @@
           id: 'energyTrendChart2',
           echarts:{
             id:"lineEchartShui2",
-            type:'shui',
+            type:'水',
             unit:"",
-            title:"单位：月份/KW/h",
+            title:"单位：月份/t",
             style:{
               width:'100%',
               height: '100%'
@@ -314,9 +314,9 @@
           id: 'energyTrendChart3',
           echarts:{
             id:"lineEchartShui3",
-            type:'shui',
+            type:'气',
             unit:"",
-            title:"单位：月份/KW/h",
+            title:"单位：月份/m³",
             style:{
               width:'100%',
               height: '100%'
@@ -391,8 +391,7 @@
       }
     },
     methods:{
-      handleClick(){
-        console.log(this.energyArea2Type);
+      viewsTrendTypeChange(){
         let index = this.energyArea2Type;
         $(".allViewArea2 .myChartBox").eq(index).show().siblings().hide();
       },
@@ -935,10 +934,25 @@
         that.initArea4Chart5();
         that.initArea4Chart6();
         that.initArea4Chart7();
+      },
+      requestAllData(){
+        let that = this;
+        let projectId = that.$store.state.projectId;
+        let config = {
+          project_id: projectId
+        }
+        console.log(config);
+        that.$http.post('hotel_energy/index',config).then(res=>{
+          console.log(res);
+        }).catch(err=>{
+          console.log(err);
+        })
       }
     },
     mounted(){
       let that = this;
+      that.requestAllData();
+
       that.totalEnergyChartRotate(10,'.energyFinger1');
       that.totalEnergyChartRotate(50,'.energyFinger2');
       that.totalEnergyChartRotate(80,'.energyFinger3');

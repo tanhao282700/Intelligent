@@ -113,6 +113,7 @@
               that.requestLogin();
             }else {
               that.codeError = true;
+              that.refrenshCode();
               that.showErr(data.message);
             }
           }).catch(err=>{
@@ -152,10 +153,12 @@
               that.$router.replace({ path: '/home', params: { isLogin: true} });
             }else {
               that.isError = true;
+              that.refrenshCode();
               that.showErr(data.message);
             }
           }).catch(err=>{
             console.log(err);
+            that.showErr("服务器请求失败");
           })
         }
       },
