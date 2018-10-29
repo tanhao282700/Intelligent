@@ -1,0 +1,26 @@
+.powerSetTit .timeBox input{
+  width: 1.2rem !important;
+  height: .2rem !important;
+  padding-left: .16rem;
+  border: none!important;
+}
+.powerSetTit .timeBox{
+  display: flex;
+  align-items: center;
+  border: 1px solid #1989fa!important;
+  border-radius: 2px;
+  position: relative;
+}
+.timeBox::after{
+  content: "";
+  display: block;
+  height: 100%;
+  width: 10px;
+  position: absolute;
+  right: 10px;
+  top: 0;
+  background: url("../img/TableCommon/drop-down.png") no-repeat center;
+  background-size: 10px auto;
+  pointer-events: none;
+}
+.powerSetTit .timeBox>div span{display: none;}

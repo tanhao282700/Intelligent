@@ -132,7 +132,7 @@
       <el-dialog :title="formTitle" :visible.sync="accountInfoDialog" class="dialogBox" :close-on-click-modal="false" @close="clearForm">
         <el-form :model="form">
           <el-form-item :label="form.name.label" >
-            <el-input v-model="form.name.key" autocomplete="off" placeholder="请输入用户名可以默认手机号" id="userPhoneInput" ></el-input>
+            <el-input v-model="form.name.key" autocomplete="off" placeholder="请输入用户名可以默认手机号" id="userPhoneInput"  @blur="userNameBlur"></el-input>
           </el-form-item>
           <el-form-item :label="form.password.label" v-if="isAdd">
             <el-input v-model="form.password.key" type="password" autocomplete="off" placeholder="请设置初始密码" :disabled="true" ></el-input>
@@ -219,6 +219,15 @@
         }
       },
       methods:{
+        userNameBlur(){
+          let that = this;
+          let name = that.form.name.key;
+          if(that.phoneRegexp.test(name)){
+            that.form.password.key = (name).substr(5);
+          }else {
+            that.bubbleTipShow("用户名格式错误");
+          }
+        },
         queryData(){
           /*根据筛选条件查询数据*/
           this.requestTableData(1);
