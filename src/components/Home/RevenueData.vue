@@ -13,8 +13,8 @@
         <div class="revenueEcharts1" id="revenueEcharts1">
           <div class="name">用能营收占比</div>
           <div class="percent">
-            <div class="mounts">
-              <span>22%</span>
+            <div class="mounts" :style="'width:'+ percentData+'%;'">
+              <span v-text="percentData+'%'"></span>
             </div>
           </div>
         </div>
@@ -30,7 +30,7 @@
           </div>
           <div class="info">
             <span>入住率</span>
-            <span v-text="revenueData.occupancy"></span>
+            <span v-text="occupancy"></span>
           </div>
         </div>
       </div>
@@ -39,6 +39,8 @@
 </template>
 <script>
   /*import "echarts-liquidfill"*/
+  import axios from 'axios';
+
   export default{
     props:{
       isResize:{
@@ -49,16 +51,19 @@
         return{
           revenueCharts1:{},
           loading:true,
-          revenueData:{}
+          occupancy:'',
+          shui:{},
+          dian:{},
+          qi:{},
+          revenInterval:null,
+          currentTypeId:1,
+          percentData:''
         }
     },
     components:{
 
     },
     mounted(){
-      this.drawEchart2()
-      /*this.drawEchart3()*/
-
       this.initData()
     },
     watch:{
@@ -67,17 +72,48 @@
         /*this.revenueCharts3.resize()*/
       }
     },
+    destroyed(){
+      clearInterval(this.revenInterval)
+    },
     methods:{
       deletCli(){  //右上角关闭按钮
         this.$emit('deletClick',{self_id:17,componentsName:'RevenueData'})
       },
         initData(){
+          /*axios.defaults.headers.common['Authorization'] = '1_1_1';*/
           this.$http.get('/index_pc/pc/model',{self_id:17})
              .then((response)=>{
                if(response.data.code == 0){
                  console.log(response)
-                  this.revenueData = response.data.data
-            this.loading = false
+                 this.shui = response.data.data.data[1]
+                this.dian = response.data.data.data[0]
+                this.qi = response.data.data.data[2]
+                this.percentData = response.data.data.data[1].energy  //初始化水的占比
+            this.occupancy = response.data.data.occupancy
+                this.drawEchart2(this.shui)
+                this.loading = false
+                this.revenInterval = setInterval(()=>{
+                    this.revenueCharts2.clear()
+                    let data = {}
+                    switch (this.currentTypeId){
+                      case 0:
+                        this.currentTypeId = 1
+                        data = this.shui
+                        this.percentData = this.shui.energy
+                        break;
+                      case 1:
+                        this.currentTypeId = 2
+                        data = this.qi
+                        this.percentData = this.qi.energy
+                        break;
+                      case 2:
+                        this.currentTypeId = 0
+                        data = this.dian
+                        this.percentData = this.dian.energy
+                        break;
+                    }
+                    this.drawEchart2(data)
+                  },5000)
                }else{
 
                }
@@ -86,33 +122,54 @@
                     console.log(error);
                 });
       },
-      drawEchart2(){
-        let revenueCharts2 = this.$echarts.init(document.getElementById("revenueEcharts2"));
-        this.revenueCharts2 = revenueCharts2
+      drawEchart2(serviceData){
+            console.log(serviceData.type)
+        this.revenueCharts2 = this.$echarts.init(document.getElementById("revenueEcharts2"))
+        let revData = serviceData
+        /*revData.time.map((item,index)=>{
+          revData.time[index] = item.split('/')[1]
+        })*/
+        let title = ''
+        if(revData.type == 0){
+            title = '电'
+        }else if(revData.type == 1){
+          title = '水'
+        }else{
+          title = '气'
+        }
+        console.log(revData)
         let option2 = {
           title:{
-            text:'电',
+            text:title,
             textStyle:{
               fontSize:14,
               color:'white',
             },
-            backgroundColor:'#46bcfc'
+            backgroundColor:'rgba(0, 12, 39, 0.4)'
           },
           tooltip : {
             trigger: 'axis',
+            position: function (pos, params, dom, rect, size) {
+              // 鼠标在左侧时 tooltip 显示到右侧，鼠标在右侧时 tooltip 显示到左侧。
+              var obj = {top: 60};
+              obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 5;
+              return obj;
+            }
           },
           grid: {
             top: 20,
-            bottom: 20
+            bottom: 20,
+            left:10,
+            right:10
           },
           legend: {
             data:['每餐位用能均值','每房用能均值'],
             orient:'horizontal',
-            left:-10,
+            right:0,
             padding:0,
             textStyle:{
               color:'#eeeff1',
-              fontSize:10
+              fontSize:10,
             },
             top:6
           },
@@ -132,7 +189,7 @@
               axisTick:{
                 show:false
               },
-              data : ['01','02','03','04','05','06','07']
+              data : revData.time
             }
           ],
           yAxis : [
@@ -153,7 +210,7 @@
                 shadowOffsetY:2,
                 shadowColor:'#3af2e6'
               },
-              data:[430, 810, 840, 320, 461, 180, 920]
+              data:revData.restaurant
             },
             {
               name:'每房用能均值',
@@ -166,12 +223,12 @@
                 shadowOffsetY:2,
                 shadowColor:'#f96074'
               },
-              data:[620, 460, 220, 630, 401, 110, 640]
+              data:revData.Room
             }
           ],
           color:['#3af2e6','#f96074']
         };
-        revenueCharts2.setOption(option2);
+        this.revenueCharts2.setOption(option2);
       },
       drawEchart3(){
         let revenueCharts3 = this.$echarts.init(document.getElementById("revenueEcharts3"));
@@ -260,7 +317,8 @@
           display: flex;
           flex-direction: row;
           .mounts{
-            width:20%;
+            transition: all .4s ease-in;
+            width:0;
             background:#29dfd3;
             border-top-left-radius: 4px;
             border-bottom-left-radius: 4px;
@@ -290,6 +348,7 @@
           width:100%;
           height:24px;
           background:#0e2340;
+          opacity:.4;
           position:absolute;
           left:0;
           top:0;
