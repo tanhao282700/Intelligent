@@ -1,9 +1,12 @@
 <template>
-  <div class="agentComponent">
+  <div class="agentComponent" v-loading="loading"
+       element-loading-background="rgba(0, 0, 0, 0.5)"
+       element-loading-spinner="el-icon-loading"
+       element-loading-text="拼命加载中">
     <div class="title">
       <span class="titleIcon"></span>
       <span class="txt">代维管理系统</span>
-      <img src="../../assets/img/home/close.png" alt="">
+      <img @click="deletCli" src="../../assets/img/home/close.png" alt="">
     </div>
     <div class="con">
       <div class="echarts" id="echarts"></div>
@@ -13,8 +16,8 @@
             <span>日</span>
           </div>
           <div class="percent">
-            <span>98%</span>
-            <span>19/20</span>
+            <span v-text="finishData.dayPercent"></span>
+            <span v-text="agentData.finish.day.finish+'/'+agentData.finish.day.count"></span>
             <span>今日完成率</span>
           </div>
         </div>
@@ -23,8 +26,8 @@
             <span>月</span>
           </div>
           <div class="percent">
-            <span>98%</span>
-            <span>19/20</span>
+            <span v-text="finishData.monthPercent"></span>
+            <span v-text="agentData.finish.month.finish+'/'+agentData.finish.month.count"></span>
             <span>今月完成率</span>
           </div>
         </div>
@@ -33,8 +36,8 @@
             <span>年</span>
           </div>
           <div class="percent">
-            <span>98%</span>
-            <span>19/20</span>
+            <span v-text="finishData.yearPercent"></span>
+            <span v-text="agentData.finish.year.finish+'/'+agentData.finish.year.count"></span>
             <span>今年完成率</span>
           </div>
         </div>
@@ -52,21 +55,16 @@
     },
     data(){
         return{
-          dataAxis:['今日','本月','本年'],
-          data:[{
-              time:'今日',
-              data1:20,
-              data2:30
-          },{
-            time:'本月',
-            data1:30,
-            data2:40
-          },{
-            time:'本年',
-            data1:699,
-            data2:499
-          }],
-          agentChart:{}
+          loading:true,
+          agentChart:{},
+          agentData:{
+            finish:{
+                day:{},
+              month:{},
+              year:{}
+            },
+          },
+          finishData:{}
         }
     },
     components:{
@@ -78,14 +76,34 @@
       }
     },
     mounted(){
-      this.drawEchart()
+      this.initData()
     },
     methods:{
+      deletCli(){  //右上角关闭按钮
+          this.$emit('deletClick',{self_id:12,componentsName:'AgentManage'})
+      },
       initData(){
-        this.$http.get('/index_pc/pc/model',{self_id:-2})
-          .then(function (response) {
+        this.$http.get('/index_pc/pc/model',{self_id:12})
+          .then((response)=> {
             if(response.data.code == 0){
-              that.monitoringData = response.data.data
+              this.agentData = response.data.data
+              if(this.agentData.finish.day.count==0 && this.agentData.finish.day.finish==0){
+                  this.finishData.dayPercent = '100%'
+              }else{
+                this.finishData.dayPercent = Math.round(this.agentData.finish.day.finish/this.agentData.finish.day.count*100)+'%'
+              }
+              if(this.agentData.finish.month.count==0 && this.agentData.finish.month.finish==0){
+                this.finishData.monthPercent = '100%'
+              }else{
+                this.finishData.monthPercent = Math.round(this.agentData.finish.month.finish/this.agentData.finish.month.count*100)+'%'
+              }
+              if(this.agentData.finish.year.count==0 && this.agentData.finish.year.finish==0){
+                this.finishData.yearPercent = '100%'
+              }else{
+                this.finishData.yearPercent = Math.round(this.agentData.finish.year.finish/this.agentData.finish.year.count*100)+'%'
+              }
+              this.drawEchart()
+              this.loading = false
             }else{
 
             }
@@ -97,6 +115,7 @@
       drawEchart(){
         let agentChart = this.$echarts.init(document.getElementById("echarts"));
         this.agentChart = agentChart
+        let serviceData = this.agentData
         let option = {
           title : {
             text: '工单统计',
@@ -157,7 +176,7 @@
                     }
                   }
               },
-              data:[40,155,605],
+              data:[serviceData.count.day.unfinish,serviceData.count.month.unfinish,serviceData.count.year.unfinish],
               barGap:0,
               barMinHeight:2,
               barMaxWidth:24
@@ -176,7 +195,7 @@
                       }
                   }
               },
-              data:[0,200,105],
+              data:[serviceData.count.day.count,serviceData.count.month.count,serviceData.count.year.count],
               barGap:0,
               barMinHeight:2,
               barMaxWidth:24

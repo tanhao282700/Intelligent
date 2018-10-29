@@ -37,7 +37,7 @@
             </el-option>
           </el-select>
         </div>
-        <div class="btn">
+        <div class="btn22">
           <el-button type="primary" icon="el-icon-search">查询</el-button>
         </div>
       </div>
@@ -90,12 +90,52 @@
       </div>
     </div>
 
-    <Dialog wid = "5.76rem" hei = "3.37rem" ref = "dialog" tit = "记录详情">
-      <el-scrollbar style="height:100%">
-        <div class="showBox2">
-
+    <Dialog wid = "578px" hei = "536px" style="display: flex;flex-direction: column" ref = "dialog" tit = "记录详情">
+      <div class="showBox2" style="height:486px;">
+        <div class="parts" v-for="i in 3">
+          <div class="content">
+            <div class="pic">
+              <div class="numbers">
+                <span v-for="i in 10">9</span>
+              </div>
+              <div class="danwei">kw/h</div>
+            </div>
+            <div class="types">
+              <div class="title">电流</div>
+              <div>
+                <span>A：</span>
+                <span>23.92A</span>
+              </div>
+              <div>
+                <span>B：</span>
+                <span>23.92A</span>
+              </div>
+              <div>
+                <span>C：</span>
+                <span>23.92A</span>
+              </div>
+            </div>
+            <div class="types">
+              <div class="title">电压</div>
+              <div>
+                <span>A：</span>
+                <span>23.92V</span>
+              </div>
+              <div>
+                <span>B：</span>
+                <span>23.92V</span>
+              </div>
+              <div>
+                <span>C：</span>
+                <span>23.92V</span>
+              </div>
+            </div>
+          </div>
+          <div class="leixin">
+            1号电表
+          </div>
         </div>
-      </el-scrollbar>
+      </div>
     </Dialog>
 
 
@@ -211,6 +251,16 @@
     border-bottom:1px solid #1989fa!important;
     height:90%!important;
     /*padding:0!important;*/
+  }
+  .readNumber .modalBox .modalBoxIn .titBox{
+    height:50px!important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .readNumber .modalBox .modalBoxIn{
+    width:578px!important;
+    height:536px!important;
   }
 </style>
 <style lang="less" rel="stylesheet/less" scoped>
@@ -374,6 +424,74 @@
               }
             }
           }
+        }
+      }
+    }
+    .showBox2{
+      display: flex;
+      flex-direction: row;
+      .parts{
+        height:100%;
+        width:150px;
+        margin-left:34px;
+        .content{
+          height:386px;
+          margin-top:52px;
+          background: linear-gradient(to top, rgba(1,13,29,.8) , rgba(1,13,29,0));
+          .pic{
+            width:150px;
+            padding-bottom:150px;
+            background:url(../../../assets/img/Energy/electric-total.png) no-repeat;
+            background-size:100% 100%;
+            position:relative;
+            .numbers{
+              width:122px;
+              height:17px;
+              display: flex;
+              position:absolute;
+              top:69px;
+              left:15px;
+              span{
+                flex:1;
+                border:1px solid white;
+                color:white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background:#4d5d74;
+              }
+            }
+            .danwei{
+              position:absolute;
+              right:14px;
+              top:54px;
+              color:white;
+            }
+          }
+          .types{
+            height:108px;
+            color:#b5d6ff;
+            font-size:.12rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-around;
+            margin-top:10px;
+            .title{
+              color:#4adb80;
+              font-size:.16rem;
+            }
+          }
+          .types:last-child{
+            margin-top:0;
+          }
+        }
+        .leixin{
+          height:48px;
+          color:#007fea;
+          font-size:.12rem;
+          line-height:48px;
+          text-align: center;
         }
       }
     }

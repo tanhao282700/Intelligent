@@ -6,7 +6,7 @@
     <div class="title">
       <span class="titleIcon"></span>
       <span class="txt">设备情况</span>
-      <img src="../../assets/img/home/close.png" alt="">
+      <img @click="deletCli" src="../../assets/img/home/close.png" alt="">
     </div>
     <div class="con" :class="{'hidden':loading==true}">
       <div class="chart" id="equipmentOne">
@@ -63,6 +63,9 @@
       }
     },
     methods:{
+      deletCli(){  //右上角关闭按钮
+        this.$emit('deletClick',{self_id:-1,componentsName:'Equipment'})
+      },
         initData(){
           this.$http.get('/index_pc/pc/model',{self_id:-1})
             .then((response)=>{

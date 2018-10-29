@@ -116,18 +116,20 @@ export default {
   watch:{
      activeName(val){
       this.activeName = val;
-      localStorage.setItem('activeItem',val);
+      sessionStorage.setItem('activeItem',val);
     }
   },
   mounted(){
     if(this.datas.active){
       this.activeName = this.datas.active;
-    }
-    if(!this.activeName || this.activeName==' '){
-      this.activeName = 'item0';
     }else{
-      this.activeName = localStorage.getItem('activeItem')
+      if(sessionStorage.getItem('activeItem') && sessionStorage.getItem('activeItem')!=null){
+        this.activeName = sessionStorage.getItem('activeItem')
+      }else{
+        this.activeName = 'item0';
+      }
     }
+    
   }
 
 }

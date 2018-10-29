@@ -1,0 +1,266 @@
+.dateUnitSelectItem{
+  padding-left: .16rem;
+}
+.dateUnitSelectItem input{
+  border-left:none!important;
+  border-right:none!important;
+  border-top:none!important;
+  width: .32rem;
+  font-size: .12rem!important;
+  padding: 0;
+  border-bottom: 1px solid #1989FA;
+  height: .24rem;
+}
+.dateUnitSelectItem::after{
+  right:0;
+  background: url("../img/Permission/down.png") no-repeat center;
+}
+.energyAreaDateBox{
+  width: 2.5rem!important;
+  padding: 0 .2rem;
+  position: relative;
+  border: none!important;
+}
+.energyAreaDateBox.el-date-editor .el-range-input{
+  background-color: transparent;
+  color: #fff!important;
+  border-bottom: 1px solid #1989fa!important;
+  width: .9rem;
+  height: 24px;
+  padding-left: 4px;
+  text-align: left;
+  font-size: .1rem;
+}
+.energyAreaDateBox .el-icon-date,.energyAreaDateBox .el-range__close-icon{
+  display: none!important;
+}
+.energyAreaDateBox.el-date-editor .el-range-separator{
+  color: #fff;
+  line-height: 24px;
+  width: auto;
+  padding: 0 10px;
+}
+.energyAreaDateBox::before,.energyAreaDateBox::after{
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background: url("../img/Permission/down.png") no-repeat center;
+  background-size: 100% 100%;
+  top:7px;
+}
+.energyAreaDateBox::before{
+  left: .86rem;
+}
+.energyAreaDateBox::after{
+  right: .1rem;
+}
+.allViewsContainer .area3-QueryDateBtn{
+  border: none;
+  color: #fff;
+  font-size: .14rem!important;
+  width: .6rem;
+  padding: 0 0 0 .2rem;
+  height: .3rem;
+  background: url("../img/common/search.png") no-repeat left .05rem center;
+  background-size: .13rem .13rem;
+  background-color: transparent;
+}
+.allViewsContainer .yearRangeBox{
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+}
+.allViewsContainer .yearRangeBox input{
+  width: .9rem;
+  border-left: none!important;
+  border-right: none!important;
+  border-top: none!important;
+  border-bottom: 1px solid #1989FA;
+  height: .24rem;
+}
+.allViewsContainer .yearRangeBox .el-date-editor.el-input{
+  width: auto!important;
+}
+.allViewsContainer .yearRangeBox>span{
+  color: #fff;
+  padding: 0 10px;
+}
+.energyArea3 .viewItemContent{
+  padding: 0.15rem;
+}
+.energyArea3 .energyArea3Item{
+  flex: 1;
+  height: 100%;
+  border-radius: 2px;
+  overflow: hidden;
+  background-color: rgba(0,0,0,.1);
+}
+.energyArea3 .energyArea3Item:first-child{
+  margin-right: .1rem;
+}
+.energyArea3Item .head{
+  height: .3rem;
+  line-height: .3rem;
+  font-size: .12rem;
+  color: #B5D7FF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0,0,0,.2);
+}
+.energyArea3Item .head div{
+  width: .68rem;
+}
+.energyArea3Item .head div:not(:last-child){
+  margin-right: .13rem;
+}
+.energyArea3Item .head div::before{
+  content: "";
+  display: inline-block;
+  width: .1rem;
+  height: .1rem;
+  border-radius: 100%;
+  margin-right: .1rem;
+}
+.energyArea3Item .head .type1::before{background-color: #2DF0E0}
+.energyArea3Item .head .type2::before{background-color: #FFA414}
+.energyArea3Item .head .type3::before{background-color: #316EFF}
+.energyArea3Item .content{
+  height: calc(100% - .3rem);
+  position: relative;
+}
+.energyArea3Item .content>div{
+  height: 100%;
+  width: 100%;
+  position: absolute!important;
+  left: 0;
+  top:0;
+}
+.energyArea3Item .content>div:first-child{
+  z-index: 1;
+}
+.energyArea3Item .content>div:last-child{
+  z-index: 2;
+}
+
+.allViewsContainer .energyArea4 .viewItemContent{
+  padding: .1rem;
+  display: block;
+}
+.energyArea4 .viewItemContent .head{
+  height: .4rem;
+  line-height: .4rem;
+  padding: 0 .1rem 0 .2rem;
+  background-color: #001838;
+  border-radius: 2px;
+}
+.energyArea4 .viewItemContent .head:first-child{
+  margin-bottom: .1rem;
+}
+.energyArea4 .viewItemContent .head span{
+  font-size: .14rem;
+  color: #B5D7FF;
+}
+.energyArea4 .viewItemContent .head>div{
+  float: right;
+  font-size: .24rem;
+}
+.energyArea4 .incomeBox{
+  color: #fff;
+}
+.energyArea4 .perBox{
+  color: #2DF0E0;
+}
+.energyArea4 .chartsBox{
+  height: calc(100% - .9rem);
+  display: flex;
+  align-items: center;
+}
+.energyArea4 .chartsBox div{height: 100%;position: relative;}
+.energyArea4 .chartsBox>div::after,.totalEnergyItem::after{
+  content: "";
+  position: absolute;
+  width: 1px;
+  height: 100%;
+  right: 0;
+  top:0;
+  background:linear-gradient(180deg,rgba(74,144,226,0) 0%,rgba(74,144,226,0.88) 50%,rgba(74,144,226,0) 100%);
+}
+.energyArea4 .chartsBox>div:last-child::after,.totalEnergyItem:last-child::after{
+  display: none;
+}
+.energyArea4 .chartsBox .type1{flex: 1}
+.energyArea4 .chartsBox .type2{flex: 2}
+.energyArea4 .chartsBox .type2 .typeChartBox{
+  height: .8rem;
+  display: flex;
+  align-items: center;
+}
+.energyArea4 .chartsBox .type2 .typeChartBox>div{
+  flex: 1;
+  position: relative;
+}
+.energyArea4 .typeTitleBox{
+  height: calc(100% - .8rem) !important;
+  text-align: center;
+  font-size: .1rem;
+  color: #B5D7FF;
+}
+.energyArea4 .typeTitleBox .typeTitleText{
+  line-height: .24rem;
+  height: .24rem;
+}
+.energyArea4 .typeTitleBox .typeTitleVal{
+  height: .3rem;
+  line-height: .15rem;
+  background:linear-gradient(270deg,rgba(35,100,219,0) 0%,rgba(34,76,152,0.45) 52%,rgba(35,100,219,0) 100%);
+  border-radius:2px;
+  padding-top: 2px;
+}
+.energyArea4 .typeTitleBox .typeTitleVal div{
+  height: .15rem;
+}
+.energyArea4 .typeTitleBox .typeTitleVal p{
+  color: #fff;
+  transform: scale(.75);
+}
+.energyArea4 .chartsBox .type2 .typeChartBox .centerType{
+  width: .26rem;
+  height: .26rem;
+  line-height: .26rem;
+  font-size: .16rem;
+  color: #B5D7FF;
+  background: #011944;
+  border-radius: 100%;
+  position: absolute;
+  left: 50%;
+  top:50%;
+  transform: translate(-50%,-50%) scale(.65);
+  z-index: 10;
+  text-align: center;
+}
+
+.allViewArea2>header{
+  justify-content: space-between;
+}
+.allViewArea2 .energyArea2Tabs{
+  border: none;
+}
+.allViewArea2 .el-tabs--card>.el-tabs__header .el-tabs__nav{
+  float: right;
+  border: none;
+}
+.allViewArea2 .el-tabs__header{
+  border-bottom: none!important;
+}
+.allViewArea2 .el-tabs--card>.el-tabs__header .el-tabs__item{
+  border: none;
+  color: #818181;
+}
+.allViewArea2 .el-tabs--card>.el-tabs__header .el-tabs__item.is-active{
+  background-color: rgba(181,215,255,.1);
+}
+.allViewArea2 .viewItemContent{
+  flex-flow: column;
+}

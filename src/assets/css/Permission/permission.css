@@ -1,7 +1,7 @@
 /*权限管理模块样式*/
 
 .permissionBox{
-  padding: 50px 30px 30px;
+  padding: .5rem .3rem .3rem;
   color: #fff;
 }
 .userBox{
@@ -21,21 +21,21 @@
 }
 .queryBox{
   padding: 0;
-  height: 32px;
+  height: .32rem;
 }
 .itemsBox>div{
-  height: 32px;
+  height: .32rem;
   width: auto;
 }
 .querySelectItem{
   vertical-align: top;
 }
 .queryBox .querySelectItem:not(:last-child){
-  margin-right: 12px;
+  margin-right: .12rem;
 }
 .userBox .queryBoxBtn{
   padding: 0;
-  height: 32px;
+  height: .32rem;
   line-height: .32rem;
   font-size: .14rem!important;
   color: #fff!important;
@@ -67,7 +67,7 @@
 }
 .userBox .queryDataBtn i{
   background: url("../../img/common/search.png") no-repeat;
-  margin-right: 6px;
+  margin-right: .06rem;
 }
 .roleBox .queryDataBtn{
   margin-left: 0;
@@ -168,8 +168,9 @@
 }
 
 .userBox .queryBox .el-input__inner{
-  height: 32px;
-  width: 110px;
+  height: .32rem;
+  width: 1.1rem;
+  font-size: .12rem!important;
 }
 .userBox td{
   color: #f4f4f4!important;
@@ -200,18 +201,18 @@
   padding-left: .2rem;
 }
 .userNameInput input{
-  width: 180px!important;
+  width: 1.8rem!important;
 }
 .userBox .el-table{
   text-align: center;
-  font-size: 14px!important;
+  font-size: .14rem!important;
 }
 .userBox .el-table__body-wrapper{
-  margin-top: 10px;
+  margin-top: .1rem;
 }
 .userBox td:first-child{
   border: none!important;
-  padding-left: 20px!important;
+  padding-left: .2rem!important;
 }
 .userBox td:first-child div{
   height: .38rem;
@@ -433,8 +434,8 @@
   color: #fff!important;
   border-bottom: 1px solid #1989fa!important;
   width: .9rem;
-  height: 24px;
-  padding-left: 4px;
+  height: .24rem;
+  padding-left: .04rem;
   text-align: left;
 }
 .dateRangeBox .el-icon-date,.dateRangeBox .el-range__close-icon{
@@ -442,9 +443,9 @@
 }
 .dateRangeBox.el-date-editor .el-range-separator{
   color: #fff;
-  line-height: 24px;
+  line-height: .24rem;
   width: auto;
-  padding: 0 10px;
+  padding: 0 .1rem;
 }
 .dateRangeBox::before,.dateRangeBox::after{
   content: "";
@@ -478,7 +479,7 @@
   margin-top: 0;
 }
 .loginLogTable .el-table{
-  margin-top: 10px;
+  margin-top: .1rem;
 }
 .loginLogTable .el-table th{
   height: .4rem;
@@ -559,5 +560,5 @@
 }
 
 .roleBox .el-table .cell{
-  line-height: 16px;
+  line-height: .16rem;
 }

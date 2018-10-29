@@ -1,9 +1,12 @@
 <template>
-  <div class="energyComponent">
+  <div class="energyComponent" v-loading="loading"
+       element-loading-background="rgba(0, 0, 0, 0.5)"
+       element-loading-spinner="el-icon-loading"
+       element-loading-text="拼命加载中">
     <div class="title">
       <span class="titleIcon"></span>
       <span class="txt">能源管理系统</span>
-      <img src="../../assets/img/home/close.png" alt="">
+      <img @click="deletCli" src="../../assets/img/home/close.png" alt="">
     </div>
     <div class="con">
       <div class="nergyEcharts" id="nergyEcharts"></div>
@@ -11,9 +14,9 @@
         <div class="logo"></div>
       </div>
       <div class="button">
-        <span class="active" @click="change(1)">水</span>
-        <span @click="change(0)">电</span>
-        <span @click="change(2)">气</span>
+        <span :class="{active:current==1}" @click="change(1)">水</span>
+        <span :class="{active:current==0}" @click="change(0)">电</span>
+        <span :class="{active:current==2}" @click="change(2)">气</span>
       </div>
     </div>
   </div>
@@ -28,9 +31,11 @@
     },
     data(){
         return{
+          loading:false,
           energyChart:{},
           energyChart2:{},
           option:{},
+          current:1,
           data:{
               0:{},  //电
               1:{},  //水
@@ -39,15 +44,14 @@
           columnarData:{
               plan:[],
               current:[]
-          }
+          },
+          interval:null
         }
     },
     components:{
 
     },
     mounted(){
-
-
         this.initData()
     },
     watch:{
@@ -57,15 +61,110 @@
       },
       columnarData:{
           handler(newVal,oldVal){
-              console.log(this.option)
-              this.energyChart.clear()
+            this.option = {
+              title : {
+                show:false,
+                text: '能源管理',
+                textStyle:{
+                  color:"#fff",
+                  fontSize:"18",
+                  fontWeight:"normal"
+                }
+              },
+              grid:{
+                bottom:20
+              },
+              legend: {
+                data:[
+                  '当前','计划'
+                ],
+                right:0,
+                textStyle:{
+                  color:"#858994"
+                },
+                align:"left",
+                left:"right"
+              },
+              calculable : true,
+              xAxis : [
+                {
+                  type : 'category',
+                  data : ['当前','本月','本年'],
+                  axisLine:{
+                    lineStyle:{
+                      color:"#c9c9c9"
+                    }
+                  },
+                  axisTick:{
+                    show:false
+                  }
+                },
+              ],
+              yAxis : [
+                {
+                  show:false,
+                  type : 'value',
+                  axisLabel:{formatter:'{value} ms'}
+                }
+              ],
+              series : [
+                {
+                  name:'当前',
+                  type:'bar',
+                  itemStyle: {
+                    normal: {
+                      color:'#2a84c0',
+                      opacity:1,
+                      label:{
+                        show:true,
+                        position:'top',
+                        color:"#c9c9c9"
+                      }
+                    }
+                  },
+                  data:this.columnarData.current,
+                  barGap:0,
+                  barMinHeight:2,
+                  barMaxWidth:24
+                },
+                {
+                  name:'计划',
+                  type:'bar',
+                  itemStyle: {
+                    normal: {
+                      color:'#1fb3a3',
+                      opacity:1,
+                      label:{
+                        show:true,
+                        position:'top',
+                        color:"#c9c9c9"
+                      }
+                    }
+                  },
+                  data:this.columnarData.plan,
+                  barGap:0,
+                  barMinHeight:2,
+                  barMaxWidth:24
+                }
+              ],
+              color:["#c4752a","#264e8c"]
+            };
+
+            this.energyChart.clear()
               this.energyChart.setOption(this.option,true)
           },
           deep: true
       }
     },
+    destroyed(){
+      clearInterval(this.interval)
+    },
     methods:{
+      deletCli(){  //右上角关闭按钮
+        this.$emit('deletClick',{self_id:2,componentsName:'EnergyManage'})
+      },
         change(type){
+          this.current = type
             if(type===1){ //水
                 this.columnarData.current = this.data[1].data.Columnar.value
                 this.columnarData.plan= this.data[1].data.Columnar.plan
@@ -92,8 +191,110 @@
                   })
                   this.columnarData.current = this.data[1].data.Columnar.value  //初始化水，当前的数据
                   this.columnarData.plan = this.data[1].data.Columnar.plan  //初始化水，计划的数据
+                  this.option = {
+                    title : {
+                      show:false,
+                      text: '能源管理',
+                      textStyle:{
+                        color:"#fff",
+                        fontSize:"18",
+                        fontWeight:"normal"
+                      }
+                    },
+                    grid:{
+                      bottom:20
+                    },
+                    legend: {
+                      data:[
+                        '当前','计划'
+                      ],
+                      right:0,
+                      textStyle:{
+                        color:"#858994"
+                      },
+                      align:"left",
+                      left:"right"
+                    },
+                    calculable : true,
+                    xAxis : [
+                      {
+                        type : 'category',
+                        data : ['当前','本月','本年'],
+                        axisLine:{
+                          lineStyle:{
+                            color:"#c9c9c9"
+                          }
+                        },
+                        axisTick:{
+                          show:false
+                        }
+                      },
+                    ],
+                    yAxis : [
+                      {
+                        show:false,
+                        type : 'value',
+                        axisLabel:{formatter:'{value} ms'}
+                      }
+                    ],
+                    series : [
+                      {
+                        name:'当前',
+                        type:'bar',
+                        itemStyle: {
+                          normal: {
+                            color:'#2a84c0',
+                            opacity:1,
+                            label:{
+                              show:true,
+                              position:'top',
+                              color:"#c9c9c9"
+                            }
+                          }
+                        },
+                        data:this.columnarData.current,
+                        barGap:0,
+                        barMinHeight:2,
+                        barMaxWidth:24
+                      },
+                      {
+                        name:'计划',
+                        type:'bar',
+                        itemStyle: {
+                          normal: {
+                            color:'#1fb3a3',
+                            opacity:1,
+                            label:{
+                              show:true,
+                              position:'top',
+                              color:"#c9c9c9"
+                            }
+                          }
+                        },
+                        data:this.columnarData.plan,
+                        barGap:0,
+                        barMinHeight:2,
+                        barMaxWidth:24
+                      }
+                    ],
+                    color:["#c4752a","#264e8c"]
+                  };
                   this.drawEchart()
                   this.drawEchart2()
+                  this.interval = setInterval(()=>{
+                      switch (this.current){
+                        case 1:
+                            this.current = 0
+                              break;
+                        case 0:
+                            this.current = 2
+                              break;
+                        case 2:
+                            this.current = 1
+                              break;
+                      }
+                     this.change(this.current)
+                  },5000)
                 }else{
 
                 }
@@ -104,97 +305,6 @@
         },
       drawEchart(){
         this.energyChart = this.$echarts.init(document.getElementById("nergyEcharts"));
-        this.option = {
-          title : {
-            show:false,
-            text: '能源管理',
-            textStyle:{
-                color:"#fff",
-                fontSize:"18",
-                fontWeight:"normal"
-            }
-          },
-          grid:{
-              bottom:20
-          },
-          legend: {
-            data:[
-              '当前','计划'
-            ],
-            right:0,
-            textStyle:{
-                color:"#858994"
-            },
-            align:"left",
-            left:"right"
-          },
-          calculable : true,
-          xAxis : [
-            {
-              type : 'category',
-              data : ['当前','本月','本年'],
-              axisLine:{
-                  lineStyle:{
-                      color:"#c9c9c9"
-                  }
-              },
-              axisTick:{
-                  show:false
-              }
-            },
-          ],
-          yAxis : [
-            {
-              show:false,
-              type : 'value',
-              axisLabel:{formatter:'{value} ms'}
-            }
-          ],
-          series : [
-            {
-              name:'当前',
-              type:'bar',
-              itemStyle: {
-                  normal: {
-                    color:'#2a84c0',
-                    opacity:1,
-                    label:{
-                      show:true,
-                      position:'top',
-                      color:"#c9c9c9"
-                    }
-                  }
-              },
-              data:this.columnarData.current,
-              barGap:0,
-              barMinHeight:2,
-              barMaxWidth:24
-            },
-            {
-              name:'计划',
-              type:'bar',
-              itemStyle: {
-                  normal: {
-                      color:'#1fb3a3',
-                      opacity:1,
-                      label:{
-                          show:true,
-                          position:'top',
-                          color:"#c9c9c9"
-                      }
-                  }
-              },
-              data:this.columnarData.plan,
-              barGap:0,
-              barMinHeight:2,
-              barMaxWidth:24
-            }
-          ],
-          color:["#c4752a","#264e8c"]
-        };
-
-
-
 
         // 绘制图表
         this.energyChart.setOption(this.option);

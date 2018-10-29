@@ -45,7 +45,7 @@
               <i class="el-icon-location noLog alarmmanage"></i>
               <span class="textPL">告警管理</span>
             </el-menu-item>
-            <el-menu-item :disabled="!isPermissionPath" class="noChildModule" index="/permission">
+            <el-menu-item v-if="isPermissionPath" class="noChildModule" index="/permission">
               <i class="el-icon-location noLog Authoritymanagement"></i>
               <span class="textPL">权限管理</span>
             </el-menu-item>
@@ -88,11 +88,15 @@
       }else{
         this.isPermissionPath = true
       }
+      /*window.addEventListener('click',this.listenBannerClick)*/
     },
     methods:{
       showBanerClick(){
         this.$emit('changeBannerParam', !this.isShowBannerParam);
       },
+      listenBannerClick(){
+        console.log(11)
+      }
     }
   }
 </script>
@@ -167,7 +171,6 @@
     background:#061b3a;
     display:flex;
     flex-direction:column;
-    box-shadow:0 0 14px 0 #35a3ee;
     .head{
       &:hover{
         cursor:pointer;
@@ -199,6 +202,7 @@
   .showBaner{
     left:0;
     transition:all 1s;
+    box-shadow:0 0 14px 0 #35a3ee;
   }
   .closeBaner{
     left:-250px;

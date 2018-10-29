@@ -50,7 +50,7 @@
                             <li v-for="(v,i) in showLists">
                                 <div class="tableBNum item" @click="deletess(i)">
                                     <span v-text="(i+1)"></span>
-                                    <i class="el-icon-circle-close"></i>
+                                    <i class="el-icon-circle-close" @click="deletePaiBan(v.user_id)"></i>
                                 </div>
                                 <div class="tableBName item" v-text="v.name" v-show="v.isNew==undefined ||!v.isNew "></div>
                                 <div class="tableBName item" v-show="v.isNew!==undefined &&v.isNew ">
@@ -63,10 +63,10 @@
                                     />
                                 </div>
 
-                                <div class="tableBDuty item" v-text="v.duty"></div>
+                                <div class="tableBDuty item" v-text="v.description"></div>
                                 <div class="spanBox">
                                     <span class="item "
-                                        @click="allow && changeIschange(i,i0)"
+                                        @click="v.allow && changeIschange(i,i0)"
                                         @mouseover="changeOver(i,i0)"
                                         @mouseout="leaveOver()"
                                         :class="{
@@ -86,7 +86,7 @@
                                             'noRight':i0==30,
                                             'ischangeIng':ischange[0]==i&&ischange[1]==i0
                                         }"
-                                        v-for="(v0,i0) in v.workTime"
+                                        v-for="(v0,i0) in v.worklist"
                                         v-text="v0.title"
                                        >
                                     </span>
@@ -152,77 +152,24 @@ export default {
     return {
         loading:false,
         placeholder:'选择',
-        value7:'2018-8',
+        value7:'2018-7',
         backOrCurr:false,//右上角图标显示：返回当前月还是显示当前月
         cant:false,
         active:'exams',
         isShow:false,
-        allow:false,//状态，用于修改和禁止修改排班表
         ischange:[-1,-1],
         tableT:{
             a:'09:00~17:30',
             b:'09:00～次日09:30',
             time:'176h/月'
         },
-        wOptions:[
-            {value:0,label:'休'},
-            {value:1,label:'A'},
-            {value:2,label:'B'},
-        ],
-        pOption:[
-            {value:1,label:'王尼玛',duty:'维修工'},
-            {value:2,label:'白狗汪',duty:'维修工'},
-            {value:3,label:'凤羽',duty:'维修工'},
-            {value:4,label:'周天天',duty:'维修工'},
-            {value:5,label:'李白清',duty:'维修工'},
-            {value:6,label:'杜甫',duty:'维修工'},
-            {value:7,label:'汪仔',duty:'维修工'},
-            {value:8,label:'狗蛋儿',duty:'维修工'},
-            {value:9,label:'娃哈哈',duty:'维修工'},
-            {value:10,label:'谷歌',duty:'维修工'},
-            {value:11,label:'天天',duty:'服务员'},
-            {value:12,label:'周周',duty:'维修工'},
-            {value:13,label:'剧透',duty:'保洁'},
-            {value:14,label:'登录',duty:'城管'},
-        ],
+        wOptions:[],
+        pOption:[],
         dataLlists:[
-            {id:1,pid:1,name:'王尼玛',duty:'项目总管',workTime:[
+            {id:1,pid:1,name:'王尼玛',description:'项目总管',worklist:[
                 {time:'2018-8-5',title:'A',type:1},
                 {time:'2018-8-23',title:'B',type:2},
-            ]},
-            {id:2,pid:2,name:'白狗汪',duty:'前端',workTime:[
-                {time:'2018-8-6',title:'A',type:1},
-                {time:'2018-8-22',title:'B',type:2},
-            ]},
-            {id:3,pid:3,name:'凤羽',duty:'维修工',workTime:[
-                {time:'2018-8-7',title:'A',type:1},
-                {time:'2018-8-21',title:'B',type:2},
-            ]},
-             {id:4,pid:4,name:'周天天',duty:'维修工',workTime:[
-                {time:'2018-8-8',title:'A',type:1},
-                {time:'2018-8-20',title:'B',type:2},
-            ]},
-            {id:5,pid:5,name:'李白清',duty:'维修工',workTime:[
-                {time:'2018-8-9',title:'A',type:1},
-                {time:'2018-8-19',title:'B',type:2},
-            ]},
-            {id:6,pid:6,name:'杜甫',duty:'维修工',workTime:[
-                {time:'2018-8-10',title:'A',type:1},
-                {time:'2018-8-18',title:'B',type:2},
-            ]},
-            {id:7,pid:7,name:'汪仔',duty:'维修工',workTime:[
-                 {time:'2018-8-5',title:'B',type:2},
-                {time:'2018-8-11',title:'A',type:1},
-                {time:'2018-8-17',title:'B',type:2},
-            ]},
-            {id:8,pid:8,name:'狗蛋儿',duty:'维修工',workTime:[
-                {time:'2018-8-12',title:'A',type:1},
-                {time:'2018-8-16',title:'B',type:2},
-            ]},
-            {id:9,pid:9,name:'娃哈哈',duty:'维修工',workTime:[
-                {time:'2018-8-13',title:'A',type:1},
-                {time:'2018-8-15',title:'B',type:2},
-            ]},
+            ]}
         ],
         pos:{
             top:0,
@@ -245,111 +192,119 @@ export default {
           this.over.push(i);
           this.over.push(i0);
       },
-        deletess(i){    //这儿需要弹框
-            this.dataLlists.splice(i,1);
-        },
-        tkChoose(val){ //弹框选择
-            let objs = this.dataLlists[this.ischange[0]];
-            objs.workTime[this.ischange[1]].title = this.ckTypes(val);
-            objs.workTime[this.ischange[1]].type = val;
-            this.ischange = [-1,-1];
-            this.isShow=false;
-        },
-        ckTypes(id){
-            let res ='';
-            switch(id){
-                case 0:
-                    res = '休';
-                break;
-                case 1:
-                    res = 'A';
-                break;
-                case 2:
-                    res = 'B';
-                break;
+    deletess(i){    //这儿需要弹框
+        this.dataLlists.splice(i,1);
+    },
+    tkChoose(val){ //弹框选择
+        let _this = this;
+        let objs = this.dataLlists[this.ischange[0]];
+        $.each(this.wOptions,function(n,k){
+            if(val==_this.wOptions[n].value){
+                objs.worklist[_this.ischange[1]].title = _this.wOptions[n].label;
             }
-            return res;
-        },
-        changeIschange(i,i0,event){
-            this.isShow = true;
-            this.ischange = [];
-            this.ischange.push(i);
-            this.ischange.push(i0);
+        })
+        objs.worklist[this.ischange[1]].type = val;
+        this.ischange = [-1,-1];
+        this.isShow=false;
+    },
+    changeIschange(i,i0,event){
+        this.isShow = true;
+        this.ischange = [];
+        this.ischange.push(i);
+        this.ischange.push(i0);
 
-            var e = event || window.event;
-            this.pos = {
-                top : e.clientY+'px',
-                left:e.clientX - 15+'px'
-            }
-            this.$refs.tk.show();
-            // console.log(this.ischange,this.pos)
-        },
-        change2(val,i,i0){
+        var e = event || window.event;
+        this.pos = {
+            top : e.clientY+'px',
+            left:e.clientX - 15+'px'
+        }
+        this.$refs.tk.show();
+        // console.log(this.ischange,this.pos)
+    },
+    change2(val,i,i0){
 
-        },
-      //日期组件相关
-        change(val,i){  //修改人名
-            this.dataLlists[i].pid = val;
-            this.dataLlists[i].name = this.getItem(val).label;
-            this.dataLlists[i].duty = this.getItem(val).duty;
-            this.placeholder =this.getItem(val).label;
-        },
-        getItem(id){
-            let lens = this.pOption.length;
-            let res = {};
-            for(let i=0;i<lens;i++){
-                if(id==this.pOption[i].value){
-                   res =  this.pOption[i];
-                }
+    },
+  //日期组件相关
+    change(val,i){  //修改人名带出职务
+        this.dataLlists[i].pid = val;
+        this.dataLlists[i].name = this.getItem(val).label;
+        this.dataLlists[i].description = this.getItem(val).duty;
+        this.placeholder =this.getItem(val).label;
+    },
+    getItem(id){
+        let lens = this.pOption.length;
+        let res = {};
+        for(let i=0;i<lens;i++){
+            if(id==this.pOption[i].value){
+               res =  this.pOption[i];
             }
-            return res;
-        },
-        changes(val){
-            this.value7 = val;
-        },
-        deletes(){
-            let attrs = this.value7.split('-');
-            if(attrs[1]==1){
-                attrs[1] = 12;
-                attrs[0] = Number(attrs[0])-1;
-            }else{
-                attrs[1] = Number(attrs[1])-1;
-            }
-            this.value7 = attrs.join('-');
-        },
-        adds(){
-            if(this.cant){
-                return;
-            }
-            let attrs = this.value7.split('-');
-            if(attrs[1]==12){
-                attrs[1] = 1;
-                attrs[0] = Number(attrs[0])+1;
-            }else{
-                attrs[1] = Number(attrs[1])+1;
-            }
-            this.value7 = attrs.join('-');
-        },
+        }
+        return res;
+    },
+    changes(val){
+        this.value7 = val;
+    },
+    deletes(){
+        let attrs = this.value7.split('-');
+        if(attrs[1]==1){
+            attrs[1] = 12;
+            attrs[0] = Number(attrs[0])-1;
+        }else{
+            attrs[1] = Number(attrs[1])-1;
+        }
+        this.value7 = attrs.join('-');
+    },
+    adds(){
+        if(this.cant){
+            return;
+        }
+        let attrs = this.value7.split('-');
+        if(attrs[1]==12){
+            attrs[1] = 1;
+            attrs[0] = Number(attrs[0])+1;
+        }else{
+            attrs[1] = Number(attrs[1])+1;
+        }
+        this.value7 = attrs.join('-');
+    },
       botClick(type){ //底部按钮操作
-            switch(type){
-                case 'change':
-                    this.allow = true;
-                    this.active = 'saveing';
-                    break;
-                case 'exams' :
-                    this.allow = false;
-                    this.active = 'examed'
-                    break;
-                case 'save' :
-                    this.allow = false;
-                    this.active = 'change'
-                    break;
-            }
+        let _this = this;
+        switch(type){
+            case 'change':
+                $.each(_this.showLists,function(n,k){
+                    _this.showLists[n].allow = true;
+                })
+                this.active = 'saveing';
+                break;
+            case 'exams' :
+                $.each(_this.showLists,function(n,k){
+                    _this.showLists[n].allow = false;
+                })
+                this.active = 'examed'
+                break;
+            case 'save' :
+                $.each(_this.showLists,function(n,k){
+                    _this.showLists[n].allow = false;
+                })
+                this.saveAddPaiBan();
+                this.active = 'change'
+                break;
+        }
+      },
+      saveAddPaiBan(){
+        this.$http.post('/pc_ims/set_work',{content:{
+            "data":[{id:0,woworklist_id:1,user_id:'1',workdate:'2018-07-25'},
+            {id:0,woworklist_id:2,user_id:'1',workdate:'2018-07-26'}],
+
+        }}).then(function(res){
+            console.log(res)
+        });
       },
       addPerson(){ //新增人员
         if(this.pOptions.length==0){
             return this.$message('没有新员工了！');
         }
+        console.log(this.pOptions);
         if(this.dataLlists[this.dataLlists.length-1].pid==0){ //阻止连续新增操作
             return this.$message('请选择员工！');
         }
@@ -359,9 +314,11 @@ export default {
             isNew:true,
             name:'',
             duty:'',
-            workTime:[]
+            worklist:[],
+            allow:true
         };
         this.dataLlists[this.dataLlists.length-1].isNew = false;
+        this.dataLlists[this.dataLlists.length-1].allow = true;
         this.placeholder = '选择';
         this.dataLlists.push(addPersonBase);
         this.active='saveing'
@@ -405,10 +362,87 @@ export default {
               break;
             }
             return res;
+        },
+        getWOptions(){
+            let _this = this;
+            this.$http.post('/pc_ims/work_type')
+            .then(function(res){
+                if(res.data.code==0){
+                    let data = res.data.data;
+                    $.each(data,function(n,k){
+                        data[n].value = data[n].id;
+                        data[n].label = data[n].title;
+                    })
+                    _this.wOptions =  data;
+                }else{
+                  _this.$message({
+                    type:'error',
+                    message:res.data.msg
+                  })
+               }
+            });
+        },
+        getPaiBanData(){//获取排班数据
+            let _this = this;
+            this.$http.post('/pc_ims/admin/work_list',{year:'2018',month:'07'})
+            .then(function (res) {
+                if(res.data.code==0){
+                    let data = res.data.data;
+                    $.each(data,function(n,k){
+                        data[n].allow = false;
+                    })
+                    _this.dataLlists = res.data.data;
+                }else{
+                  _this.$message({
+                    type:'error',
+                    message:res.data.msg
+                  })
+               }
+            });
+        },
+        getPaiBanPerson(){//获取排班人员
+            let _this = this;
+            this.$http.post('/pc_ims/get_user')
+            .then(function(res){
+                console.log(res);
+                if(res.data.code==0){
+                    let data = res.data.data;
+                    $.each(data,function(n,k){
+                        data[n].value = data[n].id;
+                        data[n].label = data[n].truename;
+                        data[n].duty = data[n].title;
+                    })
+                    _this.pOption = res.data.data;
+                }else{
+                  _this.$message({
+                    type:'error',
+                    message:res.data.msg
+                  })
+               }
+            })
+        },
+        deletePaiBan(id){
+            let _this = this;
+            this.$http.post('/pc_ims/admin/del_work',{
+                user_id:id,
+                year:'2018',
+                month:'07',
+            }).then(function(res){
+                if(res.data.code==0){
+                    _this.$message({
+                        type:'success',
+                        message:res.data.msg
+                    })
+                }else{
+                    _this.$message({
+                        type:'error',
+                        message:res.data.msg+'请查看是否有换班记录。'
+                    })
+                }
+            })
         }
-  },
-  computed:{
-        
+      },
+      computed:{
         year(){
            let year =  Number(this.value7.split('-')[0]);
            return year;
@@ -457,13 +491,13 @@ export default {
                         };
                    return obj;
                 });
-                let lens2 = datas[i].workTime.length;
+                let lens2 = datas[i].worklist.length;
 
                 for(let j=0;j<lens2;j++){
-                    let day = datas[i].workTime[j].time.split('-')[2];
-                    attrs[Number(day)-1] =datas[i].workTime[j];
+                    let day = datas[i].worklist[j].time.split('-')[2];
+                    attrs[Number(day)-1] =datas[i].worklist[j];
                 }
-                objs.workTime = attrs;
+                objs.worklist = attrs;
                 res.push(objs);
             }
             // console.log(res)
@@ -477,7 +511,7 @@ export default {
                 if(i<lens){
                     let lens2 = this.showLists.length;
                     for(let j=0;j<lens2;j++){
-                        if(this.showLists[j].workTime[i].type!=0){
+                        if(this.showLists[j].worklist[i].type!=0){
                              str += 1;
                         }
                     }
@@ -505,12 +539,12 @@ export default {
             }
             return attrs;
         }
-
     },
-  created() {
-  },
   mounted() {
-  },
+    this.getPaiBanData();
+    this.getWOptions();
+    this.getPaiBanPerson();
+  }
 }
 </script>
 
