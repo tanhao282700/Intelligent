@@ -161,7 +161,22 @@ export default {
 
     },
     exportList(){
-
+      if(this.activeName=='first'){// 导出完成情况
+        this.$http.get('/pc_ims/down/count',{
+          year:'',
+          month:'',
+          day:'',
+          pagenumber:1,
+          pagesize:20
+        })
+      }else{//导出重复报修率
+        this.$http.get('/pc_ims/down/count_device',{
+          pagenumber:'1',
+          pagesize:'20'
+        }).then(res=>{
+            console.log(res);
+        })
+      }
     },
     mouseOverLi(row){
       console.log(row)
@@ -234,11 +249,13 @@ export default {
 .reportBox{
   width:100%;
   .searchBoxs{
-    float: right;
-    margin-right: 2.2%;
+    position: absolute;
+    right: 2.2%;
+    top: 0.74rem;
     width: 0.93rem;
     height:0.32rem;
     line-height:0.32rem;
+    z-index:1;
     color: #fff;
     font-size: 0.14rem;
     text-align: center;

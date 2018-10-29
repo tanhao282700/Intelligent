@@ -149,21 +149,29 @@ export default {
       search(val,type){
         console.log(val,type)
       },
-      isNo(i,item){
+      isNo(i,item){//*****************待调
         let objs = this.examData1[i];
         objs.state = 0;
         this.examData1.splice(i,1); 
         // console.log(objs)
         this.examData2.unshift(objs);
         this.$refs.dialog.hide();
+        this.dealSchedule(1,item.id);
       },
-      isOk(i,item){
+      isOk(i,item){//****************待调
+        console.log(item);
+        console.log(i);
         let objs = this.examData1[i];
         objs.state = 1;
         this.examData1.splice(i,1);
-        // console.log(objs)
         this.examData2.unshift(objs);
         this.$refs.dialog.hide();
+        this.dealSchedule(0,item.id);
+      },
+      dealSchedule(type,id){//*******************待调
+        this.$http.post('/pc_ims/admin/dispose_work',{type:type,id:id}).then(res=>{
+            console.log(res);
+        })
       },
       showInfo(i,item){
         this.dia = item;
@@ -176,7 +184,7 @@ export default {
         this.$refs.dialog.show();
       },
       exportTable(){
-        this.$http.post('/pc_ims/down/admin_work_list',{
+        this.$http.get('/pc_ims/down/admin_work_list',{
           year:'2018',
           month:'07'
         }).then(function(res) {

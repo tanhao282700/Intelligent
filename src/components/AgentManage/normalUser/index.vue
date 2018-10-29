@@ -241,7 +241,7 @@ export default {
       let _this =this;
       this.$http.post('/pc_ims/index',{user_id:21,flg:2})
       .then(function(res){
-          console.log(res)
+          //console.log(res)
           if(res.data.code==0){
              _this.echartCirData3.total = res.data.data.job.count;
              let gongdanwei = res.data.data.gongdan.wei;

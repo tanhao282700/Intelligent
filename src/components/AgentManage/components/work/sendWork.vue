@@ -11,14 +11,14 @@
           <span>类&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;型</span>
           <SelectBox :options="options" 
            class="selectdown"
-           :value="formvals.gpsvalue"
+           :value="formvals.sys_id"
            :placeholder="'给排水系统'"
            :icon="'el-icon-d-caret'"/>
         </div>
         <div class="selectX">
           <span>设备名称</span>
           <SelectBox :options="options"
-           :value="formvals.jskvalue"
+           :value="formvals.device_name"
            class="selectdown"
            :placeholder="'1号集水坑'"
            :icon="'el-icon-d-caret'"/>
@@ -26,7 +26,7 @@
         <div class="selectX">
           <span>处理人员</span>
           <SelectBox :options="options"
-           :value="formvals.xmvalue"
+           :value="formvals.user_id"
            class="selectdown"
            :placeholder="'张三'"
            :icon="'el-icon-caret-top'"/>
@@ -34,7 +34,7 @@
         <div class="selectX">
           <span>工单来源</span>
           <SelectBox :options="options"
-           :value="formvals.nbvalue"
+           :value="formvals.type_id"
            class="selectdown"
            :placeholder="'内部报修'"
            :icon="'el-icon-caret-top'"/>
@@ -42,7 +42,7 @@
         <div class="selectX">
           <span>任务优先</span>
           <SelectBox :options="options"
-           :value="formvals.yzvalue"
+           :value="formvals.priority"
            :placeholder="'严重'"
            class="selectdown"
            :icon="'el-icon-caret-top'"/>
@@ -52,13 +52,13 @@
           :placeholder="'请输入设备地址'" 
           inputType="text" 
           :cssStyle="cssStyle"
-          :modelValue="formvals.address"
+          :modelValue="formvals.floor"
           :label="labelInput"/>
         </div>
         <div class="selectX selectX3">
           <InputBox 
           :placeholder="'请输入任务描述'" 
-          :modelValue="formvals.desc"
+          :modelValue="formvals.description"
           inputType="textarea" 
           :cssStyle="cssStyle2"
           :label="textAreaLabel"/>
@@ -90,13 +90,6 @@ export default {
     return {
        options:[],
        formvals:{
-          gpsvalue:'',
-          jskvalue:'',
-          xmvalue:'',
-          nbvalue:'',
-          yzvalue:'',
-          address:'',
-          desc:'',
           operator:'姜媛媛'
        },
        cssStyle:{
@@ -127,14 +120,9 @@ export default {
     }
   },
   methods:{
-      showInfos(){
-        this.$emit('sendInfosShow',item);
-      },
       sendWork(){
-
+        this.$emit('sendInfosShow',this.formvals);
       }
-  },
-  created() {
   },
   mounted() {
        

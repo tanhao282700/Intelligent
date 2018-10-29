@@ -39,7 +39,7 @@
                     @change = "change2"
                   />
                 </div>
-                <div class="searchBoxs">
+                <div class="searchBoxs" @click="getTableList">
                   <i class="el-icon-search"></i>
                   <span>筛选</span>
                 </div>
@@ -87,11 +87,11 @@
             <span slot="label" class="tabItems">
                 巡检任务模板
             </span>
-            <RoutingTakModdel v-show="activeName=='second'" @updateDetail="updateDetail" @deleteDetail = "deleteDetail" @addDetail="addDetail" :cancelAdd="cancelAdd" :saveAdd="saveAdd" @changeStatus="changeStatus" :table="table2" :query="queryModel" @searchXJ="getModelList"/>
+            <RoutingTakModdel v-show="activeName=='second'" @addDetail="addDetail" @checkDetail="checkDetail" @changeStatus="changeStatus" :table="table2" :query="queryModel" @searchXJ="getModelList"/>
         </el-tab-pane>      
       </el-tabs>  
       <Dialog wid="910" hei="622" ref="add" > <!-- 新增巡检模板 -->
-        <AddModel :data="rowData" :title="tempTitle"/>
+        <AddModel :data="rowData" :formvals="queryModel" :title="tempTitle" @cancelAdd="cancelAdd" @saveAdd="saveAdd" />
       </Dialog> 
   </div>
 </template>
@@ -103,8 +103,8 @@ import SelectBox from '@/components/form/selectBox';
 import TimePickerT from './components/work/timePickerTit2';
 import Percentage from './components/work/Percentage';
 import WorkInfo from './components/work/workInfo';
-import State from './components/work/state';
-import deal from './components/work/deal';
+import State from './components/routing/state';
+import deal from './components/routing/deal';
 import RoutingTakModdel from './components/routing/routingTakModdel';
 import RoutingTask from './components/routing/routingTask';
 import RoutingInfo from './components/routing/routingInfo';
@@ -149,14 +149,12 @@ export default {
         },
         cant:false,
         queryModel:{//巡检任务模板的查询条件
-          systems:[],
-          areas:[],
-          examine:[],
+          systems:[],areas:[],examine:[],
           taskStatus:[{value:1,label:'启用'},{value:2,label:'停用'}],
-          system:'',
-          area:'',
-          exam:'',
-          taskStatu:'',
+          system:'',area:'',exam:'',taskStatu:'',periods:[{value:0,label:'每天'},{value:1,label:'每周'},{value:2,label:'每月'},{value:3,label:'每年'}],
+          period:'',departments:[],department:'',starttimes:[],
+          starttime:'',limits:[],limit:'',devices:[],device:'',
+          datas:[],data:''
         },
         table2:{
           hei:328, //table高度  设置后有滚动条
@@ -170,16 +168,14 @@ export default {
             {prop:'period',label:'巡检周期'},
             {prop:'user_name',label:'巡检人'},
             {prop:'title',label:'专业'},
-            {prop:'time_limit',label:'完成时限',operate:true,render:(h,param)=>{
-               return param.row.time_limit+'日'
-            }},
+            {prop:'time_limit',label:'完成时限'},
             {prop:'now_state',label:'任务状态',operate: true, 
               render: (h, param)=> {
                   const btnss = {
                       fills:param.row.now_state,  
                   };
                   return h(State,{
-                    props: { state:btnss}
+                    props: { states:btnss}
                   });
               }},
             {prop:'fill',label:'操作',wid:200,
@@ -190,7 +186,7 @@ export default {
                   };
                   return h(deal,{
                     props: { btnss:btnss},
-                    on:{update:this.update,deletes:this.deletes,changeStatus:this.changeStatus}
+                    on:{update:this.updateDetail,deletes:this.deleted,changeStatus:this.changeStatus}
                   });
                 } 
             },
@@ -208,14 +204,14 @@ export default {
           },
           data:[],
           th:[
-            {prop:'id',label:'序号'},
+            {prop:'id',label:'序号',wid:60},
             {prop:'user_name',label:'名称'},
             {prop:'title',label:'类别'},
-            {prop:'floorname',label:'地点',wid:208}, 
-            {prop:'devicename',label:'设备名称',wid:169},
-            {prop:'addtime',label:'派发时间',wid:165},
-            {prop:'descript',label:'内容描述',wid:194},
-            {prop:'now_state',label:'状态',wid:146},
+            {prop:'floorname',label:'地点'}, 
+            {prop:'devicename',label:'设备名称'},
+            {prop:'addtime',label:'派发时间'},
+            {prop:'descript',label:'内容描述'},
+            {prop:'now_state',label:'状态',wid:80},
             {prop:'fill',label:'操作',wid:105,
               operate: true, 
                 render: (h, param)=> {
@@ -264,16 +260,16 @@ export default {
   },
   methods:{
     change1(val){ //选择
-      this.vJob = val;
+      this.query.department = val;
     },
     change2(val){ //选择
-      
+      this.query.name = val;
     },
     changes(val){
         this.value7 = val;
     }, 
     update(){
-
+      this.$refs.add.show();
     },
     deletes(){
       let attrs = this.value7.split('-');
@@ -323,6 +319,7 @@ export default {
       this.value7 = attrs.join('-');    
     }, 
     checkDetail(rowData){
+      console.log(rowData);
       this.rowData = rowData;
       this.tempTitle = '查看';
       this.$refs.add.show();
@@ -331,9 +328,6 @@ export default {
       this.rowData = rowData;
       this.tempTitle = '修改';
       this.$refs.add.show();
-    },
-    deleteDetail(rowData){
-      console.log(rowData)
     },
     addDetail(){
       this.rowData = {};
@@ -344,10 +338,46 @@ export default {
       this.$refs.add.hide();
     },
     saveAdd(formData){
-      console.log(formData)
+      //console.log(formData)
+      this.$http.post('/pc_ims/set_template',formData)
+      .then(res=>{
+          if(res.data.code==0){
+            this.table3.len = res.data.count;
+            this.table3.data = res.data.data.info;
+            this.table3.tabs = [{'name':'今日巡检总数',num:res.data.data.zong},
+            {'name':'已完成',num:res.data.data.wan},
+            {'name':'未完成',num:res.data.data.wei}];
+          }else{
+            this.$message({
+              type:'error',
+              message:res.data.msg
+            })
+          }
+      })
     },
-    changeStatus(state){
-      //console.log(state);
+    changeStatus(state,item){
+      if(state=='启动'){
+        state=1;
+      }else{
+        state=2;
+      }
+      this.dealroutState(item.id,state);
+    },
+    deleted(item){
+      this.dealroutState(item.id,0);
+    },
+    dealroutState(id,state){
+      this.$http.post('/pc_ims/admin/change_state',{id:id,state:state})
+      .then(res=>{
+          if(res.data.code==0){
+            
+          }else{
+            this.$message({
+              type:'error',
+              message:res.data.msg
+            })
+          }
+      })
     },
     rowClick(row){
       this.$refs.dialog.show();
@@ -431,10 +461,11 @@ export default {
       })
     },
     getTableList(){
+      console.log(this.query);
       this.$http.post('/pc_ims/admin/inspectiondata_user',{
         department_id:this.query.department,
         user_id:this.query.name,
-        date:'10-23'
+        date:'10-30'
       })
       .then(res => {
         if(res.data.code==0){
@@ -485,6 +516,24 @@ export default {
           }
         });
       },
+      getDatasList(){//采集数据点下拉框数据
+        this.$http.post('/pc_ims/get_points',{device_id:this.queryModel.device})
+        .then(res=>{
+          if(res.data.code==0){
+            let data = res.data.data;
+            $.each(data,(n,k)=>{
+              data[n].value = data[n].id;
+              data[n].label = data[n].title;
+            })
+            this.queryModel.datas = data;
+          }else{
+            this.$message({
+              type:'error',
+              message:res.data.msg
+            })
+          }
+        });
+      },
       getDepartList(){
         this.$http.post('/pc_ims/get_description').then(res=>{
           if(res.data.code==0){
@@ -494,6 +543,7 @@ export default {
               data[n].label = data[n].title;
             })
             this.departments = data;
+            this.queryModel.departments = data;
           }else{
             this.$message({
               type:'error',
@@ -525,7 +575,6 @@ export default {
           console.log(res);
           if(res.data.code==0){
             let data = res.data.data;
-            
             $.each(data,(n,k)=>{
               data[n].value = data[n].floor_id;
               data[n].label = data[n].floor_name;
@@ -538,7 +587,27 @@ export default {
             })
           }
         });
-      }
+      },
+      getDeviceList(){
+        this.$http.post('/pc_ims/get_device',{floor_name:this.queryModel.area}).then(res=>{
+          console.log(res);
+          if(res.data.code==0){
+            let data = res.data.data;
+            
+            $.each(data,(n,k)=>{
+              data[n].value = data[n].floor_id;
+              data[n].label = data[n].floor_name;
+            })
+            this.queryModel.devices = data;
+          }else{
+            this.$message({
+              type:'error',
+              message:res.data.msg
+            })
+          }
+        });
+      },
+     
   },
   created() {
       let val = (this.$router.history.current.fullPath).split('/AgentManage/routing')[1];
@@ -570,6 +639,8 @@ export default {
       this.getSystemList();
       this.getDepartList();
       this.getAreaList();
+      this.getDeviceList();
+      this.getDatasList();
   },
 }
 </script>

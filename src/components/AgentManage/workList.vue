@@ -365,13 +365,32 @@ export default {
       sendWork(){
         this.$refs.send.show();
       },
-      sendInfosShow(){
-
+      sendInfosShow(form){
+        console.log(form)
+        this.$http.post('/pc_ims/admin/send_job',form).then(res=>{
+          console.log(res);
+        })
       },
       tableInfos2Show(item){
         this.infoItem = item;
+        //console.log(item);
         this.$refs.tableInfos2.show();
+        this.getDetailData(item.id)
       },
+      getDetailData(id){
+        this.$http.post('/pc_ims/admin/job_info',{
+          job_id:''
+        }).then(res=>{
+          console.log(res);
+        })
+      },
+      getWorkFlow(){//获取工单流程
+        this.$http.post('/pc_ims/admin/write_job',{
+          job_id:''
+        }).then(res=>{
+          console.log(res);
+        })
+      },  
       infoTit(state){
         let res = '';
         switch(state){
@@ -465,7 +484,7 @@ export default {
         this.$http.post('/pc_ims/admin/job_userdata',{
           user_id:this.query.name,
           department:this.query.department,
-          date:'07-01',
+          date:'10-30',
         }).then(res=>{
           if(res.data.code==0){
             this.table.len = res.data.count;

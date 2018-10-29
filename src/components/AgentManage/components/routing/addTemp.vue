@@ -13,10 +13,10 @@
               </el-col>
               <el-col :span="18" class="addContInput">
                 <SelectBox 
-                  :options = 'formvals.systems' 
-                  :value = "formvals.vSystem" 
+                  :options = 'formvals.examine' 
+                  :value = "formval.exam" 
                   :icon="'el-icon-d-caret'"
-                  placeholder="郭好好"
+                  placeholder="巡检人员"
                   @change = "change1"
                 />
               </el-col>
@@ -29,11 +29,11 @@
               </el-col>
               <el-col :span="18" class="addContInput">
                 <SelectBox 
-                  :options = 'formvals.systems' 
-                  :value = "formvals.vSystem" 
+                  :options = 'formvals.departments' 
+                  :value = "formval.department" 
                   :icon="'el-icon-d-caret'"
-                  placeholder="郭好好"
-                  @change = "change1"
+                  placeholder="专业"
+                  @change = "change2"
                 />
               </el-col>
             </el-row>
@@ -43,15 +43,10 @@
               <el-col :span="6" class="addContLabel">
                 完成时限
               </el-col>
-              <el-col :span="18" class="addContInput">
-                <SelectBox 
-                  :options = 'formvals.systems' 
-                  :value = "formvals.vSystem" 
-                  :icon="'el-icon-d-caret'"
-                  placeholder="郭好好"
-                  @change = "change1"
-                />
+              <el-col :span="18" class="addContInput" :style="{color:'#fff'}">
+                <el-input v-model="formval.limit" placeholder="请输入完成时限" :style="{width:'90%'}"></el-input>日
               </el-col>
+             
             </el-row>
           </el-col>
         </el-row>
@@ -64,10 +59,10 @@
               <el-col :span="18" class="addContInput">
                 <SelectBox 
                   :options = 'formvals.systems' 
-                  :value = "formvals.vSystem" 
+                  :value = "formval.system" 
                   :icon="'el-icon-d-caret'"
-                  placeholder="郭好好"
-                  @change = "change1"
+                  placeholder="巡检系统"
+                  @change = "change4"
                 />
               </el-col>
             </el-row>
@@ -79,11 +74,11 @@
               </el-col>
               <el-col :span="18" class="addContInput">
                 <SelectBox 
-                  :options = 'formvals.systems' 
-                  :value = "formvals.vSystem" 
+                  :options = 'formvals.areas' 
+                  :value = "formval.area" 
                   :icon="'el-icon-d-caret'"
-                  placeholder="郭好好"
-                  @change = "change1"
+                  placeholder="巡检区域"
+                  @change = "change5"
                 />
               </el-col>
             </el-row>
@@ -95,11 +90,11 @@
               </el-col>
               <el-col :span="18" class="addContInput">
                 <SelectBox 
-                  :options = 'formvals.systems' 
-                  :value = "formvals.vSystem" 
+                  :options = 'formvals.devices' 
+                  :value = "formval.device" 
                   :icon="'el-icon-d-caret'"
-                  placeholder="郭好好"
-                  @change = "change1"
+                  placeholder="巡检设备"
+                  @change = "change6"
                 />
               </el-col>
             </el-row>
@@ -113,11 +108,11 @@
               </el-col>
               <el-col :span="18" class="addContInput">
                 <SelectBox 
-                  :options = 'formvals.systems' 
-                  :value = "formvals.vSystem" 
+                  :options = 'formvals.starttimes' 
+                  :value = "formval.starttime" 
                   :icon="'el-icon-d-caret'"
-                  placeholder="郭好好"
-                  @change = "change1"
+                  placeholder="开始时间"
+                  @change = "change7"
                 />
               </el-col>
             </el-row>
@@ -129,11 +124,11 @@
               </el-col>
               <el-col :span="18" class="addContInput">
                 <SelectBox 
-                  :options = 'formvals.systems' 
-                  :value = "formvals.vSystem" 
+                  :options = 'formvals.periods' 
+                  :value = "formval.period" 
                   :icon="'el-icon-d-caret'"
-                  placeholder="郭好好"
-                  @change = "change1"
+                  placeholder="巡检周期"
+                  @change = "change8"
                 />
               </el-col>
             </el-row>
@@ -145,11 +140,11 @@
               </el-col>
               <el-col :span="18"  class="addContInput">
                 <SelectBox 
-                  :options = 'formvals.systems' 
-                  :value = "formvals.vSystem" 
+                  :options = 'formvals.datas' 
+                  :value = "formval.data" 
                   :icon="'el-icon-d-caret'"
-                  placeholder="郭好好"
-                  @change = "change1"
+                  placeholder="采集数据点"
+                  @change="change9"
                 />
               </el-col>
             </el-row>
@@ -162,7 +157,7 @@
                 巡检地点
               </el-col>
               <el-col :span="18" class="addContInput">
-                <el-input v-model="formvals.addr"></el-input>
+                <el-input v-model="formval.addr" placeholder="请输入巡检地点"></el-input>
               </el-col>
             </el-row>
           </el-col>
@@ -172,8 +167,8 @@
           <el-input
             type="textarea"
             :rows="2"
-            placeholder="请输入内容"
-            v-model="formvals.desc">
+            placeholder="请输入备注内容"
+            v-model="formval.desc">
           </el-input>
         </div>
         <el-row class="btngroups">
@@ -188,40 +183,49 @@
   import SelectBox from '@/components/form/selectBox';
   import '@/assets/css/fs_common.css'
   export default {
-      props:['data','title'],
+      props:['data','title','formvals'],
       components:{
         'SelectBox':SelectBox,
       },
       data () {
         return {
-          formvals:{
-            systems:[],
-            value7:'2018-08-07',
-            addr:''
-          }
+            formval:{}
         }
       },
       methods:{
-         change1(){
-
+         change1(val){
+            this.formvals.name=val;
          },
-         changes(){
-
+         change2(val){
+            this.formvals.department = val;
          },
-         adds(){
-
+         change3(val){
+            this.formvals.limit = val;
          },
-         deletes(){
-
+         change4(val){
+            this.formvals.vSystem=val;
+         },
+         change5(val){
+            this.formvals.area = val;
+         },
+         change6(val){
+            this.formvals.device = val;
+         },
+         change7(val){
+            this.formvals.starttime=val;
+         },
+         change8(val){
+            this.formvals.period = val;
+         },
+         change9(val){
+            this.formvals.data = val;
          },
          cancelAdd(){
             this.$emit('cancelAdd')
          },
          saveAdd(){
-            this.$emit('saveAdd',this.formvals)
+            this.$emit('saveAdd',this.formval)
          }
-      },
-      created() {
       },
       mounted() {
         console.log(this.data);

@@ -76,11 +76,7 @@ export default {
         activeName:'first',
         rowData:{},
         // crumbs:['代维系统','巡检'],
-        workH:[
-          {id:1,tit:'今日巡检数',val:"4",color:'#f38a00'},
-          {id:2,tit:'未完成',val:"2",color:'#f56c6c'},
-          {id:3,tit:'已完成数量',val:"2",color:'#4ae283'},
-        ],
+        workH:[],
         jobs:[
           {label:'给排水',value:1},
           {label:'电梯',value:2},
@@ -406,7 +402,35 @@ export default {
         break;
       }
       return res;
-    } 
+    } ,
+    getTopData(){
+      this.$http.post('/pc_ims/staff/inspectiondata').then(res=> {
+           if(res.data.code==0){
+             let data = res.data.data;
+              this.workH = [{id:1,tit:'今日巡检数',val:data.count,color:'#f38a00'},
+                            {id:2,tit:'未完成',val:data.wei,color:'#f56c6c'},
+                            {id:3,tit:'已完成数量',val:data.wan,color:'#4ae283'}];
+           }else{
+              this.$message({
+                type:'error',
+                message:res.data.msg
+              })
+           }
+        })
+    },
+    getTableData(){
+      this.$http.post('/pc_ims/staff/inspectiondata_user').then(res=> {
+           if(res.data.code==0){
+             console.log(res.data.data);
+           }else{
+              this.$message({
+                type:'error',
+                message:res.data.msg
+              })
+           }
+        })
+    }
+
   },
   created() {
       let val = (this.$router.history.current.fullPath).split('/AgentManage/normalUser/routing')[1];
@@ -424,8 +448,9 @@ export default {
     }
   },
   mounted() {
-      //console.log(this.dtlObj)
-  },
+    this.getTopData();
+    this.getTableData();
+  }
 }
 </script>
 
