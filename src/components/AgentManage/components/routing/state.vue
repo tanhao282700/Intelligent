@@ -13,7 +13,8 @@ export default {
   props:['state'],
   data () {
     return {
-        txt:{txt:'',color:''}
+        txt:{txt:'',color:''},
+        state:{txt:'',color:''}
     }
   },
   methods:{

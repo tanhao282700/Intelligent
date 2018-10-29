@@ -12,7 +12,7 @@
         <div class="timeBox">
             <el-date-picker  
                 class="times"             
-                v-model="value7s"
+                v-model="value7"
                 type="date"   
                 align = 'center'
                 :clearable = "false"                           

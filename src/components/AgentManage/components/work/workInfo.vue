@@ -5,10 +5,10 @@
 <template>
     <div class="workInfo">    
         <div class="infoTit">
-            <span>{{dtlObj.title}}</span>
+            <span>{{table.title}}</span>
             <div class="dateBox">
                 <TimePickerT 
-                    :value7= "dtlObj.value7"
+                    :value7= "query.time"
                     :cant  = 'cant'
                     @changes = "changes"
                     @deletes = 'deletes'
@@ -21,8 +21,8 @@
                 <div class="btnBox">
                     <div class="jobBoxs">
                         <SelectBox 
-                            :options = 'jobs' 
-                            :value = "vJob" 
+                            :options = 'query.types' 
+                            :value = "query.type" 
                             :icon="'el-icon-d-caret'"
                             placeholder="类别"
                             @change = 'change1'
@@ -35,7 +35,7 @@
                 </div>
                     
                 <ul class="nums">
-                    <li v-for="item in dtlObj.tabs">
+                    <li v-for="item in table.tabs">
                         <span>{{item.name}}</span>
                         <div class="numss colorY">{{item.num}}</div>
                     </li>
@@ -44,7 +44,7 @@
             <div class="tabBoxss">
                 <Table 
                     style="width:100%" 
-                    :table = "dtlObj.tableDtl"
+                    :table = "table"
                     @rowClick = "showInfos"
                 />    
             </div>           
@@ -56,11 +56,8 @@
 import TimePickerT from './timePickerTit2';
 import SelectBox from '@/components/form/selectBox';
 import Table from '@/components/common/table';
-
-
-
 export default {
-  props:['dtlObj'],
+  props:['query','table'],
   components:{
       "TimePickerT":TimePickerT,
       'SelectBox':SelectBox,
@@ -69,7 +66,6 @@ export default {
   data () {
     return {
        //日期选择
-        value7:'2018-8-24',
         cant:false,
          jobs:[
             {label:'给排水',value:1},
@@ -97,10 +93,10 @@ export default {
       this.vName = val;
     },
     changes(val){
-      this.value7 = val;
+      this.query.time = val;
     }, 
     deletes(){
-        let attrs = this.value7.split('-');
+        let attrs = this.query.time.split('-');
         // console.log(attrs)
         if(attrs[2]==1){
           if(attrs[1]==2 ||attrs[1]==4 || attrs[1]==6 ||attrs[1]==8 ||attrs[1]==9 ||attrs[1]==11 ||attrs[1]==1){
@@ -121,13 +117,13 @@ export default {
         }else{
             attrs[2] = Number(attrs[2])-1;
         }
-        this.value7 = attrs.join('-'); 
+        this.query.time = attrs.join('-'); 
     },
     adds(){
         if(this.cant){
             return;
         }
-        let attrs = this.value7.split('-');
+        let attrs = this.query.time.split('-');
 
         if(((attrs[1]==1 ||attrs[1]==3 || attrs[1]==5 ||attrs[1]==7 ||attrs[1]==8 ||attrs[1]==10 ||attrs[1]==12) && attrs[2]==31)
             ||((attrs[1]==2 ||attrs[1]==6 || attrs[1]==9 ||attrs[1]==11) && attrs[2]==30) 
@@ -144,19 +140,16 @@ export default {
         }else{
             attrs[2] = Number(attrs[2])+1;
         }
-        this.value7 = attrs.join('-');    
+        this.query.time = attrs.join('-');    
     }, 
-    
-    
     showInfos(item){
-      //   console.log(item,'121')
+        console.log(item)
         this.$emit('tableInfos2Show',item);
     }
   },
   created() {
   },
   mounted() {
-    console.log(this.dtlObj);
   },
 }
 </script>

@@ -13,19 +13,19 @@
                 >
                     <li>
                         <label for="">申请人</label>
-                        <span v-text="v.name"></span>
+                        <span v-text="v.old_truename"></span>
                     </li>
                     <li>
                         <label for="">班次</label>
-                        <span v-text="v.time"></span>
+                        <span v-text="v.olde_workdate+' '+v.oldstarttime+'~'+v.oldendtime"></span>
                     </li>
                     <li class="margin5">
                         <label for="">换班人</label>
-                        <span v-text="v.name2"></span>
+                        <span v-text="v.new_truename+' '+v.newstarttime+'~'+v.newendtime"></span>
                     </li>
                     <li>
                         <label for="">班次</label>
-                        <span v-text="v.time2"></span>
+                        <span v-text="v.new_workdate"></span>
                     </li>
                     <img v-show="v.state==0" class="examFlag" src="../../../../assets/img/generation/isno.png" alt="">
                     <img v-show="v.state==1" class="examFlag" src="../../../../assets/img/generation/isok.png" alt="">
@@ -53,21 +53,18 @@ export default {
   },
   methods:{
     showInfo(i,v){
-        // if(v.state!==-1){
-        //     return;
-        // }
-        this.$emit('showInfo',i,v);
+        this.$emit('showInfo',v);
     },
      search(val){
          this.$emit('search',val)
         //  console.log(val);
      },
     isNo(i,v){
-         this.$emit('isNo',i,v)
+         this.$emit('isNo',v)
     },
     isOk(i,v){
-         this.$emit('isOk',i,v)
-    },
+         this.$emit('isOk',v)
+    }
   },
   created() {
   },

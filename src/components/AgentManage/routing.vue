@@ -23,8 +23,8 @@
               <div class="tabHead">
                 <div class="jobBoxs">
                   <SelectBox 
-                    :options = 'jobs' 
-                    :value = "vJob" 
+                    :options = 'departments' 
+                    :value = "query.department" 
                     :icon="'el-icon-d-caret'"
                     placeholder="专业岗位"
                     @change = "change1"
@@ -33,7 +33,7 @@
                 <div class="nameBoxs">
                   <SelectBox 
                     :options = 'names' 
-                    :value = "vName" 
+                    :value = "query.name" 
                     :icon="'el-icon-d-caret'"
                     placeholder="姓名" 
                     @change = "change2"
@@ -62,7 +62,7 @@
               </div>
             </div>
             <Dialog wid="1326" hei="640" ref="dialog">
-              <WorkInfo @tableInfos2Show="tableInfos2Show" :dtlObj="dtlObj"/>
+              <WorkInfo @tableInfos2Show="tableInfos2Show" :table="table3" :query="query2"/>
             </Dialog> 
             <Dialog wid="910" hei="686" ref="tableInfos2">
                 <div class="tableInfos">
@@ -87,7 +87,7 @@
             <span slot="label" class="tabItems">
                 巡检任务模板
             </span>
-            <RoutingTakModdel v-show="activeName=='second'" @updateDetail="updateDetail" @deleteDetail = "deleteDetail" @addDetail="addDetail" :cancelAdd="cancelAdd" :saveAdd="saveAdd" @changeStatus="changeStatus"/>
+            <RoutingTakModdel v-show="activeName=='second'" @updateDetail="updateDetail" @deleteDetail = "deleteDetail" @addDetail="addDetail" :cancelAdd="cancelAdd" :saveAdd="saveAdd" @changeStatus="changeStatus" :table="table2" :query="queryModel" @searchXJ="getModelList"/>
         </el-tab-pane>      
       </el-tabs>  
       <Dialog wid="910" hei="622" ref="add" > <!-- 新增巡检模板 -->
@@ -128,179 +128,128 @@ export default {
         activeName:'first',
         rowData:{},
         // crumbs:['代维系统','巡检'],
-        workH:[
-          {id:1,tit:'今日在岗人数',val:"58",color:'#b5d7ff'},
-          {id:2,tit:'今日巡检数',val:"32",color:'#f38a00'},
-          {id:3,tit:'已完成数量',val:"43",color:'#4ae283'},
-          {id:4,tit:'今日巡检完成率',val:"70%",color:'#4ae283'},
-        ],
-        jobs:[
-          {label:'给排水',value:1},
-          {label:'电梯',value:2},
-          {label:'变配电',value:3},
-          {label:'照明',value:4},
-          {label:'暖通',value:5},
-        ],
-        vJob:-1,
-        names:[
-          {label:'李白',value:1},
-          {label:'杜甫',value:2},
-          {label:'王安石',value:3},
-          {label:'白居易',value:4},
-          {label:'狗蛋儿',value:5},
-        ],
-        vName:-1,
+        workH:[],
+        departments:[],
+        query:{
+          department:'',
+          name:''
+        },
+        query2:{
+          time:'10-29',
+          types:[],
+          type:''
+        },
+        names:[],
         //日期选择
         value7:'8-24',
-        cant:false,
         dtlObj:{
-          title:'巡检单详情',
-          value7:'8-24',
-          
-          tabs:[{
-            'name':'今日巡检总数',
-            num:78
-          },{
-            'name':'已完成',
-            num:65
-          },{
-            'name':'未完成',
-            num:13
-          }],
-
           tableDtl:{
-              hei:488, //table高度  设置后有滚动条
-              len:8, //总条数
-              dialogBoxs:{
-                  item:{name:''},
-                  state0:0, //1 同意，0拒绝
-                  txt:'是否允许退单'
-              },
-              data:[
-                  {id:1,u_id:1,name:'白狗汪11',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:-1,desc:'范珊看哪个阶段呢是范珊的咖啡店给你的肌肤喝点水放辣椒是非得失，反倒是',backExcuse:'范珊看哪个阶段呢是范珊的咖啡店给你的肌肤喝点水放辣椒是非得失，反倒是',
-                  imgs1:[{
-                      src:'../../../../assets/img/logo.png'
-                    },{
-                      src:'../../../../assets/img/logo.png'
-                    },{
-                      src:'../../../../assets/img/logo.png'
-                    },{
-                      src:'../../../../assets/img/logo.png'
-                    },{
-                      src:'../../../../assets/img/logo.png'
-                    }],
-                    imgs2:[{
-                      src:'../../../../assets/img/logo.png'
-                    },{
-                      src:'../../../../assets/img/logo.png'
-                    },{
-                      src:'../../../../assets/img/logo.png'
-                    },{
-                      src:'../../../../assets/img/logo.png'
-                    },{
-                      src:'../../../../assets/img/logo.png'
-                    }],
-                  steps:[{
-                    name:'派发时间',date:'2018/09/14',time:'09:13',areatime:'3h',
-                    },{
-                      name:'接单时间',date:'2018/09/16',time:'09:13',areatime:'48h'
-                    },{
-                      name:'派发时间',date:'2018/09/16',time:'11:15',areatime:'2h'
-                    }],
-                    device:[{
-                      label:'巡检人员',
-                      type:'田阿菊'
-                    },{
-                      label:'电话',
-                      type:'18876768766'
-                    },{
-                      label:'设备类型',
-                      type:'给排水系统'
-                    },{
-                      label:'设备地点',
-                      type:'这边自宽130PX'
-                    },{
-                      label:'巡检设备',
-                      type:'给排水泵房'
-                    }],
-                  }, 
-                  {id:2,u_id:1,name:'白狗汪1',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:2}, 
-                  {id:3,u_id:1,name:'白狗汪1',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:3}, 
-                  {id:4,u_id:1,name:'白狗汪1',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:-1}, 
-                  {id:5,u_id:1,name:'白狗汪1',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:2}, 
-                  {id:6,u_id:1,name:'白狗汪1',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:3}, 
-                  {id:7,u_id:1,name:'白狗汪1',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:3}, 
-                  {id:8,u_id:1,name:'白狗汪1',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:3}, 
-                  {id:9,u_id:1,name:'白狗汪1',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:3}, 
-                  {id:10,u_id:1,name:'白狗汪1',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:3}, 
-                  {id:11,u_id:1,name:'白狗汪1',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:3},                       
-              ],
-              th:[
-                {prop:'name',label:'名称'},
-                {prop:'type',label:'类别'},
-                {prop:'addr',label:'地点',wid:208}, 
-                {prop:'eName',label:'设备名称',wid:169},
-                {prop:'sTime',label:'派发时间',wid:165},
-                {prop:'info',label:'内容描述',wid:194},
-                {prop:'sType',label:'派发类别'},
-                {prop:'states',label:'状态',wid:146,
-                  operate: true, 
-                    render: (h, param)=> {
-                        const btnss = {
-                            fills:param.row.state,  
-                        };
-                        return h(State,{
-                        props: { state:btnss},
-                        on:{}
-                        });
-                    }},
-                {prop:'fill',label:'操作',wid:105,
-                  operate: true, 
-                    render: (h, param)=> {
-                        const btnss = {
-                            item:param.row, 
-                          //   id:param.row.id,  
-                        };
-                        return h(deal,{
-                        props: { btnss:btnss},
-                        on:{agree:this.agree,refult:this.refult}
-                        });
-                    } 
-                },
-              ]
+            data:[]
           }
         },
+        cant:false,
+        queryModel:{//巡检任务模板的查询条件
+          systems:[],
+          areas:[],
+          examine:[],
+          taskStatus:[{value:1,label:'启用'},{value:2,label:'停用'}],
+          system:'',
+          area:'',
+          exam:'',
+          taskStatu:'',
+        },
+        table2:{
+          hei:328, //table高度  设置后有滚动条
+          len:0, //总条数
+          data:[],
+          th:[
+            {prop:'id',label:'序号'},
+            {prop:'sys_name',label:'系统'},
+            {prop:'floor',label:'区域'},
+            {prop:'start_date',label:'开始时间'},
+            {prop:'period',label:'巡检周期'},
+            {prop:'user_name',label:'巡检人'},
+            {prop:'title',label:'专业'},
+            {prop:'time_limit',label:'完成时限',operate:true,render:(h,param)=>{
+               return param.row.time_limit+'日'
+            }},
+            {prop:'now_state',label:'任务状态',operate: true, 
+              render: (h, param)=> {
+                  const btnss = {
+                      fills:param.row.now_state,  
+                  };
+                  return h(State,{
+                    props: { state:btnss}
+                  });
+              }},
+            {prop:'fill',label:'操作',wid:200,
+                operate: true, 
+                render: (h, param)=> {
+                  const btnss = {
+                      item:param.row, 
+                  };
+                  return h(deal,{
+                    props: { btnss:btnss},
+                    on:{update:this.update,deletes:this.deletes,changeStatus:this.changeStatus}
+                  });
+                } 
+            },
+          ]
+        },
+        table3:{
+          title:'巡检单详情',
+          tabs:[],
+          hei:488, //table高度  设置后有滚动条
+          len:0, //总条数
+          dialogBoxs:{
+              item:{name:''},
+              state0:0, //1 同意，0拒绝
+              txt:'是否允许退单'
+          },
+          data:[],
+          th:[
+            {prop:'id',label:'序号'},
+            {prop:'user_name',label:'名称'},
+            {prop:'title',label:'类别'},
+            {prop:'floorname',label:'地点',wid:208}, 
+            {prop:'devicename',label:'设备名称',wid:169},
+            {prop:'addtime',label:'派发时间',wid:165},
+            {prop:'descript',label:'内容描述',wid:194},
+            {prop:'now_state',label:'状态',wid:146},
+            {prop:'fill',label:'操作',wid:105,
+              operate: true, 
+                render: (h, param)=> {
+                    //console.log(param)
+                    const btnss = {
+                        item:param.row, 
+                    };
+                    return h(deal,{
+                    props: { btnss:btnss},
+                    on:{agree:this.agree,refult:this.refult}
+                    });
+                } 
+            },
+          ]
+        },
         table:{
-            // small:'small',
             hei:328, //table高度  设置后有滚动条
-            // len:800, //总条数
-            data:[
-              {id:1,name:'白狗汪1',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:4,backApply:"-",fill:100}, 
-              {id:2,name:'白狗汪2',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:4,backApply:"-",fill:80}, 
-              {id:3,name:'白狗汪3',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:4,backApply:"-",fill:60}, 
-              {id:4,name:'白狗汪4',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:4,backApply:"-",fill:40}, 
-              {id:5,name:'白狗汪5',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:4,backApply:"-",fill:20}, 
-              {id:6,name:'白狗汪6',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:4,backApply:"-",fill:100}, 
-              {id:7,name:'白狗汪7',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:4,backApply:"-",fill:100}, 
-              {id:8,name:'白狗汪8',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:4,backApply:"-",fill:100}, 
-              {id:9,name:'白狗汪9',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:4,backApply:"-",fill:100}, 
-              {id:10,name:'白狗汪10',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:4,backApply:"-",fill:100},              
-            ],
+            len:0, //总条数
+            data:[],
             th:[
               {prop:'id',label:'序号'},
               {prop:'name',label:'名称'},
-              {prop:'tel',label:'电话',wid:180},
-              {prop:'job',label:'专业岗位'},
-              {prop:'sendNum',label:'派单量'},
-              {prop:'dealing',label:'待处理'},
-              {prop:'nocatch',label:'未接单'},
-              {prop:'dealed',label:'已处理'},
-              {prop:'backApply',label:'退单申请',wid:146},
-              {prop:'fill',label:'完成率',wid:170,
+              {prop:'phone',label:'电话',wid:180},
+              {prop:'department',label:'专业岗位'},
+              {prop:'count',label:'派单量'},
+              {prop:'dai',label:'待处理'},
+              {prop:'wei',label:'未接单'},
+              {prop:'wan',label:'已处理'},
+              {prop:'tui',label:'退单申请',wid:146},
+              {prop:'percent',label:'完成率',wid:170,
                 operate: true, 
                   render: (h, param)=> {
                       const btnss = {
-                          fills:param.row.fill,  
+                          fills:param.row.percent,  
                       };
                       return h(Percentage,{
                       props: { btnss:btnss},
@@ -318,11 +267,14 @@ export default {
       this.vJob = val;
     },
     change2(val){ //选择
-      this.vName = val;
+      
     },
     changes(val){
         this.value7 = val;
     }, 
+    update(){
+
+    },
     deletes(){
       let attrs = this.value7.split('-');
       // console.log(attrs)
@@ -398,9 +350,22 @@ export default {
       //console.log(state);
     },
     rowClick(row){
-      this.rowData = row;
-      this.rowData.operate='check';
-      this.$refs.add.show();
+      this.$refs.dialog.show();
+      this.$http.post('/pc_ims/admin/inspectiondata_all',{sys_name:'',user_id:row.user_id})
+      .then(res=>{
+          if(res.data.code==0){
+            this.table3.len = res.data.count;
+            this.table3.data = res.data.data.info;
+            this.table3.tabs = [{'name':'今日巡检总数',num:res.data.data.zong},
+            {'name':'已完成',num:res.data.data.wan},
+            {'name':'未完成',num:res.data.data.wei}];
+          }else{
+            this.$message({
+              type:'error',
+              message:res.data.msg
+            })
+          }
+      })
     },
     agree(item){ //同意
         console.log(item)
@@ -447,14 +412,139 @@ export default {
         break;
       }
       return res;
-    } 
+    } ,
+    getTopData(){
+      this.$http.post('/pc_ims/admin/inspectiondata')
+      .then(res => {
+        if(res.data.code==0){
+          this.workH = [
+          {id:1,tit:'今日在岗人数',val:res.data.data.zaiban,color:'#b5d7ff'},
+          {id:2,tit:'今日巡检数',val:res.data.data.count,color:'#f38a00'},
+          {id:3,tit:'已完成数量',val:res.data.data.complete,color:'#4ae283'},
+          {id:4,tit:'今日巡检完成率',val:res.data.data.percent,color:'#4ae283'}];
+        }else{
+          this.$message({
+            type:'error',
+            message:res.data.msg
+          })
+        }
+      })
+    },
+    getTableList(){
+      this.$http.post('/pc_ims/admin/inspectiondata_user',{
+        department_id:this.query.department,
+        user_id:this.query.name,
+        date:'10-23'
+      })
+      .then(res => {
+        if(res.data.code==0){
+          this.table.len = res.data.count;
+          this.table.data = res.data.data;
+        }else{
+          this.$message({
+            type:'error',
+            message:res.data.msg
+          })
+        }
+      })
+    },
+    getModelList(param){
+      this.$http.post('/pc_ims/get_template',{
+        sys_id:param.system,
+        floor_id:param.area,
+        user_id:param.exam,
+        now_state:param.taskStatu
+      })
+      .then(res => {
+        if(res.data.code==0){
+          this.table2.len = res.data.count;
+          this.table2.data = res.data.data;
+        }else{
+          this.$message({
+            type:'error',
+            message:res.data.msg
+          })
+        }
+      })
+    },
+    getNameList(){
+        this.$http.post('/pc_ims/get_user').then(res=>{
+          if(res.data.code==0){
+            let data = res.data.data;
+            $.each(data,(n,k)=>{
+              data[n].value = data[n].id;
+              data[n].label = data[n].truename;
+            })
+            this.names = data;
+            this.queryModel.examine = data;
+          }else{
+            this.$message({
+              type:'error',
+              message:res.data.msg
+            })
+          }
+        });
+      },
+      getDepartList(){
+        this.$http.post('/pc_ims/get_description').then(res=>{
+          if(res.data.code==0){
+            let data = res.data.data;
+            $.each(data,(n,k)=>{
+              data[n].value = data[n].id;
+              data[n].label = data[n].title;
+            })
+            this.departments = data;
+          }else{
+            this.$message({
+              type:'error',
+              message:res.data.msg
+            })
+          }
+        });
+      },
+      getSystemList(){
+        this.$http.post('/pc_ims/get_sysmenu').then(res=>{
+          if(res.data.code==0){
+            let data = res.data.data;
+            $.each(data,(n,k)=>{
+              data[n].value = data[n].id;
+              data[n].label = data[n].title;
+            })
+            this.queryModel.systems = data;
+            this.query2.types= data;
+          }else{
+            this.$message({
+              type:'error',
+              message:res.data.msg
+            })
+          }
+        });
+      },
+      getAreaList(){
+        this.$http.post('/pc_ims/get_floor').then(res=>{
+          console.log(res);
+          if(res.data.code==0){
+            let data = res.data.data;
+            
+            $.each(data,(n,k)=>{
+              data[n].value = data[n].floor_id;
+              data[n].label = data[n].floor_name;
+            })
+            this.queryModel.areas = data;
+          }else{
+            this.$message({
+              type:'error',
+              message:res.data.msg
+            })
+          }
+        });
+      }
   },
   created() {
       let val = (this.$router.history.current.fullPath).split('/AgentManage/routing')[1];
       if(val==''){
           this.activeName = 'first';
       }else{
-          // console.log( val.split('/')[1])
           this.activeName = val.split('/')[1];
       }
   },
@@ -473,7 +563,13 @@ export default {
     }
   },
   mounted() {
-      //console.log(this.dtlObj)
+      this.getTopData();
+      this.getTableList();
+      this.getModelList(this.queryModel);
+      this.getNameList();
+      this.getSystemList();
+      this.getDepartList();
+      this.getAreaList();
   },
 }
 </script>
