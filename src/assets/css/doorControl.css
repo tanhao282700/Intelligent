@@ -233,7 +233,7 @@ nav.tabNav span a.on{color:#008aff;}
 .reportTabBoxsHead .dateBox .el-input__inner{width:70px!important;height:32px!important;padding-left: 15px;text-align: left!important;}
 .reportTabBoxsHead .el-input__suffix{display: none!important;}
 .reportTabBoxsHead .el-input__prefix{left:44px;}
-.el-table thead.is-group th{background: rgba(0,0,0,0);}
+.el-table thead.is-group th{background: rgba(0,0,0,0)!important;}
 .el-table--border, .el-table--group{border:0px;}
 .el-table--border td{border-right:1px solid rgba(45, 148, 240, 0.2);}
 .el-table--border::after, .el-table--group::after{width:0;}
