@@ -61,6 +61,8 @@
                   <Table 
                     style="width:100%" 
                     :table = "table2"
+                    @rowEnter="mouseOverLi"
+                    @rowLeave = "mouseOutLi"
                   />
                 </div>
             </div> 
@@ -97,31 +99,23 @@ export default {
         table:{
             // small:'small',
             hei:328, //table高度  设置后有滚动条
-            len:7, //总条数
-            data:[
-              {id:1,name:'白狗汪1',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:4,backApply:"-",fill:100}, 
-              {id:2,name:'白狗汪2',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:4,backApply:"-",fill:80}, 
-              {id:3,name:'白狗汪3',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:4,backApply:"-",fill:60}, 
-              {id:4,name:'白狗汪4',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:4,backApply:"-",fill:40}, 
-              {id:5,name:'白狗汪5',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:4,backApply:"-",fill:20}, 
-              {id:6,name:'白狗汪6',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:4,backApply:"-",fill:100}, 
-              {id:7,name:'白狗汪7',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:4,backApply:"-",fill:100}            
-            ],
+            len:0, //总条数
+            data:[],
             th:[
               {prop:'id',label:'编号'},
               {prop:'name',label:'名称'},
-              {prop:'tel',label:'联系电话',wid:150},
-              {prop:'job',label:'专业岗位'},
-              {prop:'sendNum',label:'本月派单量'},
-              {prop:'dealing',label:'完成数'},
-              {prop:'nocatch',label:'工单完成率'},
-              {prop:'dealed',label:'本月所派巡检数',width:200},
-              {prop:'backApply',label:'完成数量'},
-              {prop:'fill',label:'完成率',wid:180,
+              {prop:'phone',label:'联系电话',wid:150},
+              {prop:'department',label:'专业岗位'},
+              {prop:'count_job',label:'本月派单量'},
+              {prop:'wan_job',label:'完成数'},
+              {prop:'percent_job',label:'工单完成率'},
+              {prop:'count_xun',label:'本月所派巡检数',width:200},
+              {prop:'wan_xun',label:'完成数量'},
+              {prop:'percent_xun',label:'完成率',wid:180,
                 operate: true, 
                   render: (h, param)=> {
                       const btnss = {
-                          fills:param.row.fill,  
+                          fills:param.row.percent_xun,  
                       };
                       return h(Percentage,{
                       props: { btnss:btnss},
@@ -132,30 +126,23 @@ export default {
             ]
         },
         table2:{
-            // small:'small',
             hei:328, //table高度  设置后有滚动条
-            len:7, //总条数
-            data:[
-              {id:1,name:'白狗汪1',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:4,backApply:"-",fill:100}, 
-              {id:2,name:'白狗汪2',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:4,backApply:"-",fill:80}, 
-              {id:3,name:'白狗汪3',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:4,backApply:"-",fill:60}, 
-              {id:4,name:'白狗汪4',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:4,backApply:"-",fill:40}, 
-              {id:5,name:'白狗汪5',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:4,backApply:"-",fill:20}, 
-              {id:6,name:'白狗汪6',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:4,backApply:"-",fill:100}, 
-              {id:7,name:'白狗汪7',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:4,backApply:"-",fill:100}            
-            ],
+            len:0, //总条数
+            data:[],
             th:[
               {prop:'id',label:'编号'},
-              {prop:'name',label:'位置'},
-              {prop:'tel',label:'类别',wid:150},
-              {prop:'job',label:'设备名称'},
-              {prop:'sendNum',label:'本周保修次数',operate:true,
-                render: (h, param)=> {
-                      const btnss = {
-                          fills:param.row.sendNum,  
-                      };
-                  } 
-                }
+              {prop:'floor',label:'位置'},
+              {prop:'type',label:'类别',wid:150},
+              {prop:'device_name',label:'设备名称'},
+              {prop:'count',label:'本周保修次数'
+              // ,operate:true,
+              //   render: (h, param)=> {
+              //       console.log(param)
+              //         const btnss = {
+              //             fills:param.row.count,  
+              //         };
+              //     } 
+                 }
             ]
         },
     }
@@ -175,13 +162,68 @@ export default {
     },
     exportList(){
 
+    },
+    mouseOverLi(row){
+      console.log(row)
+      this.$http.post('/pc_ims/admin/count_deviceinfo',{
+        name:'一号客梯'
+      }).then(res=> {
+           console.log(res)
+           if(res.data.code==0){
+            this.table.data = res.data.data;
+          }else{
+            this.$message({
+              type:'error',
+              message:res.data.msg
+            })
+          }
+      })
+    },
+    mouseOutLi(row){
+
+    },
+    getReportData(){
+      this.$http.post('/pc_ims/admin/inspectionlist_count',{
+        year:'2018',
+        month:'07',
+        day:'25',
+        pagenumber:1,
+        pagesize:10
+      }).then(res=> {
+         if(res.data.code==0){
+            this.table.len = res.data.count;
+            this.table.data = res.data.data;
+          }else{
+            this.$message({
+              type:'error',
+              message:res.data.msg
+            })
+          }
+      })
+    },
+    getRepeatRate(){
+      this.$http.post('/pc_ims/admin/count_device',{
+        pagenumber:1,
+        pagesize:10
+      }).then(res=>{
+        if(res.data.code==0){
+            this.table2.len = res.data.count;
+            this.table2.data = res.data.data;
+          }else{
+            this.$message({
+              type:'error',
+              message:res.data.msg
+            })
+          }
+      })
     }
   },
   created() {
     
   },
   mounted() {
-    // this.$refs.dialog.show();
+    this.getReportData();
+    this.getRepeatRate()
   },
 }
 </script>

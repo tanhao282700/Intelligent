@@ -151,7 +151,7 @@
       <el-dialog :visible.sync="deleteInfoDialog" class="dialogBox deleteInfoDialog" :close-on-click-modal="false">
         <div class="deleteTextBox">是否确定删除此信息？</div>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="confirmDelete()" class="saveBtn">保存</el-button>
+          <el-button @click="confirmDelete()" class="saveBtn">确定</el-button>
           <el-button @click="deleteInfoDialog = false" class="cancleBtn">取消</el-button>
         </div>
         <bubbleTip :tipText="bubbleTip"/>
@@ -308,7 +308,7 @@
         }
 
         that.$http.post('users_manage/users_role_addmodify',config).then(res=>{
-          if(res.data.code ='0'){
+          if(res.data.code =='0'){
             let message = type?"保存成功":"修改成功";
             that.bubbleTipShow(message);
             if(type){that.requestOptions()};
@@ -346,9 +346,10 @@
         }
 
         that.$http.post('users_manage/users_role_delete',config).then(res=>{
-          if(res.data.code ='0'){
+          if(res.data.code =='0'){
             that.bubbleTipShow('删除成功');
             that.requestTableData(1);
+            that.requestOptions();
             setTimeout(function () {
               that.deleteInfoDialog = false;
             },2000)
@@ -430,7 +431,7 @@
         }
 
         that.$http.post('users_manage/users_setRole',config).then(res=>{
-          if(res.data.code ='0'){
+          if(res.data.code =='0'){
             that.powerArray = res.data.data;
           }else {
             that.bubbleTipShow(res.data.message);

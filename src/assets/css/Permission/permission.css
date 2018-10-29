@@ -559,6 +559,6 @@
   color: #008AFF;
 }
 
-.roleBox .el-table .cell{
+.roleBox .el-table td:nth-child(3) .cell{
   line-height: .16rem;
 }

@@ -293,7 +293,7 @@
 
           that.$http.post('users_manage/users_addmodify',config).then(res=>{
             console.log(res);
-            if(res.data.code ='0'){
+            if(res.data.code =='0'){
               let message = type?"保存成功":"修改成功";
               that.bubbleTipShow(message);
               setTimeout(function () {
@@ -333,7 +333,7 @@
           }
 
           that.$http.post('users_manage/users_delete',config).then(res=>{
-            if(res.data.code ='0'){
+            if(res.data.code =='0'){
               that.isReset = false;
               that.bubbleTipShow('删除成功');
               setTimeout(function () {
@@ -359,7 +359,7 @@
           }
 
           that.$http.post('users_manage/users_reset_password',config).then(res=>{
-            if(res.data.code ='0'){
+            if(res.data.code =='0'){
               that.isReset = false;
               that.bubbleTipShow('重置成功');
             }else {

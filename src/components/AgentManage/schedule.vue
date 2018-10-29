@@ -35,7 +35,7 @@
               </el-tab-pane>
           </el-tabs>
           <transition name="fade">
-            <div class="sceBtn btnBai1" v-show="activeName=='first'">
+            <div class="sceBtn btnBai1" v-show="activeName=='first'" @click="exportTable">
               <img src="../../assets/img/AgentManage/export.png">
               <span>导出排班表</span>              
             </div>
@@ -50,15 +50,15 @@
               <div class="nameBox boxs">
                 <div class="labelBox">
                   <label for="">申请人：</label>
-                  <span v-text="dia.name1"></span>
+                  <span v-text="dia.old_truename"></span>
                 </div>
                 <div class="labelBox">
                   <label for="">联系电话：</label>
-                  <span v-text="dia.tel1"></span>
+                  <span v-text="dia.old_phone"></span>
                 </div>
                 <div class="labelBox">
                   <label for="">申请人班次：</label>
-                  <span v-text="dia.time1"></span>
+                  <span v-text="dia.olde_workdate+' '+dia.oldstarttime+'~'+dia.oldendtime"></span>
                 </div>
               </div>
             </div>
@@ -70,22 +70,22 @@
               <div class="nameBox boxs">
                 <div class="labelBox">
                   <label for="">换班人：</label>
-                  <span v-text="dia.name2"></span>
+                  <span v-text="dia.new_truename"></span>
                 </div>
                 <div class="labelBox">
                   <label for="">联系电话：</label>
-                  <span v-text="dia.tel2"></span>
+                  <span v-text="dia.now_phone"></span>
                 </div>
                 <div class="labelBox">
                   <label for="">换班人班次：</label>
-                  <span v-text="dia.time2"></span>
+                  <span v-text="dia.new_truename+' '+dia.newstarttime+'~'+dia.newendtime"></span>
                 </div>
               </div>
             </div>
           </div>
           <div class="reason">
             <div class="diaTit2">换班原因</div>
-            <div class="reasonBox" v-text="dia.reason"></div>
+            <div class="reasonBox" v-text="dia.description"></div>
           </div>
           <div class="time">
             <div class="diaTit2">申请时间</div>
@@ -135,36 +135,10 @@ export default {
   data () {
     return {
         activeName: 'first',
-        examData1:[  //state状态 -1未审核 0审核失败 1审核通过 
-          {id:0,name:'王1',time:'2018-05-26 00:59~06:19',time2:'2018-05-27 07:59~14:19',name2:'白1',state:-1,img1:'http://img4.imgtn.bdimg.com/it/u=1652942597,4175456571&fm=26&gp=0.jpg',img2:'http://img0.imgtn.bdimg.com/it/u=2242889095,3429329643&fm=26&gp=0.jpg',tel1:'18349171744',tel2:'18349171722',reason:'Ant Design是一个服务于企业级产品的设计体系，基于『确定』和『自然』的设计价值观和模块化的解决方案，让设计者专注于更好的用户体验。'}, 
-          {id:0,name:'王2',time:'2018-05-26 00:59~06:19',time2:'2018-05-27 07:59~14:19',name2:'白2',state:-1,img1:'http://img4.imgtn.bdimg.com/it/u=1652942597,4175456571&fm=26&gp=0.jpg',img2:'http://img0.imgtn.bdimg.com/it/u=2242889095,3429329643&fm=26&gp=0.jpg',tel1:'18349171744',tel2:'18349171722',reason:'Ant Design是一个服务于企业级产品的设计体系，基于『确定』和『自然』的设计价值观和模块化的解决方案，让设计者专注于更好的用户体验。'},
-          {id:0,name:'王3',time:'2018-05-26 00:59~06:19',time2:'2018-05-27 07:59~14:19',name2:'白3',state:-1,img1:'http://img4.imgtn.bdimg.com/it/u=1652942597,4175456571&fm=26&gp=0.jpg',img2:'http://img0.imgtn.bdimg.com/it/u=2242889095,3429329643&fm=26&gp=0.jpg',tel1:'18349171744',tel2:'18349171722',reason:'Ant Design是一个服务于企业级产品的设计体系，基于『确定』和『自然』的设计价值观和模块化的解决方案，让设计者专注于更好的用户体验。'},
-          {id:0,name:'王4',time:'2018-05-26 00:59~06:19',time2:'2018-05-27 07:59~14:19',name2:'白4',state:-1,img1:'http://img4.imgtn.bdimg.com/it/u=1652942597,4175456571&fm=26&gp=0.jpg',img2:'http://img0.imgtn.bdimg.com/it/u=2242889095,3429329643&fm=26&gp=0.jpg',tel1:'18349171744',tel2:'18349171722',reason:'Ant Design是一个服务于企业级产品的设计体系，基于『确定』和『自然』的设计价值观和模块化的解决方案，让设计者专注于更好的用户体验。'},
-          {id:0,name:'王5',time:'2018-05-26 00:59~06:19',time2:'2018-05-27 07:59~14:19',name2:'白5',state:-1,img1:'http://img4.imgtn.bdimg.com/it/u=1652942597,4175456571&fm=26&gp=0.jpg',img2:'http://img0.imgtn.bdimg.com/it/u=2242889095,3429329643&fm=26&gp=0.jpg',tel1:'18349171744',tel2:'18349171722',reason:'Ant Design是一个服务于企业级产品的设计体系，基于『确定』和『自然』的设计价值观和模块化的解决方案，让设计者专注于更好的用户体验。'},
-          {id:0,name:'王6',time:'2018-05-26 00:59~06:19',time2:'2018-05-27 07:59~14:19',name2:'白6',state:-1,img1:'http://img4.imgtn.bdimg.com/it/u=1652942597,4175456571&fm=26&gp=0.jpg',img2:'http://img0.imgtn.bdimg.com/it/u=2242889095,3429329643&fm=26&gp=0.jpg',tel1:'18349171744',tel2:'18349171722',reason:'Ant Design是一个服务于企业级产品的设计体系，基于『确定』和『自然』的设计价值观和模块化的解决方案，让设计者专注于更好的用户体验。'},
-          {id:0,name:'王7',time:'2018-05-26 00:59~06:19',time2:'2018-05-27 07:59~14:19',name2:'白7',state:-1,img1:'http://img4.imgtn.bdimg.com/it/u=1652942597,4175456571&fm=26&gp=0.jpg',img2:'http://img0.imgtn.bdimg.com/it/u=2242889095,3429329643&fm=26&gp=0.jpg',tel1:'18349171744',tel2:'18349171722',reason:'Ant Design是一个服务于企业级产品的设计体系，基于『确定』和『自然』的设计价值观和模块化的解决方案，让设计者专注于更好的用户体验。'},
-          {id:0,name:'王8',time:'2018-05-26 00:59~06:19',time2:'2018-05-27 07:59~14:19',name2:'白8',state:-1,img1:'http://img4.imgtn.bdimg.com/it/u=1652942597,4175456571&fm=26&gp=0.jpg',img2:'http://img0.imgtn.bdimg.com/it/u=2242889095,3429329643&fm=26&gp=0.jpg',tel1:'18349171744',tel2:'18349171722',reason:'Ant Design是一个服务于企业级产品的设计体系，基于『确定』和『自然』的设计价值观和模块化的解决方案，让设计者专注于更好的用户体验。'},
-          {id:0,name:'王9',time:'2018-05-26 00:59~06:19',time2:'2018-05-27 07:59~14:19',name2:'白9',state:-1,img1:'http://img4.imgtn.bdimg.com/it/u=1652942597,4175456571&fm=26&gp=0.jpg',img2:'http://img0.imgtn.bdimg.com/it/u=2242889095,3429329643&fm=26&gp=0.jpg',tel1:'18349171744',tel2:'18349171722',reason:'Ant Design是一个服务于企业级产品的设计体系，基于『确定』和『自然』的设计价值观和模块化的解决方案，让设计者专注于更好的用户体验。'},
-          {id:0,name:'王10',time:'2018-05-26 00:59~06:19',time2:'2018-05-27 07:59~14:19',name2:'白10',state:-1,img1:'http://img4.imgtn.bdimg.com/it/u=1652942597,4175456571&fm=26&gp=0.jpg',img2:'http://img0.imgtn.bdimg.com/it/u=2242889095,3429329643&fm=26&gp=0.jpg',tel1:'18349171744',tel2:'18349171722',reason:'Ant Design是一个服务于企业级产品的设计体系，基于『确定』和『自然』的设计价值观和模块化的解决方案，让设计者专注于更好的用户体验。'},
-        ],
-        examData2:[
-          {id:0,name:'王11',time:'2018-05-26 00:59~06:19',time2:'2018-05-27 07:59~14:19',name2:'白11',state:0,img1:'http://img4.imgtn.bdimg.com/it/u=1652942597,4175456571&fm=26&gp=0.jpg',img2:'http://img0.imgtn.bdimg.com/it/u=2242889095,3429329643&fm=26&gp=0.jpg',tel1:'18349171744',tel2:'18349171722',reason:'Ant Design是一个服务于企业级产品的设计体系，基于『确定』和『自然』的设计价值观和模块化的解决方案，让设计者专注于更好的用户体验。'},
-          {id:0,name:'王12',time:'2018-05-26 00:59~06:19',time2:'2018-05-27 07:59~14:19',name2:'白12',state:1,img1:'http://img4.imgtn.bdimg.com/it/u=1652942597,4175456571&fm=26&gp=0.jpg',img2:'http://img0.imgtn.bdimg.com/it/u=2242889095,3429329643&fm=26&gp=0.jpg',tel1:'18349171744',tel2:'18349171722',reason:'Ant Design是一个服务于企业级产品的设计体系，基于『确定』和『自然』的设计价值观和模块化的解决方案，让设计者专注于更好的用户体验。'}     
-        ],
+        examData1:[],  //state状态 -1未审核 0审核失败 1审核通过
+        examData2:[],
         indexNow:-1,
-        dia:{
-          name1:'娃哈哈',
-          tel1:'18349171744',
-          time1:'2018-7-6 04:08 ~ 13:43',
-          img1:'http://img4.imgtn.bdimg.com/it/u=1652942597,4175456571&fm=26&gp=0.jpg',
-          name2:'娃哈哈2',
-          tel2:'18349171722',
-          time2:'2018-7-7 04:08 ~ 13:43',
-          img2:'http://img0.imgtn.bdimg.com/it/u=2242889095,3429329643&fm=26&gp=0.jpg',
-          reason:'Ant Design是一个服务于企业级产品的设计体系，基于『确定』和『自然』的设计价值观和模块化的解决方案，让设计者专注于更好的用户体验。',
-          applyTime:'2018/09/04 04:44',
-          state:'-1'
-        }
+        dia:{}
     }
   },
   methods:{
@@ -196,11 +170,57 @@ export default {
         this.indexNow = i;
         this.$refs.dialog.show();
       },
-      showInfoed(i,item){
-        console.log(i)
+      showInfoed(item){
+        console.log(item);
         this.dia = item;
         this.$refs.dialog.show();
-        console.log(this.$refs)
+      },
+      exportTable(){
+        this.$http.post('/pc_ims/down/admin_work_list',{
+          year:'2018',
+          month:'07'
+        }).then(function(res) {
+           console.log(res);
+        })
+      },
+      getYesData(){//已审核的排班
+        this.$http.post('/pc_ims/admin/approve_work').then(res=> {
+           if(res.data.code==0){
+              let data = res.data.data;
+              $.each(data,(n,k)=>{
+                console.log(data[n].now_process)
+                if(data[n].now_process==2){
+                  data[n].state = 1;
+                }else if(data[n].now_process==11){
+                  data[n].state = 0;
+                }
+              })
+              this.examData2 = data;
+           }else{
+              this.$message({
+                type:'error',
+                message:res.data.msg
+              })
+           }
+        })
+      },
+      getNoData(){//待审核的排班
+        this.$http.post('/pc_ims/admin/get_worklist').then(res=> {
+           if(res.data.code==0){
+              let data = res.data.data;
+              $.each(data,(n,k)=>{
+                  data[n].state= -1;
+                  data[n].olde_workdate = data[n].oldworkdate;
+                  data[n].new_workdate = data[n].newworkdate; 
+              })
+              this.examData1 = data;
+           }else{
+              this.$message({
+                type:'error',
+                message:res.data.msg
+              })
+           }
+        })
       }
   },
   created() {
@@ -214,7 +234,8 @@ export default {
       }
   },
   mounted() {
-
+    this.getNoData();
+    this.getYesData();
   },
 }
 </script>
