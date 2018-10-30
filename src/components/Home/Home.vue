@@ -279,6 +279,7 @@
       this.initModelId()
       this.initAlarm()
       this.initRouterInfo()
+
     },
     methods:{
         dateInfoInit(){   //日期信息初始化
@@ -311,9 +312,23 @@
           this.dateInfo.chinese = number(month)+"月"+number(day)+"号"
         },
       deletModels(data){//模块中点击删除按钮
-        this.partsData.map((item)=>{
+        this.partsData.map((item,index)=>{
               if(item.componentsName==data.componentsName){
-                  item.componentsName = ''
+                this.$http.get('/index_pc/pc/set/model',{
+                  id:index+1,
+                  self_id:0
+                })
+                  .then((response)=>{
+                    if(response.data.code =='0'){
+                      this.bubbleTipShow('删除成功')
+                      item.componentsName = ''
+                    }else{
+                      this.bubbleTipShow(response.data.message)
+                    }
+                  })
+                  .catch(function (error) {
+                    console.log(error);
+                  });
               }
         })
       },

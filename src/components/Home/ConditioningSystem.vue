@@ -34,8 +34,9 @@
         <div class="broadR">
           <div class="long" :class="{'anim':animate1}">
             <div class="item" v-for="item in broadOneList">
-              <span>{{item.title}}</span>
-              <span>{{item.val}}</span>
+              <span>{{item.name}}</span>
+              <span v-if="item.value==0">正常</span>
+              <span v-if="item.value==1">异常</span>
             </div>
           </div>
         </div>
@@ -45,21 +46,22 @@
         <div class="broadR">
           <div class="long" :class="{'anim':animate2}">
             <div class="item" v-for="item in broadTwoList">
-              <span>{{item.title}}</span>
-              <span>{{item.val}}</span>
+              <span>{{item.name}}</span>
+              <span v-if="item.value==0">正常</span>
+              <span v-if="item.value==1">异常</span>
             </div>
           </div>
         </div>
       </div>
       <div class="conditionEcharts5">
-        <span class="active">机房1</span>
-        <span>机房2</span>
+        <span @click="changeType(0)" v-text="conditionData[0].name" :class="{'active':types==0}"></span>
+        <span @click="changeType(1)" v-if="conditionData[1]" :class="{'active':types==1}" v-text="conditionData[1].name"></span>
       </div>
       </div>
   </div>
 </template>
 <script>
-
+  import axios from 'axios';
   export default{
     props:{
       isResize:{
@@ -74,41 +76,17 @@
           loading:false,
           isSystemHover:false,
           isEquipmentHover:false,
-          broadOneList:[{
-              title:'冷供水供水温度阿瑟的萨达阿斯顿撒旦阿瑟的',
-              val:'12.1℃'
-          },{
-            title:'冷供水供水压力',
-            val:'287KPa'
-          },{
-            title:'冷供水回水压力',
-            val:'222KPa'
-          },{
-            title:'我是第四个',
-            val:'12.1℃'
-          }],
-          broadTwoList:[{
-            title:'冷供水供水温度阿瑟的萨达阿斯顿撒旦阿瑟的',
-            val:'12.1℃'
-          },{
-            title:'冷供水供水压力',
-            val:'287KPa'
-          },{
-            title:'冷供水回水压力',
-            val:'222KPa'
-          },{
-            title:'我是第四个',
-            val:'12.1℃'
-          }]
+          broadOneList:[],
+          broadTwoList:[],
+          conditionInterval:null,
+          conditionData:[{name:''},{name:""}],
+          types:0  // 初始化显示第一个按钮
         }
     },
     components:{
 
     },
     mounted(){
-      this.drawEchart1()
-      this.drawEchart2()
-      setInterval(this.scroll,5000);
 
       this.initData()
     },
@@ -117,20 +95,153 @@
         /*this.revenueCharts1.resize()*/
       }
     },
+    beforeDestroy() {
+      clearInterval(this.conditionInterval);
+    },
     methods:{
+      changeType(types){
+        $("#conditionEcharts1 canvas").remove()
+        $("#conditionEcharts2 canvas").remove()
+        this.types = types;
+        clearInterval(this.conditionInterval);
+        if(types == 0){
+            this.broadOneList = this.conditionData[0].data3
+          this.broadTwoList = this.conditionData[0].data4
+          if(this.conditionData[0].data1.length == 1){
+            this.drawEchart1(this.conditionData[0].data1)
+          }
+          if(this.conditionData[0].data1.length == 2){
+            this.drawEchart1(this.conditionData[0].data1)
+            this.drawEchart2(this.conditionData[0].data1)
+          }
+        }
+        if(types == 1){
+          this.broadOneList = this.conditionData[1].data3
+          this.broadTwoList = this.conditionData[1].data4
+          if(this.conditionData[1].data1.length == 1){
+            this.drawEchart1(this.conditionData[1].data1)
+          }
+          if(this.conditionData[1].data1.length == 2){
+            this.drawEchart1(this.conditionData[0].data1)
+            this.drawEchart2(this.conditionData[1].data1)
+          }
+        }
+        this.conditionInterval = setInterval(this.scroll,5000);
+      },
       deletCli(){  //右上角关闭按钮
         this.$emit('deletClick',{self_id:1,componentsName:'Conditioning'})
       },
       initData(){
-        this.$http.get('/index_pc/pc/model',{self_id:1})
+        /*axios.defaults.headers.common['Authorization'] = '101_101_101';*/
+        this.$http.get('/index_pc/pc/model',{self_id:11})
             .then((response)=>{
-              console.log(response)
+              /*console.log(response)*/
+              this.broadOneList = response.data.data[0].data3
+              this.broadTwoList = response.data.data[0].data4
+              this.conditionData = response.data.data
+              this.conditionData[1] =  {
+                "data1": [
+                  {
+                    "name": "系统COP",
+                    "value": "0"
+                  },{
+                    "name": "测试COP",
+                    "value": "0"
+                  }
+                ],
+                "data2": [
+                  {
+                    "name": "一键启停",
+                    "param": "",
+                    "value": "0"
+                  }
+                ],
+                "data3": [
+                  {
+                    "name": "啊实打实的",
+                    "unit": "",
+                    "value": "0"
+                  },
+                  {
+                    "name": "阿瑟的",
+                    "unit": "",
+                    "value": "0"
+                  },
+                  {
+                    "name": "阿文档发玩",
+                    "unit": "",
+                    "value": "0"
+                  },
+                  {
+                    "name": "阿瑟的",
+                    "unit": "",
+                    "value": "0"
+                  },
+                  {
+                    "name": "下的车撒旦法",
+                    "unit": "",
+                    "value": "0"
+                  },
+                  {
+                    "name": "还让他",
+                    "unit": "",
+                    "value": "0"
+                  },
+                  {
+                    "name": "冷却水总管回水温度",
+                    "unit": "",
+                    "value": "0"
+                  },
+                  {
+                    "name": "1#冷冻水泵运行频率",
+                    "unit": "",
+                    "value": "0"
+                  },
+                  {
+                    "name": "2#冷冻水泵运行频率",
+                    "unit": "",
+                    "value": "0"
+                  },
+                  {
+                    "name": "1#冷却泵运行频率",
+                    "unit": "",
+                    "value": "0"
+                  },
+                  {
+                    "name": "2#冷却泵运行频率",
+                    "unit": "",
+                    "value": "0"
+                  }
+                ],
+                "data4": [
+                  {
+                    "name": "草泥马",
+                    "param": "",
+                    "value": "0"
+                  },
+                  {
+                    "name": "哈哈哈",
+                    "param": "",
+                    "value": "0"
+                  }
+                ],
+                "name": "测试"
+              }
+              this.conditionInterval = setInterval(this.scroll,5000);
+              if(this.conditionData[0].data1.length == 1){
+                this.drawEchart1(this.conditionData[0].data1)
+              }
+              if(this.conditionData[0].data1.length == 2){
+                this.drawEchart1(this.conditionData[0].data1)
+                this.drawEchart2(this.conditionData[0].data1)
+              }
             })
             .catch()
       },
       scroll(){
         if(!this.isSystemHover){
           this.animate1 = true;
+          console.log(111)
           setTimeout(()=>{
             this.broadOneList.push(this.broadOneList[0])
             this.broadOneList.shift()
@@ -160,7 +271,7 @@
           this.isEquipmentHover = false
         }
       },
-      drawEchart1(){
+      drawEchart1(data){
         let width = this.$refs.conditionEcharts1.clientWidth
         let option1 = {
           width:width, //canvas宽度
@@ -182,12 +293,12 @@
           },
           space:4, //内外环间隔
           title:{
-            text:"系统COP",
+            text:data[0].name,
             color:"#ffffff",
             size:"14"
           },
           dataValue:{
-            text:"99%",
+            text:data[0].value,
             color:"#F7A51C",
             size:"20"
           }
@@ -195,7 +306,7 @@
         // 绘制图表
         $("#conditionEcharts1").circleChart(option1);
       },
-      drawEchart2(){
+      drawEchart2(data){
         let width = this.$refs.conditionEcharts1.clientWidth
         let option2 = {
           width:width, //canvas宽度
@@ -217,12 +328,12 @@
           },
           space:4, //内外环间隔
           title:{
-            text:"实时COP",
+            text:data[1].name,
             color:"#ffffff",
             size:"14"
           },
           dataValue:{
-            text:"99%",
+            text:data[1].value,
             color:"#F7A51C",
             size:"20"
           }

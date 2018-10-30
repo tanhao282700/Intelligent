@@ -39,7 +39,7 @@ export default {
           this.radio.color = '#f56c6c';
           break;
       }
-      this.$emit('changeStatus',this.radio.radio3)
+      this.$emit('changeStatus',this.radio.radio3,this.btnss.item)
       //return this.radio3;
     },
     update(){

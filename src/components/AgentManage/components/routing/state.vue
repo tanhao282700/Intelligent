@@ -10,23 +10,34 @@
 
 <script>
 export default {
-  props:['state'],
+  props:['states'],
   data () {
     return {
-        txt:{txt:'',color:''},
-        state:{txt:'',color:''}
+        txt:{txt:'',color:''}
     }
   },
   methods:{
      txts(){
-          switch(this.state.fills){
+          switch(this.states.fills){
+              case "0":
+                this.txt.txt = '未接单';
+                this.txt.color = '#fff';
+                break;
               case "1":
-                this.txt.txt = '已开启';
+                this.txt.txt = '处理中';
+                this.txt.color = '#FFA414';
+                break;
+              case '2':
+                this.txt.txt = '已完成';
+                this.txt.color ='#4AE283';
+                break;
+              case '3':
+                this.txt.txt = '申请退单';
+                this.txt.color ='#3B89F9';
+                break;
+              case '4':
+                this.txt.txt = '退单完成';
                 this.txt.color = '#4AE283';
-              break;
-              case "2":
-                this.txt.txt = '停用';
-                this.txt.color = '#f56c6c';
                 break;
           }
           this.txt = this.txt;
@@ -35,6 +46,7 @@ export default {
   created() {
   },
   mounted() {
+    //console.log(this.states);
        this.txts();
   },
 }

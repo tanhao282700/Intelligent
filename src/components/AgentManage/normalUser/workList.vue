@@ -211,11 +211,7 @@ export default {
         },
         tabPosition:'正常处理',
         crumbs:['代维系统','工单'],
-        workH:[
-          {id:1,tit:'今日工单总数',val:"12",color:'#f38a00'},
-          {id:2,tit:'未完成',val:"10",color:'#f56c6c'},
-          {id:3,tit:'已完成数量',val:"2",color:'#4AE283'},
-        ],
+        workH:[],
         jobs:[
           {label:'给排水',value:1},
           {label:'电梯',value:2},
@@ -467,6 +463,17 @@ export default {
       rowClick(row){
         this.infoItem = row;
         this.$refs.tableInfos2.show();
+        this.$http.post('/pc_ims/staff/jobinfo_user').then(res=> {
+           if(res.data.code==0){
+             let data = res.data.data;
+              console.log(data);
+           }else{
+              this.$message({
+                type:'error',
+                message:res.data.msg
+              })
+           }
+        })
       },
       agree(item){ //同意
         alert('接单')
@@ -526,12 +533,46 @@ export default {
           break;
         }
         return res;
-      } 
+      } ,
+      getTopData(){
+        this.$http.post('/pc_ims/staff/jobdata').then(res=> {
+           if(res.data.code==0){
+             let data = res.data.data;
+              this.workH = [{id:1,tit:'今日工单总数',val:data.count,color:'#f38a00'},
+              {id:2,tit:'未完成',val:data.wei,color:'#f56c6c'},
+              {id:3,tit:'已完成数量',val:data.wan,color:'#4AE283'}];
+           }else{
+              this.$message({
+                type:'error',
+                message:res.data.msg
+              })
+           }
+        })
+      },
+      getTableList(){
+        this.$http.post('/pc_ims/staff/jobdata_user',{
+          sys_name:'',
+          type:'',
+          pagenumber:'1',
+          pagesize:'20'
+        }).then(res=> {
+           if(res.data.code==0){
+             console.log(res.data);
+           }else{
+              this.$message({
+                type:'error',
+                message:res.data.msg
+              })
+           }
+        })
+      }
   },
   created() {
     
   },
   mounted() {
+    this.getTopData();
+    this.getTableList();
   }
 }
 </script>

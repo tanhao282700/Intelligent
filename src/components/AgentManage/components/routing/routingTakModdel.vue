@@ -52,8 +52,8 @@
         </div> 
         <Table style="width:100%" 
               :table = "table"
+              @rowClick = "rowClick"
             />
-            <!-- @rowClick = "rowClick" -->
     </div>
 </template>
 
@@ -87,9 +87,9 @@
           change3(val){ //选择
             this.vStatus = val;
           },
-          // rowClick(rowData){
-          //   this.$emit('checkDetail',rowData);
-          // },
+          rowClick(rowData){
+            this.$emit('checkDetail',rowData);
+          },
           update(item){
             this.$emit('updateDetail',item);
           },

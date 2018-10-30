@@ -287,6 +287,12 @@
             </div>
         </el-tab-pane>
       </el-tabs>
+      <transition name="fade">
+        <div class="sceBtn btnBai1" v-show="activeName=='first'" @click="exportTable">
+          <img src="../../../assets/img/AgentManage/export.png">
+          <span>导出排班表</span>              
+        </div>
+      </transition>
   </div>
 </template>
 
@@ -365,21 +371,45 @@ export default {
   },
   methods:{
     handleClick(tab, event) {
-        let activeName = this.activeName;
-        this.$router.replace({ path: `/AgentManage/normalUser/schedule/${activeName}`});     
-      },
-      search(val,type){
-        console.log(val,type)
-      },
-      change1(){
+      let activeName = this.activeName;
+      this.$router.replace({ path: `/AgentManage/normalUser/schedule/${activeName}`});     
+    },
+    search(val,type){
+      console.log(val,type)
+    },
+    change1(){
 
-      },
-      submitApply(){
+    },
+    submitApply(){
 
-      },
-      changeStatus(){
+    },
+    changeStatus(){
 
-      }
+    },
+    getTableList(){
+      this.$http.post('/pc_ims/staff/work_list').then(res=> {
+           if(res.data.code==0){
+              console.log(res.data.data);
+           }else{
+              this.$message({
+                type:'error',
+                message:res.data.msg
+              })
+           }
+        })
+    },
+    exportTable(){
+      this.$http.get('/pc_ims/down/staff_work_list').then(res=> {
+           if(res.data.code==0){
+              console.log(res.data.data);
+           }else{
+              this.$message({
+                type:'error',
+                message:res.data.msg
+              })
+           }
+        })
+    }
   },
   created() {
      //配合路由 定位页面
@@ -392,7 +422,7 @@ export default {
       }
   },
   mounted() {
-
+    this.getTableList();
   },
 }
 </script>
