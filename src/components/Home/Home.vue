@@ -947,7 +947,7 @@
     top:72px!important;
     width:100px;
     background:#061733!important;
-    border: 1px solid #4a90e2;
+    border: 1px solid #4a90e2!important;
     margin-right:20px!important;
     left:inherit!important;
     right:0!important;

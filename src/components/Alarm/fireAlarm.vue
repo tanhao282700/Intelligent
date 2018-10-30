@@ -208,7 +208,7 @@
           }],
         timeValue:[],
         curPageData:[],
-        fileTime:[]  //文件下载需要的时间
+        fileTime:['','']  //文件下载需要的时间
       }
     },
     created(){
