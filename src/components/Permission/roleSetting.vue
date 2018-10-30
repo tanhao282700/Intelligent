@@ -403,9 +403,16 @@
         ]).then(axios.spread(function (departResp, positionResp,roleResp) {
 
           // 上面两个请求都完成后，才执行这个回调方法
-          that.$store.state.permission.options[0] = that.options[0] = departResp.data.data;
-          that.$store.state.permission.options[1] = that.options[1] = positionResp.data.data;
-          that.$store.state.permission.options[2] = that.options[2] = roleResp.data.data;
+          var optionArray = [];
+          optionArray[0] = departResp.data.data;
+          optionArray[1] = positionResp.data.data;
+          optionArray[2] = roleResp.data.data;
+
+          for(var val of optionArray){
+            var temp = {id: "" ,title: "请选择"};
+            val.unshift(temp);
+          }
+          that.$store.state.permission.options = that.options = optionArray;
           that.$forceUpdate();
         }));
       },
@@ -443,8 +450,8 @@
     },
     created(){
       var that = this;
-      var option = this.$store.state.permission.options;
-      if(option.length){
+      var option = that.$store.state.permission.options;
+      if(option.length>0){
         that.options = option;
       }else {
         that.requestOptions();

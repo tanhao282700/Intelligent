@@ -89,7 +89,8 @@
     },
     data () {
       return {
-        years:new Date(),
+        years: new Date().getFullYear(),
+        updateData: "",
         loading:false,
         dateM:Number((new Date()).getMonth()),
         isChangeing:false,   //正在修改状态
@@ -97,110 +98,109 @@
         allData:[
           {
             tit:'一月',
-            id:1,
+            id:'01',
             list:[
               {id:'power',plan:'3888',Actual:3900,tit:'用电'},
               {id:'water',plan:'1462',Actual:1200,tit:'用水'},
-              {id:'fire',plan:'893',Actual:1384,tit:'用汽'},
+              {id:'fire',plan:'893',Actual:1384,tit:'用气'},
             ]
           },
           {
             tit:'二月',
-            id:2,
+            id:'02',
             list:[
               {id:'power',plan:'',Actual:0,tit:'用电'},
               {id:'water',plan:'',Actual:0,tit:'用水'},
-              {id:'fire',plan:'',Actual:0,tit:'用汽'},
+              {id:'fire',plan:'',Actual:0,tit:'用气'},
             ]
           },
           {
             tit:'三月',
-            id:3,
+            id:'03',
             list:[
               {id:'power',plan:'',Actual:0,tit:'用电'},
               {id:'water',plan:'',Actual:0,tit:'用水'},
-              {id:'fire',plan:'',Actual:0,tit:'用汽'},
+              {id:'fire',plan:'',Actual:0,tit:'用气'},
             ]
           },
           {
             tit:'四月',
-            id:4,
+            id:'04',
             list:[
               {id:'power',plan:'',Actual:0,tit:'用电'},
               {id:'water',plan:'',Actual:0,tit:'用水'},
-              {id:'fire',plan:'',Actual:0,tit:'用汽'},
+              {id:'fire',plan:'',Actual:0,tit:'用气'},
             ]
           },{
             tit:'五月',
-            id:5,
+            id:'05',
             list:[
               {id:'power',plan:'',Actual:0,tit:'用电'},
               {id:'water',plan:'',Actual:0,tit:'用水'},
-              {id:'fire',plan:'',Actual:0,tit:'用汽'},
+              {id:'fire',plan:'',Actual:0,tit:'用气'},
             ]
           },{
             tit:'六月',
-            id:6,
+            id:'06',
             list:[
               {id:'power',plan:'',Actual:0,tit:'用电'},
               {id:'water',plan:'',Actual:0,tit:'用水'},
-              {id:'fire',plan:'',Actual:0,tit:'用汽'},
+              {id:'fire',plan:'',Actual:0,tit:'用气'},
             ]
           },{
             tit:'七月',
-            id:7,
+            id:'07',
             list:[
               {id:'power',plan:'',Actual:0,tit:'用电'},
               {id:'water',plan:'',Actual:0,tit:'用水'},
-              {id:'fire',plan:'',Actual:0,tit:'用汽'},
+              {id:'fire',plan:'',Actual:0,tit:'用气'},
             ]
           },{
             tit:'八月',
-            id:8,
+            id:'08',
             list:[
               {id:'power',plan:'',Actual:0,tit:'用电'},
               {id:'water',plan:'',Actual:0,tit:'用水'},
-              {id:'fire',plan:'',Actual:0,tit:'用汽'},
+              {id:'fire',plan:'',Actual:0,tit:'用气'},
             ]
           },{
             tit:'九月',
-            id:9,
+            id:'09',
             list:[
               {id:'power',plan:'',Actual:0,tit:'用电'},
               {id:'water',plan:'',Actual:0,tit:'用水'},
-              {id:'fire',plan:'',Actual:0,tit:'用汽'},
+              {id:'fire',plan:'',Actual:0,tit:'用气'},
             ]
           },
           {
             tit:'十月',
-            id:10,
+            id:'10',
             list:[
               {id:'power',plan:'',Actual:0,tit:'用电'},
               {id:'water',plan:'',Actual:0,tit:'用水'},
-              {id:'fire',plan:'',Actual:0,tit:'用汽'},
+              {id:'fire',plan:'',Actual:0,tit:'用气'},
             ]
           },
           {
             tit:'十一月',
-            id:11,
+            id:'11',
             list:[
               {id:'power',plan:'',Actual:0,tit:'用电'},
               {id:'water',plan:'',Actual:0,tit:'用水'},
-              {id:'fire',plan:'',Actual:0,tit:'用汽'},
+              {id:'fire',plan:'',Actual:0,tit:'用气'},
             ]
           },
           {
             tit:'十二月',
-            id:12,
+            id:'12',
             list:[
               {id:'power',plan:'',Actual:0,tit:'用电'},
               {id:'water',plan:'',Actual:0,tit:'用水'},
-              {id:'fire',plan:'',Actual:0,tit:'用汽'},
+              {id:'fire',plan:'',Actual:0,tit:'用气'},
             ]
           },
 
         ],
-
       }
     },
     methods:{
@@ -268,83 +268,90 @@
       },
       getMonth(id){
         let res = '';
-        switch(Number(id)){
-          case 1:
+        switch(id){
+          case '01':
             res = '一月';
             break;
-          case 2:
+          case '02':
             res = '二月';
             break;
-          case 3:
+          case '03':
             res = '三月';
             break;
-          case 4:
+          case '04':
             res = '四月';
             break;
-          case 5:
+          case '05':
             res = '五月';
             break;
-          case 6:
+          case '06':
             res = '六月';
             break;
-          case 7:
+          case '07':
             res = '七月';
             break;
-          case 8:
+          case '08':
             res = '八月';
             break;
-          case 9:
+          case '09':
             res = '九月';
             break;
-          case 10:
+          case '10':
             res = '十月';
             break;
-          case 11:
+          case '11':
             res = '十一月';
             break;
-          case 12:
+          case '12':
             res = '十二月';
             break;
         }
         return res;
       },
       getData(){
-        let year = (this.years).getFullYear();
-        let data = {
-          sys_menu_id :1,
-          year:year
+        let that = this;
+        let projectId = that.$store.state.projectId;
+        let config = {
+          project_id:projectId,
+          year: that.years,
+          update: that.updateData
         };
-        let _this = this;
+
         this.loading = true;
-        utils.post('energy/plan',data).then(res=>{
-          if(res.code==0){
-            let datas = res.data;
-            let lens = datas.length;
+        that.$http.post('hotel_energy/energy_plan',config).then(res=>{
+          console.log(res);
+          if(res.data.code == '0'){
+            let datas = res.data.data;
+            var actualData = datas.query_year_actual;
+            var planData = datas.query_year_plan;
+            let lens = 13;
             let attrs= [];
-            for(let i=0;i<lens;i++){
+            for(let i=1;i<lens;i++){
+              if(i<10){i="0"+i};
               let objs = {
-                tit:_this.getMonth(datas[i].id),
-                id:datas[i].id,
+                tit:that.getMonth(i),
+                id: i,
                 list:[
-                  {id:'power',plan:datas[i].plan_d,Actual:datas[i].actual_d,tit:'用电'},
-                  {id:'water',plan:datas[i].plan_s,Actual:datas[i].actual_s,tit:'用水'},
-                  {id:'fire',plan:datas[i].plan_q,Actual:datas[i].actual_q,tit:'用气'},
+                  {id:'power',plan:planData[0][i],Actual:actualData[0][i],tit:'用电'},
+                  {id:'water',plan:planData[1][i],Actual:actualData[1][i],tit:'用水'},
+                  {id:'fire',plan:planData[2][i],Actual:actualData[2][i],tit:'用气'},
                 ]
               };
               attrs.push(objs);
             }
-            _this.allData = attrs;
-            _this.loading = false;
+            that.allData = attrs;
+            that.loading = false;
           }else{
 
+            that.loading = false;
           }
         }).catch(err=>{
-          console.log(err,2222)
+          console.log(err);
         });
       }
     },
     created() {
-      /*this.getData();*/
+      this.getData();
     },
     mounted() {
 

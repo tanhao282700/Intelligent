@@ -8,6 +8,7 @@
 <script>
     import SysHead from '@/components/common/sysHead';
     import "../../assets/css/Permission/permission.css";
+    import axios from 'axios';
 
     export default {
       components:{
@@ -29,8 +30,16 @@
       methods:{
         search(param){
           console.log(param);
-        }
+        },
+      },
+      mounted(){
+
+      },
+      beforeDestroy(){
+        let that  = this;
+        that.$store.state.permission.options = [];
       }
+
     }
 </script>
 
