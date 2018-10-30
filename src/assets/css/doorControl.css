@@ -13,8 +13,8 @@ nav.tabNav span a{color: #cdcdcd;cursor: pointer;padding-left: 20px;}
 nav.tabNav span a.on{color:#008aff;}
 .cursor{cursor: pointer;}
 .floatRt{float:right!important;}
-.borderShadow{width:100%;height:auto;position: relative;padding-top: 50px;padding-bottom: 10px;-webkit-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);-moz-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);box-shadow:0 0 10px rgba(74, 144, 226, 0.22);}
-.tabsDomBox{padding-top: 80px;position: relative;}
+.borderShadow{width:100%;height:100%;position: relative;padding-top: 50px;padding-bottom: 10px;-webkit-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);-moz-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);box-shadow:0 0 10px rgba(74, 144, 226, 0.22);}
+.tabsDomBox{padding-top: 80px;position: relative;width:100%;height:100%;}
 .tableBox{width:100%;height:100%;position:relative;box-sizing:border-box;}
 .navCrumbs{position: absolute;top:50px;left:0;display: block;height:30px;line-height: 30px;color:#4d5d76;font-size: 12px;}
 .navCrumbs>span{color:#008aff;}
@@ -26,7 +26,8 @@ nav.tabNav span a.on{color:#008aff;}
 .tableBox .el-table__header{background:rgba(0,0,0,.25);}
 .el-pagination__sizes{display:none!important;}
 .tableBox .el-pagination.is-background .btn-next,.tableBox .el-pagination.is-background .btn-prev,.tableBox .el-pagination.is-background .el-pager li{width:24px!important;height:24px!important;min-width: 20px;margin-right:10px!important;margin-left: 0!important;line-height: 24px;color:#008aff;}
-.tableBox .el-pagination__editor.el-input{width:30px!important;height:24px!important;}
+/*.tableBox .el-pagination__editor.el-input{width:30px!important;height:24px!important;}*/
+.el-pagination__editor.el-input{padding-top:2px;}
 .tableBox .el-pagination{padding-top:10px;margin-top:-8px;}
 .tableBox .el-pagination__editor.el-input .el-input__inner{height:24px;line-height: 24px;}
 .tableBox .el-pagination__total{left:15px;bottom:0px;}

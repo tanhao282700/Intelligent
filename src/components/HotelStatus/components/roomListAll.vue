@@ -9,7 +9,7 @@
                 <el-option label="锁门" value="5"></el-option>
                 <el-option label="维修" value="6"></el-option>
             </el-select>
-            <el-select v-model="roomListAllNumber" placeholder="房间号">
+            <el-select v-model="roomListAllNumber" placeholder="房间号" @change="change">
                 <el-option v-for="(item,index) in roomListAllNumbers" :label="item.num" :value="item.num" :key="index"></el-option>
             </el-select>
             <div class="roomListDatePicker">
@@ -24,7 +24,7 @@
             <button class="btn"><i class="el-icon-search"></i>搜索</button>
 		</div>
         <div class="tableBox">
-            <el-table :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)" style="width: 100%">
+            <el-table :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)" style="width: 100%" height="480">
                 <el-table-column type="index" label="序号" align="cneter"></el-table-column>
                 <el-table-column prop="room_state" label="房间状态" align="cneter" :formatter = "stateFormat"></el-table-column>
                 <el-table-column prop="room_id" label="房间号"  align="cneter"></el-table-column>
@@ -34,16 +34,25 @@
                 <el-table-column prop="stay_time" label="入住时间" align="cneter"></el-table-column>
                 <el-table-column prop="leave_time" label="退房时间" width="200" align="cneter"></el-table-column>
             </el-table>
-            <el-pagination 
-                @size-change="handleSizeChange" 
+            <!--分页器-->
+            <div class="paginationBox">
+              <div class="totalPageNumBox">共{{totalPageNum}}页</div>
+
+              <div class="el-input el-pagination__editor is-in-pagination curPageBox">
+                <input type="number" autocomplete="off" class="el-input__inner" v-model="toPageNum">
+                <span @click="toInputPage">GO</span>
+              </div>
+
+              <el-pagination
                 @current-change="handleCurrentChange"
-                :page-size="pagesize" 
-                :current-page="currentPage" 
-                :page-sizes="[10, 20, 50, 100]"
-                :total="tableData.length"
-                background 
-                layout="total, sizes, prev, pager, next, jumper" >
-            </el-pagination>
+                :current-page="currentPage"
+                :page-size="pagesize"
+                :page-count="totalPageNum"
+                layout="prev, pager, next"
+                >
+              </el-pagination>
+
+            </div>
         </div>
 	</div>
 </template>
@@ -57,6 +66,8 @@
         },
 	    data() {
 	        return {
+                toPageNum:1,
+                totalPageNum:1,
 	        	datetimerange:'',
 	        	roomListAllSta:'',
 	        	roomListAllNumber:'',
@@ -69,7 +80,7 @@
 	        		{num:106,},
 	        	],
 				tableData: [],
-                pagesize:10,
+                pagesize:20,
                 currentPage:1,
 	        };
 	    },
@@ -80,6 +91,10 @@
                     page:1,
                     type:0,
                     num:10,
+                    // room_id:that.roomListAllNumber,
+                    // state:that.roomListAllSta,
+                    // start_time:datetimerange,
+                    // end_time:datetimerange,
                 }).then(function(data){
                     //响应成功回调
                     console.log(data);
@@ -87,6 +102,12 @@
                 }, function(data){
                     // 响应错误回调
                 });
+            },
+            toInputPage(){
+              /*显示输入页表格数据*/
+              var num = Number(this.toPageNum);
+              this.getData(num);
+              this.currentPage = num;
             },
             stateFormat(row, column) {
                 if (row.room_state === "VC") {
@@ -102,6 +123,10 @@
                 } else if (row.room_state === "OS") {
                     return '锁房'
                 }
+            },
+            change(val){
+                this.roomListAllNumber = val;
+                console.log(this.roomListAllNumber);
             },
             doSearch(){},
             addPolicy(){},

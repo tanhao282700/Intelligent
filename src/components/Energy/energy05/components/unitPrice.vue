@@ -47,6 +47,10 @@
     			</ul>
     			<div class="addMode"><span @click="addMode"><i class="el-icon-circle-plus"></i>添加模式</span></div>
 			</el-form>
+            <div class="btnGroupBox">
+                <span>取消</span>
+                <span class="btnOk">确定</span>
+            </div>
     	</div>
     </div>
     
@@ -81,5 +85,7 @@
 </script>
 
 <style>
-
+.btnGroupBox{position: absolute;right:20px;bottom:20px;}
+.btnGroupBox span{display:inline-block;width:70px;height:26px;color:#fff;line-height: 26px;text-align: center;font-size: 12px;background:rgba(5,23,50,1);border-radius:2px;border:1px solid #4A90E2;cursor:pointer;}
+.btnGroupBox span.btnOk{background:rgba(58,132,238,1);border:1px solid #1989FA;margin-left: 5px;}
 </style>

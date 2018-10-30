@@ -12,11 +12,11 @@
                 <div class="dateBox">
                     <el-input v-model="enternameinput" type="text" placeholder="请输入设备名称或门名称"></el-input>
                 </div>
-                <button class="btn btnSearch"><i class="el-icon-search"></i>查询</button>
-                <button class="btn btnExport floatRt"><i class="el-icon-search"></i>导出</button>
+                <button class="btn btnSearch" @click="getData(releasetime1,releasetime2,enternameinput,toPageNum)"><i class="el-icon-search"></i>查询</button>
+                <button class="btn btnExport floatRt" @click="exportTable"><i class="el-icon-search"></i>导出</button>
             </div>
             <div class="tableBox">
-                <el-table :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)" style="width: 100%">
+                <el-table :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)" style="width: 100%" height="480">
                     <el-table-column prop="show_id" label="编号" align="cneter"></el-table-column>
                     <el-table-column prop="id_card" label="ID卡号" align="cneter"></el-table-column>
                     <el-table-column prop="name" label="姓名"  align="cneter"></el-table-column>
@@ -31,16 +31,26 @@
                         </template>
                     </el-table-column>
                 </el-table>
-                <el-pagination 
-                    @size-change="handleSizeChange" 
+
+                <!--分页器-->
+                <div class="paginationBox">
+                  <div class="totalPageNumBox">共{{totalPageNum}}页</div>
+
+                  <div class="el-input el-pagination__editor is-in-pagination curPageBox">
+                    <input type="number" autocomplete="off" class="el-input__inner" v-model="toPageNum">
+                    <span @click="toInputPage">GO</span>
+                  </div>
+
+                  <el-pagination
                     @current-change="handleCurrentChange"
-                    :page-size="pagesize" 
-                    :current-page="currentPage" 
-                    :page-sizes="[10, 20, 50, 100]"
-                    :total="tableData.length"
-                    background 
-                    layout="total, sizes, prev, pager, next, jumper" >
-                </el-pagination>
+                    :current-page="currentPage"
+                    :page-size="pagesize"
+                    :page-count="totalPageNum"
+                    layout="prev, pager, next"
+                    >
+                  </el-pagination>
+
+                </div>
             </div>
         </div>
     </div>
@@ -50,33 +60,65 @@
     	props:['pageType'],
         data () {
         	return {
+                toPageNum:1,
+                totalPageNum:1,
 				//时间
                 releasetime1:"",
 				releasetime2:"",
 				//设备名称或者门名称
 				enternameinput: '',
 				tableData: [],
-                pagesize:10,
+                pagesize:20,
                 currentPage:1,
         	}
         },
         mounted(){
-            this.getData()
+            this.getData("20180101","20181010",1)
         },
         methods:{
-            getData(){
+            getData(start_date,end_date,query_name,numbC){
+                var that = this;
+                var s = that.format(start_date, 'yyyyMMdd');
+                var e = that.format(end_date, 'yyyyMMdd');
+                this.$http.post('/entrance/record',{
+                    sys_menu_id:15,
+                    project_id:1,
+                    floor_id:1,
+                    page_index:numbC,
+                    one_page_num:20,
+                    start_date:s,
+                    end_date:e,
+                    query_name:query_name,
+                }).then(function(response){
+                    // 响应成功回调
+                    //console.log(response.data.data);
+                    console.log(s);
+                    console.log(e);
+                    console.log(query_name);
+                    that.tableData = response.data.data.entrance_guard_record;
+                }, function(response){
+                    // 响应错误回调
+                });
+            },
+            exportTable(){
                 var that = this;
                 this.$http.post('/entrance/record',{
                     sys_menu_id:15,
                     project_id:1,
                     floor_id:1,
+                    export:1,
                 }).then(function(response){
                     // 响应成功回调
-                    //console.log(response.data.data);
-                    that.tableData = response.data.data.entrance_guard_record;
+                    console.log("导出成功")
                 }, function(response){
                     // 响应错误回调
                 });
+            },
+            toInputPage(){
+              /*显示输入页表格数据*/
+              var num = Number(this.toPageNum);
+              this.getData(num);
+              this.currentPage = num;
             },
             doSearch(){},
             addPolicy(){},
@@ -87,6 +129,32 @@
             handleCurrentChange: function(currentPage){
                 this.currentPage = currentPage;
             },
+            format(time, format){
+                var t = new Date(time);
+                var tf = function(i){return (i < 10 ? '0': '') + i};
+                return format.replace(/yyyy|MM|dd|HH|mm|ss/g, function(a){
+                    switch(a){
+                        case 'yyyy':
+                        return tf(t.getFullYear());
+                        break;
+                        case 'MM':
+                        return tf(t.getMonth() + 1);
+                        break;
+                        case 'mm':
+                        return tf(t.getMinutes());
+                        break;
+                        case 'dd':
+                        return tf(t.getDate());
+                        break;
+                        case 'HH':
+                        return tf(t.getHours());
+                        break;
+                        case 'ss':
+                        return tf(t.getSeconds());
+                        break; 
+                    }
+                })
+            }
         }
     }
 </script>

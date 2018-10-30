@@ -9,6 +9,7 @@
 	        <div class="dateBox">
 	            <el-date-picker v-model="releasetime1" type="month" placeholder="月"></el-date-picker>
 	        </div>
+            <span class="todaySpan">{{todaySpan}}</span>
 	        <button class="btn">查询</button>
 	        <button class="btn btnExport floatRt">导出</button>
     	</div>
@@ -131,6 +132,7 @@
     export default {
         data(){
         	return{
+        		todaySpan:'',
         		columnw:0,
         		energyType:'气',
         		releasetime1:'',
@@ -158,10 +160,20 @@
         },
         mounted(){
             this.setWidth();
+            this.getDateSet();
         },
         methods:{
         	setWidth(){
         		this.columnw = $(".reportTabBoxs ").width() / 24;
+        	},
+        	getDateSet(){
+        		var sDate = new Date()
+        		var yyyy = sDate.getFullYear();
+        		var mm = sDate.getMonth() + 1;
+        		var dd = sDate.getDate();
+        		mm = mm < 10?'0'+mm:mm;
+        		dd = dd < 10?'0'+dd:dd;
+        		this.todaySpan = yyyy + '-' + mm + '-' + dd;
         	},
 		    cell({row, column, rowIndex, columnIndex}) {
 		      //第八列添加 red 类

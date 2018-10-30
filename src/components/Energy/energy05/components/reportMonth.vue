@@ -6,6 +6,7 @@
                 <el-option label="电" value="1"></el-option>
                 <el-option label="水" value="2"></el-option>
             </el-select>
+            <span class="todaySpan">{{todaySpan}}</span>
 	        <div class="dateBox">
 	            <el-date-picker v-model="releasetime1" type="year" placeholder="年"></el-date-picker>
 	        </div>
@@ -133,6 +134,7 @@
         	return{
         		columnw:0,
         		energyType:'气',
+        		todaySpan:'',
         		releasetime1:'',
         		tableData:[
         			{dateLab:"区域合计",data:2},
@@ -158,10 +160,30 @@
         },
         mounted(){
             this.setWidth();
+            this.getData();
+            this.getDateSet();
         },
         methods:{
         	setWidth(){
         		this.columnw = $(".reportTabBoxs ").width() / 24;
+        	},
+        	getData(){
+                let that = this;
+                this.$http.post('/hotel_energy/statement',{
+                    project_id:"1",
+                }).then(function(data){
+                    console.log(data.data.data);
+                });
+
+        	},
+        	getDateSet(){
+        		var sDate = new Date()
+        		var yyyy = sDate.getFullYear();
+        		var mm = sDate.getMonth() + 1;
+        		var dd = sDate.getDate();
+        		mm = mm < 10?'0'+mm:mm;
+        		dd = dd < 10?'0'+dd:dd;
+        		this.todaySpan = yyyy + '-' + mm + '-' + dd;
         	},
 		    cell({row, column, rowIndex, columnIndex}) {
 		      //第八列添加 red 类
@@ -176,10 +198,6 @@
 		        }
 		    },
 	        objectSpanMethod({ row, column, rowIndex, columnIndex }) {
-			     // console.log(row)
-			     // console.log(rowIndex)
-			     // console.log(column)
-			     // console.log(columnIndex)
 			    if(rowIndex == 1){
 			     	if(columnIndex == 2){
 			     		return {
@@ -221,4 +239,5 @@
 .el-table .el-table__body td.darkBl .cell{color:#439AFF!important;}
 .el-table .el-table__body td.darkOr .cell{color:#FFA414!important;}
 .el-table__footer-wrapper tbody td{background:rgba(0,0,0,0);color:#fff;}
+
 </style>

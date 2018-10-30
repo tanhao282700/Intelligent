@@ -18,7 +18,8 @@
     				<span v-for="item in roomListsStaTit" :class="item.sta"> <i></i>{{item.labName}}</span>
 		            <el-select v-model="floorNumber" placeholder="楼号">
 		                <el-option label="1楼" value="1"></el-option>
-		                <el-option label="2楼" value="2"></el-option>
+                        <el-option label="2楼" value="2"></el-option>
+		                <el-option label="3楼" value="3"></el-option>
 		            </el-select>
     			</div>
     			<div class="roomsTypeStaBox">
@@ -96,14 +97,14 @@
                     // floor_id:104,
                 }).then(function(data){
                     // 响应成功回调
-                    //console.log(data.data);
+                    // console.log(data.data.data);
                     // that.tableData = response.data.data.entrance_guard_record;
                     that.hotelMainInfo[0].labVal = data.data.data.rooms;
                     that.hotelMainInfo[1].labVal = data.data.data.room_reservation;
                     that.hotelMainInfo[2].labVal = data.data.data.vacancy;
                     that.hotelMainInfo[3].labVal = data.data.data.check_in_num;
                     that.hotelMainInfo[4].labVal = data.data.data.occupancy_rate + '%';
-                    that.hotelMainInfo[5].labVal = data.data.data.vacancy_rate;
+                    that.hotelMainInfo[5].labVal = data.data.data.vacancy_rate + '%';
                     that.hotelMainInfo[6].labVal = data.data.data.diners;
 
                     that.roomsType[0].roomsLst = data.data.data.separate_room;

@@ -7,7 +7,7 @@
         </div>
         <div class="doorInfoBgBox">
             <div class="tableBox">
-                <el-table :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)" style="width: 100%">
+                <el-table :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)" style="width: 100%" height="480">
                     <el-table-column prop="show_id" label="编号" align="cneter"></el-table-column>
                     <el-table-column prop="id_card" label="ID卡号" align="cneter"></el-table-column>
                     <el-table-column prop="name" label="姓名"  align="cneter"></el-table-column>
@@ -22,16 +22,25 @@
                         </template>
                     </el-table-column>
                 </el-table>
-                <el-pagination 
-                    @size-change="handleSizeChange" 
+                <!--分页器-->
+                <div class="paginationBox">
+                  <div class="totalPageNumBox">共{{totalPageNum}}页</div>
+
+                  <div class="el-input el-pagination__editor is-in-pagination curPageBox">
+                    <input type="number" autocomplete="off" class="el-input__inner" v-model="toPageNum">
+                    <span @click="toInputPage">GO</span>
+                  </div>
+
+                  <el-pagination
                     @current-change="handleCurrentChange"
-                    :page-size="pagesize" 
-                    :current-page="currentPage" 
-                    :page-sizes="[10, 20, 50, 100]"
-                    :total="tableData.length"
-                    background 
-                    layout="total, sizes, prev, pager, next, jumper" >
-                </el-pagination>
+                    :current-page="currentPage"
+                    :page-size="pagesize"
+                    :page-count="totalPageNum"
+                    layout="prev, pager, next"
+                    >
+                  </el-pagination>
+
+                </div>
             </div>
         </div>
     </div>
@@ -41,9 +50,11 @@
         props:["doorInfoId","doorInfomation"],
         data () {
         	return {
-              tableData: [],
-              pagesize:10,
-              currentPage:1,
+                toPageNum:1,
+                totalPageNum:1,
+                tableData: [],
+                pagesize:10,
+                currentPage:1,
         	}
         },
         watch:{
@@ -57,6 +68,12 @@
         methods:{
             getData(){
                 
+            },
+            toInputPage(){
+              /*显示输入页表格数据*/
+              var num = Number(this.toPageNum);
+              this.getData(num);
+              this.currentPage = num;
             },
             doSearch(){},
             addPolicy(){},

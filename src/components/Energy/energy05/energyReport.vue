@@ -90,5 +90,5 @@
 <style>
 
 	@import '../../../assets/css/doorControl.css' ;
-
+    .todaySpan{position: absolute;left:50%;top:15px;display: block;width:140px;margin-left: -70px;text-align: center;height:20px;line-height: 20px;color:#fff;font-size: 16px;}
 </style>

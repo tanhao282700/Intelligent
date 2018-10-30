@@ -5,6 +5,7 @@
 	        <div class="dateBox">
 	            <el-date-picker v-model="releasetime1" type="date" placeholder="日"></el-date-picker>
 	        </div>
+            <span class="todaySpan">{{todaySpan}}</span>
 	        <button class="btn">查询</button>
 	        <button class="btn btnExport floatRt">导出</button>
     	</div>
@@ -53,6 +54,7 @@
     export default {
         data(){
         	return{
+        		todaySpan:'',
         		releasetime1:'',
         		tableData3: [{
 		          city: 4,
@@ -71,6 +73,9 @@
 		        }]
         	}
         },
+        mounted(){
+            this.getDateSet();
+        },
         methods:{
 		    cell({row, column, rowIndex, columnIndex}) {
 		      //加 类
@@ -79,6 +84,15 @@
 
 		        }
 		    },
+        	getDateSet(){
+        		var sDate = new Date()
+        		var yyyy = sDate.getFullYear();
+        		var mm = sDate.getMonth() + 1;
+        		var dd = sDate.getDate();
+        		mm = mm < 10?'0'+mm:mm;
+        		dd = dd < 10?'0'+dd:dd;
+        		this.todaySpan = yyyy + '-' + mm + '-' + dd;
+        	},
         	getSummaries(param) {
 		        const { columns, data } = param;
 		        const sums = [];
