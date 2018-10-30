@@ -282,7 +282,7 @@ background-color: #65a3fa!important;
   color:#fff!important;
   background-color: rgba(0,0,0,0)!important;
   border-radius: 2px!important;
-  border: 1px solid #1989fa!important;
+  border: 1px solid #1989fa;
   line-height: normal!important;
 }
 .el-input__icon{

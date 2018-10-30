@@ -15,13 +15,13 @@
         <div class="viewColum">
           <header>
             <div class="titleBox">总能耗</div>
-            <div class="exhaustItem">今年碳排放：<span class="color1">{{exhaustValue1}}</span>Kg，计划<span class="color2">{{exhaustValue2}}</span>Kg</div>
-            <div class="exhaustItem">本月碳排放：<span class="color1">{{exhaustValue3}}</span>Kg，计划<span class="color2">{{exhaustValue4}}</span>Kg</div>
+            <div class="exhaustItem">今年碳排放：<span class="color1">{{totalEnergyUsageData.yearActualTotal}}</span>Kg，计划<span class="color2">{{totalEnergyUsageData.yearPlanTotal}}</span>Kg</div>
+            <div class="exhaustItem">本月碳排放：<span class="color1">{{totalEnergyUsageData.monthActualTotal}}</span>Kg，计划<span class="color2">{{totalEnergyUsageData.monthPlanTotal}}</span>Kg</div>
           </header>
           <div class="viewItemContent">
             <div class="totalEnergyItem">
               <div class="totalEnergyItemHead">
-                <div>23345</div><p>本月</p>
+                <div>{{totalEnergyUsageData.monthActualUsage[0]}}</div><p>本月</p>
               </div>
               <div class="totalEnergyItemCont">
                 <div id="energyChart1" class="totalEnergyChartBox">
@@ -32,7 +32,7 @@
                 </div>
                 <div class="totalEnergyItemFoot">
                   <div class="unit">kw/h</div>
-                  <div class="totalVal">60000</div>
+                  <div class="totalVal">{{totalEnergyUsageData.monthPlanUsage[0]}}</div>
                   <div class="title">本月能耗值</div>
                   <div class="type">电</div>
                 </div>
@@ -40,7 +40,7 @@
             </div>
             <div class="totalEnergyItem">
               <div class="totalEnergyItemHead">
-                <div>23345</div><p>本月</p>
+                <div>{{totalEnergyUsageData.monthActualUsage[1]}}</div><p>本月</p>
               </div>
               <div class="totalEnergyItemCont">
                 <div id="energyChart2" class="totalEnergyChartBox">
@@ -51,7 +51,7 @@
                 </div>
                 <div class="totalEnergyItemFoot">
                   <div class="unit">t</div>
-                  <div class="totalVal">30000</div>
+                  <div class="totalVal">{{totalEnergyUsageData.monthPlanUsage[1]}}</div>
                   <div class="title">本月能耗值</div>
                   <div class="type">水</div>
                 </div>
@@ -59,7 +59,7 @@
             </div>
             <div class="totalEnergyItem">
               <div class="totalEnergyItemHead">
-                <div>23345</div><p>本月</p>
+                <div>{{totalEnergyUsageData.monthActualUsage[2]}}</div><p>本月</p>
               </div>
               <div class="totalEnergyItemCont">
                 <div id="energyChart3" class="totalEnergyChartBox">
@@ -70,7 +70,7 @@
                 </div>
                 <div class="totalEnergyItemFoot">
                   <div class="unit">m³</div>
-                  <div class="totalVal">12000</div>
+                  <div class="totalVal">{{totalEnergyUsageData.monthPlanUsage[2]}}</div>
                   <div class="title">本月能耗值</div>
                   <div class="type">气</div>
                 </div>
@@ -92,9 +92,9 @@
             </div>
           </header>
           <div class="viewItemContent">
+            <lineEchart :datas="energyTrend0.echarts" :key="energyTrend0.id" />
             <lineEchart :datas="energyTrend1.echarts" :key="energyTrend1.id" />
             <lineEchart :datas="energyTrend2.echarts" :key="energyTrend2.id" />
-            <lineEchart :datas="energyTrend3.echarts" :key="energyTrend3.id" />
           </div>
         </div>
       </div>
@@ -113,7 +113,7 @@
                   :value="item.id">
                 </el-option>
               </el-select>
-              <div class="yearRangeBox" v-if="dateUnit==1">
+              <div class="yearRangeBox" v-show=" dateUnit=='year' ">
                 <el-date-picker
                   v-model="dateRangeValue[0]"
                   type="year"
@@ -128,11 +128,11 @@
                   placeholder="请选择">
                 </el-date-picker>
               </div>
-              <div class="yearRangeBox" v-if="dateUnit==2">
+              <div class="yearRangeBox" v-show=" dateUnit=='month' ">
                 <el-date-picker
                   v-model="dateRangeValue[0]"
                   format="yyyy-M"
-                  value-format="yyyy-MM"
+                  value-format="yyyyMM"
                   type="month"
                   placeholder="请选择">
                 </el-date-picker>
@@ -140,7 +140,7 @@
                 <el-date-picker
                   v-model="dateRangeValue[1]"
                   format="yyyy-M"
-                  value-format="yyyy-MM"
+                  value-format="yyyyMM"
                   type="month"
                   placeholder="请选择">
                 </el-date-picker>
@@ -152,9 +152,9 @@
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
                 format="yyyy-M-d"
-                value-format="yyyy-MM-dd"
+                value-format="yyyyMMdd"
                 class="energyAreaDateBox"
-                v-if="dateUnit==3">
+                v-show=" dateUnit=='day' ">
               </el-date-picker>
               <div>
                 <el-button class="area3-QueryDateBtn" @click="viewsQueryRangeData"><i></i><span>查询</span></el-button>
@@ -194,10 +194,10 @@
           </header>
           <div class="viewItemContent">
             <div class="head">
-              <span>营收</span><div class="incomeBox">8888.888</div>
+              <span>营收</span><div class="incomeBox">{{finance_info.real_time_income}}</div>
             </div>
             <div class="head">
-              <span>入住率</span><div class="perBox">88%</div>
+              <span>入住率</span><div class="perBox">{{finance_info.check_in_rate}}%</div>
             </div>
             <div class="chartsBox">
               <div class="type1">
@@ -221,7 +221,7 @@
                 <div class="typeTitleBox">
                   <div class="typeTitleText">每房晚能耗</div>
                   <div class="typeTitleVal">
-                    <div>100/200</div>
+                    <div>{{finance_info.house_num[0]}}/{{finance_info.house_num[1]}}</div>
                     <p>房位数</p>
                   </div>
                 </div>
@@ -244,7 +244,7 @@
                 <div class="typeTitleBox">
                   <div class="typeTitleText">每餐位能耗</div>
                   <div class="typeTitleVal">
-                    <div>334/550</div>
+                    <div>{{finance_info.seat_num[0]}}/{{finance_info.seat_num[1]}}</div>
                     <p>餐位数</p>
                   </div>
                 </div>
@@ -272,8 +272,8 @@
     data(){
       return{
         energyArea2Type:"0",
-        energyTrend1:{
-          id: 'energyTrendChart1',
+        energyTrend0:{
+          id: 'energyTrendCharts0',
           echarts:{
             id:"lineEchartShui1",
             type:'电',
@@ -285,14 +285,14 @@
             },
             xDate:['01','02','03','04','05','06','07','08','09','10','11','12'],
             list:[
-              {name:"2018",data:[10,20,30,40,50,60,70,80,90,12,54,83]},
-              {name:"2017",data:[60,70,80,90,20,30,40,50,54,70,80,90]},
-              {name:"今年计划",data:[70,80,90,12,54,83,40,50,54,20,30,40]},
+              {name:"2018",data:[]},
+              {name:"2017",data:[]},
+              {name:"今年计划",data:[]},
             ]
           }
         },
-        energyTrend2:{
-          id: 'energyTrendChart2',
+        energyTrend1:{
+          id: 'energyTrendCharts1',
           echarts:{
             id:"lineEchartShui2",
             type:'水',
@@ -304,14 +304,14 @@
             },
             xDate:['01','02','03','04','05','06','07','08','09','10','11','12'],
             list:[
-              {name:"2018",data:[60,70,80,90,20,30,40,50,54,70,80,90]},
-              {name:"2017",data:[10,20,30,40,50,60,70,80,90,12,54,83]},
-              {name:"今年计划",data:[70,80,90,12,54,83,40,50,54,20,30,40]},
+              {name:"2018",data:[]},
+              {name:"2017",data:[]},
+              {name:"今年计划",data:[]},
             ]
           }
         },
-        energyTrend3:{
-          id: 'energyTrendChart3',
+        energyTrend2:{
+          id: 'energyTrendCharts2',
           echarts:{
             id:"lineEchartShui3",
             type:'气',
@@ -323,77 +323,60 @@
             },
             xDate:['01','02','03','04','05','06','07','08','09','10','11','12'],
             list:[
-              {name:"2018",data:[70,80,90,12,54,83,40,50,54,20,30,40]},
-              {name:"2017",data:[60,70,80,90,20,30,40,50,54,70,80,90]},
-              {name:"今年计划",data:[10,20,30,40,50,60,70,80,90,12,54,83]},
+              {name:"2018",data:[]},
+              {name:"2017",data:[]},
+              {name:"今年计划",data:[]}
             ]
           }
         },
         dateDayRangeValue:"",
         dateRangeValue:[],
-        dateUnit:2,
-        dateOptions:[{id:1,title:"年"},{id:2,title:"月"},{id:3,title:"日"}],
-        exhaustValue1:2879,
-        exhaustValue2:2223,
-        exhaustValue3:2879,
-        exhaustValue4:3333,
-        totalEnergyChartOption1:{
-          width: "200",
-          height: "200",
-          outCircleObj:{
-            lineWidth:26,
-            radius:52,
-            bgColor1:"#FF9A6A",
-            bgColor2:"#FE5E83",
+        dateUnit:'month',
+        dateOptions:[{id:'year',title:"年"},{id:'month',title:"月"},{id:'day',title:"日"}],
+        totalEnergyUsageData:{
+          monthActualTotal: 0,
+          monthActualUsage:{
+            "0": '0',
+            "1": '0',
+            "2": '0'
           },
-          dotObj:{
-            color:"#fff",
-            radius:1
+          monthPlanTotal:'6205.99',
+          monthPlanUsage:{
+            "0": 0,
+            "1": 0,
+            "2": 0
           },
-          space:6,
-          dotNum:30,
-          percentageValue:"60"
+          yearActualTotal:'0',
+          yearPlanTotal:'0',
+          monthUsagePer:{
+            "0":"0",
+            "1":"0",
+            "2":"0"
+          }
         },
-        totalEnergyChartOption2:{
-          width: "200",
-          height: "200",
-          outCircleObj:{
-            lineWidth:26,
-            radius:52,
-            bgColor1:"#20DBB5",
-            bgColor2:"#59E9F5",
+        finance_info:{
+          "check_in_rate": "0",
+          "energy_cost_rate": 0,
+          "house_num": [0, 0],
+          "one_house_one_night_use": {
+            0:0,
+            1:0,
+            2:0
           },
-          dotObj:{
-            color:"#fff",
-            radius:1
+          "one_seat_use": {
+            0:0,
+            1:0,
+            2:0
           },
-          space:6,
-          dotNum:30,
-          percentageValue:"100"
-        },
-        totalEnergyChartOption3:{
-          width: "200",
-          height: "200",
-          outCircleObj:{
-            lineWidth:26,
-            radius:52,
-            bgColor1:"#66A6FF",
-            bgColor2:"#2772E3",
-          },
-          dotObj:{
-            color:"#fff",
-            radius:1
-          },
-          space:6,
-          dotNum:30,
-          percentageValue:"90"
-        },
+          "real_time_income": 0,
+          "seat_num": [0, 0]
+        }
       }
     },
     methods:{
       viewsTrendTypeChange(){
         let index = this.energyArea2Type;
-        $(".allViewArea2 .myChartBox").eq(index).show().siblings().hide();
+        this.requestTrendTypeData(index);
       },
       calcTipPosition(a) {
         var center= Number($(".percentageTextTip").width())/2;
@@ -406,13 +389,15 @@
       },
       dateTypeChange(){
         this.dateRangeValue = [];
+        $(".el-date-editor.el-range-editor").css({border:'none!important'});
       },
       viewsQueryRangeData(){
-        let dateUnit  = this.dateUnit;
-        if(dateUnit==3){
-          this.dateRangeValue = this.dateDayRangeValue;
+        let that = this;
+        let dateUnit  = that.dateUnit;
+        if(dateUnit=='day'){
+          that.dateRangeValue = that.dateDayRangeValue;
         }
-
+        that.requestElcPowerData();
       },
       totalEnergyChartRotate(per,ele){
         let that = this;
@@ -424,7 +409,7 @@
           top:ps.top
         }).text(per+"%");
       },
-      initArea3Chart1(){
+      initArea3Chart1(data){
         var myChart = this.$echarts.init(document.getElementById('energyArea3Chart1'));
         var option = {
           backgroundColor: 'transparent',
@@ -442,26 +427,26 @@
             {
               name:'访问来源',
               type:'pie',
-              radius : '85%',
+              radius : '80%',
               center: ['50%', '50%'],
               color: ['#2DF0E0','#FFA414', '#316EFF' ],
               data:[
-                {value:535, name:'谷时用电'},
-                {value:510, name:'峰时用电'},
-                {value:574, name:'平时用电'}
+                {value:data.feng, name:'谷时用电'},
+                {value:data.gu, name:'峰时用电'},
+                {value:data.ping, name:'平时用电'}
               ],
               roseType: 'radius',
               selectedMode: 'single',
               label: {
                 normal: {
                   position: 'outside',
-                  formatter:'{c} 度'
+                  formatter:'{c}度'
                 }
               },
               labelLine: {
                 normal: {
                   smooth: 0.2,
-                  length: 15,
+                  length: 10,
                   length2: 10,
                 }
               },
@@ -482,7 +467,7 @@
         };
         myChart.setOption(option);
       },
-      initArea3Chart2(){
+      initArea3Chart2(data){
         var myChart = this.$echarts.init(document.getElementById('energyArea3Chart2'));
         var option = {
           backgroundColor: 'transparent',
@@ -500,13 +485,13 @@
             {
               name:'访问来源',
               type:'pie',
-              radius : '85%',
+              radius : '80%',
               center: ['50%', '50%'],
               color: ['#2DF0E0','#FFA414', '#316EFF' ],
               data:[
-                {value:535, name:'谷时用电'},
-                {value:510, name:'峰时用电'},
-                {value:574, name:'平时用电'}
+                {value:data.feng, name:'谷时用电'},
+                {value:data.gu, name:'峰时用电'},
+                {value:data.ping, name:'平时用电'}
               ],
               roseType: 'radius',
               selectedMode: 'single',
@@ -520,8 +505,8 @@
               labelLine: {
                 normal: {
                   smooth: 0.2,
-                  length: 20,
-                  length2: 40,
+                  length: 10,
+                  length2: 10,
 
                 }
               },
@@ -544,7 +529,7 @@
         };
         myChart.setOption(option);
       },
-      initArea3Chart3(){
+      initArea3Chart3(data){
         var myChart = this.$echarts.init(document.getElementById('energyArea3Chart3'));
         var option = {
           backgroundColor: 'transparent',
@@ -562,26 +547,26 @@
             {
               name:'访问来源',
               type:'pie',
-              radius : '85%',
+              radius : '80%',
               center: ['50%', '50%'],
               color: ['#2DF0E0','#FFA414', '#316EFF' ],
               data:[
-                {value:535, name:'谷时用电'},
-                {value:510, name:'峰时用电'},
-                {value:574, name:'平时用电'}
+                {value:data.feng, name:'谷时用电'},
+                {value:data.gu, name:'峰时用电'},
+                {value:data.ping, name:'平时用电'}
               ],
               roseType: 'radius',
               selectedMode: 'single',
               label: {
                 normal: {
                   position: 'outside',
-                  formatter:'{c} 度'
+                  formatter:'{c}度'
                 }
               },
               labelLine: {
                 normal: {
                   smooth: 0.2,
-                  length: 15,
+                  length: 10,
                   length2: 10,
                 }
               },
@@ -602,7 +587,7 @@
         };
         myChart.setOption(option);
       },
-      initArea3Chart4(){
+      initArea3Chart4(data){
         var myChart = this.$echarts.init(document.getElementById('energyArea3Chart4'));
         var option = {
           backgroundColor: 'transparent',
@@ -620,13 +605,13 @@
             {
               name:'访问来源',
               type:'pie',
-              radius : '85%',
+              radius : '80%',
               center: ['50%', '50%'],
               color: ['#2DF0E0','#FFA414', '#316EFF' ],
               data:[
-                {value:535, name:'谷时用电'},
-                {value:510, name:'峰时用电'},
-                {value:574, name:'平时用电'}
+                {value:data.feng, name:'谷时用电'},
+                {value:data.gu, name:'峰时用电'},
+                {value:data.ping, name:'平时用电'}
               ],
               roseType: 'radius',
               selectedMode: 'single',
@@ -640,9 +625,8 @@
               labelLine: {
                 normal: {
                   smooth: 0.2,
-                  length: 20,
-                  length2: 40,
-
+                  length: 10,
+                  length2: 10,
                 }
               },
               itemStyle: {
@@ -664,14 +648,17 @@
         };
         myChart.setOption(option);
       },
-      initArea3Charts(){
+      initArea3Charts(data){
         let that = this;
-        that.initArea3Chart1();
-        that.initArea3Chart2();
-        that.initArea3Chart3();
-        that.initArea3Chart4();
+        that.initArea3Chart1(data[0]);
+        that.initArea3Chart2(data[0]);
+        that.initArea3Chart3(data[1]);
+        that.initArea3Chart4(data[1]);
       },
       initArea4Chart1(){
+        var that = this;
+        var per = that.finance_info.energy_cost_rate;
+        var leftPer = 100 - Number(per);
         var myChart = this.$echarts.init(document.getElementById('energyArea4Chart1'));
         var option = {
           backgroundColor: 'transparent',
@@ -706,8 +693,8 @@
                 }
               },
               data:[
-                {value:634, name: '能源费用占比'},
-                {value:735, name: '剩余',label:{show:false}}
+                {value:per, name: '能源费用占比'},
+                {value:leftPer, name: '剩余',label:{show:false}}
               ],
               itemStyle: {
                 emphasis: {
@@ -722,6 +709,8 @@
         myChart.setOption(option);
       },
       initArea4Chart2(){
+        var per = this.finance_info.one_house_one_night_use[0];
+        var leftPer= 100 - Number(per);
         var myChart = this.$echarts.init(document.getElementById('energyArea4Chart2'));
         var option = {
           backgroundColor: 'transparent',
@@ -736,18 +725,18 @@
                 normal: {
                   formatter: '{c} t',
                   position: 'inner',
-                  fontSize: 12
+                  fontSize: 8
                 }
               },
               data:[
-                {value:634, name: '水'},
-                {value:735, name: '剩余',label:{show:false}}
+                {value:per, name: '水'},
+                {value:leftPer, name: '剩余',label:{show:false}}
               ],
               itemStyle: {
                 emphasis: {
-                  shadowBlur: 10,
+                  shadowBlur: 0,
                   shadowOffsetX: 0,
-                  shadowColor: 'rgba(0, 0, 0, 0.5)'
+                  shadowColor: 'rgba(0, 0, 0, 0)'
                 }
               }
             }
@@ -756,6 +745,8 @@
         myChart.setOption(option);
       },
       initArea4Chart3(){
+        var per = this.finance_info.one_house_one_night_use[1];
+        var leftPer= 100 - Number(per);
         var myChart = this.$echarts.init(document.getElementById('energyArea4Chart3'));
         var option = {
           backgroundColor: 'transparent',
@@ -774,14 +765,14 @@
                 }
               },
               data:[
-                {value:634, name: '电'},
-                {value:735, name: '剩余',label:{show:false}}
+                {value:per, name: '电'},
+                {value:leftPer, name: '剩余',label:{show:false}}
               ],
               itemStyle: {
                 emphasis: {
-                  shadowBlur: 10,
+                  shadowBlur: 0,
                   shadowOffsetX: 0,
-                  shadowColor: 'rgba(0, 0, 0, 0.5)'
+                  shadowColor: 'rgba(0, 0, 0, 0)'
                 }
               }
             }
@@ -790,6 +781,8 @@
         myChart.setOption(option);
       },
       initArea4Chart4(){
+        var per = this.finance_info.one_house_one_night_use[2];
+        var leftPer = 100 - Number(per);
         var myChart = this.$echarts.init(document.getElementById('energyArea4Chart4'));
         var option = {
           backgroundColor: 'transparent',
@@ -808,14 +801,14 @@
                 }
               },
               data:[
-                {value:634, name: '气'},
-                {value:735, name: '剩余',label:{show:false}}
+                {value:per, name: '气'},
+                {value:leftPer, name: '剩余',label:{show:false}}
               ],
               itemStyle: {
                 emphasis: {
-                  shadowBlur: 10,
+                  shadowBlur: 0,
                   shadowOffsetX: 0,
-                  shadowColor: 'rgba(0, 0, 0, 0.5)'
+                  shadowColor: 'rgba(0, 0, 0, 0)'
                 }
               }
             }
@@ -824,6 +817,8 @@
         myChart.setOption(option);
       },
       initArea4Chart5(){
+        var per = this.finance_info.one_seat_use[0];
+        var leftPer = 100 - Number(per);
         var myChart = this.$echarts.init(document.getElementById('energyArea4Chart5'));
         var option = {
           backgroundColor: 'transparent',
@@ -838,18 +833,18 @@
                 normal: {
                   formatter: '{c} t',
                   position: 'inner',
-                  fontSize: 12
+                  fontSize: 8
                 }
               },
               data:[
-                {value:634, name: '水'},
-                {value:735, name: '剩余',label:{show:false}}
+                {value:per, name: '水'},
+                {value:leftPer, name: '剩余',label:{show:false}}
               ],
               itemStyle: {
                 emphasis: {
-                  shadowBlur: 10,
+                  shadowBlur: 0,
                   shadowOffsetX: 0,
-                  shadowColor: 'rgba(0, 0, 0, 0.5)'
+                  shadowColor: 'rgba(0, 0, 0, 0)'
                 }
               }
             }
@@ -858,6 +853,8 @@
         myChart.setOption(option);
       },
       initArea4Chart6(){
+        var per = this.finance_info.one_seat_use[1];
+        var leftPer = 100 - Number(per);
         var myChart = this.$echarts.init(document.getElementById('energyArea4Chart6'));
         var option = {
           backgroundColor: 'transparent',
@@ -876,14 +873,14 @@
                 }
               },
               data:[
-                {value:634, name: '电'},
-                {value:735, name: '剩余',label:{show:false}}
+                {value:per, name: '电'},
+                {value:leftPer, name: '剩余',label:{show:false}}
               ],
               itemStyle: {
                 emphasis: {
-                  shadowBlur: 10,
+                  shadowBlur: 0,
                   shadowOffsetX: 0,
-                  shadowColor: 'rgba(0, 0, 0, 0.5)'
+                  shadowColor: 'rgba(0, 0, 0, 0)'
                 }
               }
             }
@@ -892,6 +889,8 @@
         myChart.setOption(option);
       },
       initArea4Chart7(){
+        var per = this.finance_info.one_seat_use[2];
+        var leftPer = 100 - Number(per);
         var myChart = this.$echarts.init(document.getElementById('energyArea4Chart7'));
         var option = {
           backgroundColor: 'transparent',
@@ -910,14 +909,14 @@
                 }
               },
               data:[
-                {value:634, name: '气'},
-                {value:735, name: '剩余',label:{show:false}}
+                {value:per, name: '气'},
+                {value:leftPer, name: '剩余',label:{show:false}}
               ],
               itemStyle: {
                 emphasis: {
-                  shadowBlur: 10,
+                  shadowBlur: 0,
                   shadowOffsetX: 0,
-                  shadowColor: 'rgba(0, 0, 0, 0.5)'
+                  shadowColor: 'rgba(0, 0, 0, 0)'
                 }
               }
             }
@@ -941,23 +940,139 @@
         let config = {
           project_id: projectId
         }
-        console.log(config);
+
         that.$http.post('hotel_energy/index',config).then(res=>{
-          console.log(res);
+          if(res.data.code == 0){
+            var energyData = res.data.data;
+            console.log(energyData);
+            that.calcArea1Data(energyData.total_energy_use);
+            that.calcArea2Data(energyData.energy_trend_3_year,'energyTrend0',0);
+            that.calcArea3Data(energyData.feng_ping_gu);
+            that.calcArea4Data(energyData.finance_info);
+          }
         }).catch(err=>{
           console.log(err);
         })
+      },
+      requestTrendTypeData(index){
+        let that = this;
+        let projectId = that.$store.state.projectId;
+        let config = {
+          project_id: projectId,
+          energy_type:index
+        }
+
+        that.$http.post('hotel_energy/index',config).then(res=>{
+          console.log(res);
+          if(res.data.code == 0){
+            var trendData = res.data.data;
+            that.calcArea2Data(trendData.energy_trend_3_year,'energyTrend'+index,index);
+          }
+        }).catch(err=>{
+          console.log(err);
+        })
+
+      },
+      requestElcPowerData(){
+        let that = this;
+        let projectId = that.$store.state.projectId;
+        let config = {
+          project_id: projectId,
+          query_date_type: that.dateUnit,
+          query_date: that.dateRangeValue
+        }
+        console.log(config);
+
+        that.$http.post('hotel_energy/index',config).then(res=>{
+          console.log(res);
+          if(res.data.code == 0){
+            var data = res.data.data.feng_ping_gu;
+            that.calcArea3Data(data);
+          }
+        }).catch(err=>{
+          console.log(err);
+        })
+      },
+      calcArea1Data(data){
+        let that = this;
+        that.totalEnergyUsageData.monthActualTotal = data.this_month_actual_carbon_emission;
+        var monthActuUsage = that.totalEnergyUsageData.monthActualUsage = data.this_month_actual_use_energy;
+        that.totalEnergyUsageData.monthPlanTotal = data.this_month_plan_carbon_emission;
+        var monthPlagUsage = that.totalEnergyUsageData.monthPlanUsage = data.this_month_plan_use_energy;
+        that.totalEnergyUsageData.yearActualTotal = data.this_year_actual_carbon_emission;
+        that.totalEnergyUsageData.yearPlanTotal = data.this_year_plan_carbon_emission;
+        var perObj = {};
+        for(var i=0;i<3;i++){
+          perObj[i] = Math.round(Number(monthActuUsage[i])/Number(monthPlagUsage[i]));
+          if(i==2){that.totalEnergyUsageData.monthUsagePer = perObj};
+        }
+        that.totalEnergyChartRotate(perObj[0],'.energyFinger1');
+        that.totalEnergyChartRotate(perObj[1],'.energyFinger2');
+        that.totalEnergyChartRotate(perObj[2],'.energyFinger3');
+
+      },
+      calcArea2Data(data,ele,index){
+        let that = this;
+        let random = Math.ceil(Math.random()*1000 +1);
+        var unit,type;
+        if(index == 0){
+          unit = '月份/KW/h';
+          type = '电';
+        }else if(index == 1){
+          unit = '月份/t';
+          type = '水';
+        }else if(index == 2){
+          unit = '月份/m³';
+          type = '气';
+        }
+        that[ele] = {
+          id: 'energyTrendChart'+random,
+          echarts:{
+            id:"lineEcharts"+random,
+            type: type,
+            unit:"",
+            title:"单位：" + unit,
+            style:{
+              width:'100%',
+              height: '100%'
+            },
+            xDate:['01','02','03','04','05','06','07','08','09','10','11','12'],
+            list:[
+              {name:"2018",data:data['2017']},
+              {name:"2017",data:data['2018']},
+              {name:"今年计划",data:data['this_year_plan']},
+            ]
+          }
+        }
+        that.$forceUpdate();
+        $(".allViewArea2 .myChartBox").eq(index).show().siblings().hide();
+      },
+      calcArea3Data(data){
+        let that = this;
+        var elecPowerData = [];
+        for(var i=0;i<2;i++){
+          var tempObj={};
+          tempObj.feng = data.feng[i];
+          tempObj.gu = data.gu[i];
+          tempObj.ping = data.ping[i];
+          elecPowerData[i] = tempObj;
+        }
+        that.initArea3Charts(elecPowerData);
+      },
+      calcArea4Data(data){
+        let that = this;
+        that.finance_info = data;
+        that.initArea4Charts();
+        that.$forceUpdate();
       }
+    },
+    created(){
+
     },
     mounted(){
       let that = this;
       that.requestAllData();
 
-      that.totalEnergyChartRotate(10,'.energyFinger1');
-      that.totalEnergyChartRotate(50,'.energyFinger2');
-      that.totalEnergyChartRotate(80,'.energyFinger3');
-      that.initArea3Charts();
-      that.initArea4Charts();
     }
   }
 </script>
@@ -1182,6 +1297,8 @@
     position: absolute;
     transform: translate(-50%,-50%);
   }
-
+  .area3-QueryDateBtn:hover{
+    background-color: transparent!important;
+  }
 
 </style>
