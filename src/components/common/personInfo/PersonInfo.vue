@@ -126,11 +126,15 @@
       },
       changePassword(){
         if(!this.oldPassword){
-          this.$emit('showTips', '请输入原密码！');
+          this.$emit('showTips', '请输入原密码');
           return
         }
-        if(this.newPassword1 != this.newPassword2){
-          this.$emit('showTips', '密码不一致，请重新输入！');
+        if(this.newPassword1.length<6){
+          this.$emit('showTips', '请重新输入长度6位以上密码');
+          return
+        }
+          if(this.newPassword1 != this.newPassword2){
+          this.$emit('showTips', '密码不一致，请重新输入');
           return
         }
         this.$http.post('users_manage/users_updateLoginPwd',{
@@ -143,6 +147,7 @@
             this.$emit('showTips', '修改成功！');
             this.$store.state.userInfoTotal.userinfo.password = this.newPassword2
             this.options.isChangePassword = false
+            window.location.reload()
           }else {
             this.$emit('showTips', res.data.message);
           }

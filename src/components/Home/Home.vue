@@ -265,6 +265,7 @@
       }
     },
     created(){
+      console.log(111)
         console.log(this.$store.state.sysList)
       this.routerInfo = this.$store.state.sysList
 
