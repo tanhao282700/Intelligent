@@ -2,6 +2,7 @@
     <div class="tabsDomBox"> 
         <div class="navCrumbs">首页 > 门禁系统 > <span>门禁记录</span></div>
         <div class="borderShadow">
+            <a href="http://images.china-tillage.com/门禁系统门禁记录20181031124347.xls" id="downLoadSrc" style="display:none;"></a>
             <div class="searchConditionBox">
                 <div class="dateBox">
                     <el-date-picker v-model="releasetime1" type="date" placeholder="选择开始时间"></el-date-picker>
@@ -70,6 +71,7 @@
 				tableData: [],
                 pagesize:20,
                 currentPage:1,
+                downLoadSrc:'',
         	}
         },
         mounted(){
@@ -97,9 +99,9 @@
                     query_name:query_name,
                 }).then(function(response){
                     // 响应成功回调
-                    //console.log(response.data.data);
-                    console.log(s);
-                    console.log(e);
+                    console.log(response.data.data);
+                    that.totalDataNumber = response.data.data.record_num_total;
+                    that.totalPageNum =  Math.ceil(Number(that.totalDataNumber) / that.pageSize);
                     console.log(query_name);
                     that.tableData = response.data.data.entrance_guard_record;
                 }, function(response){
@@ -115,6 +117,9 @@
                     export:1,
                 }).then(function(response){
                     // 响应成功回调
+                    // var str = "http://images.china-tillage.com/门禁系统门禁记录20181031124347.xls";
+                    // that.downLoadSrc = str;
+                    $("#downLoadSrc").click();
                     console.log("导出成功")
                 }, function(response){
                     // 响应错误回调
