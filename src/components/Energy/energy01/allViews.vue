@@ -115,14 +115,7 @@
               </el-select>
               <div class="yearRangeBox" v-show=" dateUnit=='year' ">
                 <el-date-picker
-                  v-model="dateRangeValue[0]"
-                  type="year"
-                  value-format="yyyy"
-                  placeholder="请选择">
-                </el-date-picker>
-                <span>-</span>
-                <el-date-picker
-                  v-model="dateRangeValue[1]"
+                  v-model="dateRangeValue"
                   type="year"
                   value-format="yyyy"
                   placeholder="请选择">
@@ -130,32 +123,22 @@
               </div>
               <div class="yearRangeBox" v-show=" dateUnit=='month' ">
                 <el-date-picker
-                  v-model="dateRangeValue[0]"
-                  format="yyyy-M"
-                  value-format="yyyyMM"
-                  type="month"
-                  placeholder="请选择">
-                </el-date-picker>
-                <span>-</span>
-                <el-date-picker
-                  v-model="dateRangeValue[1]"
+                  v-model="dateRangeValue"
                   format="yyyy-M"
                   value-format="yyyyMM"
                   type="month"
                   placeholder="请选择">
                 </el-date-picker>
               </div>
-              <el-date-picker
-                v-model="dateDayRangeValue"
-                type="daterange"
-                range-separator="-"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
-                format="yyyy-M-d"
-                value-format="yyyyMMdd"
-                class="energyAreaDateBox"
-                v-show=" dateUnit=='day' ">
-              </el-date-picker>
+              <div class="yearRangeBox" v-show=" dateUnit=='day' ">
+                <el-date-picker
+                  v-model="dateRangeValue"
+                  format="yyyy-M-d"
+                  value-format="yyyyMMdd"
+                  type="date"
+                  placeholder="请选择">
+                </el-date-picker>
+              </div>
               <div>
                 <el-button class="area3-QueryDateBtn" @click="viewsQueryRangeData"><i></i><span>查询</span></el-button>
               </div>
@@ -330,7 +313,7 @@
           }
         },
         dateDayRangeValue:"",
-        dateRangeValue:[],
+        dateRangeValue:"",
         dateUnit:'month',
         dateOptions:[{id:'year',title:"年"},{id:'month',title:"月"},{id:'day',title:"日"}],
         totalEnergyUsageData:{
@@ -388,15 +371,11 @@
         }
       },
       dateTypeChange(){
-        this.dateRangeValue = [];
+        this.dateRangeValue = "";
         $(".el-date-editor.el-range-editor").css({border:'none!important'});
       },
       viewsQueryRangeData(){
         let that = this;
-        let dateUnit  = that.dateUnit;
-        if(dateUnit=='day'){
-          that.dateRangeValue = that.dateDayRangeValue;
-        }
         that.requestElcPowerData();
       },
       totalEnergyChartRotate(per,ele){
@@ -981,7 +960,6 @@
           query_date_type: that.dateUnit,
           query_date: that.dateRangeValue
         }
-        console.log(config);
 
         that.$http.post('hotel_energy/index',config).then(res=>{
           console.log(res);
