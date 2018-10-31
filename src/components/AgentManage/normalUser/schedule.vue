@@ -402,6 +402,9 @@ export default {
            }
         })
     },
+    getNoApply(){
+
+    },
     getApplyStatus(){
       this.$http.post('/pc_ims/staff/work_change',{type:0})
       .then(res=>{
