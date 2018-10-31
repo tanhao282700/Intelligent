@@ -73,13 +73,19 @@
         	}
         },
         mounted(){
-            this.getData("20180101","20181010",1)
+            this.getData("","","",1)
         },
         methods:{
             getData(start_date,end_date,query_name,numbC){
                 var that = this;
-                var s = that.format(start_date, 'yyyyMMdd');
-                var e = that.format(end_date, 'yyyyMMdd');
+                var s,e;
+                if(start_date == "" || end_date ==""){
+                    s="";
+                    e="";
+                }else{
+                    s = that.format(start_date, 'yyyyMMdd');
+                    e = that.format(end_date, 'yyyyMMdd');
+                }
                 this.$http.post('/entrance/record',{
                     sys_menu_id:15,
                     project_id:1,
