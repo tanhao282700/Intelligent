@@ -160,6 +160,7 @@
 </script>
 <style lang="less" rel="stylesheet/less">
   .personInfoComponent {
+    z-index:999;
     width: 320px;
     height: 100%;
     position: absolute;
