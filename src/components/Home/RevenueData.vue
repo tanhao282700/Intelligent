@@ -85,6 +85,11 @@
              .then((response)=>{
                if(response.data.code == 0){
                  console.log(response)
+                 response.data.data.data.map((item)=>{
+                   for(let i=0;i<item.time.length;i++){
+                     item.time[i] = item.time[i].split('/')[1]
+                   }
+                 })
                  this.shui = response.data.data.data[1]
                 this.dian = response.data.data.data[0]
                 this.qi = response.data.data.data[2]

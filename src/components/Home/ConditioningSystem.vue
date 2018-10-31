@@ -14,18 +14,11 @@
         <div class="conditionEcharts2" ref="conditionEcharts2" id="conditionEcharts2"></div>
       </div>
       <div class="conditionEcharts3">
-        <div class="type">
-          <div class="name">系统模式</div>
+        <div class="type" v-for="item in patternData">
+          <div class="name" v-text="item.name"></div>
           <div class="typs system">
-            <span class="active">自动</span>
-            <span>手动</span>
-          </div>
-        </div>
-        <div class="type">
-          <div class="name">主机模式</div>
-          <div class="typs host">
-            <span class="active">制热</span>
-            <span>制冷</span>
+            <span :class="{'active':item.value==0}" v-text="item.param.showvalue[0]"></span>
+            <span :class="{'active':item.value==1}" v-text="item.param.showvalue[1]"></span>
           </div>
         </div>
       </div>
@@ -80,7 +73,8 @@
           broadTwoList:[],
           conditionInterval:null,
           conditionData:[{name:''},{name:""}],
-          types:0  // 初始化显示第一个按钮
+          types:0,  // 初始化显示第一个按钮
+          patternData:[]  //系统模式数据
         }
     },
     components:{
@@ -107,6 +101,9 @@
         if(types == 0){
             this.broadOneList = this.conditionData[0].data3
           this.broadTwoList = this.conditionData[0].data4
+          this.patternData = this.conditionData[0].data2
+
+          console.log(this.conditionData[0].data2)
           if(this.conditionData[0].data1.length == 1){
             this.drawEchart1(this.conditionData[0].data1)
           }
@@ -118,6 +115,9 @@
         if(types == 1){
           this.broadOneList = this.conditionData[1].data3
           this.broadTwoList = this.conditionData[1].data4
+          this.patternData = this.conditionData[1].data2
+
+          console.log(this.conditionData[1].data2)
           if(this.conditionData[1].data1.length == 1){
             this.drawEchart1(this.conditionData[1].data1)
           }
@@ -132,12 +132,15 @@
         this.$emit('deletClick',{self_id:1,componentsName:'Conditioning'})
       },
       initData(){
-        /*axios.defaults.headers.common['Authorization'] = '101_101_101';*/
-        this.$http.get('/index_pc/pc/model',{self_id:11})
+        this.$http.get('/index_pc/pc/model',{self_id:1})
             .then((response)=>{
-              /*console.log(response)*/
               this.broadOneList = response.data.data[0].data3
               this.broadTwoList = response.data.data[0].data4
+              this.patternData = response.data.data[0].data2
+              this.patternData[0].param = JSON.parse(this.patternData[0].param)
+              this.patternData[0].param.showvalue[0] = this.patternData[0].param.showvalue[0].replace('一键','')
+              this.patternData[0].param.showvalue[1] = this.patternData[0].param.showvalue[1].replace('一键','')
+
               this.conditionData = response.data.data
               this.conditionData[1] =  {
                 "data1": [
@@ -149,13 +152,12 @@
                     "value": "0"
                   }
                 ],
-                "data2": [
-                  {
-                    "name": "一键启停",
-                    "param": "",
-                    "value": "0"
-                  }
-                ],
+                "data2":
+                  [{
+                    name: "主机模式",
+                    param: {'value': ['1','2'],showvalue: ['制冷','制热'],'type':0},
+                    value:"0"
+                }],
                 "data3": [
                   {
                     "name": "啊实打实的",
@@ -241,7 +243,6 @@
       scroll(){
         if(!this.isSystemHover){
           this.animate1 = true;
-          console.log(111)
           setTimeout(()=>{
             this.broadOneList.push(this.broadOneList[0])
             this.broadOneList.shift()

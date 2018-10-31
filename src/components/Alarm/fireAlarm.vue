@@ -7,7 +7,7 @@
     <div class="userBox">
       <!--面包屑-->
       <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
         <el-breadcrumb-item>告警管理</el-breadcrumb-item>
       </el-breadcrumb>
 
@@ -53,6 +53,7 @@
               v-model="timeValue"
               type="daterange"
               size="mini"
+              @change="choseTime"
               range-separator="-"
               value-format="yyyy-MM-dd HH:mm:ss"
               start-placeholder="开始日期"
@@ -65,7 +66,7 @@
 
           <!--导出-->
           <div>
-            <el-button @click="exports" class="addNewUserBtn queryBoxBtn export" ><i></i><span>导出</span></el-button>
+            <a style="display: block" :href="downloadFile+'?start_time='+fileTime[0]+'&end_time='+fileTime[1]+'&level='+formData.level+'&sys_id='+formData.sys_id+'&floor_id='+formData.floor_id+'&device_id='+formData.device_id"><el-button class="addNewUserBtn queryBoxBtn export" ><i></i><span>导出</span></el-button></a>
           </div>
         </div>
 
@@ -78,6 +79,7 @@
             class=" tableHeadBlue">
             <el-table-column
               type="index"
+              :index="indexMethod"
               label="序号"
               min-width="9%">
             </el-table-column>
@@ -168,6 +170,7 @@
     data(){
       return {
         loading:true,
+        downloadFile:'https://tesing.china-tillage.com/index_pc/pc/select/alarm/excel', //导出功能路径
         formData:{
           level:'',
           sys_id:'',
@@ -205,16 +208,21 @@
           }],
         timeValue:[],
         curPageData:[],
+        fileTime:['','']  //文件下载需要的时间
       }
     },
     created(){
       this.initData()
       this.initTitle()
+
     },
     mounted(){
 
     },
     methods:{
+      indexMethod(index) {
+        return this.formData.pagesize * (this.formData.pagenumber-1) + index + 1;
+      },
       initData(){
         this.$http.get('/index_pc/pc/select/alarm',this.formData).then((response)=>{
           this.curPageData = response.data.data
@@ -234,6 +242,12 @@
           .catch(function (error) {
             console.log(error);
           });
+      },
+      choseTime(){
+        if(this.timeValue == null){
+          this.timeValue = ['','']
+        }
+        this.fileTime = this.timeValue
       },
       choseSys(){
         this.sysData.map((item,index)=>{
@@ -255,6 +269,7 @@
           })
       },
       queryForm(){
+          console.log(this.timeValue)
           this.loading = true
           if(this.timeValue && this.timeValue.length>0){
             this.formData.start_time = this.timeValue[0]
@@ -288,12 +303,13 @@
           this.formData.start_time = ''
           this.formData.end_time = ''
         }
-        this.$http.get('/index_pc/pc/select/alarm/excel',this.formData).then((response)=>{
+        /*this.$http.get('/index_pc/pc/select/alarm/excel',this.formData).then((response)=>{
           console.log(response)
         })
           .catch(function (error) {
             console.log(error);
-          });
+          });*/
+        window.location.href='/index_pc/pc/select/alarm/excel'
       }
     },
   }
