@@ -3,7 +3,7 @@
   <div class="meterCopy">
     <!--面包屑-->
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>能源管理系统</el-breadcrumb-item>
       <el-breadcrumb-item>三表远抄</el-breadcrumb-item>
     </el-breadcrumb>
