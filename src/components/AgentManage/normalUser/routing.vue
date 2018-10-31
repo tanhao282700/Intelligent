@@ -216,26 +216,15 @@ export default {
         table:{
             // small:'small',
             hei:328, //table高度  设置后有滚动条
-            // len:800, //总条数
-            data:[
-              {id:1,name:'白狗汪1',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:0,backApply:"-",fill:100}, 
-              {id:2,name:'白狗汪2',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:0,backApply:"-",fill:80}, 
-              {id:3,name:'白狗汪3',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:3,backApply:"-",fill:60}, 
-              {id:4,name:'白狗汪4',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:3,backApply:"-",fill:40}, 
-              {id:5,name:'白狗汪5',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:4,backApply:"-",fill:20}, 
-              {id:6,name:'白狗汪6',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:4,backApply:"-",fill:100}, 
-              {id:7,name:'白狗汪7',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:4,backApply:"-",fill:100}, 
-              {id:8,name:'白狗汪8',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:4,backApply:"-",fill:100}, 
-              {id:9,name:'白狗汪9',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:4,backApply:"-",fill:100}, 
-              {id:10,name:'白狗汪10',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:4,backApply:"-",fill:100},              
-            ],
+            len:0, //总条数
+            data:[],
             th:[
               {prop:'id',label:'编号'},
-              {prop:'name',label:'类别'},
-              {prop:'tel',label:'地点',wid:180},
-              {prop:'job',label:'派发时间'},
-              {prop:'sendNum',label:'点位'},
-              {prop:'dealed',label:'状态',operate: true, 
+              {prop:'title',label:'类别'},
+              {prop:'floorname',label:'地点',wid:180},
+              {prop:'addtime',label:'派发时间'},
+              {prop:'name',label:'点位'},
+              {prop:'now_state',label:'状态',operate: true, 
                   render: (h, param)=> {
                       const btnss = {
                           fills:param.row.dealed,  
@@ -419,13 +408,19 @@ export default {
         })
     },
     getTableData(){
-      this.$http.post('/pc_ims/staff/inspectiondata_user').then(res=> {
+      this.$http.post('/pc_ims/staff/inspectiondata_user',{
+        sys_name:'',
+        pagenumber:1,
+        pagesize:20})
+      .then(res=> {
            if(res.data.code==0){
-             console.log(res.data.data);
+             this.table.data = res.data.data;
+             this.table.len = res.data.count;
            }else{
               this.$message({
                 type:'error',
-                message:res.data.msg
+                message:res.data.msg,
+                duration:2000
               })
            }
         })

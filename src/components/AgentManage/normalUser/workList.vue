@@ -35,7 +35,7 @@
               @change = "change2"
             />
           </div>
-          <div class="searchBoxs">
+          <div class="searchBoxs" @click="getTableList">
             <i class="el-icon-search"></i>
             <span>筛选</span>
           </div>
@@ -549,7 +549,7 @@ export default {
            }
         })
       },
-      getTableList(){
+      getTableList(){//有错，要改
         this.$http.post('/pc_ims/staff/jobdata_user',{
           sys_name:'',
           type:'',
@@ -566,9 +566,6 @@ export default {
            }
         })
       }
-  },
-  created() {
-    
   },
   mounted() {
     this.getTopData();
