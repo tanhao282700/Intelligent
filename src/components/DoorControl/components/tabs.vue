@@ -2,7 +2,7 @@
     <div class="tabsDomBox"> 
         <div class="navCrumbs">首页 > 门禁系统 > <span>门禁记录</span></div>
         <div class="borderShadow">
-            <a :href="downLoadSrc" id="downLoadSrc" style="display:none;"></a>
+            <a :href="downLoadSrc" style="display:none;" @click="downExcelA"></a>
             <div class="searchConditionBox">
                 <div class="dateBox">
                     <el-date-picker v-model="releasetime1" type="date" placeholder="选择开始时间"></el-date-picker>
@@ -17,7 +17,7 @@
                 <button class="btn btnExport floatRt" @click="exportTable"><i class="el-icon-search"></i>导出</button>
             </div>
             <div class="tableBox">
-                <el-table :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)" style="width: 100%" height="480">
+                <el-table :data="tableData" style="width: 100%" height="480">
                     <el-table-column prop="show_id" label="编号" align="cneter"></el-table-column>
                     <el-table-column prop="id_card" label="ID卡号" align="cneter"></el-table-column>
                     <el-table-column prop="name" label="姓名"  align="cneter"></el-table-column>
@@ -35,21 +35,22 @@
 
                 <!--分页器-->
                 <div class="paginationBox">
-                  <div class="totalPageNumBox">共{{totalPageNum}}页</div>
+                    <div class="totalPageNumBox">共{{totalPageNum}}页</div>
 
-                  <div class="el-input el-pagination__editor is-in-pagination curPageBox">
-                    <input type="number" autocomplete="off" class="el-input__inner" v-model="toPageNum">
-                    <span @click="toInputPage">GO</span>
-                  </div>
+                    <div class="el-input el-pagination__editor is-in-pagination curPageBox">
+                        <input type="number" autocomplete="off" class="el-input__inner" v-model="currPage">
+                        <span @click="toInputPage">GO</span>
+                    </div>
 
-                  <el-pagination
-                    @current-change="handleCurrentChange"
-                    :current-page="currentPage"
-                    :page-size="pagesize"
-                    :page-count="totalPageNum"
-                    layout="prev, pager, next"
+                    <el-pagination
+                        @current-change="handleCurrentChange"
+                        :current-page="currentPage"
+                        :page-size="pagesize"
+                        :page-count="totalPageNum"
+                        :total="total"
+                        layout="prev, pager, next"
                     >
-                  </el-pagination>
+                    </el-pagination>
 
                 </div>
             </div>
@@ -62,7 +63,8 @@
         data () {
         	return {
                 toPageNum:1,
-                totalPageNum:1,
+                totalPageNum:3,
+                total:0,
 				//时间
                 releasetime1:"",
 				releasetime2:"",
@@ -72,41 +74,44 @@
                 pagesize:20,
                 currentPage:1,
                 downLoadSrc:'',
+                currPage:''
         	}
         },
         mounted(){
-            this.getData("","","",1)
+            this.getData();
         },
         methods:{
-            getData(start_date,end_date,query_name,numbC){
+            getData(){
                 var that = this;
                 var s,e;
-                if(start_date == "" || end_date ==""){
+                if(this.releasetime1 == "" || this.releasetime2 ==""){
                     s="";
                     e="";
                 }else{
-                    s = that.format(start_date, 'yyyyMMdd');
-                    e = that.format(end_date, 'yyyyMMdd');
+                    s = that.format(this.releasetime1, 'yyyyMMdd');
+                    e = that.format(this.releasetime2, 'yyyyMMdd');
                 }
                 this.$http.post('/entrance/record',{
                     sys_menu_id:15,
                     project_id:1,
                     floor_id:1,
-                    page_index:numbC,
-                    one_page_num:20,
+                    page_index:this.currentPage,
+                    one_page_num:this.pagesize,
                     start_date:s,
                     end_date:e,
-                    query_name:query_name,
+                    query_name:this.query_name,
                 }).then(function(response){
                     // 响应成功回调
-                    console.log(response.data.data);
-                    that.totalDataNumber = response.data.data.record_num_total;
-                    that.totalPageNum =  Math.ceil(Number(that.totalDataNumber) / that.pageSize);
-                    console.log(query_name);
-                    that.tableData = response.data.data.entrance_guard_record;
+                    that.total = response.data.data.record_num_total;
+                    that.totalPageNum = response.data.data.page_num_total;
+                    that.tableData=response.data.data.entrance_guard_record;
+                    console.log(that.tableData)
                 }, function(response){
                     // 响应错误回调
                 });
+            },
+            downExcelA(){
+                console.log("导出成功")
             },
             exportTable(){
                 var that = this;
@@ -121,17 +126,17 @@
                     var str = "http://"+response.data;
                     that.downLoadSrc = str;
                     console.log(str);
-                    $("#downLoadSrc").click();
-                    console.log("导出成功")
+                    window.open(str);
+                    //that.downExcelA();
+                    
                 }, function(response){
                     // 响应错误回调
                 });
             },
             toInputPage(){
               /*显示输入页表格数据*/
-              var num = Number(this.toPageNum);
-              this.getData(num);
-              this.currentPage = num;
+              this.currentPage = Number(this.currPage);
+              this.getData();
             },
             doSearch(){},
             addPolicy(){},
@@ -140,7 +145,10 @@
                 this.pagesize = size;
             },
             handleCurrentChange: function(currentPage){
-                this.currentPage = currentPage;
+                /*当前页变动事件*/
+                this.currentPage =  Number(currentPage);
+                this.currPage = this.currentPage;
+                this.getData()
             },
             format(time, format){
                 var t = new Date(time);

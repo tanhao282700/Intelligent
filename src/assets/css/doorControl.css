@@ -79,7 +79,7 @@ nav.tabNav span a.on{color:#008aff;}
 .bottomShadow .floorImgBox i.door12{left:822px;top:350px;}
 
 .doorStatusBox{position: absolute;right:0;top:22px;height:16px;}
-.doorStatusBox li{float: left;padding:0 20px;border-right:2px solid #4a90e2;height:16px;line-height: 16px;}
+.doorStatusBox li{float: left;padding:0 20px;border-right:2px solid #4a90e2;height:16px;line-height: 16px;font-size: 12px;}
 .doorStatusBox li:last-child{border:0px;}
 .doorStatusBox li span:first-child{padding-right:20px;}
 .doorAllN{color: #f38a00;}
