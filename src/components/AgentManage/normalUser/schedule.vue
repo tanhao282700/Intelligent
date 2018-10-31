@@ -11,7 +11,7 @@
             <span slot="label" class="tabItems">
                 排班表
             </span>
-            <ScheduleTable :isShowBtns="'no'" style="width:100%;"/>
+            <ScheduleTable :isShowBtns="'no'" :data="scheTable" style="width:100%;"/>
         </el-tab-pane>
         <el-tab-pane name="second" >
           <span slot="label" class="tabItems">
@@ -337,6 +337,7 @@ export default {
           {},
           {}
         ],
+        scheTable:[],
         vpeo:'',
         radio3:'待审核',
         applyJob:{
@@ -387,7 +388,10 @@ export default {
 
     },
     getTableList(){
-      this.$http.post('/pc_ims/staff/work_list').then(res=> {
+      this.$http.post('/pc_ims/staff/work_list',{
+        year:'2018',
+        month:'07'
+      }).then(res=> {
            if(res.data.code==0){
               console.log(res.data.data);
            }else{
@@ -398,14 +402,32 @@ export default {
            }
         })
     },
-    exportTable(){
-      this.$http.get('/pc_ims/down/staff_work_list').then(res=> {
-           if(res.data.code==0){
-              console.log(res.data.data);
+    getNoApply(){
+
+    },
+    getApplyStatus(){
+      this.$http.post('/pc_ims/staff/work_change',{type:0})
+      .then(res=>{
+          if(res.data.code==0){
+              console.log(res)
            }else{
               this.$message({
                 type:'error',
-                message:res.data.msg
+                message:res.data.msg,
+                duration:2000
+              })
+           }
+      })
+    },
+    exportTable(){
+      this.$http.get('/pc_ims/down/staff_work_list').then(res=> {
+           if(res.data.code==0){
+              this.scheTable = res.data.data;
+           }else{
+              this.$message({
+                type:'error',
+                message:res.data.msg,
+                duration:2000
               })
            }
         })

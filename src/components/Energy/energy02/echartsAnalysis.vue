@@ -9,6 +9,7 @@
 </template>
 
 <script>
+	import echarts from 'echarts';
     export default {
     	name:'echarts-analysis',
     	props:['data'],
@@ -18,36 +19,42 @@
         	}
         },
         methods:{
-        	getEchartsData(){
-
-        	},
-        	drawLine(){
-        		let data = this.data;
+        	drawLine(data){
         		let chart = this.$echarts.init(document.getElementById('lines'));
         		let chart2 = this.$echarts.init(document.getElementById('pies'));
         		let chart3 = this.$echarts.init(document.getElementById('bars'));
-        		let legendData = ['2018年9月', '2017年9月','2018年8月'];
-		        let bgColorList = ["#F35E5E","#EEB66E","#008AFF"];
-		        let axisLabel = ['客房', '餐饮厨房', '公共区域', '设备', '区域一', '区域二', '1-5号主机'];
+        		let legendData = data.legendData;
+		        let bgColorList = [{color1:"#FD99AC",color2:'#FA6074'},{color1:'#FFD12D',color2:"#FFA414"},{color1:'#6DBEFD',color2:'#3B89F9'}];
+		        let axisLabel = data.axisLabel;
+		        let arrData = [data.arrData1,data.arrData2,data.arrData3];
 		        let seriesValue = [];
 		        for (var i = 0; i < legendData.length; i++) {
-		            var arrData = [];
 		            var seriesDataVal = null;
-		            for (var j = 0; j < axisLabel.length; j++) {
-		                arrData.push(Math.floor(Math.random() * 100));
-		            }
 		            seriesDataVal = {
 		                barWidth: 8,//柱状条宽度
 		                name:legendData[i],
 		                type:'bar',
-		                itemStyle: {
-		                    normal: {
-		                        show: true,//鼠标悬停时显示label数据
-		                        barBorderRadius: [2, 2, 2, 2],//柱形图圆角，初始化效果
-		                        color: bgColorList[i]
-		                    }
-		                },
-		                data:arrData
+		            	itemStyle: {
+	                        normal: {
+	                            color: new echarts.graphic.LinearGradient(
+	                                0, 0, 0, 1,
+	                                [
+	                                    {offset: 0, color: bgColorList[i].color1},
+	                                    {offset: 1, color: bgColorList[i].color2}
+	                                ]
+	                            )
+	                        },
+	                        emphasis: {
+	                            color: new echarts.graphic.LinearGradient(
+	                                0, 0, 0, 1,
+	                                [
+	                                    {offset: 0, color: '#008EFE'},
+	                                    {offset: 1, color: '#00C1FF'}
+	                                ]
+	                            )
+	                        }
+	                    },
+		                data:arrData[i]
 		            };
 		            seriesValue.push(seriesDataVal);
 		        }
@@ -77,17 +84,15 @@
 		            },
 		            calculable : true,
 		            xAxis: {
-				        type: 'value',
-				        min:1,
-				       	max:31,
-				        interval:1,
+				        type: 'category',
 				        boundaryGap: true,
 				        axisLine: {show:false},
 				        axisTick: {show:false},
 				        splitLine: {show:false},
 				        axisLabel: {textStyle: {
 						    color: '#708FBE'
-						}}
+						}},
+						data:['1','2','3','4','5','6','7']
 			        },
 			    	yAxis: {
 				        axisLine: {show:false},
@@ -102,7 +107,7 @@
 			    	},
 				    series: [{
 				    	name:'客房',
-				        data: data.custom,
+				        data:[4,5,7,7,7,5], //data.custom,
 				        type: 'line',
 				        symbol: "circle", 
 				        symbolSize:0,
@@ -117,7 +122,7 @@
 			            },
 				    },{
 				    	name:'宴会厅',
-				        data: data.party,
+				        data:[3,3,3,3,3,3,3], //data.party,
 				        type: 'line',
 				        symbol: "circle", 
 				        symbolSize:0,
@@ -237,16 +242,7 @@
 				            radius : '70%',
 				            center: ['50%', '50%'],
 				            color:["#FD97AA","#008AFF","#F35E5E","#EEB66E","#EBF191","#C382EF","#95EDC5"],
-				            data:[
-				            	{value:135, name:'1-5号主机'},
-				                {value:1548, name:'公共区域'},
-				                {value:335, name:'餐厅'},
-				                {value:310, name:'空调'},
-				                {value:234, name:'客房'},
-				                {value:135, name:'餐饮厨房'},
-				                {value:1548, name:'宴会厅'},
-				                
-				            ],
+				            data:data.topPie,
 				            itemStyle: {
 				                emphasis: {
 				                    shadowBlur: 10,
@@ -319,7 +315,8 @@
         	}
         },
         mounted(){
-        	this.drawLine('lines');
+        	//console.log(this.data);
+        	this.drawLine(this.data);
         }
     }
 </script>
