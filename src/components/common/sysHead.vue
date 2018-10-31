@@ -3,52 +3,55 @@
 
 */
 <template>
-  <div class="headBox0">
+  <div>
+    <div class="headBox0">
       <div class="logo" @click="showBanerClick">
         <i></i>
         <span>泰立智汇</span>
       </div>
-    <div class = "searchBox">
-       <input type="text" :placeholder="placeholder" v-model="inputs">
-       <div class="searchBtn" @click="search">
-           <i></i>
-       </div>
-      <span></span>
-    </div>
-    <el-tabs v-model="activeName" @tab-click="toLink" class="navTabs">
-      <el-tab-pane v-for="(item,index) in datas.lists" :key="item.id" :label="item.name" :name="'item'+index" :route="item.route" :stretch="true">
-      </el-tab-pane>
-    </el-tabs>
-    <el-row class="block-col-2 userCenter" style="position: absolute;right: 80px;top: 10px;">
-      <el-col :span="12">
+      <div class = "searchBox">
+         <input type="text" :placeholder="placeholder" v-model="inputs">
+         <div class="searchBtn" @click="search">
+             <i></i>
+         </div>
+        <span></span>
+      </div>
+      <el-tabs v-model="activeName" @tab-click="toLink" class="navTabs">
+        <el-tab-pane v-for="(item,index) in datas.lists" :key="item.id" :label="item.name" :name="'item'+index" :route="item.route" :stretch="true">
+        </el-tab-pane>
+      </el-tabs>
+      <el-row class="block-col-2 userCenter" style="position: absolute;right: 2.2%;top: 0.1rem;">
+        <el-col :span="12">
+          <el-dropdown trigger="click" @command="handleCommand" >
+            <span class="el-dropdown-link">
+              <span @click="showPersonInfo" class="userIcon"></span>
+            </span>
+            <el-dropdown-menu class="homeDropDown" slot="dropdown" style="background: #061733;border: 1px solid #4a90e2">
+              <el-dropdown-item command="personInfo" class="homeDropdownItem" style="text-align:center;color:#f6f6f6">个人信息</el-dropdown-item>
+              <el-dropdown-item command="changePassword" class="homeDropdownItem" style="text-align:center;color:#f6f6f6">修改密码</el-dropdown-item>
+              <el-dropdown-item command="loginOut" class="homeDropdownItem" style="text-align:center;color:#f6f6f6">退出登录</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </el-col>
+      </el-row>
+      <!-- <div class="dropdownlist" >
         <el-dropdown trigger="click" @command="handleCommand" >
           <span class="el-dropdown-link">
-            <span @click="showPersonInfo" class="userIcon"></span>
+             <img src="../../assets/img/AgentManage/dropdown_icon.png" @click="showMenus"/>
           </span>
           <el-dropdown-menu class="homeDropDown" slot="dropdown" style="background: #061733;border: 1px solid #4a90e2">
-            <el-dropdown-item command="personInfo" class="homeDropdownItem" style="text-align:center;color:#f6f6f6">个人信息</el-dropdown-item>
-            <el-dropdown-item command="authorityManagement" class="homeDropdownItem" style="text-align:center;color:#f6f6f6">权限管理</el-dropdown-item>
-            <el-dropdown-item command="changePassword" class="homeDropdownItem" style="text-align:center;color:#f6f6f6">修改密码</el-dropdown-item>
-            <el-dropdown-item command="loginOut" class="homeDropdownItem" style="text-align:center;color:#f6f6f6">退出登录</el-dropdown-item>
+            <el-dropdown-item command="menu1" class="homeDropdownItem" style="text-align:center;color:#f6f6f6">菜单1</el-dropdown-item>
+            <el-dropdown-item command="menu2" class="homeDropdownItem" style="text-align:center;color:#f6f6f6">菜单2</el-dropdown-item>
+            <el-dropdown-item command="menu3" class="homeDropdownItem" style="text-align:center;color:#f6f6f6">菜单3</el-dropdown-item>
+            <el-dropdown-item command="menu4" class="homeDropdownItem" style="text-align:center;color:#f6f6f6">菜单4</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-      </el-col>
-    </el-row>
-    <div class="dropdownlist" >
-      <el-dropdown trigger="click" @command="handleCommand" >
-        <span class="el-dropdown-link">
-           <img src="../../assets/img/AgentManage/dropdown_icon.png" @click="showMenus"/>
-        </span>
-        <el-dropdown-menu class="homeDropDown" slot="dropdown" style="background: #061733;border: 1px solid #4a90e2">
-          <el-dropdown-item command="menu1" class="homeDropdownItem" style="text-align:center;color:#f6f6f6">菜单1</el-dropdown-item>
-          <el-dropdown-item command="menu2" class="homeDropdownItem" style="text-align:center;color:#f6f6f6">菜单2</el-dropdown-item>
-          <el-dropdown-item command="menu3" class="homeDropdownItem" style="text-align:center;color:#f6f6f6">菜单3</el-dropdown-item>
-          <el-dropdown-item command="menu4" class="homeDropdownItem" style="text-align:center;color:#f6f6f6">菜单4</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
+      </div> -->
+      <component :isShowBannerParam="showBannerParam" @changeBannerParam="updateBannerParam" is="Banner"></component>
     </div>
-    <component :isShowBannerParam="showBannerParam" @changeBannerParam="updateBannerParam" is="Banner"></component>
+    <component is="PersonInfo" @showTips="personInfoShowTips" :options="personInfoOptions"></component>
   </div>
+  
 </template>
 
 <script>
@@ -56,9 +59,10 @@ import searchBox from '@/components/form/searchBox'
 import Banner from './banner/Banner.vue'
 import SelectBox from '@/components/form/selectBox';
 import '../../assets/css/fs_common.css';
+import PersonInfo from './personInfo/PersonInfo'
 export default {
   props:['datas'],
-  components:{'searchBox':searchBox,'SelectBox':SelectBox,'Banner':Banner},
+  components:{'searchBox':searchBox,'SelectBox':SelectBox,'Banner':Banner,'PersonInfo':PersonInfo},
   data () {
     return {
       placeholder:'请输入搜索内容',
@@ -88,9 +92,6 @@ export default {
          //console.log(this.inputs);
          this.$emit('searchCont',this.inputs);
      },
-     changeMenu(){
-
-     },
      showBanerClick(){
          this.showBannerParam = !this.showBannerParam
      },
@@ -100,6 +101,17 @@ export default {
      showPersonInfo(){
          this.personalCenter.isShowBounced = !this.personalCenter.isShowBounced
      },
+     personInfoShowTips(tips){   //个人信息修改提示信息
+        this.bubbleTipShow(tips)
+     },
+     bubbleTipShow(tip){
+        this.bubbleTip = tip;
+        this.$store.state.bubbleShow = true;
+        var that = this;
+        setTimeout(function () {
+          that.$store.state.bubbleShow = false;
+        },3000)
+      },
      handleCommand(command){
         if(command == 'loginOut'){
           this.personalCenter.isShowDialog = true
@@ -109,9 +121,9 @@ export default {
           this.personInfoOptions.isChangePassword = true
         }
       },
-      showMenus(){
+      // showMenus(){
 
-      }
+      // }
   },
   watch:{
      activeName(val){
@@ -119,11 +131,14 @@ export default {
       sessionStorage.setItem('activeItem',val);
     }
   },
+  beforeDestroy(){
+    sessionStorage.setItem('activeItem',null);
+  },
   mounted(){
     if(this.datas.active){
       this.activeName = this.datas.active;
     }else{
-      if(sessionStorage.getItem('activeItem') && sessionStorage.getItem('activeItem')!=null){
+      if(sessionStorage.getItem('activeItem') && sessionStorage.getItem('activeItem')!='null'){
         this.activeName = sessionStorage.getItem('activeItem')
       }else{
         this.activeName = 'item0';
@@ -147,7 +162,6 @@ export default {
         height:50px;
         padding-top:5px;
         display:flex;
-        z-index:1;
         background:rgba(0,45,104,0.8);
         box-shadow:0px 2px 3px 0px rgba(0,0,0,0.2);
         .userIcon{

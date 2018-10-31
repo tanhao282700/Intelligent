@@ -261,11 +261,28 @@
 	        },
 	        change1(){
 
+	        },
+	        getDatas(){
+	        	let param = {
+	        		project_id:1,
+	        		sys_menu_id:1,
+	        		area_query_date_type:'',
+	        		area_date:'',
+	        		energy_type:this.iscur,
+	        		device_query_date_type:'',
+	        		device_date:''
+	        	}
+	        	this.$http.post('/hotel_energy/analysis',param)
+	        	.then(res=>{
+	        		console.log(res.data.data.area_energy_use);
+	        		console.log(res.data.data.device_energy_use);
+	        	})
 	        }
 
         },
         mounted(){
         	this.getBottomEcharts();
+        	this.getDatas();
         }
     }
 </script>
