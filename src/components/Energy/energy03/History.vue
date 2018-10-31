@@ -1,5 +1,8 @@
 <template>
-  <div class="history">
+  <div class="history" v-loading="loading"
+       element-loading-background="rgba(0, 0, 0, 0.5)"
+       element-loading-spinner="el-icon-loading"
+       element-loading-text="拼命加载中">
     <!--内容模块-->
       <!--查询区-->
       <div class="itemsBox">
@@ -43,41 +46,41 @@
     <div class="userTableContainer fireAlarmTable" style="flex:1;display: flex;flex-direction: column">
       <el-table
         :data="curPageData"
-        style="width: 100%;flex:1;"
+        style="width: 100%;flex:1;box-sizing: border-box"
         height="500"
         class=" tableHeadBlue">
         <el-table-column
-          type="index"
+          prop="show_id"
           label="序号"
           min-width="10%">
         </el-table-column>
         <el-table-column
-          prop="name"
+          prop="area_name"
           label="电表名称"
           min-width="20%">
         </el-table-column>
         <el-table-column
-          prop="floor"
+          prop="area_name"
           label="楼层"
           min-width="10%">
         </el-table-column>
         <el-table-column
-          prop="mount"
+          prop="area_name"
           label="用量"
           min-width="10%">
         </el-table-column>
         <el-table-column
-          prop="system"
+          prop="area_name"
           label="单位"
           min-width="10%">
         </el-table-column>
         <el-table-column
-          prop="much"
+          prop="area_name"
           label="费用"
           min-width="10%">
         </el-table-column>
         <el-table-column
-          prop="time"
+          prop="date"
           label="记录日期"
           min-width="20%">
         </el-table-column>
@@ -92,23 +95,23 @@
       </el-table>
 
       <!--分页器-->
-      <!--<div class="paginationBox">
+      <div class="paginationBox">
         <div class="totalPageNumBox">共{{formData.pageCount}}页</div>
 
         <div class="el-input el-pagination__editor is-in-pagination curPageBox">
-          <input type="number" autocomplete="off" class="el-input__inner" v-model="formData.pagenumber">
+          <input type="number" autocomplete="off" class="el-input__inner" v-model="formData.page_index">
           <span @click="toInputPage">GO</span>
         </div>
 
         <el-pagination
           @current-change="currentPageChange"
-          :current-page="formData.pagenumber"
-          :page-size="formData.pagesize"
+          :current-page="formData.page_index"
+          :page-size="formData.one_page_num"
           layout="prev, pager, next"
           :total="formData.total">
         </el-pagination>
 
-      </div>-->
+      </div>
 
     </div>
 
@@ -210,13 +213,13 @@
   name:'History',
     data(){
       return{
+        loading:true,
         fileList:[],
         value1:'',
         dialogTit:"单个录入",
         bb:'',
         cc:'',
         dd:'',
-        formData:{},
         options1: [
           {
             placeHolder: '选择楼层',
@@ -268,6 +271,14 @@
           time:'2018-11-11 23:11',
           id:"1"
         }],
+        formData:{
+          project_id:1,
+          floor_id:1,
+          page_index:1,   //当前页数
+          one_page_num:20,  //显示条数
+          total:0,     //总条数
+          pageCount:0    //总页数
+        }
       }
     },
     components:{
@@ -276,10 +287,37 @@
     watch:{
 
     },
+    created(){
+      this.initData()
+    },
     mounted(){
 
     },
     methods:{
+      toInputPage(){
+        this.loading = true
+        if(this.formData.page_index > this.formData.pageCount){
+          this.formData.page_index = this.formData.pageCount
+        }
+        this.initData()
+      },
+      currentPageChange(aa){
+        this.loading = true
+        this.formData.page_index = aa
+        this.initData()
+      },
+      initData(){
+        this.$http.post('/hotel_energy/history_record',this.formData).then((res)=>{
+          if(res.data.code==0){
+            this.curPageData = res.data.data.history_record.data
+            this.formData.total = res.data.data.history_record.total_record_num
+            this.formData.pageCount = res.data.data.history_record.total_page_num
+            this.loading = false
+          }else{
+
+          }
+        })
+      },
       beforeUpload(file,fileList){
         this.fileList = [file]
       },
@@ -365,6 +403,11 @@
 </style>
 <style lang="less" rel="stylesheet/less" scoped>
   .history{
+    .paginationBox{
+      position:static!important;
+      margin-bottom: 10px!important;
+      margin-top: 10px!important
+    }
     width:100%;
     height:100%;
     .queryBox{
@@ -401,7 +444,7 @@
   }
 </style>
 <style>
-  .history .el-input__inner{
+  .history .queryBox .el-input__inner{
     width:100px!important;
     height:36px!important;
     color:white;
@@ -415,5 +458,8 @@
   .history .el-button+.el-button{
     background:none!important;
     color:#409EFF;
+  }
+  .history .paginationBox .curPageBox{
+    color:white!important;
   }
 </style>

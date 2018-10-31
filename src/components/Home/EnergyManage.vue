@@ -35,6 +35,7 @@
           energyChart:{},
           energyChart2:{},
           option:{},
+          option2:{},
           current:1,
           data:{
               0:{},  //电
@@ -45,6 +46,7 @@
               plan:[],
               current:[]
           },
+          lineData:{},
           interval:null
         }
     },
@@ -149,9 +151,104 @@
               ],
               color:["#c4752a","#264e8c"]
             };
-
+            this.option2 = {
+              title:{
+                text:this.lineData.scoer+'%',
+                left:20,
+                textStyle:{
+                  fontSize:18,
+                  color:'#4be283',
+                },
+                /*backgroundColor:'#1d2d3a'*/
+              },
+              grid: {
+                top: 26,
+              },
+              tooltip : {
+                trigger: 'axis',
+              },
+              legend: {
+                data:['今年计划','2017','2018'],
+                right:0,
+                padding:0,
+                textStyle:{
+                  color:'#eeeff1',
+                  fontSize:12
+                },
+                top:8
+              },
+              calculable : true,
+              xAxis : [
+                {
+                  type : 'category',
+                  boundaryGap : false,
+                  nameTextStyle:{
+                    color:'#f8f8f6'
+                  },
+                  axisLine:{
+                    lineStyle:{
+                      color:'#bfc7ca'
+                    }
+                  },
+                  axisTick:{
+                    show:false
+                  },
+                  data : this.lineData.time
+                }
+              ],
+              yAxis : [
+                {
+                  show:false,
+                  type : 'value'
+                }
+              ],
+              series : [
+                {
+                  name:'今年计划',
+                  type:'line',
+                  smooth:true,
+                  showSymbol:false,
+                  lineStyle:{
+                    color:'#3af2e6',
+                    shadowBlur:6,
+                    shadowOffsetY:2,
+                    shadowColor:'#3af2e6'
+                  },
+                  data:this.lineData.data['plan']
+                },
+                {
+                  name:'2017',
+                  type:'line',
+                  smooth:true,
+                  showSymbol:false,
+                  lineStyle:{
+                    color:'#fd9a1b',
+                    shadowBlur:6,
+                    shadowOffsetY:2,
+                    shadowColor:'#fd9a1b'
+                  },
+                  data:this.lineData.data['2017']
+                },
+                {
+                  name:'2018',
+                  type:'line',
+                  smooth:true,
+                  showSymbol:false,
+                  lineStyle:{
+                    color:'#f96072',
+                    shadowBlur:6,
+                    shadowOffsetY:2,
+                    shadowColor:'#f96072'
+                  },
+                  data:this.lineData.data['2018']
+                }
+              ],
+              color:['#3af2e6','#fd9a1b','#f96072']
+            };
             this.energyChart.clear()
-              this.energyChart.setOption(this.option,true)
+            this.energyChart2.clear()
+            this.energyChart.setOption(this.option,true)
+            this.energyChart2.setOption(this.option2,true)
           },
           deep: true
       }
@@ -168,12 +265,17 @@
             if(type===1){ //水
                 this.columnarData.current = this.data[1].data.Columnar.value
                 this.columnarData.plan= this.data[1].data.Columnar.plan
+
+                this.lineData = this.data[1].data.line
+
             }else if(type === 0){ //电
                 this.columnarData.current = this.data[0].data.Columnar.value
                 this.columnarData.plan = this.data[0].data.Columnar.plan
+              this.lineData = this.data[0].data.line
             }else if(type === 2){  //气
                 this.columnarData.current = this.data[2].data.Columnar.value
                 this.columnarData.plan = this.data[2].data.Columnar.plan
+              this.lineData = this.data[2].data.line
             }
         },
         initData(){
@@ -279,6 +381,104 @@
                     ],
                     color:["#c4752a","#264e8c"]
                   };
+
+                  this.lineData = this.data[1].data.line  //初始化水，折线数据
+
+                  console.log(this.lineData)
+                  this.option2 = {
+                    title:{
+                      text:this.lineData.scoer+'%',
+                      left:20,
+                      textStyle:{
+                        fontSize:18,
+                        color:'#4be283',
+                      },
+                      /*backgroundColor:'#1d2d3a'*/
+                    },
+                    grid: {
+                      top: 26,
+                    },
+                    tooltip : {
+                      trigger: 'axis',
+                    },
+                    legend: {
+                      data:['今年计划','2017','2018'],
+                      right:0,
+                      padding:0,
+                      textStyle:{
+                        color:'#eeeff1',
+                        fontSize:12
+                      },
+                      top:8
+                    },
+                    calculable : true,
+                    xAxis : [
+                      {
+                        type : 'category',
+                        boundaryGap : false,
+                        nameTextStyle:{
+                          color:'#f8f8f6'
+                        },
+                        axisLine:{
+                          lineStyle:{
+                            color:'#bfc7ca'
+                          }
+                        },
+                        axisTick:{
+                          show:false
+                        },
+                        data : this.lineData.time
+                      }
+                    ],
+                    yAxis : [
+                      {
+                        show:false,
+                        type : 'value'
+                      }
+                    ],
+                    series : [
+                      {
+                        name:'今年计划',
+                        type:'line',
+                        smooth:true,
+                        showSymbol:false,
+                        lineStyle:{
+                          color:'#3af2e6',
+                          shadowBlur:6,
+                          shadowOffsetY:2,
+                          shadowColor:'#3af2e6'
+                        },
+                        data:this.lineData.data['plan']
+                      },
+                      {
+                        name:'2017',
+                        type:'line',
+                        smooth:true,
+                        showSymbol:false,
+                        lineStyle:{
+                          color:'#fd9a1b',
+                          shadowBlur:6,
+                          shadowOffsetY:2,
+                          shadowColor:'#fd9a1b'
+                        },
+                        data:this.lineData.data['2017']
+                      },
+                      {
+                        name:'2018',
+                        type:'line',
+                        smooth:true,
+                        showSymbol:false,
+                        lineStyle:{
+                          color:'#f96072',
+                          shadowBlur:6,
+                          shadowOffsetY:2,
+                          shadowColor:'#f96072'
+                        },
+                        data:this.lineData.data['2018']
+                      }
+                    ],
+                    color:['#3af2e6','#fd9a1b','#f96072']
+                  };
                   this.drawEchart()
                   this.drawEchart2()
                   this.interval = setInterval(()=>{
@@ -310,103 +510,8 @@
         this.energyChart.setOption(this.option);
       },
       drawEchart2(){
-        let energyChart2 = this.$echarts.init(document.getElementById("nergyEcharts2"));
-        this.energyChart2 = energyChart2
-        let option2 = {
-          title:{
-            text:'25%',
-            left:20,
-            textStyle:{
-                fontSize:18,
-                color:'#4be283',
-            },
-            /*backgroundColor:'#1d2d3a'*/
-          },
-          grid: {
-            top: 26,
-          },
-          tooltip : {
-            trigger: 'axis',
-          },
-          legend: {
-            data:['今年计划','2017','2018'],
-            right:0,
-            padding:0,
-            textStyle:{
-              color:'#eeeff1',
-              fontSize:12
-            },
-            top:8
-          },
-          calculable : true,
-          xAxis : [
-            {
-              type : 'category',
-              boundaryGap : false,
-              nameTextStyle:{
-                  color:'#f8f8f6'
-              },
-              axisLine:{
-                  lineStyle:{
-                    color:'#bfc7ca'
-                  }
-              },
-              axisTick:{
-                  show:false
-              },
-              data : ['01','02','03','04','05','06','07']
-            }
-          ],
-          yAxis : [
-            {
-              show:false,
-              type : 'value'
-            }
-          ],
-          series : [
-            {
-              name:'今年计划',
-              type:'line',
-              smooth:true,
-              showSymbol:false,
-              lineStyle:{
-                  color:'#3af2e6',
-                  shadowBlur:6,
-                  shadowOffsetY:2,
-                  shadowColor:'#3af2e6'
-              },
-              data:[120, 132, 101, 134, 90, 230, 210]
-            },
-            {
-              name:'2017',
-              type:'line',
-              smooth:true,
-              showSymbol:false,
-              lineStyle:{
-                color:'#fd9a1b',
-                shadowBlur:6,
-                shadowOffsetY:2,
-                shadowColor:'#fd9a1b'
-              },
-              data:[220, 0, 191, 234, 290, 330, 310]
-            },
-            {
-              name:'2018',
-              type:'line',
-              smooth:true,
-              showSymbol:false,
-              lineStyle:{
-                color:'#f96072',
-                shadowBlur:6,
-                shadowOffsetY:2,
-                shadowColor:'#f96072'
-              },
-              data:[150, 232, 201, 154, 190, 330, 700]
-            }
-          ],
-          color:['#3af2e6','#fd9a1b','#f96072']
-        };
-        energyChart2.setOption(option2);
+        this.energyChart2 = this.$echarts.init(document.getElementById("nergyEcharts2"));
+        this.energyChart2.setOption(this.option2);
       }
     }
   }

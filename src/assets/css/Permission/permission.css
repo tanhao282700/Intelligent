@@ -402,6 +402,7 @@
   height: auto!important;
   padding: 0;
   text-indent: .2rem;
+  text-align: center!important;
 }
 .el-select-dropdown__item.selected .el-tree,.el-tree-node__content{
   background-color: #04152c!important;

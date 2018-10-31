@@ -12,7 +12,7 @@
   height: .24rem;
 }
 .dateUnitSelectItem::after{
-  right:0;
+  right:0!important;
   background: url("../img/Permission/down.png") no-repeat center;
 }
 .energyAreaDateBox{
