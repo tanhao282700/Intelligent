@@ -155,16 +155,20 @@
 		            calculable : true,
 		            xAxis: {
 				        type: 'value',
-				        min:1,
-				        max:xData,
+				        min:0,
+				        max:xData+1,
 				        interval:1,
 				        // boundaryGap: true,
 				        axisLine: {show:false},
 				        axisTick: {show:false},
 				        splitLine: {show:false},
-				        axisLabel: {textStyle: {
-						    color: '#708FBE'
-						}}
+				        axisLabel: {
+				        	showMinLabel:false,
+				        	showMaxLabel:false,
+				        	textStyle: {
+						    	color: '#708FBE'
+							}
+						}
 			        },
 			    	yAxis: {
 				    	// show:false,
