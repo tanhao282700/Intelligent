@@ -216,7 +216,17 @@
         this.getData();
       },
       openChange(){
-        this.isChangeing =true;
+        let that = this;
+        let searchYear = this.years;
+        var curYear = new Date().getFullYear();
+        console.log(searchYear,curYear);
+        if(searchYear<curYear){
+          that.isChangeing = false;
+          that.$message("不可编辑");
+        }else{
+          that.isChangeing = true;
+        }
+
       },
       ckId(type){ //0 = 电 1=水 2=气
         let id ='0';
@@ -254,6 +264,7 @@
         updateObj[0] = a0;
         updateObj[1] = a1;
         updateObj[2] = a2;
+        console.log(updateObj);
 
         let updateJson = JSON.stringify(updateObj);
 
@@ -273,6 +284,8 @@
               message: '保存成功！',
               type: 'success'
             });
+          }else{
+            that.$message(res.data.message);
           }
 
         }).catch(err=>{
