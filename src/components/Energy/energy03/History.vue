@@ -56,37 +56,57 @@
         </el-table-column>
         <el-table-column
           prop="area_name"
-          label="电表名称"
+          label="区域名称"
           min-width="20%">
         </el-table-column>
         <el-table-column
-          prop="area_name"
-          label="楼层"
+          prop="used_water"
+          label="水用量"
           min-width="10%">
         </el-table-column>
         <el-table-column
-          prop="area_name"
-          label="用量"
+          prop="used_water_price"
+          label="水费用"
           min-width="10%">
         </el-table-column>
         <el-table-column
-          prop="area_name"
-          label="单位"
+          prop="used_electric"
+          label="电用量"
           min-width="10%">
         </el-table-column>
         <el-table-column
-          prop="area_name"
-          label="费用"
+          prop="used_electric_price"
+          label="电费用"
           min-width="10%">
+        </el-table-column>
+        <el-table-column
+          prop="used_gas"
+          label="气用量"
+          min-width="10%">
+        </el-table-column>
+        <el-table-column
+          prop="used_gas_price"
+          label="气费用"
+          min-width="10%">
+        </el-table-column>
+        <el-table-column
+          prop="income"
+          label="收入"
+          min-width="10%">
+        </el-table-column>
+          <el-table-column
+            prop="rent_house_num"
+            label="租房量"
+            min-width="10%">
         </el-table-column>
         <el-table-column
           prop="date"
-          label="记录日期"
+          label="日期"
           min-width="20%">
         </el-table-column>
         <el-table-column
           label="操作"
-          min-width="10%">
+          min-width="15%">
           <template slot-scope="scope">
             <el-button type="text" @click="revice(scope.row)" size="small">修改</el-button>
             <el-button type="text" size="small">删除</el-button>
@@ -274,6 +294,7 @@
         formData:{
           project_id:1,
           floor_id:1,
+          sys_menu_id:1,
           page_index:1,   //当前页数
           one_page_num:20,  //显示条数
           total:0,     //总条数

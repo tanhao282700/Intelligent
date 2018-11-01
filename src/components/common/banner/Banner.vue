@@ -19,7 +19,7 @@
                 <i class="el-icon-location noLog wisdomManagement"></i>
                 <span class="textPL">智慧管理</span>
               </template>
-              <el-menu-item-group>
+              <el-menu-item-group v-if="userRouterInfo[14] || userRouterInfo[5]||userRouterInfo[16]||userRouterInfo[1]">
                 <!--<template slot="title">分组一</template>-->
                 <el-menu-item v-if="userRouterInfo[14]" index="/DoorControl"><span class="textPL">门禁系统</span></el-menu-item>
                 <el-menu-item v-if="userRouterInfo[5]" index="/VideoSurveillance"><span class="textPL">视频监控系统</span></el-menu-item>
@@ -27,7 +27,7 @@
                 <el-menu-item v-if="userRouterInfo[1]" index="1-4"><span class="textPL">中央空调系统</span></el-menu-item>
               </el-menu-item-group>
             </el-submenu>
-            <el-submenu index="2">
+            <el-submenu index="2" v-if="userRouterInfo[2]||userRouterInfo[17]">
               <template slot="title">
                 <i class="el-icon-location noLog OperationManagement"></i>
                 <span class="textPL">运营管理</span>
@@ -37,7 +37,7 @@
                 <el-menu-item v-if="userRouterInfo[17]" index="/HotelStatus"><span class="textPL">营收数据分析</span></el-menu-item>
               </el-menu-item-group>
             </el-submenu>
-            <el-menu-item class="noChildModule" :index="agentPath">
+            <el-menu-item v-if="this.userRouterInfo[12]" class="noChildModule" :index="agentPath">
               <i class="el-icon-location noLog maintainmanagement"></i>
               <span class="textPL">运维管理</span>
             </el-menu-item>
@@ -76,11 +76,13 @@
     },
     created(){
       this.userRouterInfo = this.$store.state.sysList
-      if(this.userRouterInfo[12].role_string[0] == 1){
+      if(this.userRouterInfo[12]){
+        if(this.userRouterInfo[12].role_string[0] == 1){
           //有代维管理权限
           this.agentPath = '/AgentManage'
-      }else{
-        this.agentPath = '/AgentManage/normalUser'
+        }else{
+          this.agentPath = '/AgentManage/normalUser'
+        }
       }
       //权限管理
       if(this.$store.state.userInfoTotal.permissions_manage.per_id==0){
