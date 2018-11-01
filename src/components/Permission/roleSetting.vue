@@ -202,7 +202,8 @@
           children: 'child',
           label: 'title'
         },
-        role_sys_list:''
+        role_sys_list:'',
+        checkedListItems:[]
       }
     },
     methods:{
@@ -240,7 +241,11 @@
                 tempObj.role_string = temp.role_string;
               }
             }else {
-              tempObj.ids.push(temp.id);
+              var metaId = temp.id;
+              var metaIndex = metaId.indexOf('_')+1;
+              var actuId  = metaId.substr(metaIndex);
+
+              tempObj.ids.push(actuId);
               if(i==Len-1){
                 sysList.push(tempObj);
                 that.role_sys_list = JSON.stringify(sysList);
@@ -284,6 +289,12 @@
         this.accountInfoDialog = true;
         this.formTitle = '新增角色';
         this.isAdd = true;
+        var checkedList = this.checkedListItems;
+
+        let that = this;
+        setTimeout(function(){
+          that.$refs.tree.setCheckedKeys(checkedList);
+        },1000)
       },
       saveNewAccount(type){
         /*保存新增帐号*/
@@ -306,6 +317,8 @@
           role_name : that.form.role.key,
           role_sys_list : sysList
         }
+
+        console.log(config);
 
         that.$http.post('users_manage/users_role_addmodify',config).then(res=>{
           if(res.data.code =='0'){
@@ -334,6 +347,20 @@
         this.form.role.key = val.title;
         this.form.powerRange.key = this.role_sys_list = val.sys_menu;
         this.curEditRoleId = val.id;
+
+        let that = this;
+        let config = {
+          role_id:val.id
+        }
+        that.$http.post("users_manage/users_roleid_info",config).then(res=>{
+          console.log(res);
+          if(res.data.code == 0){
+            let checkedList = res.data.data.chk_data;
+            that.$refs.tree.setCheckedKeys(checkedList);
+          }
+        }).catch(err=>{
+
+        })
       },
       deleteAccount(val){
         this.deleteInfoDialog = true;
@@ -438,8 +465,10 @@
         }
 
         that.$http.post('users_manage/users_setRole',config).then(res=>{
+          console.log(res);
           if(res.data.code =='0'){
-            that.powerArray = res.data.data;
+            that.powerArray = res.data.data.role_data;
+            that.checkedListItems = res.data.data.chk_data;
           }else {
             that.bubbleTipShow(res.data.message);
           }
@@ -461,7 +490,6 @@
     },
     mounted(){
       this.requestPowerList();
-
     }
   }
 </script>
