@@ -89,9 +89,26 @@
                     $.each(data.data.data.month_data.ballroom,function(key,value){
                     	that.ballroomY.push([parseInt(key),parseInt(value)]);
                     });
-                    console.log(data);
-                    console.log(that.dining);
-                    console.log(that.ballroom);
+
+                    that.room.sort(function(x, y){
+					  return x[0]-y[0];
+					});
+                    that.dining.sort(function(x, y){
+					  return x[0]-y[0];
+					});
+                    that.ballroom.sort(function(x, y){
+					  return x[0]-y[0];
+					});
+                    that.roomY.sort(function(x, y){
+					  return x[0]-y[0];
+					});
+                    that.diningY.sort(function(x, y){
+					  return x[0]-y[0];
+					});
+                    that.ballroomY.sort(function(x, y){
+					  return x[0]-y[0];
+					});
+
                     that.getData("reportChartMonth",31,that.room,that.dining,that.ballroom);
                     that.getData("reportChartYear",12,that.roomY,that.diningY,that.ballroomY);
                 }, function(data){
@@ -141,7 +158,7 @@
 				        min:1,
 				        max:xData,
 				        interval:1,
-				        boundaryGap: true,
+				        // boundaryGap: true,
 				        axisLine: {show:false},
 				        axisTick: {show:false},
 				        splitLine: {show:false},
