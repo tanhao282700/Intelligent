@@ -5,7 +5,7 @@
 <template>
     <div class="routingTask">
         <div class="routingTime" >
-          <div class="topBox" v-for="(item,index) in data.steps" :style="{left:1.8+(index*160*100/1366)+'vw'}">
+          <div class="topBox" v-for="(item,index) in data.inspection_list" :style="{left:1.8+(index*160*100/1366)+'vw'}">
             <div>
               <span>{{item.name}}</span></br>
               {{item.date}}&nbsp;&nbsp;&nbsp;{{item.time}}
@@ -20,7 +20,7 @@
             </div>
         </div> 
         <div class="middleTime">
-          <div class="bottomBox" v-for="(item,index) in data.steps" :style="{left:9.31+(index*160*100/1366)+'vw'}">
+          <div class="bottomBox" v-for="(item,index) in data.inspection_list" :style="{left:9.31+(index*160*100/1366)+'vw'}">
             <i class="el-icon-arrow-up"></i>
             <div>
               {{item.areatime}}

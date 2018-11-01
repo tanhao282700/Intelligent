@@ -4,11 +4,23 @@
 <template>
     <div class="routingTask">    
       <el-row>
-        <el-col :span="24/data.device.length" v-for="(item,index) in data.device" :key="index">
+        <el-col :span="6">
           <div class="taskDtl">
             <el-row :gutter="20">
-              <el-col :span="10"><div class="taskLabel">{{item.label}}</div></el-col>
-              <el-col :span="14"><div class="taskCont">{{item.type}}</div></el-col>
+              <el-col :span="10"><div class="taskLabel">类型</div></el-col>
+              <el-col :span="14"><div class="taskCont">{{data.info.title}}</div></el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="10"><div class="taskLabel">设备类型</div></el-col>
+              <el-col :span="14"><div class="taskCont">{{data.info.devicename}}</div></el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="10"><div class="taskLabel">设备地点</div></el-col>
+              <el-col :span="14"><div class="taskCont">{{data.info.floorname}}</div></el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="10"><div class="taskLabel">工单处理人员</div></el-col>
+              <el-col :span="14"><div class="taskCont">{{data.info.user_name}}</div></el-col>
             </el-row>
           </div>
         </el-col>
@@ -65,7 +77,7 @@
 
 <script>
   export default {
-      props:['data','device'],
+      props:['data'],
       data () {
         return {
         
@@ -75,11 +87,10 @@
            
       },
       created() {
+        this.data = this.data;
       },
       mounted() {
-         if(this.data.device.length>4){
-            $('.taskDtl').css('fontSize','12px')
-         }
+
       }
   }
 </script>
