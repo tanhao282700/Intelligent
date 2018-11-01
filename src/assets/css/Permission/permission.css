@@ -321,6 +321,10 @@
   vertical-align: top;
   padding: 0 .12rem;
 }
+.permissionBox .dialogBox .el-input.is-disabled .el-input__inner{
+  border: 1px solid #1989fa!important;
+}
+
 .dialogBox .el-form-item{
   margin-bottom: .16rem;
 }
@@ -562,4 +566,9 @@
 
 .roleBox .el-table td:nth-child(3) .cell{
   line-height: .16rem;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
+

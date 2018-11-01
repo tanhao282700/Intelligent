@@ -178,6 +178,7 @@
   align-items: center;
 }
 .energyArea4 .chartsBox div{height: 100%;position: relative;}
+.energyArea4 #energyArea4Chart1>div:last-child{height: auto!important;}
 .energyArea4 .chartsBox>div::after,.totalEnergyItem::after{
   content: "";
   position: absolute;
@@ -263,4 +264,10 @@
 }
 .allViewArea2 .viewItemContent{
   flex-flow: column;
+}
+
+.viewsContentBox .energyArea3Item .content>div,.viewsContentBox .energyArea4 .chartsBox .type1>div,.viewsContentBox .energyArea4 .chartsBox .type2 .typeChartBox>div>div{
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
