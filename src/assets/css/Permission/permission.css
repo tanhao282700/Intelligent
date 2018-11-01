@@ -566,5 +566,9 @@
 
 .roleBox .el-table td:nth-child(3) .cell{
   line-height: .16rem;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 
