@@ -107,7 +107,7 @@
             </div>
             <div>
                 <ul v-show="tabPosition=='待审核'" class="tabLists">
-                  <li class="boxs ">
+                  <li class="boxs" v-for="dia in noApplyLists">
                     <div class="pBox">
                       <div class="imgBox">
                         <img :src="dia.img1" alt="">
@@ -116,7 +116,7 @@
                         <div class="nameBox">
                           <div class="labelBox">
                             <label for="">申请人：</label>
-                            <span v-text="dia.name1"></span>
+                            <span v-text="dia.old_truename"></span>
                           </div>
                           <div class="labelBox">
                             <label for="">联系电话：</label>
@@ -124,13 +124,13 @@
                           </div>
                           <div class="labelBox">
                             <label for="">班次：</label>
-                            <span v-text="dia.time1"></span>
+                            <span v-text="dia.oldtitle"></span>
                           </div>
                         </div>
                         <div class="nameBox">
                           <div class="labelBox">
                             <label for="">换班人：</label>
-                            <span v-text="dia.name1"></span>
+                            <span v-text="dia.new_truename"></span>
                           </div>
                           <div class="labelBox">
                             <label for="">联系电话：</label>
@@ -138,26 +138,26 @@
                           </div>
                           <div class="labelBox">
                             <label for="">班次：</label>
-                            <span v-text="dia.time1"></span>
+                            <span v-text="dia.newtitle"></span>
                           </div>
                         </div>
                         <div class="nameBox">
                           <div class="labelBox">
                             <label for="">换班原因：</label>
-                            <span v-text="excuse" class="hbExcuse"></span>
+                            <span v-text="dia.description" class="hbExcuse"></span>
                           </div>
                         </div>
                         <div class="nameBox">
                           <div class="labelBox">
                             <label for="">申请时间：</label>
-                            <span v-text="dia.name1"></span>
+                            <span v-text="dia.addtime"></span>
                           </div>
                         </div>
                         <div style="clear:both"></div>
                         <div class="nameBox">
                           <div class="labelBox">
                             <label for="">当前状态：</label>
-                            <span v-text="dia.name1" class="dqStatus"></span>
+                            <span v-text="dia.now_process" class="dqStatus"></span>
                           </div>
                         </div>
                       </div>
@@ -165,7 +165,7 @@
                   </li>
                 </ul>
                 <ul v-show="tabPosition=='已审核'" class="tabLists">
-                  <li class="boxs">
+                  <li class="boxs" v-for="dia in noApplyLists">
                     <div class="pBox">
                       <div class="imgBox">
                         <img :src="dia.img1" alt="">
@@ -174,7 +174,7 @@
                         <div class="nameBox">
                           <div class="labelBox">
                             <label for="">申请人：</label>
-                            <span v-text="dia.name1"></span>
+                            <span v-text="dia.old_truename"></span>
                           </div>
                           <div class="labelBox">
                             <label for="">联系电话：</label>
@@ -182,13 +182,13 @@
                           </div>
                           <div class="labelBox">
                             <label for="">班次：</label>
-                            <span v-text="dia.time1"></span>
+                            <span v-text="dia.old_workdate+' '+dia.oldstarttime+'~'+dia.oldendtime"></span>
                           </div>
                         </div>
                         <div class="nameBox">
                           <div class="labelBox">
                             <label for="">换班人：</label>
-                            <span v-text="dia.name1"></span>
+                            <span v-text="dia.new_truename"></span>
                           </div>
                           <div class="labelBox">
                             <label for="">联系电话：</label>
@@ -196,30 +196,30 @@
                           </div>
                           <div class="labelBox">
                             <label for="">班次：</label>
-                            <span v-text="dia.time1"></span>
+                            <span v-text="dia.new_workdate+' '+dia.newstarttime+'~'+dia.newendtime"></span>
                           </div>
                         </div>
                         <div class="nameBox">
                           <div class="labelBox">
                             <label for="">换班原因：</label>
-                            <span v-text="excuse" class="hbExcuse"></span>
+                            <span v-text="dia.description" class="hbExcuse"></span>
                           </div>
                         </div>
                         <div class="nameBox">
                           <div class="labelBox">
                             <label for="">申请时间：</label>
-                            <span v-text="dia.name1"></span>
+                            <span v-text="dia.addtime"></span>
                           </div>
                         </div>
                         <div style="clear:both"></div>
                         <div class="nameBox">
                           <div class="labelBox">
                             <label for="">当前状态：</label>
-                            <span v-text="dia.name1" class="dqStatus"></span>
+                            <span v-text="dia.now_process" class="dqStatus"></span>
                           </div>
                           <div class="labelBox">
                             <label for="">审核人：</label>
-                            <span v-text="dia.name1"></span>
+                            <span v-text="dia.approver_name"></span>
                           </div>
                         </div>
                       </div>
@@ -227,7 +227,7 @@
                   </li>
                 </ul>
                 <ul v-show="tabPosition=='我的处理'" class="tabLists">
-                    <li class="boxs">
+                    <li class="boxs" v-for="dia in noApplyLists">
                     <div class="pBox">
                       <div class="imgBox">
                         <img :src="dia.img1" alt="">
@@ -236,7 +236,7 @@
                         <div class="nameBox">
                           <div class="labelBox">
                             <label for="">申请人：</label>
-                            <span v-text="dia.name1"></span>
+                            <span v-text="dia.old_truename"></span>
                           </div>
                           <div class="labelBox">
                             <label for="">联系电话：</label>
@@ -244,13 +244,13 @@
                           </div>
                           <div class="labelBox">
                             <label for="">班次：</label>
-                            <span v-text="dia.time1"></span>
+                            <span v-text="dia.old_workdate+' '+dia.oldstarttime+'~'+dia.oldendtime"></span>
                           </div>
                         </div>
                         <div class="nameBox">
                           <div class="labelBox">
                             <label for="">换班人：</label>
-                            <span v-text="dia.name1"></span>
+                            <span v-text="dia.new_truename"></span>
                           </div>
                           <div class="labelBox">
                             <label for="">联系电话：</label>
@@ -258,26 +258,26 @@
                           </div>
                           <div class="labelBox">
                             <label for="">班次：</label>
-                            <span v-text="dia.time1"></span>
+                            <span v-text="dia.new_workdate+' '+dia.newstarttime+'~'+dia.newendtime"></span>
                           </div>
                         </div>
                         <div class="nameBox">
                           <div class="labelBox">
                             <label for="">换班原因：</label>
-                            <span v-text="excuse" class="hbExcuse"></span>
+                            <span v-text="dia.description" class="hbExcuse"></span>
                           </div>
                         </div>
                         <div class="nameBox">
                           <div class="labelBox">
                             <label for="">申请时间：</label>
-                            <span v-text="dia.name1"></span>
+                            <span v-text="dia.addtime"></span>
                           </div>
                         </div>
                         <div style="clear:both"></div>
                         <div class="nameBox">
                           <div class="labelBox">
-                            <el-button class="refuseHb">拒绝换班</el-button>
-                            <el-button class="agreeHb">同意换班</el-button>
+                            <el-button class="refuseHb" @click="agreeReplace(dia.id)">拒绝换班</el-button>
+                            <el-button class="agreeHb" @click="noAgree(dia.id)">同意换班</el-button>
                           </div>
                         </div>
                       </div>
@@ -332,6 +332,8 @@ export default {
   data () {
     return {
         tabPosition:'待审核',
+        tabtype:0,
+        noApplyLists:[],
         excuse:'语雀是一款优雅高效的在线文档编辑与协同工具，让每个企业轻松拥有文档中心阿里巴巴集团内部使用多年，众多中小企业首选。',
         peos:[
           {},
@@ -384,8 +386,14 @@ export default {
     submitApply(){
 
     },
-    changeStatus(){
-
+    changeStatus(val){
+      if(val=='待审核'){
+        this.tabtype=0;
+      }else if(val=='已审核'){
+        this.tabtype=1;
+      }else{
+        this.tabtype=2;
+      }
     },
     getTableList(){
       this.$http.post('/pc_ims/staff/work_list',{
@@ -402,14 +410,34 @@ export default {
            }
         })
     },
-    getNoApply(){
-
+    agreeReplace(id){
+      this.dealSchedule(id,1)
     },
-    getApplyStatus(){
-      this.$http.post('/pc_ims/staff/work_change',{type:0})
+    noAgree(id){
+      this.dealSchedule(id,10);
+    },
+    dealSchedule(id,type){
+      this.$http.post('/pc_ims/staff/dispose',{id:id,type:type})
       .then(res=>{
           if(res.data.code==0){
               console.log(res)
+           }else{
+              this.$message({
+                type:'error',
+                message:res.data.msg,
+                duration:2000
+              })
+           }
+      })
+    },
+    getNoApply(){
+      
+    },
+    getApplyStatus(){
+      this.$http.post('/pc_ims/staff/work_change',{type:this.tabtype})
+      .then(res=>{
+          if(res.data.code==0){
+              this.noApplyLists = res.data.data;
            }else{
               this.$message({
                 type:'error',
@@ -445,6 +473,7 @@ export default {
   },
   mounted() {
     this.getTableList();
+    this.getApplyStatus();
   },
 }
 </script>

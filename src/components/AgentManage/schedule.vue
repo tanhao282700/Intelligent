@@ -89,15 +89,15 @@
           </div>
           <div class="time">
             <div class="diaTit2">申请时间</div>
-            <span v-text="dia.applyTime"></span>
+            <span v-text="dia.addtime"></span>
           </div>
           <div class="examFlag">
             <img class="rightBotm" v-show="dia.state==0" src="../../assets/img/generation/isno.png" alt="">
             <img class="rightBotm" v-show="dia.state==1" src="../../assets/img/generation/isok.png" alt="">
           </div>
           <div class="diaBtns" v-show="dia.state==-1">
-            <div class="diabtn diabtn22" @click="isNo(indexNow,dia)">驳回</div>
-            <div class="diabtn"  @click="isOk(indexNow,dia)">同意</div>
+            <div class="diabtn diabtn22" @click="isNo(idia)">驳回</div>
+            <div class="diabtn"  @click="isOk(dia)">同意</div>
           </div>
         </Dialog>
   </div>
@@ -149,28 +149,21 @@ export default {
       search(val,type){
         console.log(val,type)
       },
-      isNo(i,item){//*****************待调
-        let objs = this.examData1[i];
-        objs.state = 0;
-        this.examData1.splice(i,1); 
-        // console.log(objs)
-        this.examData2.unshift(objs);
+      isNo(item){//*****************待调
+        item.state = 0;
         this.$refs.dialog.hide();
-        this.dealSchedule(1,item.id);
+        this.dealSchedule(11,item.id);
       },
-      isOk(i,item){//****************待调
-        let objs = this.examData1[i];
-        objs.state = 1;
-        // this.examData1.splice(i,1);
-        // this.examData2.unshift(objs);
+      isOk(item){//****************待调
+        item.state = 1;
         this.$refs.dialog.hide();
-        this.dealSchedule(0,item.id);
+        this.dealSchedule(2,item.id);
       },
       dealSchedule(type,id){//*******************待调
-        this.$http.post('/pc_ims/admin/dispose_work',{type:type,id:id}).then(res=>{
-            console.log(res);
-            this.getYesData();
+        this.$http.post('/pc_ims/admin/dispose_work',{type:type,id:id})
+        .then(res=>{
             this.getNoData();
+            this.getYesData();
         })
       },
       showInfo(i,item){
@@ -194,6 +187,7 @@ export default {
       getYesData(){//已审核的排班
         this.$http.post('/pc_ims/admin/approve_work').then(res=> {
            if(res.data.code==0){
+              console.log(res.data);
               let data = res.data.data;
               $.each(data,(n,k)=>{
                 console.log(data[n].now_process)

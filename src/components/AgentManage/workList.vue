@@ -62,7 +62,7 @@
         </div>
       </div>
       <Dialog wid="546" hei="606" ref="send"> 
-        <SendWork @sendInfosShow="sendInfosShow"/> <!-- 派单 -->
+        <SendWork @sendInfosShow="sendInfosShow" :query="query2"/> <!-- 派单 -->
       </Dialog> 
       <Dialog wid="1326" hei="640" ref="dialog">
         <WorkInfo @tableInfos2Show="tableInfos2Show" :table="table2" :query="query2"/>
@@ -153,7 +153,11 @@ export default {
         query2:{//工单详情的查询条件
           types:[],
           type:'',
-          time:'10-29'
+          time:'10-29',
+          devices:[],
+          names:[],
+          priority:[{label:'一般',value:1},{label:'普通',value:2},{label:'严重',value:3}],
+          type_id:[{label:'系统自动派发',value:0},{label:'手工派发',value:1},{label:'投诉工单',value:2},{label:'维保工单',value:3}]
         },
         departments:[],//专业下拉框
         names:[],//姓名下拉框
@@ -238,10 +242,10 @@ export default {
   },
   methods:{
     change1(val){ //选择
-      this.vJob = val;
+      this.query.department = val;
     },
     change2(val){ //选择
-      this.vName = val;
+      this.query.name = val;
     },
     changes(val){
           this.value7 = val;
@@ -300,6 +304,7 @@ export default {
           date:'07-01',
           user_id:row.user_id
         }).then(res=>{
+          console.log(res);
           if(res.data.code==0){
             this.table2.len = res.data.count;
             this.table2.data = res.data.data.info;
@@ -420,6 +425,7 @@ export default {
               data[n].label = data[n].truename;
             })
             this.names = data;
+            this.query2.names = data;
           }else{
             this.$message({
               type:'error',
@@ -454,6 +460,25 @@ export default {
               data[n].label = data[n].title;
             })
             this.query2.types = data;
+          }else{
+            this.$message({
+              type:'error',
+              message:res.data.msg
+            })
+          }
+        });
+      },
+      getDeviceList(){
+        this.$http.post('/pc_ims/get_device',{floor_name:this.queryModel.area}).then(res=>{
+          console.log(res);
+          if(res.data.code==0){
+            let data = res.data.data;
+            
+            $.each(data,(n,k)=>{
+              data[n].value = data[n].floor_id;
+              data[n].label = data[n].floor_name;
+            })
+            this.query2.devices = data;
           }else{
             this.$message({
               type:'error',

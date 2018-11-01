@@ -352,30 +352,19 @@ export default {
             // small:'small',
             hei:328, //table高度  设置后有滚动条
             // len:800, //总条数
-            data:[
-              {id:1,name:'白狗汪1',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:1,backApply:"-",fill:100}, 
-              {id:2,name:'白狗汪2',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:2,backApply:"-",fill:80}, 
-              {id:3,name:'白狗汪3',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:3,backApply:"-",fill:60}, 
-              {id:4,name:'白狗汪4',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:4,backApply:"-",fill:40}, 
-              {id:5,name:'白狗汪5',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:0,backApply:"-",fill:20}, 
-              {id:6,name:'白狗汪6',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:4,backApply:"-",fill:100}, 
-              {id:7,name:'白狗汪7',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:4,backApply:"-",fill:100}, 
-              {id:8,name:'白狗汪8',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:4,backApply:"-",fill:100}, 
-              {id:9,name:'白狗汪9',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:4,backApply:"-",fill:100}, 
-              {id:10,name:'白狗汪10',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:4,backApply:"-",fill:100},              
-            ],
+            data:[],
             th:[
               {prop:'id',label:'编号'},
-              {prop:'name',label:'类别'},
-              {prop:'tel',label:'地点',wid:180},
-              {prop:'job',label:'派发时间'},
-              {prop:'sendNum',label:'设备名称'},
-              {prop:'dealing',label:'内容描述'},
-              {prop:'nocatch',label:'派发类别'},
-              {prop:'dealed',label:'状态',operate: true, 
+              {prop:'title',label:'类别'},
+              {prop:'floor',label:'地点',wid:180},
+              {prop:'addtime',label:'派发时间'},
+              {prop:'devicename',label:'设备名称'},
+              {prop:'description',label:'内容描述'},
+              {prop:'type_id',label:'派发类别'},
+              {prop:'now_state',label:'状态',operate: true, 
                 render: (h, param)=> {
                     const btnss = {
-                        fills:param.row.dealed,  
+                        fills:param.row.now_state,  
                     };
                     return h(State,{
                     props: { state:btnss},
@@ -557,7 +546,8 @@ export default {
           pagesize:'20'
         }).then(res=> {
            if(res.data.code==0){
-             console.log(res.data);
+             this.table.data = res.data.data;
+             this.table.len = res.data.count;
            }else{
               this.$message({
                 type:'error',

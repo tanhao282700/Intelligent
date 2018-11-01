@@ -96,10 +96,6 @@
           deletes(item){
              this.$emit('deleteDetail',item);
           },
-          changeStatus(state){
-            //console.log(state);
-            this.$emit('changeStatus',state)
-          },
           addTemp(){
             this.$emit('addDetail');
           },

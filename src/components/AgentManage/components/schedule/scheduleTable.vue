@@ -404,7 +404,7 @@ export default {
             let _this = this;
             this.$http.post('/pc_ims/get_user')
             .then(function(res){
-                console.log(res);
+                //console.log(res);
                 if(res.data.code==0){
                     let data = res.data.data;
                     $.each(data,function(n,k){

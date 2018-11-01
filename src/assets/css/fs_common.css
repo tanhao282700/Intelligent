@@ -160,6 +160,21 @@
   background: transparent;
   color:#818181;
 }
+.datetemp.el-date-editor.el-input{
+  width:0.8rem !important;
+}
+.datetemp .el-input__inner{
+  border: none;
+  border-bottom: 1px solid #1989fa;
+   border-radius: 0 !important;
+}
+.inputbox .el-input__inner{
+  border:none;
+  height:0.32rem;
+}
+.selectX3 .inputbox .el-input__inner{
+  height: 1rem;
+}
 .chartRightTit .el-button+.el-button:hover,.chartRightTit .el-button+.el-button:active {
   background:rgba(142,187,255,.05);
   color: #B5D7FF;
