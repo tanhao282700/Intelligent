@@ -50,7 +50,7 @@ export default {
   },
   mounted() {
        this.txts();
-       //console.log(this.state)
+       console.log(this.state)
   },
 }
 </script>

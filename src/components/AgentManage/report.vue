@@ -17,29 +17,29 @@
             <div class="boxs tableBoxs">
                 <div class="tabHead">
                   <div class="jobBoxs">
-                    <SelectBox 
-                      :options = 'jobs' 
-                      :value = "vJob" 
-                      :icon="'el-icon-d-caret'"
-                      placeholder="年"
-                      @change = "changeYear"
-                    />
-                    <SelectBox 
-                      :options = 'jobs' 
-                      :value = "vJob" 
-                      :icon="'el-icon-d-caret'"
-                      placeholder="月" 
-                      @change = "changeMonth"
-                    />
-                    <SelectBox 
-                      :options = 'jobs' 
-                      :value = "vJob" 
-                      :icon="'el-icon-d-caret'"
-                      placeholder="日" 
-                      @change = "changeDay"
-                    />
+                    <el-date-picker
+                      v-model="year"
+                      class="datetemp"
+                      type="year"
+                      prefix-icon=''
+                      placeholder="年">
+                    </el-date-picker>
+                    <el-date-picker
+                      v-model="month"
+                      type="month"
+                      format="MM"
+                      class="datetemp"
+                      placeholder="月">
+                    </el-date-picker>
+                    <el-date-picker
+                      v-model="day"
+                      class="datetemp"
+                      type="date"
+                      format="d"
+                      placeholder="日">
+                    </el-date-picker>
                   </div>
-                  <div class="checkBox">
+                  <div class="checkBox" @click="getReportData">
                     <i class="el-icon-search"></i>
                     <span>查询</span>
                   </div>
@@ -86,6 +86,9 @@ export default {
   },
   data () {
     return {
+        year:'',
+        month:'',
+        day:'',
         crumbs:['代维系统','系统报表'],
         activeName:'first',
         jobs:[
@@ -179,32 +182,33 @@ export default {
       }
     },
     mouseOverLi(row){
-      console.log(row)
-      this.$http.post('/pc_ims/admin/count_deviceinfo',{
-        name:'一号客梯'
-      }).then(res=> {
-           console.log(res)
-           if(res.data.code==0){
-            this.table.data = res.data.data;
-          }else{
-            this.$message({
-              type:'error',
-              message:res.data.msg
-            })
-          }
-      })
+      //console.log(row)
+      // this.$http.post('/pc_ims/admin/count_deviceinfo',{
+      //   name:'一号客梯'
+      // }).then(res=> {
+      //      console.log(res)
+      //      if(res.data.code==0){
+      //       this.table.data = res.data.data;
+      //     }else{
+      //       this.$message({
+      //         type:'error',
+      //         message:res.data.msg
+      //       })
+      //     }
+      // })
     },
     mouseOutLi(row){
 
     },
     getReportData(){
       this.$http.post('/pc_ims/admin/inspectionlist_count',{
-        year:'2018',
-        month:'07',
-        day:'25',
+        year:this.format(this.year,'yyyy'),
+        month:this.format(this.month,'MM'),
+        day:this.format(this.day,'dd'),
         pagenumber:1,
         pagesize:10
       }).then(res=> {
+        console.log(res);
          if(res.data.code==0){
             this.table.len = res.data.count;
             this.table.data = res.data.data;
@@ -221,9 +225,10 @@ export default {
         pagenumber:1,
         pagesize:10
       }).then(res=>{
+        console.log(res)
         if(res.data.code==0){
-            this.table2.len = res.data.count;
-            this.table2.data = res.data.data;
+            this.table2.len = res.data.data.count;
+            this.table2.data = res.data.data.data;
           }else{
             this.$message({
               type:'error',
@@ -231,6 +236,32 @@ export default {
             })
           }
       })
+    },
+    format(time, format){
+        var t = new Date(time);
+        var tf = function(i){return (i < 10 ? '0': '') + i};
+        return format.replace(/yyyy|MM|dd|HH|mm|ss/g, function(a){
+            switch(a){
+                case 'yyyy':
+                return tf(t.getFullYear());
+                break;
+                case 'MM':
+                return tf(t.getMonth() + 1);
+                break;
+                case 'mm':
+                return tf(t.getMinutes());
+                break;
+                case 'dd':
+                return tf(t.getDate());
+                break;
+                case 'HH':
+                return tf(t.getHours());
+                break;
+                case 'ss':
+                return tf(t.getSeconds());
+                break; 
+            }
+        })
     }
   },
   created() {
@@ -295,7 +326,6 @@ export default {
         height:0.32rem;
         background-color: rgba(255, 255, 255, 0.01);
         border-radius: 0.02rem;
-        border: solid 0.01rem #1989fa;
         text-align: center;
         margin-left: 0.2rem;
       }
@@ -327,6 +357,11 @@ export default {
       .tableBox{
          margin-left:0;
       }
+    }
+    .datetemp{
+      display:inline-block;
+      width:0.5rem;
+      margin-right:0.1rem;
     }
   }
 }

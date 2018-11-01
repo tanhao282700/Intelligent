@@ -87,7 +87,7 @@
             <span slot="label" class="tabItems">
                 巡检任务模板
             </span>
-            <RoutingTakModdel v-show="activeName=='second'" @addDetail="addDetail" @checkDetail="checkDetail" @changeStatus="changeStatus" :table="table2" :query="queryModel" @searchXJ="getModelList"/>
+            <RoutingTakModdel v-show="activeName=='second'" @addDetail="addDetail" :table="table2" :query="queryModel" @searchXJ="getModelList"/>
         </el-tab-pane>      
       </el-tabs>  
       <Dialog wid="910" hei="622" ref="add" > <!-- 新增巡检模板 -->
@@ -153,7 +153,7 @@ export default {
           taskStatus:[{value:1,label:'启用'},{value:2,label:'停用'}],
           system:'',area:'',exam:'',taskStatu:'',periods:[{value:0,label:'每天'},{value:1,label:'每周'},{value:2,label:'每月'},{value:3,label:'每年'}],
           period:'',departments:[],department:'',starttimes:[],
-          starttime:'',limits:[],limit:'',devices:[],device:'',
+          starttime:'',limits:[],time_limit:'',devices:[],device:'',
           datas:[],data:''
         },
         table2:{
@@ -319,12 +319,12 @@ export default {
       this.value7 = attrs.join('-');    
     }, 
     checkDetail(rowData){
-      console.log(rowData);
+      //console.log(rowData);
       this.rowData = rowData;
       this.tempTitle = '查看';
       this.$refs.add.show();
     },
-    updateDetail(rowData){
+    updateDetail(rowData){//待定
       this.rowData = rowData;
       this.tempTitle = '修改';
       this.$refs.add.show();
@@ -342,6 +342,11 @@ export default {
       this.$http.post('/pc_ims/set_template',formData)
       .then(res=>{
           if(res.data.code==0){
+            this.$message({
+              type:'error',
+              message:'巡检任务模板新增成功'
+            })
+            console.log(res.data)
             this.table3.len = res.data.count;
             this.table3.data = res.data.data.info;
             this.table3.tabs = [{'name':'今日巡检总数',num:res.data.data.zong},
@@ -356,6 +361,7 @@ export default {
       })
     },
     changeStatus(state,item){
+      //console.log(state)
       if(state=='启动'){
         state=1;
       }else{
@@ -370,11 +376,17 @@ export default {
       this.$http.post('/pc_ims/admin/change_state',{id:id,state:state})
       .then(res=>{
           if(res.data.code==0){
-            
+            this.$message({
+              type:'success',
+              message:res.data.msg,
+              duration:2000
+            })
+            this.getModelList(this.queryModel);
           }else{
             this.$message({
               type:'error',
-              message:res.data.msg
+              message:res.data.msg,
+              duration:2000
             })
           }
       })
@@ -572,7 +584,6 @@ export default {
       },
       getAreaList(){
         this.$http.post('/pc_ims/get_floor').then(res=>{
-          console.log(res);
           if(res.data.code==0){
             let data = res.data.data;
             $.each(data,(n,k)=>{

@@ -9,59 +9,72 @@
         </div>
         <div class="selectX selectX1">
           <span>类&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;型</span>
-          <SelectBox :options="options" 
+          <SelectBox :options="query.types" 
            class="selectdown"
            :value="formvals.sys_id"
            :placeholder="'给排水系统'"
+           @change="change1"
            :icon="'el-icon-d-caret'"/>
         </div>
         <div class="selectX">
           <span>设备名称</span>
-          <SelectBox :options="options"
+          <SelectBox :options="query.devices"
            :value="formvals.device_name"
            class="selectdown"
+           @change="change2"
            :placeholder="'1号集水坑'"
            :icon="'el-icon-d-caret'"/>
         </div>
         <div class="selectX">
           <span>处理人员</span>
-          <SelectBox :options="options"
+          <SelectBox :options="query.names"
            :value="formvals.user_id"
            class="selectdown"
+           @change="change3"
            :placeholder="'张三'"
            :icon="'el-icon-caret-top'"/>
         </div>
         <div class="selectX">
           <span>工单来源</span>
-          <SelectBox :options="options"
+          <SelectBox :options="query.type_id"
            :value="formvals.type_id"
            class="selectdown"
+           @change="change4"
            :placeholder="'内部报修'"
            :icon="'el-icon-caret-top'"/>
         </div>
         <div class="selectX">
           <span>任务优先</span>
-          <SelectBox :options="options"
+          <SelectBox :options="query.priority"
            :value="formvals.priority"
            :placeholder="'严重'"
+           @change="change5"
            class="selectdown"
            :icon="'el-icon-caret-top'"/>
         </div>
         <div class="selectX">
-          <InputBox 
-          :placeholder="'请输入设备地址'" 
-          inputType="text" 
-          :cssStyle="cssStyle"
-          :modelValue="formvals.floor"
-          :label="labelInput"/>
+          <div class = "inputbox">
+              <span v-text="'设备地址'" ></span>
+              <el-input
+                type="text"
+                class="selectdown selectdown1"
+                placeholder="请输入地址"
+                v-model="formvals.floor"
+                clearable>
+              </el-input>           
+          </div>
         </div>
         <div class="selectX selectX3">
-          <InputBox 
-          :placeholder="'请输入任务描述'" 
-          :modelValue="formvals.description"
-          inputType="textarea" 
-          :cssStyle="cssStyle2"
-          :label="textAreaLabel"/>
+          <div class = "inputbox">
+              <span v-text="'任务描述'" ></span>
+              <el-input
+                type="text"
+                class="selectdown"
+                placeholder="请输入描述"
+                v-model="formvals.description"
+                clearable>
+              </el-input>           
+          </div>
         </div>
         <div class="selectX">
           <InputBox 
@@ -81,7 +94,7 @@ import SelectBox from '@/components/form/selectBox';
 import InputBox from '@/components/form/inputBox'
 
 export default {
-  props:['data'],
+  props:['data','query'],
   components:{
       'SelectBox':SelectBox,
       'InputBox':InputBox
@@ -90,7 +103,9 @@ export default {
     return {
        options:[],
        formvals:{
-          operator:'姜媛媛'
+          operator:'姜媛媛',
+          description:'',
+          floor:''
        },
        cssStyle:{
           'width':'6.73vw',
@@ -121,7 +136,23 @@ export default {
   },
   methods:{
       sendWork(){
+        console.log(this.formvals)
         this.$emit('sendInfosShow',this.formvals);
+      },
+      change1(val){
+        this.formvals.sys_id = val;
+      },
+      change2(val){
+        this.formvals.device_name = val;
+      },
+      change3(val){
+        this.formvals.user_id = val;
+      },
+      change4(val){
+        this.formvals.type_id = val;
+      },
+      change5(val){
+        this.formvals.priority= val;
       }
   },
   mounted() {
@@ -155,9 +186,9 @@ export default {
     .selectX1{
       .vhMT(20);
     }
-    .selectX{
+    .selectX,.inputBox{
       .vhMB(16);
-      .vh(32);
+      height:0.32rem;
       span{
         width:6.73vw;
         color:#4F648B;
@@ -171,7 +202,10 @@ export default {
       }
     }
     .selectX3{
-      .vh(146)
+      .vh(100);
+      .selectdown{
+        width:30vw;
+      }
     }
     .sendWork2Boxs{
         color:#fff;
@@ -191,6 +225,15 @@ export default {
           }
         }
     }
+    .inputbox{
+      .inputType{
+        display:inline-block;
+        width:31.92vw;
+        .vh(32);
+        border:1px solid #051732;
+        border-radius:2px;
+      }
+  }
 }
     
 </style>

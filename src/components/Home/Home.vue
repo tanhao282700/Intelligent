@@ -123,7 +123,7 @@
       </div>
       <div class="modeCon">
         <div class="modeBox">
-          <div class="modeDetail boxs" @click="chooseSystem(12,'AgentManage')" v-if="routerInfo[12].role_string[0]!=0" >
+          <div class="modeDetail boxs" @click="chooseSystem(12,'AgentManage')" v-if="routerInfo[12] && routerInfo[12].role_string[0]!=0" >
             <img src="../../../static/img/agent.png" alt="">
             <span>代维管理系统</span>
           </div>

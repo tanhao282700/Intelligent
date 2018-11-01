@@ -226,7 +226,7 @@
       display: flex;
       justify-content: flex-start;
       width: 100%;
-      .vh(40);
+      height: .5rem;
       background-color: rgba(0, 0, 0, 0);
       padding: 0 0.16rem;
       .title{
@@ -289,9 +289,8 @@
         color: #008aff;
       }
       .myChart{
-        height:100%;
-        width:100%;
-
+        height:100% !important;
+        width:100% !important;
       }
     }
 

@@ -44,7 +44,7 @@
                 完成时限
               </el-col>
               <el-col :span="18" class="addContInput" :style="{color:'#fff'}">
-                <el-input v-model="formval.limit" placeholder="请输入完成时限" :style="{width:'90%'}"></el-input>日
+                <el-input v-model="formval.time_limit" placeholder="请输入完成时限" :style="{width:'90%'}"></el-input>日
               </el-col>
              
             </el-row>
@@ -107,13 +107,11 @@
                 开始时间<i>*</i>
               </el-col>
               <el-col :span="18" class="addContInput">
-                <SelectBox 
-                  :options = 'formvals.starttimes' 
-                  :value = "formval.starttime" 
-                  :icon="'el-icon-d-caret'"
-                  placeholder="开始时间"
-                  @change = "change7"
-                />
+                <el-date-picker
+                  v-model="formvals.starttime"
+                  type="date"
+                  placeholder="选择日期">
+                </el-date-picker>
               </el-col>
             </el-row>
           </el-col>
@@ -228,7 +226,7 @@
          }
       },
       mounted() {
-        console.log(this.data);
+        this.formvals = this.data;
       }
   }
 </script>

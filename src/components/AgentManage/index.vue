@@ -16,7 +16,7 @@
         </div>
         <div class="msgsIn0">
           <div class="msgsIn">
-            <div class="msgsInTit" v-text="`本日工单数`"></div>
+            <div class="msgsInTit" v-text="`本${msgsInTit}工单数`"></div>
             <div class="msgsInBoxs">
               <div class="msgsInCircle">
                 <EchartCirFull ref="echartCirData3"  :echartCirData = "echartCirData3"/>

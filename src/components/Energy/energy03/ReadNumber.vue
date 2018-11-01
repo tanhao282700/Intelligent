@@ -1,39 +1,47 @@
 <template>
-  <div class="readNumber">
+  <div class="readNumber" v-loading="loading"
+       element-loading-background="rgba(0, 0, 0, 0.5)"
+       element-loading-spinner="el-icon-loading"
+       element-loading-text="拼命加载中">
     <div class="head">
       <div class="type">
-        <span class="active">区域
+        <span @click="changeType(1)" :class="{'active':currentType==1}">区域
           <div class="spacing">
             <div class="to-top"></div>
             <div class="to-bottom"></div>
           </div>
         </span>
-        <span>系统</span>
+        <span @click="changeType(2)" :class="{'active':currentType==2}">系统</span>
       </div>
       <div class="search">
         <div class="limition">
-          <el-select :placeholder="items.placeHolder" v-for="(items,index) in options" v-model="aa" :key="index+1" class="querySelectItem">
+          <template>
+          <el-select placeholder="选择楼层" clearbel @change="choseQuery1" v-model="areaForm.id1" class="querySelectItem">
+            <el-option label="选择楼层" value="0"></el-option>
             <el-option
-              v-for="item in items.data"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
+              v-for="item in areaData1"
+              :key="item.id"
+              :label="item.title"
+              :value="item.id">
             </el-option>
           </el-select>
-          <el-select :placeholder="items.placeHolder" v-for="(items,index) in options" v-model="aa1" :key="index+2" class="querySelectItem">
+          </template>
+          <el-select placeholder="选择区间" @change="choseQuery2" v-model="areaForm.id2" class="querySelectItem">
+            <el-option label="选择区间" value="0"></el-option>
             <el-option
-              v-for="item in items.data"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
+              v-for="item in areaData2"
+              :key="item.id"
+              :label="item.title"
+              :value="item.id">
             </el-option>
           </el-select>
-          <el-select :placeholder="items.placeHolder" v-for="(items,index) in options" v-model="aa2" :key="index+3" class="querySelectItem">
+          <el-select placeholder="选择区域" v-model="aa2" class="querySelectItem">
+            <el-option label="选择区域" value="0"></el-option>
             <el-option
-              v-for="item in items.data"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
+              v-for="item in areaData3"
+              :key="item.id"
+              :label="item.title"
+              :value="item.id">
             </el-option>
           </el-select>
         </div>
@@ -50,7 +58,7 @@
             <div class="box">
               <div class="cont">
                 <div class="numbers">
-                  <span v-for="i in 10">9</span>
+                  <span v-for="(i,index) in 10" v-text="shishi.shui[index]"></span>
                 </div>
                 <div class="danwei">m³</div>
               </div>
@@ -59,7 +67,7 @@
             <div class="box">
               <div class="cont">
                 <div class="numbers">
-                  <span v-for="i in 10">9</span>
+                  <span v-for="(i,index) in 10" v-text="shishi.dian[index]"></span>
                 </div>
                 <div class="danwei">kw/h</div>
               </div>
@@ -68,7 +76,7 @@
             <div class="box">
               <div class="cont">
                 <div class="numbers">
-                  <span v-for="i in 10">9</span>
+                  <span v-for="(i,index) in 10" v-text="shishi.qi[index]"></span>
                 </div>
                 <div class="danwei">m³</div>
               </div>
@@ -77,15 +85,15 @@
           </div>
         </div>
         <div class="part boxs">
-          <lineEcharts :datas ='bb.echarts' ref="lineEchartssss1"  :key = "bb.id"/>
+          <component :is="shuiComponent" :datas ='shui.echarts' ref="lineEchartssss1"  :key = "shui.id"></component>
         </div>
       </div>
       <div class="parts">
         <div class="part boxs">
-          <lineEcharts :datas ='cc.echarts' ref="lineEchartssss2"  :key = "cc.id"/>
+          <component :is="qiComponent" :datas ='qi.echarts' ref="lineEchartssss1"  :key = "qi.id"></component>
         </div>
         <div class="part boxs">
-          <lineEcharts :datas ='dd.echarts' ref="lineEchartssss3"  :key = "dd.id"/>
+          <component :is="dianComponent" :datas ='dian.echarts' ref="lineEchartssss1"  :key = "dian.id"></component>
         </div>
       </div>
     </div>
@@ -147,7 +155,13 @@
     name:'ReadNumber',
     data(){
       return{
-        bb:{
+        clearable:true,
+        loading:true,
+          currentType:1,
+        shuiComponent:'',
+        dianComponent:'',
+        qiComponent:'',
+        shui:{  //水
           id:1,
           echarts:{
             id:'lineEchartShui',
@@ -163,7 +177,7 @@
             ]
           }
         },
-        cc:{
+        qi:{
           id:2,
           echarts:{
             id:'lineEchartQi',
@@ -179,7 +193,7 @@
             ]
           }
         },
-        dd:{
+        dian:{
           id:3,
           echarts:{
             id:'lineEchartDian',
@@ -212,10 +226,28 @@
               "label": '告警'
             }]
           }],
+        areaData1:[], //区域第一个筛选框初始化
+        areaData2:[],
+        areaData3:[],
+        areaForm:{// 区域筛选条件
+          project_id:1,
+          floor_id:0,
+          sys_menu_id:0,
+          id1:'',
+          id2:'',
+          id3:''
+        },
+        shishi:{shui:'',dian:'',qi:''},  //实施能耗
+        dian:{},  //电
+        qi:{},  //气
+
       }
     },
     created(){
         window.addEventListener('resize',this.resizeWindow)
+      this.areaForm.sys_menu_id = this.$store.state.sysList[2].sys_menu_id
+      this.areaForm.project_id = this.$store.state.projectId
+      this.initAreaQueryData()
     },
     components:{
       'LineEcharts':LineEcharts
@@ -224,12 +256,161 @@
 
     },
     mounted(){
-        this.$refs.dialog.show()
+        /*this.$refs.dialog.show()*/
     },
     destroyed(){
         window.removeEventListener('resize',this.resizeWindow)
     },
     methods:{
+      choseQuery1(){
+          this.areaData1.map((item,index)=>{
+              if(item.id == this.areaForm.id1){
+                this.areaData2 = item.child
+              }
+          })
+      },
+      choseQuery2(){
+        this.areaData2.map((item,index)=>{
+          if(item.id == this.areaForm.id2){
+            this.areaData3 = item.child
+          }
+        })
+      },
+      initAreaQueryData(){
+        this.$http.post('/hotel_energy/floor_real_time',this.areaForm).then((res)=>{
+          console.log(res)
+          if(res.data.code == 0){
+              this.areaData1 = res.data.data.area_level
+            this.dealData(res)
+          }else{
+
+          }
+        })
+      },
+      refreshCanvas(data){
+          if(data.shui.time){
+            data.shui.time.map((item,index)=>{
+              data.shui.time[index] = item.split(' ')[1].split(':')[0]+':'+item.split(' ')[1].split(':')[1]
+            })
+          }
+          if(data.dian.time){
+            data.dian.time.map((item,index)=>{
+              data.dian.time[index] = item.split(' ')[1].split(':')[0]+':'+item.split(' ')[1].split(':')[1]
+            })
+          }
+
+        if(data.qi.time){
+          data.qi.time.map((item,index)=>{
+            data.qi.time[index] = item.split(' ')[1].split(':')[0]+':'+item.split(' ')[1].split(':')[1]
+          })
+        }
+
+        let random = Math.ceil(Math.random()*1000 +1);
+          this.shui = {
+            id:'shui'+random,
+            echarts:{
+              id:'lineEchartShui'+random,
+              type:'shui',
+              unit:'m³',
+              title:'水',
+              titShow:true,
+              style:{width:'100%',height:'100%'},
+              xDate:data.shui.time,
+              list:[
+                {name:'碳排放',data:data.shui.data_t},
+                {name:'能耗值',data:data.shui.data},
+              ]
+            }
+          }
+        this.qi = {
+          id:'qi'+random,
+          echarts:{
+            id:'lineEchartQi'+random,
+            type:'qi',
+            unit:'Kg/m³',
+            title:'气',
+            titShow:true,
+            style:{width:'100%',height:'100%'},
+            xDate:data.qi.time,
+            list:[
+              {name:'碳排放',data:data.qi.data_t},
+              {name:'能耗值',data:data.qi.data},
+            ]
+          }
+        }
+        this.dian = {
+          id:'dian'+random,
+          echarts:{
+            id:'lineEchartDian'+random,
+            type:'dian',
+            unit:'Kg/Kw/h',
+            title:'电',
+            titShow:true,
+            style:{width:'100%',height:'100%'},
+            xDate:data.dian.time,
+            list:[
+              {name:'碳排放',data:data.dian.data_t},
+              {name:'能耗值',data:data.dian.data},
+            ]
+          }
+        }
+          this.shuiComponent = 'LineEcharts'
+        this.dianComponent = 'LineEcharts'
+        this.qiComponent = 'LineEcharts'
+
+        this.loading = false
+      },
+      changeType(type){
+        this.loading = true
+        this.shuiComponent = ''
+        this.dianComponent = ''
+        this.qiComponent = ''
+          this.currentType = type
+        if(type==1){
+          this.$http.post('/hotel_energy/floor_real_time',this.areaForm).then((res)=>{
+            if(res.data.code == 0){
+              this.dealData(res)
+            }else{
+
+            }
+          })
+        }else if(type==2){
+          this.$http.post('/hotel_energy/system_real_time',{project_id:1,system_id:1}).then((res)=>{
+            if(res.data.code == 0){
+              this.dealData(res)
+            }else{
+
+            }
+          })
+        }
+
+      },
+      dealData(res){
+        this.shishi = res.data.data.read //实时能耗
+        this.shishi.dian = String(this.shishi.dian)
+        this.shishi.shui = String(this.shishi.shui)
+        this.shishi.qi = String(this.shishi.qi)
+        let dian = this.shishi.dian
+        let dianStr = ''
+        let qi = this.shishi.qi
+        let qiStr = ''
+        let shui = this.shishi.shui
+        let shuiStr = ''
+        for(let i=0;i<10-this.shishi.dian.length;i++){
+          dianStr += '0'
+        }
+        this.shishi.dian = dianStr+dian
+        for(let i=0;i<10-this.shishi.qi.length;i++){
+          qiStr += '0'
+        }
+        this.shishi.qi = qiStr+qi
+        for(let i=0;i<10-this.shishi.shui.length;i++){
+          shuiStr += '0'
+        }
+        this.shishi.shui = shuiStr+shui
+
+        this.refreshCanvas(res.data.data.table)
+      },
       resizeWindow(){
         this.$refs.lineEchartssss1.drawLine();
         this.$refs.lineEchartssss2.drawLine();

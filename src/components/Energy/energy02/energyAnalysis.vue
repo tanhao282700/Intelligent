@@ -110,24 +110,45 @@
         		iscur:0,
         		tabs: [{name: "电"}, {name: "水"} ,{name: "气"}],
         		data:{
-        			custom:[1212,3434,5566,2323,3423,54,67,85,34,23,45,56,67,89,90,43,54,54,6,67,3,34,65,34,56,76,43,56,78,23,78],
-        			party:[],
-        			dinneroom:[],
-        			dinner:[],
-        			publicarea:[],
-        			airconditioner:[],
-        			mainframe:[],
-        			occupancy:[]
+        			topPie:[],
+        			axisLabel:[],
+        			legendData:[],
+        			arrData1:[],
+        			arrData2:[],
+        			arrData3:[],
+        			arr1Label:[],
+        			arr1:[],
+        			arr1x:[]
         		},
         		vanalysis:'',
         		analysis:[]
         	}
         },
         methods:{
-        	getBottomEcharts(){
+        	getBottomEcharts(pieData2,pieData,arr2x,arr2Label){
         		let data = this.data;
         		let chart = this.$echarts.init(document.getElementById('deviceLeft'));
         		let chart2 = this.$echarts.init(document.getElementById('deviceRight'));
+        		let shadowColors=['rgba(48, 241, 225, .4)','rgba(48, 241, 225, .4)','rgba(253, 153, 27, .4)'];
+        		let series = [];
+        		for(var i=0;i<arr2Label.length;i++){
+        			series.push({
+				    	name:arr2Label[i],
+				        data: pieData,
+				        type: 'line',
+				        symbol: "circle", 
+				        symbolSize:0,
+				        smooth: true,
+			            lineStyle: {
+			                normal: {
+			                    width: 2,
+			                    shadowColor: shadowColors[i],
+			                    shadowBlur: 5,
+			                    shadowOffsetY: 5
+			                }
+			            },
+				    })
+        		}
 	        	let option3 = {
 					tooltip : {
 				        trigger: 'axis',
@@ -150,14 +171,12 @@
 			          	top:5,
 			          	itemWidth: 20,
 	        			itemHeight: 10,
-			            data:['水泵','空调','其他'],
+			            data:arr2Label,
 		            },
 		            calculable : true,
 		            xAxis: {
-				        type: 'value',
-				        min:1,
-				       	max:31,
-				        interval:1,
+				        type:'category',
+				        data:arr2x,
 				        boundaryGap: true,
 				        axisLine: {show:false},
 				        axisTick: {show:false},
@@ -177,54 +196,8 @@
 				        },
 				        type: 'value'
 			    	},
-				    series: [{
-				    	name:'水泵',
-				        data: data.custom,
-				        type: 'line',
-				        symbol: "circle", 
-				        symbolSize:0,
-				        smooth: true,
-			            lineStyle: {
-			                normal: {
-			                    width: 2,
-			                    shadowColor: 'rgba(48, 241, 225, .4)',
-			                    shadowBlur: 5,
-			                    shadowOffsetY: 5
-			                }
-			            },
-				    },{
-				    	name:'空调',
-				        data: data.party,
-				        type: 'line',
-				        symbol: "circle", 
-				        symbolSize:0,
-				        smooth: true,
-			            lineStyle: {
-			                normal: {
-			                    width: 2,
-			                    shadowColor: 'rgba(48, 241, 225, .4)',
-			                    shadowBlur: 5,
-			                    shadowOffsetY: 5
-			                }
-			            },
-				    },
-				    {
-				    	name:'其他',
-				        data: data.dinner,
-				        type: 'line',
-				        symbol: "circle", 
-				        symbolSize:0,
-				        smooth: true,
-			            lineStyle: {
-			                normal: {
-			                    width: 2,
-			                    shadowColor: 'rgba(253, 153, 27, .4)',
-			                    shadowBlur: 5,
-			                    shadowOffsetY: 5
-			                }
-			            },
-				    }],
-			        color:["#F35E5E","#EEB66E","#008AFF",]
+				    series: series,
+			        color:["#F35E5E","#EEB66E","#008AFF"]
 				};
 				let option2 = {
 				    tooltip : {
@@ -237,12 +210,8 @@
 				            type: 'pie',
 				            radius : '65%',
 				            center: ['50%', '50%'],
-				            color:["#008AFF","#F35E5E","#EEB66E"],
-				            data:[
-				            	{value:135, name:'其他'},
-				                {value:154, name:'餐厅'},
-				                {value:335, name:'空调'}
-				            ],
+				            color:["#008AFF","#F35E5E","#EEB66E","#FD97AA","#EBF191","#C382EF","#95EDC5",'#b5d7ff'],
+				            data:pieData2,
 				            itemStyle: {
 				                emphasis: {
 				                    shadowBlur: 10,
@@ -261,11 +230,92 @@
 	        },
 	        change1(){
 
+	        },
+	        getDatas(){
+	        	let param = {
+	        		project_id:1,
+	        		sys_menu_id:1,
+	        		area_query_date_type:'',
+	        		area_date:'',
+	        		energy_type:this.iscur,
+	        		device_query_date_type:'',
+	        		device_date:''
+	        	}
+	        	this.$http.post('/hotel_energy/analysis',param)
+	        	.then(res=>{
+	        		//区域图
+	        		let barData = res.data.data.area_energy_use.column_data;
+	        		let lastThisData = barData.last_this_time;//同期
+	        		let thisData = barData.this_time;//本期
+	        		let lastData = barData.last_time;//上期
+	        		let chineseData = res.data.data.area_energy_use.floor_map;
+	        		let pieData = res.data.data.area_energy_use.pie_data;
+	        		let trendData = res.data.data.area_energy_use.trend_data;
+	        		$.each(chineseData,(n,k)=>{
+	        			$.each(pieData,(n1,k1)=>{
+	        				if(k.area_id==k1.area_id){
+	        					this.data.topPie.push({'value':k1.data,'name':k.title})
+	        				}
+	        			})
+	        			if(k.area_id == thisData.area_id){
+	        				this.data.axisLabel.push(k.title);
+	        				$.each(thisData.data,(n2,k2)=>{
+	        					this.data.legendData.push(k2.date);
+	        					this.data.arrData1.push(k2.value);
+	        				})
+	        			}
+	        			if(k.area_id == lastData.area_id){
+	        				$.each(lastData.data,(n2,k2)=>{
+	        					this.data.arrData2.push(k2.value);
+	        				})
+	        			}
+	        			if(k.area_id == lastThisData.area_id){
+	        				$.each(lastThisData.data,(n2,k2)=>{
+	        					this.data.arrData3.push(k2.value);
+	        				})
+	        			}
+	        			$.each(trendData,(n1,k1)=>{
+	        				this.data.arr1Label.push(k.title);
+	        				if(k1.device_id==k.device_id){
+	        					$.each(k1.data,(n2,k2)=>{
+	        						this.data.arr1x.push(k2.date);
+	        						this.data.arr1.push(k2.value);
+	        					})
+	        					
+	        				}
+	        			});
+	        		})
+	        		//设备图
+	        		console.log(res.data.data.area_energy_use);
+	        		let pieData2 = res.data.data.device_energy_use.pie_data;
+	        		let chineseData2 = res.data.data.device_energy_use.device_map;
+	        		let trendData2 = res.data.data.device_energy_use.trend_data;
+	        		let arr = [],arr2=[],arr2x=[],arr2Label=[];
+
+	        		$.each(chineseData2,(n,k)=>{
+	        			$.each(pieData2,(n1,k1)=>{
+	        				if(k.device_id==k1.device_id){
+	        					arr.push({'value':k1.data,'name':k.title})
+	        				}
+	        			})
+	        			$.each(trendData2,(n1,k1)=>{
+	        				arr2Label.push(k.title);
+	        				if(k1.device_id==k.device_id){
+	        					$.each(k1.data,(n2,k2)=>{
+	        						arr2x.push(k2.date);
+	        						arr2.push(k2.value);
+	        					})
+	        					
+	        				}
+	        			});
+	        		})
+	        		this.getBottomEcharts(arr,arr2,arr2x,arr2Label);
+	        	})
 	        }
 
         },
         mounted(){
-        	this.getBottomEcharts();
+        	this.getDatas();
         }
     }
 </script>

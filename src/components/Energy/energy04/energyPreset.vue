@@ -26,7 +26,7 @@
         </div>
         <el-button class="btns" type="primary" icon="el-icon-search"  @click = "isSearch">搜索</el-button>
         <el-button class="btns" type="success" icon="el-icon-edit" v-show="!isChangeing" @click = " openChange">编辑</el-button>
-        <el-button class="btns" type="success" icon="el-icon-third-baocun" v-show="isChangeing" @click = "changeOk()">完成</el-button>
+        <el-button class="btns" type="success" icon="el-icon-third-baocun" v-if="isChangeing" @click = "changeOk">完成</el-button>
         <span class = "timeBoxss">当前日期： <span v-text="times"></span>
       </span>
       </div>
@@ -207,19 +207,14 @@
       isChange(val){ //切换年份，如果在编辑状态， 清空切换状态
         if(val.getFullYear()<(new Date()).getFullYear()){
           this.isChangeing =false;
-          // this.getData();
-          //
+          /*this.getData();*/
         }
       },
       isSearch(){
         this.getData();
       },
       openChange(){
-        if(this.oldYear){
-          return;
-        }else{
-          this.isChangeing =true;
-        }
+        this.isChangeing =true;
       },
       ckId(type){ //0 = 电 1=水 2=气
         let id ='0';
@@ -237,34 +232,52 @@
         return id;
       },
       changeOk(){
-        let attr = [];
-        let datas = this.allData;
+        let that = this;
+        let datas = that.allData;
         let lens  = datas.length;
-        for(let i = 0;i<lens;i++){
-          if(i>this.dateM){ //之后的月份
-            for(let j=0;j<3;j++){
-              let objs = {
-                "project_id":'1',
-                "addtime":String(datas[i].id),
-                "energy_type":this.ckId(datas[i].list[j].id),
-                "cost":String(datas[i].list[j].plan),
-                'year':String((this.years).getFullYear())
-              }
-              attr.push(objs);
-            }
-          }
-        }
-        let json = JSON.stringify(attr);
-        let data = {
-          data :json
-        };
-        utils.post('energy/plan/set',data).then(res=>{
-          console.log(res)
-        }).catch(err=>{
+        let updateObj = {};
+        let a0={};
+        let a1={};
+        let a2={};
 
+        for(let i = 0;i<lens;i++){
+          var temp = datas[i];
+          var j = i+1;
+          if(j<10){j="0"+j};
+          j = j.toString();
+          a0[j] = (temp.list[0].plan).toString();
+          a1[j] = (temp.list[1].plan).toString();
+          a2[j] = (temp.list[2].plan).toString();
+        }
+        updateObj[0] = a0;
+        updateObj[1] = a1;
+        updateObj[2] = a2;
+
+        let updateJson = JSON.stringify(updateObj);
+
+        let projectId = that.$store.state.projectId;
+        let config = {
+          project_id:projectId,
+          year: that.years,
+          update: updateJson
+        };
+
+        that.$http.post('hotel_energy/energy_plan',config).then(res=>{
+          console.log(res)
+          if(res.data.code == 0){
+            that.isChangeing = false;
+            that.$message({
+              showClose: true,
+              message: '保存成功！',
+              type: 'success'
+            });
+          }
+
+        }).catch(err=>{
+          that.isChangeing = false;
+          that.$message('保存失败！');
         });
-        this.isChangeing = false;
-        this.$message('保存成功！');
+
       },
       getMonth(id){
         let res = '';
@@ -329,7 +342,7 @@
             for(let i=1;i<lens;i++){
               if(i<10){i="0"+i};
               let objs = {
-                tit:that.getMonth(i),
+                tit:that.getMonth(i.toString()),
                 id: i,
                 list:[
                   {id:'power',plan:planData[0][i],Actual:actualData[0][i],tit:'用电'},
@@ -408,6 +421,8 @@
         transform:translateY(1px);
         margin-left:0.12rem;
         float: left;
+        display: flex;
+        align-items: center;
       }
     }
     .powerSetBody{

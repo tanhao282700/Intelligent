@@ -10,8 +10,8 @@
           <div class="tabHead">
             <div class="nameBoxs">
               <SelectBox 
-                :options = 'jobs' 
-                :value = "vJob" 
+                :options = 'query.systems' 
+                :value = "query.sys_id" 
                 :icon="'el-icon-d-caret'"
                 placeholder="工种"
                 @change = "change1"
@@ -19,32 +19,32 @@
             </div>
             <div class="nameBoxs">
               <SelectBox 
-                :options = 'jobs' 
-                :value = "vJob" 
+                :options = 'query.types' 
+                :value = "query.type" 
                 :icon="'el-icon-d-caret'"
                 placeholder="类别"
-                @change = "change1"
+                @change = "change2"
               />
             </div>
             <div class="nameBoxs">
               <SelectBox 
-                :options = 'jobs' 
-                :value = "vJob" 
+                :options = 'query.times' 
+                :value = "query.time" 
                 :icon="'el-icon-d-caret'"
                 placeholder="时间"
-                @change = "change1"
+                @change = "change3"
               />
             </div>
             <div class="jobBoxs">
               <SelectBox 
-                :options = 'jobs' 
-                :value = "vJob" 
+                :options = 'query.states' 
+                :value = "query.now_state" 
                 :icon="'el-icon-d-caret'"
                 placeholder="完成情况"
-                @change = "change1"
+                @change = "change4"
               />
             </div>
-            <div class="searchBoxs">
+            <div class="searchBoxs" @click="getTableData">
               <i class="el-icon-search"></i>
               <span>筛选</span>
             </div>
@@ -88,6 +88,13 @@ export default {
               {id:4,name:'完成情况',route:'/AgentManage/normalUser/report'},
           ]
         },
+        query:{
+          states:[{label:'未完成',value:0},{label:'完成',value:1}],
+          systems:[],
+          types:[{label:'巡检',value:0},{label:'工单',value:1}],
+          times:[],
+          sys_id:1
+        },
         crumbs:['代维系统','系统报表'],
         activeName:'first',
         jobs:[
@@ -102,25 +109,17 @@ export default {
             // small:'small',
             hei:328, //table高度  设置后有滚动条
             len:7, //总条数
-            data:[
-              {id:1,name:'白狗汪1',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:-1,backApply:"-",fill:100}, 
-              {id:2,name:'白狗汪2',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:-1,backApply:"-",fill:80}, 
-              {id:3,name:'白狗汪3',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:-1,backApply:"-",fill:60}, 
-              {id:4,name:'白狗汪4',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:4,backApply:"-",fill:40}, 
-              {id:5,name:'白狗汪5',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:4,backApply:"-",fill:20}, 
-              {id:6,name:'白狗汪6',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:4,backApply:"-",fill:100}, 
-              {id:7,name:'白狗汪7',tel:'18349171744',job:'程序猴',sendNum:6,dealing:4,nocatch:1,dealed:4,backApply:"-",fill:100}            
-            ],
+            data:[],
             th:[
               {prop:'id',label:'编号'},
-              {prop:'name',label:'工种'},
-              {prop:'tel',label:'类别',wid:150},
-              {prop:'job',label:'派发时间'},
-              {prop:'sendNum',label:'详情'},
-              {prop:'dealed',label:'完成情况',operate:true,
+              {prop:'title',label:'工种'},
+              {prop:'type',label:'类别',wid:150},
+              {prop:'addtime',label:'派发时间'},
+              {prop:'description',label:'详情'},
+              {prop:'now_state',label:'完成情况',operate:true,
               render: (h, param)=> {
                 const btnss = {
-                            fills:param.row.dealed,  
+                            fills:param.row.now_state,  
                         };
                         return h(State,{
                         props: { state:btnss},
@@ -135,18 +134,31 @@ export default {
     handleClick(){
 
     },
-    change1(){
-
+    change1(val){
+      this.query.sys_id = val;
+    },
+    change2(val){
+      this.query.type = val;
+    },
+    change3(val){
+      this.query.time = val;
+    },
+    change4(val){
+      this.query.now_state = val;
     },
     getTableData(){
-      this.$http.post('/pc_ims/staff/count_byuser').then(res=>{
+      this.query.pagenumber = 1;
+      this.query.pagesize = 20;
+      this.$http.post('/pc_ims/staff/count_byuser',this.query).then(res=>{
         if(res.data.code==0){
              let data = res.data.data;
-              console.log(data);
+              this.table.data = data;
+              this.table.len = res.data.count;
            }else{
               this.$message({
                 type:'error',
-                message:res.data.msg
+                message:res.data.msg,
+                duration:2000
               })
            }
       })

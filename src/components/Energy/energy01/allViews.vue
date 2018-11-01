@@ -115,14 +115,7 @@
               </el-select>
               <div class="yearRangeBox" v-show=" dateUnit=='year' ">
                 <el-date-picker
-                  v-model="dateRangeValue[0]"
-                  type="year"
-                  value-format="yyyy"
-                  placeholder="请选择">
-                </el-date-picker>
-                <span>-</span>
-                <el-date-picker
-                  v-model="dateRangeValue[1]"
+                  v-model="dateRangeValue"
                   type="year"
                   value-format="yyyy"
                   placeholder="请选择">
@@ -130,32 +123,22 @@
               </div>
               <div class="yearRangeBox" v-show=" dateUnit=='month' ">
                 <el-date-picker
-                  v-model="dateRangeValue[0]"
-                  format="yyyy-M"
-                  value-format="yyyyMM"
-                  type="month"
-                  placeholder="请选择">
-                </el-date-picker>
-                <span>-</span>
-                <el-date-picker
-                  v-model="dateRangeValue[1]"
+                  v-model="dateRangeValue"
                   format="yyyy-M"
                   value-format="yyyyMM"
                   type="month"
                   placeholder="请选择">
                 </el-date-picker>
               </div>
-              <el-date-picker
-                v-model="dateDayRangeValue"
-                type="daterange"
-                range-separator="-"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
-                format="yyyy-M-d"
-                value-format="yyyyMMdd"
-                class="energyAreaDateBox"
-                v-show=" dateUnit=='day' ">
-              </el-date-picker>
+              <div class="yearRangeBox" v-show=" dateUnit=='day' ">
+                <el-date-picker
+                  v-model="dateRangeValue"
+                  format="yyyy-M-d"
+                  value-format="yyyyMMdd"
+                  type="date"
+                  placeholder="请选择">
+                </el-date-picker>
+              </div>
               <div>
                 <el-button class="area3-QueryDateBtn" @click="viewsQueryRangeData"><i></i><span>查询</span></el-button>
               </div>
@@ -330,7 +313,7 @@
           }
         },
         dateDayRangeValue:"",
-        dateRangeValue:[],
+        dateRangeValue:"",
         dateUnit:'month',
         dateOptions:[{id:'year',title:"年"},{id:'month',title:"月"},{id:'day',title:"日"}],
         totalEnergyUsageData:{
@@ -370,7 +353,8 @@
           },
           "real_time_income": 0,
           "seat_num": [0, 0]
-        }
+        },
+        allDatas:""
       }
     },
     methods:{
@@ -380,7 +364,13 @@
       },
       calcTipPosition(a) {
         var center= Number($(".percentageTextTip").width())/2;
-        var r = 78;
+        var winWidth = $("html").width();
+        var r;
+        if(winWidth<1500){r = 78};
+        if(winWidth>1500 && winWidth <=1600){r = 80};
+        if(winWidth>1600 && winWidth <=1700){r = 85};
+        if(winWidth>1700 && winWidth <=1800){r = 90};
+        if(winWidth>1800){r = 100};
         var realA = (145 + 246 * (Number(a)/100));
         return {
           left: Math.round(center + Math.cos(realA *Math.PI/180) * r),
@@ -388,15 +378,11 @@
         }
       },
       dateTypeChange(){
-        this.dateRangeValue = [];
+        this.dateRangeValue = "";
         $(".el-date-editor.el-range-editor").css({border:'none!important'});
       },
       viewsQueryRangeData(){
         let that = this;
-        let dateUnit  = that.dateUnit;
-        if(dateUnit=='day'){
-          that.dateRangeValue = that.dateDayRangeValue;
-        }
         that.requestElcPowerData();
       },
       totalEnergyChartRotate(per,ele){
@@ -410,7 +396,8 @@
         }).text(per+"%");
       },
       initArea3Chart1(data){
-        var myChart = this.$echarts.init(document.getElementById('energyArea3Chart1'));
+        let that = this;
+        var myChart = that.$echarts.init(document.getElementById('energyArea3Chart1'));
         var option = {
           backgroundColor: 'transparent',
           tooltip : {
@@ -659,7 +646,7 @@
         var that = this;
         var per = that.finance_info.energy_cost_rate;
         var leftPer = 100 - Number(per);
-        var myChart = this.$echarts.init(document.getElementById('energyArea4Chart1'));
+        var myChart = that.$echarts.init(document.getElementById('energyArea4Chart1'));
         var option = {
           backgroundColor: 'transparent',
           tooltip : {
@@ -942,9 +929,9 @@
         }
 
         that.$http.post('hotel_energy/index',config).then(res=>{
+          console.log(res);
           if(res.data.code == 0){
-            var energyData = res.data.data;
-            console.log(energyData);
+            var energyData = that.allDatas = res.data.data;
             that.calcArea1Data(energyData.total_energy_use);
             that.calcArea2Data(energyData.energy_trend_3_year,'energyTrend0',0);
             that.calcArea3Data(energyData.feng_ping_gu);
@@ -981,7 +968,6 @@
           query_date_type: that.dateUnit,
           query_date: that.dateRangeValue
         }
-        console.log(config);
 
         that.$http.post('hotel_energy/index',config).then(res=>{
           console.log(res);
@@ -1064,6 +1050,20 @@
         that.finance_info = data;
         that.initArea4Charts();
         that.$forceUpdate();
+      },
+      resizeViewCharts(){
+        let that = this;
+        that.$echarts.init(document.getElementById('energyArea3Chart1')).resize();
+        that.$echarts.init(document.getElementById('energyArea3Chart2')).resize();
+        that.$echarts.init(document.getElementById('energyArea3Chart3')).resize();
+        that.$echarts.init(document.getElementById('energyArea3Chart4')).resize();
+        that.$echarts.init(document.getElementById('energyArea4Chart1')).resize();
+        that.$echarts.init(document.getElementById('energyArea4Chart2')).resize();
+        that.$echarts.init(document.getElementById('energyArea4Chart3')).resize();
+        that.$echarts.init(document.getElementById('energyArea4Chart4')).resize();
+        that.$echarts.init(document.getElementById('energyArea4Chart5')).resize();
+        that.$echarts.init(document.getElementById('energyArea4Chart6')).resize();
+        that.$echarts.init(document.getElementById('energyArea4Chart7')).resize();
       }
     },
     created(){
@@ -1073,8 +1073,18 @@
       let that = this;
       that.requestAllData();
 
+      $(window).resize(function () {
+        let datas = that.allDatas;
+        that.calcArea1Data(datas.total_energy_use);
+        that.calcArea2Data(datas.energy_trend_3_year,'energyTrend0',0);
+        that.resizeViewCharts();
+      })
+    },
+    beforeDestroy(){
+      $(window).unbind( "resize" );
     }
   }
+
 </script>
 
 <style scoped>
@@ -1287,8 +1297,8 @@
     font-size: .15rem;
     color: #fff;
     position: absolute;
-    width: 1.2rem;
-    height: 1.2rem;
+    width: 67%;
+    height: 67%;
     left: 50%;
     top: 50%;
     transform: translate(-50%,-50%);
