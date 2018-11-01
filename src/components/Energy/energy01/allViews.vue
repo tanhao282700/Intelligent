@@ -353,7 +353,8 @@
           },
           "real_time_income": 0,
           "seat_num": [0, 0]
-        }
+        },
+        allDatas:""
       }
     },
     methods:{
@@ -363,7 +364,13 @@
       },
       calcTipPosition(a) {
         var center= Number($(".percentageTextTip").width())/2;
-        var r = 78;
+        var winWidth = $("html").width();
+        var r;
+        if(winWidth<1500){r = 78};
+        if(winWidth>1500 && winWidth <=1600){r = 80};
+        if(winWidth>1600 && winWidth <=1700){r = 85};
+        if(winWidth>1700 && winWidth <=1800){r = 90};
+        if(winWidth>1800){r = 100};
         var realA = (145 + 246 * (Number(a)/100));
         return {
           left: Math.round(center + Math.cos(realA *Math.PI/180) * r),
@@ -389,7 +396,8 @@
         }).text(per+"%");
       },
       initArea3Chart1(data){
-        var myChart = this.$echarts.init(document.getElementById('energyArea3Chart1'));
+        let that = this;
+        var myChart = that.$echarts.init(document.getElementById('energyArea3Chart1'));
         var option = {
           backgroundColor: 'transparent',
           tooltip : {
@@ -638,7 +646,7 @@
         var that = this;
         var per = that.finance_info.energy_cost_rate;
         var leftPer = 100 - Number(per);
-        var myChart = this.$echarts.init(document.getElementById('energyArea4Chart1'));
+        var myChart = that.$echarts.init(document.getElementById('energyArea4Chart1'));
         var option = {
           backgroundColor: 'transparent',
           tooltip : {
@@ -921,9 +929,9 @@
         }
 
         that.$http.post('hotel_energy/index',config).then(res=>{
+          console.log(res);
           if(res.data.code == 0){
-            var energyData = res.data.data;
-            console.log(energyData);
+            var energyData = that.allDatas = res.data.data;
             that.calcArea1Data(energyData.total_energy_use);
             that.calcArea2Data(energyData.energy_trend_3_year,'energyTrend0',0);
             that.calcArea3Data(energyData.feng_ping_gu);
@@ -1042,6 +1050,20 @@
         that.finance_info = data;
         that.initArea4Charts();
         that.$forceUpdate();
+      },
+      resizeViewCharts(){
+        let that = this;
+        that.$echarts.init(document.getElementById('energyArea3Chart1')).resize();
+        that.$echarts.init(document.getElementById('energyArea3Chart2')).resize();
+        that.$echarts.init(document.getElementById('energyArea3Chart3')).resize();
+        that.$echarts.init(document.getElementById('energyArea3Chart4')).resize();
+        that.$echarts.init(document.getElementById('energyArea4Chart1')).resize();
+        that.$echarts.init(document.getElementById('energyArea4Chart2')).resize();
+        that.$echarts.init(document.getElementById('energyArea4Chart3')).resize();
+        that.$echarts.init(document.getElementById('energyArea4Chart4')).resize();
+        that.$echarts.init(document.getElementById('energyArea4Chart5')).resize();
+        that.$echarts.init(document.getElementById('energyArea4Chart6')).resize();
+        that.$echarts.init(document.getElementById('energyArea4Chart7')).resize();
       }
     },
     created(){
@@ -1051,8 +1073,18 @@
       let that = this;
       that.requestAllData();
 
+      $(window).resize(function () {
+        let datas = that.allDatas;
+        that.calcArea1Data(datas.total_energy_use);
+        that.calcArea2Data(datas.energy_trend_3_year,'energyTrend0',0);
+        that.resizeViewCharts();
+      })
+    },
+    beforeDestroy(){
+      $(window).unbind( "resize" );
     }
   }
+
 </script>
 
 <style scoped>
@@ -1265,8 +1297,8 @@
     font-size: .15rem;
     color: #fff;
     position: absolute;
-    width: 1.2rem;
-    height: 1.2rem;
+    width: 67%;
+    height: 67%;
     left: 50%;
     top: 50%;
     transform: translate(-50%,-50%);

@@ -51,7 +51,7 @@
     </div>
     <component is="PersonInfo" @showTips="personInfoShowTips" :options="personInfoOptions"></component>
   </div>
-  
+
 </template>
 
 <script>
@@ -144,7 +144,7 @@ export default {
         this.activeName = 'item0';
       }
     }
-    
+
   }
 
 }
@@ -162,6 +162,7 @@ export default {
         height:50px;
         padding-top:5px;
         display:flex;
+        z-index: 1000;
         background:rgba(0,45,104,0.8);
         box-shadow:0px 2px 3px 0px rgba(0,0,0,0.2);
         .userIcon{
@@ -216,7 +217,7 @@ export default {
               background:url(../../assets/img/home/logo.png) no-repeat center center;
               background-size:cover;
             }
-        } 
+        }
         .searchBox{
           width:362px;
           height:40px;
@@ -255,7 +256,7 @@ export default {
                   background-size:18px;
               }
           }
-        }  
+        }
     }
-   
+
 </style>
