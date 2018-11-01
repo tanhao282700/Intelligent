@@ -118,7 +118,7 @@
                     var newArrTf2 = [];
                     var newArrTf3 = [];
                     $.each(data.data.data.separate_room,function(i,key){
-                        console.log(key);
+                        // console.log(key);
                         if(key[0].slice(0,1) == "1"){
                             newArrDj1.push(key);
                         }else if(key[0].slice(0,1) == "2"){
@@ -145,7 +145,7 @@
                             newArrTf3.push(key);
                         }
                     });
-                    console.log(selVal);
+                    // console.log(selVal);
                     if(selVal == 1){
                         that.roomsType[0].roomsLst = newArrDj1;
                         that.roomsType[1].roomsLst = newArrBj1;

@@ -98,11 +98,24 @@
                     $.each(data.data.data,function(i,k){
                         roomsDescript.push({num:k.descript});
                     }); 
-                    $.unique(roomsDescript);
+                    that.unique(roomsDescript);
                     that.roomListAllNumbers = roomsDescript;
                 }, function(data){
                     // 响应错误回调
                 });
+            },
+            unique(arr){
+             var i, j, len = arr.length; 
+             for(i = 0; i < len; i++){
+              for(j = i + 1; j < len; j++){
+               if(arr[i].num == arr[j].num){
+                arr.splice(j,1);
+                len--;
+                j--;
+               }
+              }
+             }
+             return arr;
             },
             toInputPage(){
               /*显示输入页表格数据*/
@@ -111,7 +124,7 @@
             },
             doSearch(){},
             addPolicy(){},
-            handleEdit(index, row){ console.log(row.name) },
+            handleEdit(index, row){ },
             handleSizeChange: function (size) {
                 this.pagesize = size;
             },

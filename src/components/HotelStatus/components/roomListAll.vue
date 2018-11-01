@@ -134,11 +134,25 @@
                     $.each(that.tableData,function(i,k){
                         seleRoom_id.push({num:k.room_id});
                     });
+                    that.unique(seleRoom_id);
                     that.roomListAllNumbers = seleRoom_id;
                     // console.log(seleRoom_id);
                 }, function(data){
                     // 响应错误回调
                 });
+            },
+            unique(arr){
+             var i, j, len = arr.length; 
+             for(i = 0; i < len; i++){
+              for(j = i + 1; j < len; j++){
+               if(arr[i].num == arr[j].num){
+                arr.splice(j,1);
+                len--;
+                j--;
+               }
+              }
+             }
+             return arr;
             },
             toInputPage(){
               /*显示输入页表格数据*/
