@@ -11,7 +11,7 @@
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>能源管理系统</el-breadcrumb-item>
-      <el-breadcrumb-item>全景查看</el-breadcrumb-item>
+      <el-breadcrumb-item>用能预设</el-breadcrumb-item>
     </el-breadcrumb>
 
     <div class="presetContentBox boxs">
@@ -20,6 +20,8 @@
           <el-date-picker
             v-model="years"
             @change = 'isChange'
+            format="yyyy"
+            value-format="yyyy"
             type="year"
             placeholder="请选择年份">
           </el-date-picker>
@@ -79,17 +81,17 @@
 
   export default {
     computed:{
-      oldYear(){
+      /*oldYear(){
         let res = false;
         if(Number(this.years.getFullYear())<Number((new Date()).getFullYear())){
           res = true;
         }
         return res;
-      }
+      }*/
     },
     data () {
       return {
-        years: new Date().getFullYear(),
+        years: "",
         updateData: "",
         loading:false,
         dateM:Number((new Date()).getMonth()),
@@ -205,7 +207,7 @@
     },
     methods:{
       isChange(val){ //切换年份，如果在编辑状态， 清空切换状态
-        if(val.getFullYear()<(new Date()).getFullYear()){
+        if(val<(new Date()).getFullYear()){
           this.isChangeing =false;
           /*this.getData();*/
         }
@@ -329,8 +331,9 @@
           year: that.years,
           update: that.updateData
         };
+        console.log(config);
 
-        this.loading = true;
+        that.loading = true;
         that.$http.post('hotel_energy/energy_plan',config).then(res=>{
           console.log(res);
           if(res.data.code == '0'){
@@ -355,7 +358,7 @@
             that.allData = attrs;
             that.loading = false;
           }else{
-
+            this.$message.error(res.data.message);
             that.loading = false;
           }
         }).catch(err=>{
@@ -365,6 +368,7 @@
     },
     created() {
       this.getData();
+      this.years = new Date().getFullYear().toString();
     },
     mounted() {
 
