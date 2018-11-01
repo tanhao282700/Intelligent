@@ -17,7 +17,8 @@
         <div class="itemsBox">
           <!--筛选查询-->
           <div class="queryBox">
-            <el-select :placeholder="items.placeHolder" v-for="(items,index) in options" v-model="formData.level" :key="index" class="querySelectItem">
+            <el-select clearable :placeholder="items.placeHolder" v-for="(items,index) in options" v-model="formData.level" :key="index" class="querySelectItem">
+              <el-option label="请选择"></el-option>
               <el-option
                 v-for="item in items.data"
                 :key="item.value"
@@ -26,6 +27,7 @@
               </el-option>
             </el-select>
             <el-select placeholder="子系统" @change="choseSys" v-model="formData.sys_id" class="querySelectItem">
+              <el-option label="请选择"></el-option>
               <el-option
                 v-for="item in sysData"
                 :key="item.sys_id"
@@ -34,6 +36,7 @@
               </el-option>
             </el-select>
             <el-select placeholder="楼层" @change="choseFloor" v-model="formData.floor_id" class="querySelectItem">
+              <el-option label="请选择"></el-option>
               <el-option
                 v-for="item in floorData"
                 :key="item.floor_id"
@@ -42,6 +45,7 @@
               </el-option>
             </el-select>
             <el-select placeholder="设备" v-model="formData.device_id" class="querySelectItem">
+              <el-option label="请选择"></el-option>
               <el-option
                 v-for="item in deviceData"
                 :key="item.device_id"
@@ -81,52 +85,52 @@
               type="index"
               :index="indexMethod"
               label="序号"
-              min-width="9%">
+              min-width="4%">
             </el-table-column>
             <el-table-column
               prop="time"
               label="日期"
-              min-width="14%">
+              min-width="12%">
             </el-table-column>
             <el-table-column
               prop="level"
               label="报警级别"
-              min-width="7%">
+              min-width="8%">
             </el-table-column>
             <el-table-column
               prop="word"
               label="报警描述"
-              min-width="19%">
+              min-width="20%">
             </el-table-column>
             <el-table-column
               prop="sys_name"
               label="子系统"
-              min-width="12%">
+              min-width="10%">
             </el-table-column>
             <el-table-column
               prop="device_name"
               label="设备"
-              min-width="12%">
+              min-width="10%">
             </el-table-column>
             <el-table-column
               prop="floor_name"
               label="楼层"
-              min-width="7%">
+              min-width="8%">
             </el-table-column>
             <el-table-column
               prop="recovery_time"
               label="持续时间"
-              min-width="9%">
+              min-width="8%">
             </el-table-column>
             <el-table-column
               prop="now_state"
               label="维修状态"
-              min-width="9%">
+              min-width="8%">
             </el-table-column>
             <el-table-column
               prop="control_user"
               label="维修人"
-              min-width="9%">
+              min-width="8%">
             </el-table-column>
           </el-table>
 
@@ -196,10 +200,10 @@
           {
             placeHolder: '报警级别',
             data: [{
-              "value": 0,
+              "value": 1,
               "label": "预警"
             }, {
-              "value": 1,
+              "value": 0,
               "label": "提醒"
             }, {
               "value": 2,
@@ -251,22 +255,36 @@
       },
       choseSys(){
         this.sysData.map((item,index)=>{
-            if(item.sys_id == this.formData.sys_id){
-                this.floorData = item.floors
-                this.formData.floor_id = ''
-                this.deviceData = []
-                this.formData.device_id = ''
-                return
-            }
+         if(this.formData.sys_id){
+          if(item.sys_id == this.formData.sys_id){
+            this.floorData = item.floors
+            this.formData.floor_id = ''
+            this.deviceData = []
+            this.formData.device_id = ''
+            return
+          }
+         }else{
+          this.floorData = []
+          this.formData.floor_id = ''
+          this.deviceData = []
+          this.formData.device_id = ''
+        }
+
         })
       },
       choseFloor(){
-          this.floorData.map((item,index)=>{
+          if(this.formData.floor_id){
+            this.floorData.map((item,index)=>{
               if(item.floor_id==this.formData.floor_id){
-                  this.deviceData = item.device
-                  this.formData.device_id = ''
-              }
+              this.deviceData = item.device
+              this.formData.device_id = ''
+            }
           })
+          }else{
+            this.deviceData = []
+            this.formData.device_id = ''
+          }
+
       },
       queryForm(){
           console.log(this.timeValue)
@@ -328,6 +346,12 @@
   }
 </style>
 <style>
+  .fireAlarm .el-table .el-table__body td .cell{
+    font-size:0.12rem!important;
+  }
+  .fireAlarm .el-table th>.cell{
+    font-size:0.12rem!important;
+  }
   .fireAlarm .el-range-input{
     width:80px!important;
     background:none;

@@ -163,7 +163,7 @@
     z-index:999;
     width: 320px;
     height: 100%;
-    position: absolute;
+    position: fixed;
     right: -320px;
     top: 0;
     background: #061733;

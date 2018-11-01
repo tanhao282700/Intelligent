@@ -15,9 +15,9 @@
       </div>
       <div class="search">
         <div class="limition">
-          <template>
+          <template v-if="currentType==1">
           <el-select placeholder="选择楼层" clearbel @change="choseQuery1" v-model="areaForm.id1" class="querySelectItem">
-            <el-option label="选择楼层" value="0"></el-option>
+            <el-option label="选择楼层" value=""></el-option>
             <el-option
               v-for="item in areaData1"
               :key="item.id"
@@ -26,8 +26,8 @@
             </el-option>
           </el-select>
           </template>
-          <el-select placeholder="选择区间" @change="choseQuery2" v-model="areaForm.id2" class="querySelectItem">
-            <el-option label="选择区间" value="0"></el-option>
+          <el-select v-if="currentType==1" placeholder="选择区间" @change="choseQuery2" v-model="areaForm.id2" class="querySelectItem">
+            <el-option label="选择区间" value=""></el-option>
             <el-option
               v-for="item in areaData2"
               :key="item.id"
@@ -35,8 +35,8 @@
               :value="item.id">
             </el-option>
           </el-select>
-          <el-select placeholder="选择区域" v-model="aa2" class="querySelectItem">
-            <el-option label="选择区域" value="0"></el-option>
+          <el-select v-if="currentType==1" placeholder="选择区域" v-model="areaForm.id3" class="querySelectItem">
+            <el-option label="选择区域" value=""></el-option>
             <el-option
               v-for="item in areaData3"
               :key="item.id"
@@ -44,18 +44,36 @@
               :value="item.id">
             </el-option>
           </el-select>
+          <el-select v-if="currentType==2" placeholder="选择系统" clearbel @change="choseQuery4" v-model="sysForm.id1" class="querySelectItem">
+            <el-option label="选择系统" value=""></el-option>
+            <el-option
+              v-for="item in sysData1"
+              :key="item.id"
+              :label="item.title"
+              :value="item.id">
+            </el-option>
+          </el-select>
+          <el-select v-if="currentType==2" placeholder="选择区域" clearbel v-model="sysForm.id2" class="querySelectItem">
+            <el-option label="选择区域" value=""></el-option>
+            <el-option
+              v-for="item in sysData2"
+              :key="item.id"
+              :label="item.title"
+              :value="item.id">
+            </el-option>
+          </el-select>
         </div>
         <div class="btn22">
-          <el-button type="primary" icon="el-icon-search">查询</el-button>
+          <el-button type="primary" @click="query" icon="el-icon-search">查询</el-button>
         </div>
       </div>
     </div>
     <div class="con">
       <div class="parts">
-        <div class="part boxs">
+        <div class="part boxs realTime">
           <div class="boxsTit">实时能耗</div>
           <div class="fir">
-            <div class="box">
+            <div class="box" @click="showRealTime(1)">
               <div class="cont">
                 <div class="numbers">
                   <span v-for="(i,index) in 10" v-text="shishi.shui[index]"></span>
@@ -64,7 +82,7 @@
               </div>
               <div class="types">用水总量</div>
             </div>
-            <div class="box">
+            <div class="box" @click="showRealTime(0)">
               <div class="cont">
                 <div class="numbers">
                   <span v-for="(i,index) in 10" v-text="shishi.dian[index]"></span>
@@ -73,7 +91,7 @@
               </div>
               <div class="types">用电总量</div>
             </div>
-            <div class="box">
+            <div class="box" @click="showRealTime(2)">
               <div class="cont">
                 <div class="numbers">
                   <span v-for="(i,index) in 10" v-text="shishi.qi[index]"></span>
@@ -100,42 +118,29 @@
 
     <Dialog wid = "578px" hei = "536px" style="display: flex;flex-direction: column" ref = "dialog" tit = "记录详情">
       <div class="showBox2" style="height:486px;">
-        <div class="parts" v-for="i in 3">
+        <div class="parts" v-for="item in realtimeData">
           <div class="content">
-            <div class="pic">
+            <div class="pic" :class="{'realtime0':realtimeType==0,'realtime1':realtimeType==1,'realtime2':realtimeType==2}">
               <div class="numbers">
                 <span v-for="i in 10">9</span>
               </div>
               <div class="danwei">kw/h</div>
             </div>
-            <div class="types">
-              <div class="title">电流</div>
-              <div>
-                <span>A：</span>
-                <span>23.92A</span>
-              </div>
-              <div>
-                <span>B：</span>
-                <span>23.92A</span>
-              </div>
-              <div>
-                <span>C：</span>
-                <span>23.92A</span>
-              </div>
-            </div>
-            <div class="types">
-              <div class="title">电压</div>
-              <div>
-                <span>A：</span>
-                <span>23.92V</span>
-              </div>
-              <div>
-                <span>B：</span>
-                <span>23.92V</span>
-              </div>
-              <div>
-                <span>C：</span>
-                <span>23.92V</span>
+            <div class="realtimeCon" style="height:216px;overflow-y:auto;width:100%;">
+              <div class="types">
+                <div class="title">电流</div>
+                <div>
+                  <span>A：</span>
+                  <span>23.92A</span>
+                </div>
+                <div>
+                  <span>B：</span>
+                  <span>23.92A</span>
+                </div>
+                <div>
+                  <span>C：</span>
+                  <span>23.92A</span>
+                </div>
               </div>
             </div>
           </div>
@@ -155,9 +160,11 @@
     name:'ReadNumber',
     data(){
       return{
+        realtimeType:1,  //水还是电还是气的详情
+        realtimeData:[],  //实时能耗详情
         clearable:true,
         loading:true,
-          currentType:1,
+        currentType:1,  //区域还是系统
         shuiComponent:'',
         dianComponent:'',
         qiComponent:'',
@@ -229,6 +236,8 @@
         areaData1:[], //区域第一个筛选框初始化
         areaData2:[],
         areaData3:[],
+        sysData1:[],
+        sysData2:[],
         areaForm:{// 区域筛选条件
           project_id:1,
           floor_id:0,
@@ -237,6 +246,12 @@
           id2:'',
           id3:''
         },
+        sysForm:{// 系统筛选条件
+          project_id:1,
+          system_id:1,
+          id1:'',
+          id2:'',
+        },
         shishi:{shui:'',dian:'',qi:''},  //实施能耗
         dian:{},  //电
         qi:{},  //气
@@ -244,9 +259,10 @@
       }
     },
     created(){
-        window.addEventListener('resize',this.resizeWindow)
+      window.addEventListener('resize',this.resizeWindow)
       this.areaForm.sys_menu_id = this.$store.state.sysList[2].sys_menu_id
       this.areaForm.project_id = this.$store.state.projectId
+      this.sysForm.project_id = this.$store.state.projectId
       this.initAreaQueryData()
     },
     components:{
@@ -256,25 +272,130 @@
 
     },
     mounted(){
-        /*this.$refs.dialog.show()*/
+
     },
     destroyed(){
         window.removeEventListener('resize',this.resizeWindow)
     },
     methods:{
+      showRealTime(type){    //实时能耗详情
+        this.realtimeType = type
+        this.$http.post('/hotel_energy/floor_device_real_time',{
+          project_id:this.areaForm.project_id,
+          floor_id:this.areaForm.floor_id,
+          type:type,
+          sys_menu_id:this.areaForm.sys_menu_id
+        }).then((res)=>{
+          if(res.data.code==0){
+                this.realtimeData = [
+                  {
+                    data:[
+                      {
+                        data:['0'],
+                        title:"other",
+                        type:4
+                      },
+                      {
+                        data:'23',
+                        title:"表读数",
+                        type:1
+                      },
+                      {
+                        data:[{title:'三号位水量',data:'7.3A'},{title:'四号位水量',data:'2.0A'},{title:'五号位水量',data:'1.5A'}],
+                        title:"电流",
+                        type:2
+                      },{
+                        data:[{title:'三号位水量',data:'7.3A'},{title:'四号位水量',data:'2.0A'},{title:'五号位水量',data:'1.5A'}],
+                        title:"电压",
+                        type:3
+                      }
+                    ],
+                    device:'1号水表'
+                  }
+                ]
+          }
+        })
+        this.$refs.dialog.show()
+      },
+      query(){
+          if(this.currentType==1){   //区域查询
+            if(this.areaForm.id1){
+              this.areaForm.floor_id = this.areaForm.id1
+            }else{
+              this.areaForm.floor_id = 0
+            }
+            if(this.areaForm.id2){
+              this.areaForm.floor_id = this.areaForm.id2
+            }
+            if(this.areaForm.id3){
+              this.areaForm.floor_id = this.areaForm.id3
+            }
+            this.$http.post('/hotel_energy/floor_real_time',this.areaForm).then((res)=>{
+              if(res.data.code == 0){
+                this.dealData(res)
+              }else{
+
+              }
+            })
+          }else{  //系统查询
+            if(this.sysForm.id1){
+              this.sysForm.system_id = this.sysForm.id1
+            }else{
+              this.sysForm.system_id = 0
+            }
+            if(this.sysForm.id2){
+              this.sysForm.system_id = this.sysForm.id2
+            }
+            this.$http.post('/hotel_energy/system_real_time',this.sysForm).then((res)=>{
+              if(res.data.code == 0){
+                this.dealData(res)
+              }else{
+
+              }
+            })
+          }
+      },
       choseQuery1(){
-          this.areaData1.map((item,index)=>{
+          if(!this.areaForm.id1){
+            this.areaForm.id2 = ''
+            this.areaForm.id3 = ''
+            this.areaData2 = []
+          }else{
+            this.areaData1.map((item,index)=>{
               if(item.id == this.areaForm.id1){
                 this.areaData2 = item.child
+                this.areaForm.id2 = ''
+                this.areaForm.id3 = ''
               }
-          })
+            })
+          }
       },
       choseQuery2(){
         this.areaData2.map((item,index)=>{
-          if(item.id == this.areaForm.id2){
-            this.areaData3 = item.child
-          }
+            if(!this.areaForm.id2){
+              this.areaForm.id3 = ''
+              this.areaData3 = []
+            }else{
+              if(item.id == this.areaForm.id2){
+                this.areaData3 = item.child
+                this.areaForm.id3 = ''
+              }
+            }
         })
+      },
+      choseQuery4(){
+          this.sysData1.map((item)=>{
+              if(!this.sysForm.id1){
+                this.sysForm.id2 = ''
+                this.sysData2 = []
+              }else{
+                if(item.id==this.sysForm.id1){
+                  this.sysData2 = item.child
+                  this.sysForm.id2 = ''
+                }
+              }
+
+          })
       },
       initAreaQueryData(){
         this.$http.post('/hotel_energy/floor_real_time',this.areaForm).then((res)=>{
@@ -375,8 +496,9 @@
             }
           })
         }else if(type==2){
-          this.$http.post('/hotel_energy/system_real_time',{project_id:1,system_id:1}).then((res)=>{
+          this.$http.post('/hotel_energy/system_real_time',this.sysForm).then((res)=>{
             if(res.data.code == 0){
+              this.sysData1 = res.data.data.sys_level
               this.dealData(res)
             }else{
 
@@ -412,9 +534,9 @@
         this.refreshCanvas(res.data.data.table)
       },
       resizeWindow(){
-        this.$refs.lineEchartssss1.drawLine();
+        /*this.$refs.lineEchartssss1.drawLine();
         this.$refs.lineEchartssss2.drawLine();
-        this.$refs.lineEchartssss3.drawLine();
+        this.$refs.lineEchartssss3.drawLine();*/
       }
 
     }
@@ -528,6 +650,9 @@
         &:last-child{
           margin-top:1.6%;
         }
+        .realTime:hover{
+          cursor:pointer;
+        }
         .part{
           flex:1;
           display: flex;
@@ -619,12 +744,24 @@
           height:386px;
           margin-top:52px;
           background: linear-gradient(to top, rgba(1,13,29,.8) , rgba(1,13,29,0));
-          .pic{
-            width:150px;
-            padding-bottom:150px;
+          .realtime1{
+            background:url(../../../assets/img/Energy/water-total.png) no-repeat;
+            background-size:100% 100%;
+            position:relative;
+          }
+          .realtime0{
             background:url(../../../assets/img/Energy/electric-total.png) no-repeat;
             background-size:100% 100%;
             position:relative;
+          }
+          .realtime2{
+            background:url(../../../assets/img/Energy/gas-total.png) no-repeat;
+            background-size:100% 100%;
+            position:relative;
+          }
+          .pic{
+            width:150px;
+            padding-bottom:150px;
             .numbers{
               width:122px;
               height:17px;
@@ -648,6 +785,32 @@
               top:54px;
               color:white;
             }
+          }
+          .realtimeCon::-webkit-scrollbar {
+            width:0px;
+            height:0px;
+          }
+          .realtimeCon::-webkit-scrollbar-button    {
+            background-color:rgba(0,0,0,0);
+          }
+          .realtimeCon::-webkit-scrollbar-track     {
+            background-color:rgba(0,0,0,0);
+          }
+          .realtimeCon::-webkit-scrollbar-track-piece {
+            background-color:rgba(0,0,0,0);
+          }
+          .realtimeCon::-webkit-scrollbar-thumb{
+            background-color:rgba(0,0,0,0);
+          }
+          .realtimeCon::-webkit-scrollbar-corner {
+            background-color:rgba(0,0,0,0);
+          }
+          .realtimeCon::-webkit-scrollbar-resizer  {
+            background-color:rgba(0,0,0,0);
+          }
+          .realtimeCon::-webkit-scrollbar {
+            width:10px;
+            height:10px;
           }
           .types{
             height:108px;
