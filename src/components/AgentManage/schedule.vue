@@ -45,7 +45,7 @@
           <div class="pBody">
             <div class="pBox">
               <div class="imgBox boxs">
-                <img :src="dia.img1" alt="">
+                <img src="../../assets/img/AgentManage/head.png" alt="">
               </div>
               <div class="nameBox boxs">
                 <div class="labelBox">
@@ -65,7 +65,7 @@
             <Lines :hei="125" :top="20" />
             <div class="pBox">
               <div class="imgBox boxs">
-                <img :src="dia.img2" alt="">
+                <img src="../../assets/img/AgentManage/head.png" alt="">
               </div>
               <div class="nameBox boxs">
                 <div class="labelBox">
@@ -96,7 +96,7 @@
             <img class="rightBotm" v-show="dia.state==1" src="../../assets/img/generation/isok.png" alt="">
           </div>
           <div class="diaBtns" v-show="dia.state==-1">
-            <div class="diabtn diabtn22" @click="isNo(idia)">驳回</div>
+            <div class="diabtn diabtn22" @click="isNo(dia)">驳回</div>
             <div class="diabtn"  @click="isOk(dia)">同意</div>
           </div>
         </Dialog>
@@ -166,9 +166,9 @@ export default {
             this.getYesData();
         })
       },
-      showInfo(i,item){
+      showInfo(item){
+        console.log(item);
         this.dia = item;
-        this.indexNow = i;
         this.$refs.dialog.show();
       },
       showInfoed(item){
@@ -190,7 +190,6 @@ export default {
               console.log(res.data);
               let data = res.data.data;
               $.each(data,(n,k)=>{
-                console.log(data[n].now_process)
                 if(data[n].now_process==2){
                   data[n].state = 1;
                 }else if(data[n].now_process==11){

@@ -2,13 +2,26 @@
     <div class="tabsDomBox0"> 
         <div class="navCrumbs">首页 > 门禁系统 > <span>系统平面</span></div>
         <div class="topShadow">
-            <el-select v-model="buildingNumber" placeholder="楼号">
-                <el-option label="1栋" value="1"></el-option>
-                <el-option label="2栋" value="2"></el-option>
+            <el-select v-model="buildingNumber" placeholder="楼号" @change="chooseLevels">
+                <el-option  v-for="item in areaLevel"
+                  :key="item.value"
+                  :label="item.title"
+                  :value="item.id">
+                </el-option>
             </el-select>
-            <el-select v-model="floorNumber" placeholder="层号">
-                <el-option label="1层" value="1"></el-option>
-                <el-option label="2层" value="2"></el-option>
+            <el-select v-model="floorNumber" placeholder="层号" @change="chooseLevelNum">
+                <el-option  v-for="item in levels"
+                  :key="item.value"
+                  :label="item.title"
+                  :value="item.id">
+                </el-option>
+            </el-select>
+            <el-select v-model="floorNum" placeholder="层号">
+                <el-option  v-for="item in levelNum"
+                  :key="item.value"
+                  :label="item.title"
+                  :value="item.id">
+                </el-option>
             </el-select>
             <ul class="doorStatusBox">
                 <li>
@@ -55,6 +68,9 @@
     export default {
         data () {
         	return {
+                levelNum:[],//楼层
+                levels:[],  //楼层
+                areaLevel:[], //栋号
                 infoSta:'',
                 controlDoorFun:'',
                 onDoorName:'', //当前门禁名字
@@ -70,6 +86,7 @@
                 yTop:'', //y值
                 buildingNumber:"", //楼号
 				floorNumber:"", //层号
+                floorNum:"",  //楼层
                 iList:[]
 				
         	}
@@ -82,6 +99,26 @@
             this.getDoorData();
         },
         methods:{
+            chooseLevels(selVal){
+                var arrL=[];
+                $.each(this.areaLevel,function(item,key){
+                    if(key.id == selVal){
+                        arrL = key.child;
+                    }
+                });
+                this.levels = arrL;
+            },
+            chooseLevelNum(selVal){
+                var arrLs=[];
+                $.each(this.levels,function(item,key){
+                    if(key.id == selVal){
+                        console.log(key);
+                        arrLs = key.child;
+                    }
+                });
+                this.levelNum = arrLs;
+                console.log(arrLs);
+            },
             popToggle(i,x,y,id,sta){
                 //this.popShow = true;
                 this.onMouseDoor = id;
@@ -129,12 +166,16 @@
                     project_id:1,
                     floor_id:1,
                 }).then(function(data){
-                    console.log(data.data.data.entrance_guard_info.device_2d_pic_state_list);
+                    console.log(data.data.data);
                     that.iList = data.data.data.entrance_guard_info.device_2d_pic_state_list;
                     that.totleDoors = data.data.data.entrance_guard_info.entrance_guard_total_num;
                     that.doorClose = data.data.data.entrance_guard_info.entrance_guard_close_num;
                     that.doorWarning = data.data.data.entrance_guard_info.entrance_guard_anomaly_num;
                     that.doorOpenN = data.data.data.entrance_guard_info.entrance_guard_open_num;
+
+                    //获取联动数据
+                    that.areaLevel = data.data.data.area_level;
+                    console.log(that.areaLevel);
                 });
             }
         }

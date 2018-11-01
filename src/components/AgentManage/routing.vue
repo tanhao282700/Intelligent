@@ -75,10 +75,10 @@
                       </div>
                     </div>
                     <div class="infoWater">
-                      <RoutingTask :data="dtlObj.tableDtl.data[0]"></RoutingTask>
+                      <RoutingTask :data="routData"></RoutingTask>
                     </div>
                     <div class="infoBoxs">
-                      <RoutingInfo :data="dtlObj.tableDtl.data[0]" :device="dtlObj"/>
+                      <RoutingInfo :data="routData"/>
                     </div>
                 </div>
             </Dialog>  
@@ -142,11 +142,7 @@ export default {
         names:[],
         //日期选择
         value7:'8-24',
-        dtlObj:{
-          tableDtl:{
-            data:[]
-          }
-        },
+        routData:{},
         cant:false,
         queryModel:{//巡检任务模板的查询条件
           systems:[],areas:[],examine:[],
@@ -328,6 +324,18 @@ export default {
       this.rowData = rowData;
       this.tempTitle = '修改';
       this.$refs.add.show();
+      this.$http.post('/admin/get_one_temp',{ins_id:rowData.id})
+      .then(res=>{
+         console.log(res)
+         if(res.data.code==0){
+            
+          }else{
+            this.$message({
+              type:'error',
+              message:res.data.msg
+            })
+          }
+      })
     },
     addDetail(){
       this.rowData = {};
@@ -416,25 +424,19 @@ export default {
        console.log(item)
     },
     tableInfos2Show(item){
-      console.log(item)
-      this.infoItem = item;
-      this.infoItem.data = {
-          datas:[{date:'2018/10/12',time:'15:29'},{date:'2018/10/12',time:'17:29'}],
-          areatimes:['2h','4h'],
-          oneLine:[{
-            label:'类型',
-            type:'给排水系统',
-          },{
-            label:'设备类型',
-            type:'给排水系统',
-          },{
-            label:'设备地点',
-            type:'这边字款130PX',
-          },{
-            label:'工单处理人员',
-            type:'李宏源',
-          }]
-        }
+      this.$http.post('/pc_ims/admin/inspectionlist_info',{ins_id:item.id})
+      .then(res=>{
+        if(res.data.code==0){
+            this.routData = res.data.data;
+            console.log(this.routData)
+          }else{
+            this.$message({
+              type:'error',
+              message:res.data.msg,
+              duration:2000
+            })
+          }
+      })
       this.$refs.tableInfos2.show();
     },
     handleClick(){
@@ -473,11 +475,11 @@ export default {
       })
     },
     getTableList(){
-      console.log(this.query);
+      //console.log(this.query);
       this.$http.post('/pc_ims/admin/inspectiondata_user',{
         department_id:this.query.department,
         user_id:this.query.name,
-        date:'10-30'
+        date:'11-01'
       })
       .then(res => {
         if(res.data.code==0){
@@ -601,7 +603,7 @@ export default {
       },
       getDeviceList(){
         this.$http.post('/pc_ims/get_device',{floor_name:this.queryModel.area}).then(res=>{
-          console.log(res);
+          //console.log(res);
           if(res.data.code==0){
             let data = res.data.data;
             

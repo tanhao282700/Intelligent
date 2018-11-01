@@ -509,7 +509,7 @@ export default {
         this.$http.post('/pc_ims/admin/job_userdata',{
           user_id:this.query.name,
           department:this.query.department,
-          date:'10-30',
+          date:'11-01',
         }).then(res=>{
           if(res.data.code==0){
             this.table.len = res.data.count;

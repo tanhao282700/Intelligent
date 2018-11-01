@@ -117,9 +117,6 @@
             <div class="btnBai1" v-show="active=='exams' || active=='examed' || active=='change'" @click="botClick('change')">
                 修改排班表
             </div>
-            <div class="btnBai1" v-show="active=='exams' || active=='change'" @click="botClick('exams')">
-                审核通过
-            </div>
             <div class="btnBai1 btnBai2" v-show="active=='examed'">已审核</div>
             <div class="btnBai1" v-show="active=='saveing'" @click="botClick('save')">
                 保存
@@ -275,12 +272,6 @@ export default {
                     _this.showLists[n].allow = true;
                 })
                 this.active = 'saveing';
-                break;
-            case 'exams' :
-                $.each(_this.showLists,function(n,k){
-                    _this.showLists[n].allow = false;
-                })
-                this.active = 'examed'
                 break;
             case 'save' :
                 $.each(_this.showLists,function(n,k){

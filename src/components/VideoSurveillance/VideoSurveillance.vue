@@ -5,16 +5,33 @@
         <div class="mainContentBox">
         	<ul class="videoConditionsBox">
         		<li>区域选择</li>
-        		<li v-for="(item,index) in buildDatas">
-		            <el-select v-model="selectedValue" :placeholder="item.title">
-		                <el-option
-					      v-for="(items,index2) in item.child"
-					      :key="index2"
-					      :label="items.title"
-					      :value="item.floor_id">
+        		<li>
+		            <el-select v-model="selectedValue" @change="chooseBuild">
+		                <el-option v-for="(item,index) in buildDatas"
+                            :key="item.value"
+                            :label="item.title"
+                            :value="item.floor_id">
 					    </el-option>
 		            </el-select>
         		</li>
+                <li>
+                    <el-select v-model="selectedValue1" @change="chooseBuild1">
+                        <el-option v-for="(item,index) in buildDatas1"
+                            :key="item.value"
+                            :label="item.title"
+                            :value="item.floor_id">
+                        </el-option>
+                    </el-select>
+                </li>
+                <li>
+                    <el-select v-model="selectedValue2">
+                        <el-option v-for="(item,index) in buildDatas2"
+                            :key="item.value"
+                            :label="item.title"
+                            :value="item.floor_id">
+                        </el-option>
+                    </el-select>
+                </li>
         		<li class="floatRt">
         			<span>当前监控总数</span>
         			<span class="totleVideosNum">14</span>
@@ -32,11 +49,11 @@
         	<div class="videoPopBg">
         		<i clase="closevideoShowBoxIcon" @click="isVideoShowBoxShow = false">×</i>
 	        	<div class="videoDeviceTitle">
-	        		<span class="deviceaAcription">1栋1层{{onVideoId}}号视屏设备</span>
-	        		<span class="dateBox">2018-10-15</span>
+	        		<span class="deviceaAcription">1栋1层{{onVideoId}}号视频设备</span>
+	        		<span class="dateBox">{{todaySpan}}</span>
 	        		<button class="videoDeviceInfo floatRt" @click="deviceInfoGet(onVideoId)">设备信息</button>
 	        	</div>
-	        	<div class="videoPanelBox">{{videoPanelBox}}</div>
+	        	<div class="videoPanelBox"></div>
         	</div>
         	<div class="deviceInfoPop" v-show="isDeviceInfoPopShow">
         		<div class="deviceInfoBgBox">
@@ -69,11 +86,14 @@
         },
 	    data() {
 	        return {
-	        	selectedValue:'',
+                selectedValue:'',
+                selectedValue1:'',
+	        	selectedValue2:'',
 	        	isDeviceInfoPopShow:false,
 	        	isVideoShowBoxShow:false,
 	        	onVideoId:'',//当前设备ID
 	        	videoPanelBox:'',
+                todaySpan:'',
 	        	//tab切换状态
                 first:'first',
                 second:'second',
@@ -81,7 +101,9 @@
                 isActive1:true,
                 isActive2:false,
 
-	        	buildDatas:[],
+                buildDatas:[],
+                buildDatas1:[],
+	        	buildDatas2:[],
                 iList:[],
 		        sData:{
 		            lists:[
@@ -93,8 +115,28 @@
         mounted(){
             this.getData();
             this.getbuildData();
+            this.getDateSet();
         },
 	    methods: {
+            chooseBuild(selVal){
+                var arrL=[];
+                $.each(this.buildDatas,function(item,key){
+                    console.log(key);
+                    if(key.floor_id == selVal){
+                        arrL = key.child;
+                    }
+                });
+                this.buildDatas1 = arrL;
+            },
+            chooseBuild1(selVal){
+                var arrLs=[];
+                $.each(this.buildDatas1,function(item,key){
+                    if(key.floor_id == selVal){
+                        arrLs = key.child;
+                    }
+                });
+                this.buildDatas2 = arrLs;
+            },
             getData(){
                 var that = this;
                 this.$http.post('/video_monitoring/video_index_view',{
@@ -102,8 +144,6 @@
                     floor_id:115,
                 }).then(function(data){
                     //响应成功回调
-                    console.log(data);
-                    console.log(data.data.data);
                     that.iList = data.data.data.floor_device;
 
                 }, function(data){
@@ -118,7 +158,7 @@
                     //响应成功回调
                     console.log(data.data.data)
                     that.buildDatas = data.data.data;
-                    //that.iList = data.data.data.floor_device;
+                   
 
                 }, function(data){
                     // 响应错误回调
@@ -134,8 +174,9 @@
                     device_id:id,
                 }).then(function(data){
                     //响应成功回调
-                    
+                    // console.log(data.data.data);
                     that.videoPanelBox = data.data.data.device_state_pic;
+                    $()
 
                 }, function(data){
                     // 响应错误回调
@@ -144,8 +185,17 @@
 	    	},
 	    	deviceInfoGet(id){
 	    		this.isDeviceInfoPopShow = true;
-	    		console.log(id);
+	    		
 	    	},
+            getDateSet(){
+                var sDate = new Date()
+                var yyyy = sDate.getFullYear();
+                var mm = sDate.getMonth() + 1;
+                var dd = sDate.getDate();
+                mm = mm < 10?'0'+mm:mm;
+                dd = dd < 10?'0'+dd:dd;
+                this.todaySpan = yyyy + '-' + mm + '-' + dd;
+            },
             toggleTabs(tabText){
                 if(tabText == "first"){
                     this.isActive2 = false;
