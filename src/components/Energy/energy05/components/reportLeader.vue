@@ -2,9 +2,10 @@
     <!-- 用能预设模块 -->
     <div class="reportTabBoxs">
     	<div class="reportTabBoxsHead">
-	        <div class="dateBox">
-	            <el-date-picker v-model="releasetime1" type="date" placeholder="日"></el-date-picker>
-	        </div>
+            <el-select v-model="dateTypeChoose" placeholder="日" @change="currentSel">
+                <el-option label="日" value="1"></el-option>
+                <el-option label="月" value="2"></el-option>
+            </el-select>
             <span class="todaySpan">{{todaySpan}}</span>
 	        <button class="btn">查询</button>
 	        <button class="btn btnExport floatRt">导出</button>
@@ -54,6 +55,7 @@
     export default {
         data(){
         	return{
+        		dateTypeChoose:'',
         		todaySpan:'',
         		releasetime1:'',
         		tableData3: [{
@@ -77,6 +79,9 @@
             this.getDateSet();
         },
         methods:{
+        	currentSel(selVal){
+        		console.log(selVal);
+        	},
 		    cell({row, column, rowIndex, columnIndex}) {
 		      //加 类
 		        if(columnIndex == 2 || columnIndex == 3 || columnIndex == 4 ||columnIndex == 5 ||columnIndex == 6 || columnIndex == 7 || columnIndex == 8 ||columnIndex == 9 ||columnIndex == 10 ){

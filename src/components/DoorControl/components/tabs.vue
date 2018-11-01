@@ -102,6 +102,7 @@
                     query_name:this.query_name,
                 }).then(function(response){
                     // 响应成功回调
+                    console.log(response);
                     that.total = response.data.data.record_num_total;
                     that.totalPageNum = response.data.data.page_num_total;
                     that.tableData=response.data.data.entrance_guard_record;

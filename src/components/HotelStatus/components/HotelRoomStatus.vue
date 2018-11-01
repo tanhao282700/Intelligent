@@ -19,7 +19,8 @@
 		            <el-select v-model="floorNumber" placeholder="楼号" @change="getData">
 		                <el-option label="1楼" value="1"></el-option>
                         <el-option label="2楼" value="2"></el-option>
-		                <el-option label="3楼" value="3"></el-option>
+                        <el-option label="3楼" value="3"></el-option>
+		                <el-option label="全部" value="4"></el-option>
 		            </el-select>
     			</div>
     			<div class="roomsTypeStaBox">
@@ -55,7 +56,7 @@
         },
 	    data() {
 	        return {
-	        	floorNumber:'1楼',
+	        	floorNumber:'全部',
 	        	separate_room:[],
 	        	standard_room:[],
 	        	suite:[],

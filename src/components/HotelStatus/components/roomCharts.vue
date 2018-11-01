@@ -89,7 +89,7 @@
                     $.each(data.data.data.month_data.ballroom,function(key,value){
                     	that.ballroomY.push([parseInt(key),parseInt(value)]);
                     });
-                    console.log(data.data.data.day_data.dining);
+                    console.log(data);
                     console.log(that.dining);
                     console.log(that.ballroom);
                     that.getData("reportChartMonth",31,that.room,that.dining,that.ballroom);
