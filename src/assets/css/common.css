@@ -610,7 +610,7 @@ background-color: #65a3fa!important;
 
 /*弹框的三角标*/
 .el-popper[x-placement^=bottom] .popper__arrow{
-  border-bottom-color:#4a90e2;
+  border-bottom-color:#4a90e2!important;
 }
 .el-popper[x-placement^=bottom] .popper__arrow::after{
   border-bottom-color:#051732;
