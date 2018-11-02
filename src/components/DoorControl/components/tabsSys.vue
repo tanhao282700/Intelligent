@@ -47,7 +47,7 @@
                 <img src="../../../assets/img/doorControl/bg_lc.png">
                 <i :class="['doorSta'+item.device_state,'door'+(index+1)]" 
                    v-for="(item,index) in iList" 
-                   @mouseenter = "popToggle(index,item.x,item.y,item.device_name,item.device_state)" 
+                   @mouseenter = "popToggle(index,item.x,item.y,item.device_name,item.device_state,item.away_handle)" 
                    @mouseout = "popHide" 
                    @click.stop="doorInfoPanel(item.device_id,item)"
                    :style="{left:item.position_x*1.74 + 'px',top:item.position_y*1.74 + 'px'}"
@@ -119,20 +119,18 @@
                 this.levelNum = arrLs;
                 // console.log(arrLs);
             },
-            popToggle(i,x,y,id,sta){
+            popToggle(i,x,y,id,sta,handle){
                 //this.popShow = true;
                 this.onMouseDoor = id;
                 this.xLeft = x;
                 this.yTop = y;
+                this.controlDoorFun = handle;
                 if(sta == "0"){
                     this.infoSta = "关闭";
-                    this.controlDoorFun = "远程开门";
                 }else if(sta == "1"){
                     this.infoSta = "开启";
-                    this.controlDoorFun = "远程关门";
                 }else if(sta == "2"){
                     this.infoSta = "异常";
-                    this.controlDoorFun = "远程开门";
                 }
             },
             popHide(){

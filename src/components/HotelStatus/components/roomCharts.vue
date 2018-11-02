@@ -70,6 +70,7 @@
                     // year:2018,
                 }).then(function(data){
                     // 日
+                    console.log(data);
                     $.each(data.data.data.day_data.dining,function(key,value){
                     	that.dining.push([parseInt(key),parseInt(value)]);
                     });
@@ -78,6 +79,9 @@
                     });
                     $.each(data.data.data.day_data.ballroom,function(key,value){
                     	that.ballroom.push([parseInt(key),parseInt(value)]);
+                    });
+                    $.each(data.data.data.day_data.other,function(key,value){
+                    	that.others.push([parseInt(key),parseInt(value)]);
                     });
                     //月
                     $.each(data.data.data.month_data.dining,function(key,value){
@@ -89,6 +93,9 @@
                     $.each(data.data.data.month_data.ballroom,function(key,value){
                     	that.ballroomY.push([parseInt(key),parseInt(value)]);
                     });
+                    $.each(data.data.data.month_data.other,function(key,value){
+                    	that.othersY.push([parseInt(key),parseInt(value)]);
+                    });
 
                     that.room.sort(function(x, y){
 					  return x[0]-y[0];
@@ -97,6 +104,9 @@
 					  return x[0]-y[0];
 					});
                     that.ballroom.sort(function(x, y){
+					  return x[0]-y[0];
+					});
+                    that.others.sort(function(x, y){
 					  return x[0]-y[0];
 					});
                     that.roomY.sort(function(x, y){
@@ -108,19 +118,22 @@
                     that.ballroomY.sort(function(x, y){
 					  return x[0]-y[0];
 					});
+                    that.othersY.sort(function(x, y){
+					  return x[0]-y[0];
+					});
 
-                    that.getData("reportChartMonth",31,that.room,that.dining,that.ballroom);
-                    that.getData("reportChartYear",12,that.roomY,that.diningY,that.ballroomY);
+                    that.getData("reportChartMonth",31,that.room,that.dining,that.ballroom,that.others);
+                    that.getData("reportChartYear",12,that.roomY,that.diningY,that.ballroomY,that.othersY);
                 }, function(data){
                     // 响应错误回调
                 });
 	    	},
- 			getData(id,xData,room,dining,ballroom){
+ 			getData(id,xData,room,dining,ballroom,other){
  				this.chart = this.$echarts.init(document.getElementById(id));
 		        let option = {
 		            title : {
 			            show:true,
-			            text: '单位：元/日',
+			            text: '单位：元/￥',
 			            left:15,
 			            top:5,
 			            textStyle:{
@@ -231,7 +244,7 @@
 			            },
 				    },{
 				    	name:'其他',
-				        data: [],
+				        data: other,
 				        type: 'line',
 				        symbol: "circle", 
 				        symbolSize:0,
