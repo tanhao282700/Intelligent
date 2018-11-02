@@ -4,7 +4,7 @@
 <template>
     <div class="routingTask">    
       <el-row>
-        <el-col :span="24/newData.desc.length" v-for="item in newData.desc">
+        <el-col :span="24/newData.desc.length" v-for="(item,index) in newData.desc" :key="index">
           <div class="taskDtl">
             <el-row :gutter="20">
               <el-col :span="10"><div class="taskLabel">{{item.label}}</div></el-col>
@@ -25,7 +25,7 @@
       </div> 
       <el-row>
         <el-col :span="12">
-          <div class="taskDtl" v-for="item in newData.sendInfos">
+          <div class="taskDtl" v-for="(item,index) in newData.sendInfos" :key="index">
             <el-row :gutter="20">
               <el-col :span="6"><div class="taskLabel">{{item.label}}</div></el-col>
               <el-col :span="18"><div class="taskCont">{{item.value}}</div></el-col>
