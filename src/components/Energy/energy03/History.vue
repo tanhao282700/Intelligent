@@ -8,24 +8,29 @@
       <div class="itemsBox">
         <!--筛选查询-->
         <div class="queryBox">
-          <el-select :placeholder="items.placeHolder" v-for="(items,index) in options" v-model="formData.level" :key="index" class="querySelectItem">
-            <el-option
-              v-for="item in items.data"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
+          <el-select v-model="" placeholder="选择区域" v-model="queryAreaId" ref="powerSelectEl">
+            <el-option :value="powerValue">
+              <el-tree
+                :data="areaArray"
+                show-checkbox
+                default-expand-all
+                node-key="id"
+                ref="tree"
+                highlight-current
+                :props="defaultProps"
+                @check-change="nodeChange">
+              </el-tree>
             </el-option>
           </el-select>
-          <el-select :placeholder="items.placeHolder" v-for="(items,index) in options" v-model="formData.aa" :key="index+11" class="two querySelectItem">
-            <el-option
-              v-for="item in items.data"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
+          <el-date-picker style="margin:0 10px;"
+            v-model="formData.date"
+            align="right"
+            type="month"
+            value-format="yyyyMM"
+            placeholder="选择日期">
+          </el-date-picker>
           <div>
-            <el-button type="primary" class="queryData" icon="el-icon-search">查询</el-button>
+            <el-button type="primary" @click="queryClick" class="queryData" icon="el-icon-search">查询</el-button>
           </div>
         </div>
         <!--导入-->
@@ -138,11 +143,11 @@
 
 
 
-    <Dialog wid = "578" hei = "536" style="display: flex;flex-direction: column" ref = "Historydialog" :tit = "dialogTit">
-      <div class="showBox2 historyBox" style="height:486px;padding-left:20px;">
+    <Dialog wid = "598" hei = "536" style="display: flex;flex-direction: column" ref = "Historydialog" :tit = "dialogTit">
+      <div class="showBox2 historyBox" style="height:520px;padding-left:20px;">
         <div>
           <div class="formGroup">
-            <div class="name">类型<i></i></div>
+            <div class="name">区域<i></i></div>
             <div class="inpArea">
               <el-select :placeholder="items.placeHolder" v-for="(items,index) in options1" v-model="bb" :key="index+1" class="querySelectItem">
                 <el-option
@@ -154,20 +159,7 @@
               </el-select>
             </div>
           </div>
-          <div class="formGroup">
-            <div class="name">设备<i></i></div>
-            <div class="inpArea">
-              <el-select :placeholder="items.placeHolder" v-for="(items,index) in options1" v-model="cc" :key="index+1" class="querySelectItem">
-                <el-option
-                  v-for="item in items.data"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </div>
-          </div>
-          <div class="formGroup" style="height:60px;">
+          <!--<div class="formGroup" style="height:60px;">
             <div class="name">上传<i></i></div>
             <div class="inpArea">
               <el-upload
@@ -180,18 +172,53 @@
                 <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
               </el-upload>
             </div>
+          </div>-->
+          <div class="formGroup">
+            <div class="name">水用量<i></i></div>
+            <div class="inpArea">
+              <el-input placeholder="请输入" v-model="formData.name"></el-input>
+            </div>
           </div>
           <div class="formGroup">
-            <div class="name" >选择sheet<i></i></div>
+            <div class="name">水费用<i></i></div>
             <div class="inpArea">
-              <el-select :placeholder="items.placeHolder" v-for="(items,index) in options2" v-model="dd" :key="index+1" class="querySelectItem">
-                <el-option
-                  v-for="item in items.data"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
+              <el-input placeholder="请输入" v-model="formData.val"></el-input>
+            </div>
+          </div>
+          <div class="formGroup">
+            <div class="name">电用量<i></i></div>
+            <div class="inpArea">
+              <el-input placeholder="请输入" v-model="formData.name"></el-input>
+            </div>
+          </div>
+          <div class="formGroup">
+            <div class="name">电费用<i></i></div>
+            <div class="inpArea">
+              <el-input placeholder="请输入" v-model="formData.val"></el-input>
+            </div>
+          </div>
+          <div class="formGroup">
+            <div class="name">气用量<i></i></div>
+            <div class="inpArea">
+              <el-input placeholder="请输入" v-model="formData.name"></el-input>
+            </div>
+          </div>
+          <div class="formGroup">
+            <div class="name">气费用<i></i></div>
+            <div class="inpArea">
+              <el-input placeholder="请输入" v-model="formData.val"></el-input>
+            </div>
+          </div>
+          <div class="formGroup">
+            <div class="name">收入<i></i></div>
+            <div class="inpArea">
+              <el-input placeholder="请输入" v-model="formData.val"></el-input>
+            </div>
+          </div>
+          <div class="formGroup">
+            <div class="name">租房量<i></i></div>
+            <div class="inpArea">
+              <el-input placeholder="请输入" v-model="formData.val"></el-input>
             </div>
           </div>
           <div class="formGroup">
@@ -204,18 +231,8 @@
               </el-date-picker>
             </div>
           </div>
-          <div class="formGroup">
-            <div class="name">用量<i></i></div>
-            <div class="inpArea">
-              <el-input placeholder="请输入" v-model="formData.name"></el-input>
-            </div>
-          </div>
-          <div class="formGroup">
-            <div class="name">费用<i></i></div>
-            <div class="inpArea">
-              <el-input placeholder="请输入" v-model="formData.val"></el-input>
-            </div>
-          </div>
+
+
         </div>
       </div>
       <div class="historyBtn">
@@ -233,6 +250,13 @@
   name:'History',
     data(){
       return{
+        powerValue:[],
+        defaultProps: {
+          children: 'child',
+          label: 'title'
+        },
+        queryAreaId:[],
+        areaArray:[],
         loading:true,
         fileList:[],
         value1:'',
@@ -242,7 +266,7 @@
         dd:'',
         options1: [
           {
-            placeHolder: '选择楼层',
+            placeHolder: '选择区域',
             data: [{
               "value": 0,
               "label": "预警"
@@ -254,47 +278,12 @@
               "label": '告警'
             }]
           }],
-        options2: [
-          {
-            placeHolder: '选择楼层',
-            data: [{
-              "value": 0,
-              "label": "预警"
-            }, {
-              "value": 1,
-              "label": "提醒"
-            }, {
-              "value": 2,
-              "label": '告警'
-            }]
-          }],
-        options: [
-          {
-            placeHolder: '报警级别',
-            data: [{
-              "value": 0,
-              "label": "预警"
-            }, {
-              "value": 1,
-              "label": "提醒"
-            }, {
-              "value": 2,
-              "label": '告警'
-            }]
-          }],
-        curPageData:[{
-          name:'10F热水循环泵',
-          floor:'十层',
-          much:'2.96',
-          system:'KW/h',
-          mount:'2.93',
-          time:'2018-11-11 23:11',
-          id:"1"
-        }],
+        curPageData:[],
         formData:{
+          date:'',
           project_id:1,
           floor_id:1,
-          sys_menu_id:1,
+          sys_menu_id:0,
           page_index:1,   //当前页数
           one_page_num:20,  //显示条数
           total:0,     //总条数
@@ -309,12 +298,120 @@
 
     },
     created(){
+      /*this.formData.sys_menu_id = this.$store.state.sysList[2].sys_menu_id
+      this.formData.project_id = this.$store.state.projectId*/
       this.initData()
     },
     mounted(){
 
     },
     methods:{
+      nodeChange(){
+        let nodes = this.$refs.tree.getCheckedNodes(false,true);
+        console.log(nodes)
+      },
+      queryClick(){
+        this.loading = true
+          this.initData()
+      },
+      initData(){
+        this.$http.post('/hotel_energy/history_record',this.formData).then((res)=>{
+          if(res.data.code==0){
+            this.curPageData = res.data.data.history_record.data
+            this.formData.total = res.data.data.history_record.total_record_num
+            this.formData.pageCount = res.data.data.history_record.total_page_num
+            /*this.areaArray = res.data.data.history_record.area_level*/
+            this.areaArray = [
+              {
+                "child": [
+                  {
+                    "child": [
+                      {
+                        "child": [
+                          {
+                            "child": [],
+                            "id": 51,
+                            "parent_id": 44,
+                            "title": "06楼"
+                          }
+                        ],
+                        "id": 44,
+                        "parent_id": 15,
+                        "title": "06-10楼"
+                      },
+                      {
+                        "child": [],
+                        "id": 46,
+                        "parent_id": 15,
+                        "title": "11-15楼"
+                      }
+                    ],
+                    "id": 15,
+                    "parent_id": 12,
+                    "title": "1栋"
+                  },
+                  {
+                    "child": [],
+                    "id": 17,
+                    "parent_id": 12,
+                    "title": "3栋"
+                  },
+                  {
+                    "child": [],
+                    "id": 19,
+                    "parent_id": 12,
+                    "title": "5栋"
+                  }
+                ],
+                "id": 12,
+                "parent_id": 0,
+                "title": "1-10栋"
+              },
+              {
+                "child": [
+                  {
+                    "child": [],
+                    "id": 25,
+                    "parent_id": 13,
+                    "title": "11栋"
+                  },
+                  {
+                    "child": [],
+                    "id": 27,
+                    "parent_id": 13,
+                    "title": "14栋"
+                  }
+                ],
+                "id": 13,
+                "parent_id": 0,
+                "title": "11-20栋"
+              },
+              {
+                "child": [
+                  {
+                    "child": [],
+                    "id": 34,
+                    "parent_id": 14,
+                    "title": "21栋"
+                  },
+                  {
+                    "child": [],
+                    "id": 36,
+                    "parent_id": 14,
+                    "title": "23栋"
+                  }
+                ],
+                "id": 14,
+                "parent_id": 0,
+                "title": "21-30栋"
+              }
+            ]
+            this.loading = false
+          }else{
+
+          }
+        })
+      },
       toInputPage(){
         this.loading = true
         if(this.formData.page_index > this.formData.pageCount){
@@ -326,18 +423,6 @@
         this.loading = true
         this.formData.page_index = aa
         this.initData()
-      },
-      initData(){
-        this.$http.post('/hotel_energy/history_record',this.formData).then((res)=>{
-          if(res.data.code==0){
-            this.curPageData = res.data.data.history_record.data
-            this.formData.total = res.data.data.history_record.total_record_num
-            this.formData.pageCount = res.data.data.history_record.total_page_num
-            this.loading = false
-          }else{
-
-          }
-        })
       },
       beforeUpload(file,fileList){
         this.fileList = [file]
@@ -362,13 +447,13 @@
 <style>
   .historyBtn{
     width:100%;
-    height:73px;
+    height:50px;
     position:absolute;
     right:0;
     bottom:0;
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: flex-start;
     justify-content: flex-end;
   }
   .historyBtn span{
@@ -395,7 +480,7 @@
   .historyBox .formGroup{
     width:100%;
     height:34px;
-    margin-top:0.2rem;
+    margin-top:20px;
     display: flex;
   }
   .historyBox .formGroup .name{
@@ -410,7 +495,7 @@
     width:100%;
   }
   .historyBox .formGroup .inpArea{
-    margin-left:12px;
+    margin-left:0.18rem;
     width:200px;
     height:100%;
   }
@@ -420,6 +505,20 @@
   .historyBox .formGroup .inpArea .el-input__inner{
     height:34px!important;
     width:200px!important;
+  }
+  .history .el-table th>.cell{
+    font-size:0.12rem!important;
+  }
+  .history .el-table .el-table__body td .cell{
+    font-size:0.12rem!important;
+  }
+  .history .titBox{
+    height:50px!important;
+    line-height: 50px!important;
+  }
+  .history .modalBoxIn{
+    width:560px!important;
+    height:660px!important;
   }
 </style>
 <style lang="less" rel="stylesheet/less" scoped>
@@ -466,12 +565,9 @@
 </style>
 <style>
   .history .queryBox .el-input__inner{
-    width:100px!important;
+    width:120px!important;
     height:36px!important;
     color:white;
-  }
-  .history .two .el-input__inner{
-    width:200px!important;
   }
   .history .el-button{
     font-size:0.14rem!important;
