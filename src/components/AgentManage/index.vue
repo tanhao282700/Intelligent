@@ -304,6 +304,7 @@ export default {
             yearR:res.data.data.old.ins
           }
           _this.circleData.data = [res.data.data.now.job,res.data.data.now.ins,res.data.data.old.job,res.data.data.old.ins];
+          _this.circleData.data = [20,45,37,109]
           _this.circleData.total = res.data.data.percentage_count;//巡检&工单总完成率
         }else{
           _this.$message({

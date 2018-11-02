@@ -70,13 +70,12 @@
       <Dialog wid="910" hei="686" ref="tableInfos2">
         <div class="tableInfos">
           <div class="infoHead">
-            <span class="infoName" v-text="infoItem.name"></span>
-            <span class="infoState" v-text="this.infoTit(infoItem.state)"></span>
+            <span class="infoName" v-text="infoItem.info.user_name"></span>
+            <span class="infoState" v-text="this.infoTit2(infoItem.info.now_state)"></span>
           </div>
           <div class="rightHead">
-            <span class="infoBusy" v-text="'普通'"></span>
-            <span class="infoSend" v-text="infoItem.sType" v-show="true"></span>
-            <span class="infoPer" v-text="'人工派发'" v-show="!true"></span>
+            <span class="infoBusy" v-text="this.priority(infoItem.info.priority)"></span>
+            <span class="infoPer" v-text="this.infoTit(infoItem.info.type_id)"></span>
           </div>
           <div class="infoWater">
               <RoutingTask :data="infoItem"></RoutingTask>
@@ -207,7 +206,7 @@ export default {
         },
         vName:-1,
         //日期选择
-        value7:'8-24',
+        value7:'',
         cant:false,
         table:{
             hei:328, //table高度  设置后有滚动条
@@ -237,7 +236,13 @@ export default {
               },
             ]
         },
-        infoItem:{},  //某个工单的详情
+        infoItem:{
+          info:{},
+          desc:[],
+          pic1:[],
+          pic2:[],
+          localDesc:[]
+        },  //某个工单的详情
     }
   },
   methods:{
@@ -301,7 +306,7 @@ export default {
         this.$refs.dialog.show();
         this.$http.post('/pc_ims/admin/user_jobs',{
           sys_name:'',
-          date:'07-01',
+          date:'11-01',
           user_id:row.user_id
         }).then(res=>{
           console.log(res);
@@ -373,20 +378,54 @@ export default {
       sendInfosShow(form){
         console.log(form)
         this.$http.post('/pc_ims/admin/send_job',form).then(res=>{
-          console.log(res);
+          if(res.data.code==0){
+            this.$message({
+              type:'success',
+              message:res.data.msg
+            })
+            this.getTableList();
+          }else{
+            this.$message({
+              type:'error',
+              message:res.data.msg
+            })
+          }
         })
       },
       tableInfos2Show(item){
-        this.infoItem = item;
-        //console.log(item);
         this.$refs.tableInfos2.show();
-        this.getDetailData(item.id)
+        this.getDetailData(item.id,item.now_state)
       },
-      getDetailData(id){
+      getDetailData(id,state){
         this.$http.post('/pc_ims/admin/job_info',{
-          job_id:''
+          job_id:id
         }).then(res=>{
-          console.log(res);
+          if(res.data.code==0){
+            this.infoItem = res.data.data;
+            this.infoItem.desc = [
+            {label:'类型',value:this.infoItem.sys_name},
+            {label:'设备类型',value:this.infoItem.device_name},
+            {label:'设备地点',value:this.infoItem.floor},
+            {label:'工单处理人员',value:this.infoItem.user_name}];
+            if(this.infoItem.now_state==2){
+              this.infoItem.localDesc = {label:'详情描述',value:this.infoItem.description};
+              this.info.localDesc2 = {};
+            }else if(this.infoItem.now_state==3){
+              this.infoItem.localDesc = {label:'详情描述',value:this.infoItem.description}
+              this.infoItem.localDesc2 = {label:'现场处理情况',value:this.infoItem.complete_info};
+            }else{
+              this.infoItem.localDesc = {label:'详情描述',value:this.infoItem.description}
+              this.infoItem.localDesc2 = {label:'退回原因',value:this.infoItem.complete_info};
+            }
+            if(this.infoItem.now_state==3){
+              this.infoItem.sendInfos = [{label:'派发人员',value:this.infoItem.dispatch_user_name},{label:'派发人员联系电话',value:this.infoItem.dispatch_user_phone}]
+            }
+          }else{
+            this.$message({
+              type:'error',
+              message:res.data.msg
+            })
+          }
         })
       },
       getWorkFlow(){//获取工单流程
@@ -399,29 +438,69 @@ export default {
       infoTit(state){
         let res = '';
         switch(state){
-          case -1:
-            res = '申请退单';
-          break;
           case 0:
-            res = '申请延期';
+            res = '系统自动派发';
           break;
           case 1:
-            res = '延期单';
+            res = '手工派发';
           break;
           case 2:
-            res = '处理中';
+            res = '投诉工单';
           break;
           case 3:
+            res = '维保工单';
           break;
         }
         return res;
       } ,
+      infoTit2(state){
+        let res = '';
+        switch(state){
+          case 0:
+            res = '未接单';
+          break;
+          case 1:
+            res = '已接单';
+          break;
+          case 2:
+            res = '延期申请';
+          break;
+          case 3:
+            res = '延期审请通过'
+          break;
+          case 4:
+            res = '已完成'
+          break;
+          case 5:
+            res = '申请退单'
+          break;
+          case 6:
+            res = '完成退单'
+          break;
+        }
+        return res;
+      },
+      priority(state){
+        let res = '';
+        switch(state){
+          case 1:
+            res = '一般';
+          break;
+          case 2:
+            res = '普通';
+          break;
+          case 3:
+          res = '严重';
+          break;
+        }
+        return res;
+      },
       getNameList(){
         this.$http.post('/pc_ims/get_user').then(res=>{
           if(res.data.code==0){
             let data = res.data.data;
             $.each(data,(n,k)=>{
-              data[n].value = data[n].id;
+              data[n].value = data[n].user_id;
               data[n].label = data[n].truename;
             })
             this.names = data;
@@ -475,7 +554,7 @@ export default {
             let data = res.data.data;
             
             $.each(data,(n,k)=>{
-              data[n].value = data[n].floor_id;
+              data[n].value = data[n].id;
               data[n].label = data[n].floor_name;
             })
             this.query2.devices = data;
@@ -509,7 +588,7 @@ export default {
         this.$http.post('/pc_ims/admin/job_userdata',{
           user_id:this.query.name,
           department:this.query.department,
-          date:'11-01',
+          date:this.value7,
         }).then(res=>{
           if(res.data.code==0){
             this.table.len = res.data.count;
@@ -524,7 +603,9 @@ export default {
       }
   },
   created() {
-    
+      let listDate = utils.time((new Date())/1000,1);
+      listDate = listDate.substring(5,listDate.length)
+      this.value7 = listDate;
   },
   mounted() {
     this.getTopData();

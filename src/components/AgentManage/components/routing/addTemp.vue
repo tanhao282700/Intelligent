@@ -13,7 +13,7 @@
               </el-col>
               <el-col :span="18" class="addContInput">
                 <SelectBox 
-                  :options = 'formvals.examine' 
+                  :options = 'formvals1.examine' 
                   :value = "formval.exam" 
                   :icon="'el-icon-d-caret'"
                   placeholder="巡检人员"
@@ -29,7 +29,7 @@
               </el-col>
               <el-col :span="18" class="addContInput">
                 <SelectBox 
-                  :options = 'formvals.departments' 
+                  :options = 'formvals1.departments' 
                   :value = "formval.department" 
                   :icon="'el-icon-d-caret'"
                   placeholder="专业"
@@ -58,7 +58,7 @@
               </el-col>
               <el-col :span="18" class="addContInput">
                 <SelectBox 
-                  :options = 'formvals.systems' 
+                  :options = 'formvals1.systems' 
                   :value = "formval.system" 
                   :icon="'el-icon-d-caret'"
                   placeholder="巡检系统"
@@ -74,7 +74,7 @@
               </el-col>
               <el-col :span="18" class="addContInput">
                 <SelectBox 
-                  :options = 'formvals.areas' 
+                  :options = 'formvals1.areas' 
                   :value = "formval.area" 
                   :icon="'el-icon-d-caret'"
                   placeholder="巡检区域"
@@ -90,7 +90,7 @@
               </el-col>
               <el-col :span="18" class="addContInput">
                 <SelectBox 
-                  :options = 'formvals.devices' 
+                  :options = 'formvals1.devices' 
                   :value = "formval.device" 
                   :icon="'el-icon-d-caret'"
                   placeholder="巡检设备"
@@ -108,7 +108,7 @@
               </el-col>
               <el-col :span="18" class="addContInput">
                 <el-date-picker
-                  v-model="formvals.starttime"
+                  v-model="formvals1.starttime"
                   type="date"
                   placeholder="选择日期">
                 </el-date-picker>
@@ -122,7 +122,7 @@
               </el-col>
               <el-col :span="18" class="addContInput">
                 <SelectBox 
-                  :options = 'formvals.periods' 
+                  :options = 'formvals1.periods' 
                   :value = "formval.period" 
                   :icon="'el-icon-d-caret'"
                   placeholder="巡检周期"
@@ -138,7 +138,7 @@
               </el-col>
               <el-col :span="18"  class="addContInput">
                 <SelectBox 
-                  :options = 'formvals.datas' 
+                  :options = 'formvals1.datas' 
                   :value = "formval.data" 
                   :icon="'el-icon-d-caret'"
                   placeholder="采集数据点"
@@ -187,36 +187,36 @@
       },
       data () {
         return {
-            formval:{}
+            
         }
       },
       methods:{
          change1(val){
-            this.formvals.name=val;
+            this.formval.name=val;
          },
          change2(val){
-            this.formvals.department = val;
+            this.formval.department = val;
          },
          change3(val){
-            this.formvals.limit = val;
+            this.formval.limit = val;
          },
          change4(val){
-            this.formvals.vSystem=val;
+            this.formval.system=val;
          },
          change5(val){
-            this.formvals.area = val;
+            this.formval.area = val;
          },
          change6(val){
-            this.formvals.device = val;
+            this.formval.device = val;
          },
          change7(val){
-            this.formvals.starttime=val;
+            this.formval.starttime=val;
          },
          change8(val){
-            this.formvals.period = val;
+            this.formval.period = val;
          },
          change9(val){
-            this.formvals.data = val;
+            this.formval.data = val;
          },
          cancelAdd(){
             this.$emit('cancelAdd')
@@ -225,8 +225,13 @@
             this.$emit('saveAdd',this.formval)
          }
       },
+      watch:{
+        formvals(val){
+          this.formvals1 = val
+        }
+      },
       mounted() {
-        this.formvals = this.data;
+        //this.formvals = this.data;
       }
   }
 </script>

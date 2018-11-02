@@ -8,7 +8,7 @@
             <span>{{table.title}}</span>
             <div class="dateBox">
                 <TimePickerT 
-                    :value7= "query.time"
+                    :value7= "value7"
                     :cant  = 'cant'
                     @changes = "changes"
                     @deletes = 'deletes'
@@ -28,7 +28,7 @@
                             @change = 'change1'
                         />
                     </div>
-                    <div class="searchBoxs">
+                    <div class="searchBoxs" @click="getUserList">
                         <i class="el-icon-search"></i>
                         <span>筛选</span>
                     </div>   
@@ -87,14 +87,14 @@ export default {
   },
   methods:{
     change1(val){ //选择
-      this.vJob = val;
-    },
-    change2(val){ //选择
-      this.vName = val;
+      this.query.type = val;
     },
     changes(val){
       this.query.time = val;
     }, 
+    getUserList(){
+        this.$emit('getUserList',this.query.type)
+    },
     deletes(){
         let attrs = this.query.time.split('-');
         // console.log(attrs)
@@ -143,11 +143,13 @@ export default {
         this.query.time = attrs.join('-');    
     }, 
     showInfos(item){
-        console.log(item)
         this.$emit('tableInfos2Show',item);
     }
   },
   created() {
+        let listDate = utils.time((new Date())/1000,1);
+        listDate = listDate.substring(5,listDate.length)
+        this.value7 = listDate;
   },
   mounted() {
   },

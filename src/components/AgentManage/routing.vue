@@ -67,18 +67,11 @@
             <Dialog wid="910" hei="686" ref="tableInfos2">
                 <div class="tableInfos">
                     <div class="infoHead">
-                      <span class="infoName" v-text="infoItem.name"></span>
-                      <span class="infoState" v-text="infoTit(infoItem.state)"></span>
-                      <div class="rightHead">
-                        <span class="infoBusy" v-text="'普通'"></span>
-                        <span class="infoSend" v-text="infoItem.sType"></span>
-                      </div>
-                    </div>
-                    <div class="infoWater">
-                      <RoutingTask :data="routData"></RoutingTask>
+                      <span class="infoName" v-text="infoItem.info.user_name"></span>
+                      <span class="infoState" v-text="infoTit(infoItem.info.now_value)"></span>
                     </div>
                     <div class="infoBoxs">
-                      <RoutingInfo :data="routData"/>
+                      <RoutingInfo :data="infoItem"/>
                     </div>
                 </div>
             </Dialog>  
@@ -142,7 +135,6 @@ export default {
         names:[],
         //日期选择
         value7:'8-24',
-        routData:{},
         cant:false,
         queryModel:{//巡检任务模板的查询条件
           systems:[],areas:[],examine:[],
@@ -198,7 +190,7 @@ export default {
               state0:0, //1 同意，0拒绝
               txt:'是否允许退单'
           },
-          data:[],
+          data:[{now_state:0},{now_state:1},{now_state:2},{now_state:3},{now_state:4}],
           th:[
             {prop:'id',label:'序号',wid:60},
             {prop:'user_name',label:'名称'},
@@ -207,7 +199,28 @@ export default {
             {prop:'devicename',label:'设备名称'},
             {prop:'addtime',label:'派发时间'},
             {prop:'descript',label:'内容描述'},
-            {prop:'now_state',label:'状态',wid:80},
+            {prop:'now_state',label:'状态',wid:80,
+            operate:true,render:(h,param)=>{
+              let val = ''
+              switch (param.row.now_state){
+                case 0:
+                val = '未接单'
+                break;
+                case 1:
+                val = '处理中'
+                break;
+                case 2:
+                val = '已完成'
+                break;
+                case 3:
+                val = '申请退单'
+                break;
+                case 4:
+                val = '退单完成'
+                break;
+              }
+              return val;
+            }},
             {prop:'fill',label:'操作',wid:105,
               operate: true, 
                 render: (h, param)=> {
@@ -251,7 +264,12 @@ export default {
               },
             ]
         },
-        infoItem:{},  //某个工单的详情
+        infoItem:{
+          info:{},
+          desc:[],
+          localDesc:{},
+          localDesc2:{},
+        },  //某个工单的详情
     }
   },
   methods:{
@@ -346,7 +364,6 @@ export default {
       this.$refs.add.hide();
     },
     saveAdd(formData){
-      //console.log(formData)
       this.$http.post('/pc_ims/set_template',formData)
       .then(res=>{
           if(res.data.code==0){
@@ -401,7 +418,7 @@ export default {
     },
     rowClick(row){
       this.$refs.dialog.show();
-      this.$http.post('/pc_ims/admin/inspectiondata_all',{sys_name:'',user_id:row.user_id})
+      this.$http.post('/pc_ims/admin/inspectiondata_all',{sys_name:'',user_id:row.user_id,date:'11-01'})
       .then(res=>{
           if(res.data.code==0){
             this.table3.len = res.data.count;
@@ -427,8 +444,22 @@ export default {
       this.$http.post('/pc_ims/admin/inspectionlist_info',{ins_id:item.id})
       .then(res=>{
         if(res.data.code==0){
-            this.routData = res.data.data;
-            console.log(this.routData)
+            this.infoItem = res.data.data;
+            this.infoItem.desc = [
+              {label:'巡检人员',value:this.infoItem.user_name},
+              {label:'电话',value:this.infoItem.user_phone},
+              {label:'巡检类型',value:this.infoItem.title},
+              {label:'设备地点',value:this.infoItem.floorname},
+              {label:'巡检设备',value:this.infoItem.devicename},
+            ]
+            if(item.now_state==4){
+              this.infoItem.localDesc = [
+              {label:'现场处理情况',value:this.infoItem.complete_info},
+              {label:'退回原因',value:this.infoItem.backExcuse}]
+            }else{
+              this.infoItem.localDesc = [{label:'现场处理情况',value:this.infoItem.complete_info}];
+            }
+            
           }else{
             this.$message({
               type:'error',
@@ -517,7 +548,7 @@ export default {
           if(res.data.code==0){
             let data = res.data.data;
             $.each(data,(n,k)=>{
-              data[n].value = data[n].id;
+              data[n].value = data[n].user_id;
               data[n].label = data[n].truename;
             })
             this.names = data;

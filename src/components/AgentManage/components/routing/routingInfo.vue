@@ -4,45 +4,43 @@
 <template>
     <div class="routingTask">    
       <el-row>
-        <el-col :span="6">
+        <el-col :span="24/newData.desc.length" v-for="item in newData.desc">
           <div class="taskDtl">
             <el-row :gutter="20">
-              <el-col :span="10"><div class="taskLabel">类型</div></el-col>
-              <el-col :span="14"><div class="taskCont">{{data.info.title}}</div></el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="10"><div class="taskLabel">设备类型</div></el-col>
-              <el-col :span="14"><div class="taskCont">{{data.info.devicename}}</div></el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="10"><div class="taskLabel">设备地点</div></el-col>
-              <el-col :span="14"><div class="taskCont">{{data.info.floorname}}</div></el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="10"><div class="taskLabel">工单处理人员</div></el-col>
-              <el-col :span="14"><div class="taskCont">{{data.info.user_name}}</div></el-col>
+              <el-col :span="10"><div class="taskLabel">{{item.label}}</div></el-col>
+              <el-col :span="14"><div class="taskCont">{{item.value}}</div></el-col>
             </el-row>
           </div>
         </el-col>
       </el-row>  
       <div>
-        <div class="contLabel">详情描述</div>
+        <div class="contLabel">{{newData.localDesc.label}}</div>
         <el-input
           type="textarea"
           class="controlCont controlCont1"
           :rows="2"
           placeholder="请输入内容"
-          v-model="data.desc">
+          v-model="newData.localDesc.value">
         </el-input>
       </div> 
-      <div >
-        <div class="contLabel">退回原因</div>
+      <el-row>
+        <el-col :span="12">
+          <div class="taskDtl" v-for="item in newData.sendInfos">
+            <el-row :gutter="20">
+              <el-col :span="6"><div class="taskLabel">{{item.label}}</div></el-col>
+              <el-col :span="18"><div class="taskCont">{{item.value}}</div></el-col>
+            </el-row>
+          </div>
+        </el-col>
+      </el-row> 
+      <div>
+        <div class="contLabel">{{newData.localDesc2.label}}</div>
         <el-input
           type="textarea"
           :rows="2"
           class="controlCont controlCont2"
           placeholder="请输入内容"
-          v-model="data.backExcuse">
+          v-model="newData.localDesc2.value">
         </el-input>
       </div>
       <div class="dealimg">
@@ -56,19 +54,19 @@
         </el-row>
         <div>
           <div class="imgs1">
-            <img :src="item.src" v-for="item in data.imgs1">
+            <img :src="item.pic_url" v-for="item in newData.pic1">
           </div>
           <Lines :top="0" :hei="100" class="lines"/>
           <div class="imgs2">
-            <img :src="item.src" v-for="item in data.imgs2">
+            <img :src="item.pic_url" v-for="item in newData.pic2">
           </div>
         </div>
       </div>
-      <div class="rightHead" v-if="data.state=='-1'">
+      <div class="rightHead" v-if="newData.state=='-1'">
         <span class="infoBusy" v-text="'拒绝退单'"></span>
         <span class="infoSend" v-text="'允许退单'"></span>
       </div>
-      <div class="rightHead" v-if="data.state=='0'">
+      <div class="rightHead" v-else-if="newData.state=='0'">
         <span class="infoBusy" v-text="'拒绝延期'"></span>
         <span class="infoSend" v-text="'允许延期'"></span>
       </div>
@@ -76,21 +74,27 @@
 </template>
 
 <script>
+  import utils from "../../../../assets/js/utils.js";
   export default {
       props:['data'],
       data () {
         return {
-        
+          newData:{},
         }
       },
       methods:{
            
       },
-      created() {
-        this.data = this.data;
+      watch:{
+        data(val){
+          this.newData = val;
+        }
+      },
+      create(){
+        
       },
       mounted() {
-
+        
       }
   }
 </script>

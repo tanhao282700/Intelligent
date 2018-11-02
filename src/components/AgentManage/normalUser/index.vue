@@ -244,8 +244,8 @@ export default {
           //console.log(res)
           if(res.data.code==0){
              _this.echartCirData3.total = res.data.data.job.count;
-             let gongdanwei = res.data.data.gongdan.wei;
-             let gongdanwan = res.data.data.gongdan.wan;
+             let gongdanwei = res.data.data.job.wei;
+             let gongdanwan = res.data.data.job.wan;
              let xunjianwei = res.data.data.xunjian.wei;
              let xunjianwan = res.data.data.xunjianwan;
              //工单
@@ -260,7 +260,7 @@ export default {
               //工单来源
              _this.barData.data = [res.data.data.sys,res.data.data.people]
              _this.barData.total = res.data.data.count;
-             _this.circleData = res.data.data.
+             _this.circleData.data = [Math.floor(gongdanwan/(gongdanwan+gongdanwei)*100),Math.floor(xunjianwan/(xunjianwan+xunjianwei)*100)]
              _this.circleData.total = res.data.data.percent;
              console.log(res.data.data)  //工单的数据
              // console.log(res.data.data.now) //日/月 巡检&工单总完成率 根据筛选条件决定

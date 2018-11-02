@@ -5,7 +5,7 @@
 <template>
     <div class="routingTask">
         <div class="routingTime" >
-          <div class="topBox" v-for="(item,index) in data.inspection_list" :style="{left:1.8+(index*160*100/1366)+'vw'}">
+          <div class="topBox" v-for="(item,index) in data.job_list" :style="{left:1.8+(index*160*100/1366)+'vw'}">
             <div>
               <span>{{item.name}}</span></br>
               {{item.date}}&nbsp;&nbsp;&nbsp;{{item.time}}
@@ -42,6 +42,11 @@
            
       },
       created() {
+      },
+      watch:{
+        data(val){
+          console.log(val)
+        }
       },
       mounted() {
          
