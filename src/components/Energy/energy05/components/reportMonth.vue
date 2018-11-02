@@ -15,7 +15,7 @@
     	</div>
     	<div class="reportTablesBox">
 
-	    	<el-table class="monthTab"  :data="tableData3"  :cell-class-name="cell" style="width: 100%;" height="50vh"  >
+	    	<el-table class="monthTab firstTab"  :data="tableData3"  :cell-class-name="cell" style="width: 100%;" height="50vh"  >
 	    		<el-table-column type="index" label="序号" width="30">
 	    		</el-table-column>
 	    		<el-table-column prop="date" label="名称">
@@ -199,6 +199,7 @@
             this.$nextTick(()=>{
                 console.log($(".el-table__header").width())
               $(".monthTab").width($(".el-table__header").width())
+            $(".firstTab").height('70%')
         })
         },
         methods:{
@@ -285,8 +286,7 @@
 }
   .reportTablesBox{
     width:100%;
-    /*height:100%;*/
-    padding-bottom:20px;
+    height:95%;
     overflow-x:scroll;
     overflow-y:hidden;
   }
