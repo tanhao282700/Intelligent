@@ -219,7 +219,6 @@
         let that = this;
         let searchYear = this.years;
         var curYear = new Date().getFullYear();
-        console.log(searchYear,curYear);
         if(searchYear<curYear){
           that.isChangeing = false;
           that.$message("不可编辑");

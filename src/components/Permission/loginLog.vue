@@ -110,7 +110,7 @@
       name: "login-log",
       data(){
           return{
-            dateRangeValue:[''],
+            dateRangeValue:[],
             tableData: [],
             currentPage: 1,
             pageSize: 20,
@@ -179,21 +179,27 @@
           that.totalDataNumber = data.paging.count;
           that.totalPageNum =  Math.ceil(Number(that.totalDataNumber) / that.pageSize);
         },
-        getNowFormatDate() {
+        getBeforeDate(num){
           var date = new Date();
+          date.setDate(date.getDate() - num);
           var seperator1 = "-";
           var year = date.getFullYear();
           var month = date.getMonth() + 1;
-          var strDate = date.getDate();
+          var day = date.getDate();
           if (month >= 1 && month <= 9) {
             month = "0" + month;
           }
-          if (strDate >= 0 && strDate <= 9) {
-            strDate = "0" + strDate;
+          if (day >= 0 && day <= 9) {
+            day = "0" + day;
           }
-          var Nowdate = year + seperator1 + month + seperator1 + strDate;
-          var startDate = year + seperator1 + month + seperator1 + (strDate - 7);
-          this.dateRangeValue[1] = Nowdate;
+          var beforeDate = year + seperator1 + month + seperator1 + day;
+          return beforeDate;
+        },
+        getNowFormatDate() {
+          var startDate = this.getBeforeDate(7);
+          var nowDate = this.getBeforeDate(0);
+
+          this.dateRangeValue[1] = nowDate;
           this.dateRangeValue[0] = startDate;
           this.requestTableData(1);
         }

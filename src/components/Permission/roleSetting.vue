@@ -330,6 +330,7 @@
               that.clearForm();
               that.clearNodes();
               that.requestTableData(1);
+              that.requestOptions();
             },2000)
           }else {
             that.bubbleTipShow(res.data.message);

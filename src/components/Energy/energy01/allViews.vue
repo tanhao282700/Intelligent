@@ -989,7 +989,8 @@
         that.totalEnergyUsageData.yearPlanTotal = data.this_year_plan_carbon_emission;
         var perObj = {};
         for(var i=0;i<3;i++){
-          perObj[i] = Math.round(Number(monthActuUsage[i])/Number(monthPlagUsage[i]));
+          var num = ((Number(monthActuUsage[i]) / Number(monthPlagUsage[i])) * 100).toFixed(1);
+          perObj[i] = Math.round(num);
           if(i==2){that.totalEnergyUsageData.monthUsagePer = perObj};
         }
         that.totalEnergyChartRotate(perObj[0],'.energyFinger1');

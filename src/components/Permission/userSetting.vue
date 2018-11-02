@@ -71,7 +71,7 @@
             min-width="10%">
           </el-table-column>
           <el-table-column
-            prop="username"
+            prop="name"
             label="昵称"
             min-width="16%">
           </el-table-column>
