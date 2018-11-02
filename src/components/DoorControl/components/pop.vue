@@ -1,7 +1,7 @@
 <template>
-    <div class="pop"> 
+    <div class="pop" @click.stop="doorInfoHide"> 
         <div class="popBgBox">
-            <div class="popHeadBox">消防通道 {{info}} 号门</div>
+            <div class="popHeadBox">消防通道 {{info}} </div>
             <div class="popDoorStatus">
                 <span>门禁状态</span>
                 <span>{{infoSta}}</span>
@@ -26,6 +26,9 @@
 
         },
         methods:{
+            doorInfoHide(){
+                this.$emit("doorInfoHide",false);
+            },
             openDoorByInt(){
                 console.log("远程开门控制");
             }

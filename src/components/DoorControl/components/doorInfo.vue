@@ -2,7 +2,7 @@
     <div class="doorInfo"> 
         <div class="doorExportPanel">
             <span>消防通道 {{doorInfoId}} 号门信息</span>
-            <button class="btn floatRt">导出</button>
+            <button class="btn floatRt" @click="exportTable">导出</button>
             <a class="closeDoorInfo" @click="doorInfoHide">×</a>
         </div>
         <div class="doorInfoBgBox">
@@ -68,6 +68,26 @@
         methods:{
             getData(){
                 
+            },
+            exportTable(){
+                var that = this;
+                this.$http.post('/entrance/record',{
+                    sys_menu_id:15,
+                    project_id:1,
+                    floor_id:1,
+                    export:1,
+                }).then(function(response){
+                    // 响应成功回调
+                    //http://images.china-tillage.com/门禁系统门禁记录20181031124347.xls
+                    var str = "http://"+response.data;
+                    that.downLoadSrc = str;
+                    console.log(str);
+                    window.open(str);
+                    //that.downExcelA();
+                    
+                }, function(response){
+                    // 响应错误回调
+                });
             },
             toInputPage(){
               /*显示输入页表格数据*/

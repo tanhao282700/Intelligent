@@ -2,7 +2,7 @@
     <div class="tabsDomBox"> 
         <div class="navCrumbs">首页 > 门禁系统 > <span>门禁记录</span></div>
         <div class="borderShadow">
-            <a :href="downLoadSrc" style="display:none;" @click="downExcelA"></a>
+            <a :href="downLoadSrc" style="display:none;"></a>
             <div class="searchConditionBox">
                 <div class="dateBox">
                     <el-date-picker v-model="releasetime1" type="date" placeholder="选择开始时间"></el-date-picker>
@@ -91,6 +91,10 @@
                     s = that.format(this.releasetime1, 'yyyyMMdd');
                     e = that.format(this.releasetime2, 'yyyyMMdd');
                 }
+                if(s == "19700101" || e =="19700101"){
+                    s = "";
+                    e = "";
+                }
                 this.$http.post('/entrance/record',{
                     sys_menu_id:15,
                     project_id:1,
@@ -99,7 +103,7 @@
                     one_page_num:this.pagesize,
                     start_date:s,
                     end_date:e,
-                    query_name:this.query_name,
+                    query_name:this.enternameinput,
                 }).then(function(response){
                     // 响应成功回调
                     console.log(response);
@@ -110,9 +114,6 @@
                 }, function(response){
                     // 响应错误回调
                 });
-            },
-            downExcelA(){
-                console.log("导出成功")
             },
             exportTable(){
                 var that = this;

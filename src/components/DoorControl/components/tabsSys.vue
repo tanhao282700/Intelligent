@@ -47,12 +47,12 @@
                 <img src="../../../assets/img/doorControl/bg_lc.png">
                 <i :class="['doorSta'+item.device_state,'door'+(index+1)]" 
                    v-for="(item,index) in iList" 
-                   @mouseenter = "popToggle(index,item.x,item.y,item.device_id,item.device_state)" 
+                   @mouseenter = "popToggle(index,item.x,item.y,item.device_name,item.device_state)" 
                    @mouseout = "popHide" 
-                   @click="doorInfoPanel(item.device_id,item)"
+                   @click.stop="doorInfoPanel(item.device_id,item)"
                    :style="{left:item.position_x*1.74 + 'px',top:item.position_y*1.74 + 'px'}"
                 >{{item.device_name.slice(0,1)}}
-                    <pops  :info = "onMouseDoor" :infoSta = "infoSta" :controlDoorFun = "controlDoorFun"></pops>
+                    <pops v-on:doorInfoHide="doorInfoHide"  :info = "onMouseDoor" :infoSta = "infoSta" :controlDoorFun = "controlDoorFun"></pops>
                 </i>
                 
             </div>
@@ -117,7 +117,7 @@
                     }
                 });
                 this.levelNum = arrLs;
-                console.log(arrLs);
+                // console.log(arrLs);
             },
             popToggle(i,x,y,id,sta){
                 //this.popShow = true;
@@ -172,10 +172,10 @@
                     that.doorClose = data.data.data.entrance_guard_info.entrance_guard_close_num;
                     that.doorWarning = data.data.data.entrance_guard_info.entrance_guard_anomaly_num;
                     that.doorOpenN = data.data.data.entrance_guard_info.entrance_guard_open_num;
-
+                    console.log(that.iList);
                     //获取联动数据
                     that.areaLevel = data.data.data.area_level;
-                    console.log(that.areaLevel);
+                    // console.log(that.areaLevel);
                 });
             }
         }
