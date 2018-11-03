@@ -5,7 +5,7 @@
     		<div class="reportChartbox">
 	    		<div class="reportChartHeadBox">
 	    			<span>营收报表(日) <i></i></span>
-		            <el-select v-model="floorNumber" placeholder="月份">
+		            <el-select v-model="floorNumber" placeholder="月份" @change="getDataChooseMonth">
 		                <el-option label="1月" value="1"></el-option>
 		                <el-option label="2月" value="2"></el-option>
 		            </el-select>
@@ -17,9 +17,12 @@
 	    	<div class="reportChartbox">
 	    		<div class="reportChartHeadBox">
 	    			<span>营收报表(月) <i></i></span>
-		            <el-select v-model="floorNumber1" placeholder="年份">
-		                <el-option label="2018" value="2018"></el-option>
-		                <el-option label="2017" value="2017"></el-option>
+		            <el-select v-model="floorNumber1" placeholder="年份" @change="getData">
+		                <el-option  v-for="item in SelesData"
+		                  :key="item.valueX"
+		                  :label="item.valueX"
+		                  :value="item.valueX">
+		                </el-option>
 		            </el-select>
 	    		</div>
 	    		<div class="chartDom" id="reportChartYear"></div>
@@ -38,7 +41,7 @@
         },
 	    data() {
 	        return {
-	        	floorNumber:'10月',
+	        	floorNumber:'10',
 	        	floorNumber1:'2018',
 	        	room:[],
 	        	ballroom:[],
@@ -50,24 +53,45 @@
 	        	othersY:[],
 	        	chart:{},
         		xData : '',
+        		SelesData:[],
 
 	        };
 	    },
         mounted(){
 	  
 	        this.getChartData();
-            
+            this.getSelesData();
         },
 	    watch:{
 	
 	    },
 	    methods: {
+	    	getSelesData(){
+	    		var that = this;
+                this.$http.post('/hotel/get_year',{
+                    // project_id:1,
+                    // month:1,
+                    // year:2018,
+                }).then(function(data){
+                    // 日
+                    console.log(data);                   
+                    $.each(data.data.data,function(key,value){
+                    	that.SelesData.push({valueX:value});
+                    });
+                	console.log(that.SelesData);
+                }, function(data){
+                    // 响应错误回调
+                });
+	    	},
+	    	getDataChooseMonth(){
+	    		console.log(this.floorNumber);
+	    	},
 	    	getChartData(){
                 var that = this;
                 this.$http.post('/hotel/statement',{
                     project_id:1,
-                    // month:1,
-                    // year:2018,
+                    // month:that.floorNumber,
+                    year:that.floorNumber1,
                 }).then(function(data){
                     // 日
                     console.log(data);
