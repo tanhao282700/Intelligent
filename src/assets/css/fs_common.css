@@ -187,3 +187,38 @@
   border:none !important ;
   border-radius: 0 !important;
 }
+.timeBox::after{
+  background: none !important;
+}
+.tabHead .el-icon-date:before{
+  content: '';
+}
+.tabHead .el-input--prefix .el-input__inner{
+  padding:0 !important;
+}
+.tabHead .datetemp .el-input__inner::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color: #fff !important;
+}
+.tabHead .datetemp .el-input__inner:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color:  #fff !important;
+}
+.tabHead .datetemp .el-input__inner::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color:  #fff !important;
+}
+.tabHead .datetemp .el-input__inner:-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color:  #fff !important;
+}
+.tabHead .el-input__inner{
+  padding: 0;
+  height:0.26rem;
+}
+.el-date-editor.datetemp.el-input.el-input--prefix.el-input--suffix:after{
+  content:'';
+  background: url("../img/AgentManage/down@2x.png")no-repeat;
+  width:0.15rem;
+  height:0.15rem;
+  background-size: 0.08rem;
+  position: absolute;
+  top:0.13rem;
+  right:0.04rem;
+}

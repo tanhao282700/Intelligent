@@ -20,9 +20,7 @@
         </div>
         <div class="tableBox">
             <div class="tableTit">
-                <span>A班：<span v-text="tableT.a"></span></span>
-                <span>B班：<span v-text="tableT.b"></span></span>
-                <span>标准工时：<span v-text="tableT.time"></span></span>
+                <span v-for="(item,index) in tableT">{{item.label}}<span v-text="item.timearea"></span></span>
             </div>
             <div class="tableBody">
                 <div class="tableH">
@@ -155,11 +153,7 @@ export default {
         active:'exams',
         isShow:false,
         ischange:[-1,-1],
-        tableT:{
-            a:'09:00~17:30',
-            b:'09:00～次日09:30',
-            time:'176h/月'
-        },
+        tableT:[],
         wOptions:[],
         pOption:[],
         dataLlists:[
@@ -358,12 +352,17 @@ export default {
             let _this = this;
             this.$http.post('/pc_ims/work_type')
             .then(function(res){
+                let arr = [];
                 if(res.data.code==0){
                     let data = res.data.data;
                     $.each(data,function(n,k){
                         data[n].value = data[n].id;
                         data[n].label = data[n].title;
+                        if(data[n].label!='休'){
+                            arr.push({label:data[n].label+'班',timearea:data[n].starttime+'~'+data[n].endtime});
+                        }
                     })
+                    _this.tableT = arr;
                     _this.wOptions =  data;
                 }else{
                   _this.$message({

@@ -20,25 +20,35 @@ export default {
      txts(){
           let res = {txt:'',color:'#fff'};
           switch(this.state.fills){
-              case -1:
-                res.txt = '申请退单';
-              break;
               case 0:
-                res.txt = '申请延期处理';
+                res.txt = '未接单';
+                res.color='#fff'
               break;
               case 1:
-                res.txt = '延期处理';
-                res.color = '#fa6074';
+                res.txt = '已接单';
+                res.color='"#F35E5E"'
               break;
               case 2:
-                res.txt = '处理中';
-                res.color = '#f38a00';
+                res.txt = '延期申请';
+                res.color = '"#EEB66E"'
               break;
               case 3:
-                res.txt = '已完成';
-                res.color = '#4ae283';
+                res.txt = '延期审请通过'
+                res.color=''
               break;
-          }
+              case 4:
+                res.txt = '已完成'
+                res.color=''
+              break;
+              case 5:
+                res.txt = '申请退单'
+                res.color=''
+              break;
+              case 6:
+                res.txt = '完成退单'
+                res.color=''
+              break;
+            }
           this.txt = res;
       }
   },

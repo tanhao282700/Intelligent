@@ -45,6 +45,7 @@
                 @changes = "changes"
                 @deletes = 'deletes'
                 @adds    = 'adds'
+                :timeformat="'M-d'"
             />
           </div>
         </div>
@@ -67,7 +68,7 @@
       <Dialog wid="1326" hei="640" ref="dialog">
         <WorkInfo @tableInfos2Show="tableInfos2Show" :table="table2" :query="query2"/>
       </Dialog> 
-      <Dialog wid="910" hei="686" ref="tableInfos2">
+      <Dialog wid="910" hei="626" ref="tableInfos2">
         <div class="tableInfos">
           <div class="infoHead">
             <span class="infoName" v-text="infoItem.info.user_name"></span>
@@ -78,10 +79,10 @@
             <span class="infoPer" v-text="this.infoTit(infoItem.info.type_id)"></span>
           </div>
           <div class="infoWater">
-              <RoutingTask :data="infoItem"></RoutingTask>
+              <RoutingTask :data="infoItem" ></RoutingTask>
           </div>
           <div class="infoBoxs">
-              <RoutingInfo :data="infoItem"/>
+              <RoutingInfo :data="infoItem" @dealWork = "dealWork"/>
           </div>
         </div>
       </Dialog>  
@@ -186,8 +187,8 @@ export default {
                         fills:param.row.now_state,  
                     };
                     return h(State,{
-                    props: { state:btnss},
-                    on:{}
+                      props: { state:btnss},
+                      on:{}
                     });
                 }},
             {prop:'fill',label:'操作',wid:105,
@@ -206,7 +207,7 @@ export default {
         },
         vName:-1,
         //日期选择
-        value7:'',
+        value7:'11-01',
         cant:false,
         table:{
             hei:328, //table高度  设置后有滚动条
@@ -241,7 +242,8 @@ export default {
           desc:[],
           pic1:[],
           pic2:[],
-          localDesc:[]
+          localDesc:[],
+          sendInfos:[]
         },  //某个工单的详情
     }
   },
@@ -257,7 +259,7 @@ export default {
       }, 
       deletes(){
           let attrs = this.value7.split('-');
-          // console.log(attrs)
+          console.log(attrs)
           if(attrs[2]==1){
             if(attrs[1]==2 ||attrs[1]==4 || attrs[1]==6 ||attrs[1]==8 ||attrs[1]==9 ||attrs[1]==11 ||attrs[1]==1){
                 attrs[2]=31;
@@ -419,6 +421,8 @@ export default {
             }
             if(this.infoItem.now_state==3){
               this.infoItem.sendInfos = [{label:'派发人员',value:this.infoItem.dispatch_user_name},{label:'派发人员联系电话',value:this.infoItem.dispatch_user_phone}]
+            }else{
+              this.infoItem.sendInfos = []
             }
           }else{
             this.$message({
@@ -428,13 +432,6 @@ export default {
           }
         })
       },
-      getWorkFlow(){//获取工单流程
-        this.$http.post('/pc_ims/admin/write_job',{
-          job_id:''
-        }).then(res=>{
-          console.log(res);
-        })
-      },  
       infoTit(state){
         let res = '';
         switch(state){
@@ -494,6 +491,33 @@ export default {
           break;
         }
         return res;
+      },
+      dealWork(param){//处理工单
+        alert(123)
+        this.getDealResult(param)
+      },
+      getDealResult(param){
+        this.$http.post('/pc_ims/write_job',{
+          id:param.infos.info.id,
+          type:param.type,
+          pic1:param.infos.info.pic1,
+          pic2:param.infos.info.pic2,
+          end_time:'',
+          user_id:param.infos.info.user_id,
+          new_user_id:'',
+          info:param.infos.localDesc2.value,
+          dispatch_user_id:''
+        })
+        .then(res=>{
+          if(res.data.code==0){
+            console.log(res.data)
+          }else{
+            this.$message({
+              type:'error',
+              message:res.data.msg
+            })
+          }
+        })
       },
       getNameList(){
         this.$http.post('/pc_ims/get_user').then(res=>{
@@ -588,7 +612,7 @@ export default {
         this.$http.post('/pc_ims/admin/job_userdata',{
           user_id:this.query.name,
           department:this.query.department,
-          date:this.value7,
+          date:'11-01',//this.value7
         }).then(res=>{
           if(res.data.code==0){
             this.table.len = res.data.count;
@@ -603,9 +627,6 @@ export default {
       }
   },
   created() {
-      let listDate = utils.time((new Date())/1000,1);
-      listDate = listDate.substring(5,listDate.length)
-      this.value7 = listDate;
   },
   mounted() {
     this.getTopData();
@@ -777,7 +798,7 @@ export default {
     }
     .rightHead{
         position: absolute;
-        right: 0;
+        right:0.1rem;
         line-height:0.52rem;
         color:#fff;
         top:0;
@@ -807,7 +828,7 @@ export default {
           display:inline-block;
           line-height:0.24rem;
           background:#F38A00;
-          width:4.98vw;
+          padding:0 0.1rem;
           border-radius:2px;
           font-size:12px;
           text-align:center;

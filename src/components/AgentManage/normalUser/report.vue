@@ -95,7 +95,7 @@ export default {
           times:[],
           sys_id:1
         },
-        crumbs:['代维系统','系统报表'],
+        crumbs:['代维系统','统计报表'],
         activeName:'first',
         jobs:[
           {label:'给排水',value:1},

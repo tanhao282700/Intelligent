@@ -56,6 +56,7 @@
 import TimePickerT from './timePickerTit2';
 import SelectBox from '@/components/form/selectBox';
 import Table from '@/components/common/table';
+import utils from '../../../../assets/js/utils';
 export default {
   props:['query','table'],
   components:{

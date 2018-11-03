@@ -13,8 +13,8 @@
           </div>
         </el-col>
       </el-row>  
-      <div>
-        <div class="contLabel">{{newData.localDesc.label}}</div>
+      <div v-if="backExcu2">
+        <div class="contLabel" v-text="this.backExcu?newData.localDesc.label:''"></div>
         <el-input
           type="textarea"
           class="controlCont controlCont1"
@@ -23,9 +23,9 @@
           v-model="newData.localDesc.value">
         </el-input>
       </div> 
-      <el-row>
-        <el-col :span="12">
-          <div class="taskDtl" v-for="(item,index) in newData.sendInfos" :key="index">
+      <el-row v-if="sendInfo">
+        <el-col :span="12" v-for="(item,index) in newData.sendInfos" :key="index">
+          <div class="taskDtl" >
             <el-row :gutter="20">
               <el-col :span="6"><div class="taskLabel">{{item.label}}</div></el-col>
               <el-col :span="18"><div class="taskCont">{{item.value}}</div></el-col>
@@ -33,8 +33,8 @@
           </div>
         </el-col>
       </el-row> 
-      <div>
-        <div class="contLabel">{{newData.localDesc2.label}}</div>
+      <div v-if="backExcu">
+        <div class="contLabel" v-text="this.backExcu?newData.localDesc2.label:''"></div>
         <el-input
           type="textarea"
           :rows="2"
@@ -62,13 +62,13 @@
           </div>
         </div>
       </div>
-      <div class="rightHead" v-if="newData.state=='-1'">
-        <span class="infoBusy" v-text="'拒绝退单'"></span>
-        <span class="infoSend" v-text="'允许退单'"></span>
+      <div class="rightHead" v-if="newData.info && newData.info.now_state=='5'">
+        <span class="infoBusy" v-text="'拒绝退单'" @click="dealWork(8)"></span>
+        <span class="infoSend" v-text="'允许退单'" @click="dealWork(6)"></span>
       </div>
-      <div class="rightHead" v-else-if="newData.state=='0'">
-        <span class="infoBusy" v-text="'拒绝延期'"></span>
-        <span class="infoSend" v-text="'允许延期'"></span>
+      <div class="rightHead" v-else-if="newData.info && newData.info.now_state=='2'">
+        <span class="infoBusy" v-text="'拒绝延期'" @click="dealWork(7)"></span>
+        <span class="infoSend" v-text="'允许延期'" @click="dealWork(3)"></span>
       </div>
     </div>
 </template>
@@ -80,21 +80,30 @@
       data () {
         return {
           newData:{},
+          sendInfo:false,
+          backExcu:false,
+          backExcu2:false
+
         }
       },
       methods:{
-           
+          dealWork(type){
+            this.$emit('dealWork',{type:type,infos:this.newData})
+          }
       },
       watch:{
         data(val){
           this.newData = val;
+          console.log(this.newData)
+          this.newData.localDesc.label?this.backExcu=true:this.backExcu=false;
+          this.newData.localDesc2.label?this.backExcu2 =true:this.backExcu2 = false;
+          this.newData.sendInfos.length>0?this.sendInfo = true :this.sendInfo = false;
         }
       },
       create(){
         
       },
       mounted() {
-        
       }
   }
 </script>
@@ -126,7 +135,7 @@
     }
   }
   .contLabel{
-      .vhLH(54);
+      line-height:0.54rem;
       padding:0 1.464vw;
       color:#4F648B;
   }
@@ -139,7 +148,7 @@
     border-radius:1px;
   }
   .controlCont2{
-    .vh(70);
+    height:0.7rem;
     box-shadow:0px 0px 1px 0px rgba(87,113,176,0.15),0px 1px 2px 0px rgba(0,0,0,0.5);
     border-radius:1px;
   }
@@ -148,12 +157,12 @@
     bottom:0;
     right:0;
     position: absolute;
-    .vhLH(52);
+    line-height:0.52rem;
     color:#fff;
     .infoBusy{
       .vhMT(9);
       display:inline-block;
-      .vhLH(32);
+      line-height:0.32rem;
       .vw(96);
       background:#164488;
       font-size:12px;
@@ -167,7 +176,7 @@
     .infoSend{
       .vhMT(9);
       display:inline-block;
-      .vhLH(32);
+      line-height:0.32rem;
       .vw(96);
       background:#1989FA;
       border-radius:2px;
@@ -181,7 +190,7 @@
   .dealimg{
     padding:0 1.464vw;
     color:#4F648B;
-    .vhLH(34);
+    line-height:0.34rem;
     .lines{
       float:left;
       .vwMLR(10)
@@ -189,12 +198,12 @@
     .imgs1,.imgs2{
       float:left;
       .vw(414);
-      .vh(100);
+      height:1rem;
       white-space: nowrap;
       overflow:hidden;
       img{
-        .vw(90);
-        .vh(90);
+        width:0.9rem;
+        height:0.9rem;
         margin:0.22vw;
       }
     }

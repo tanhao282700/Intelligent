@@ -118,17 +118,6 @@ export default {
   computed:{
       crumbs(){
         let res =['代维系统','排班表'];
-        switch(this.activeName){
-            case 'first':
-                res.push('排班表');
-            break;
-            case 'second':
-                res.push('未审核');
-            break;
-            case 'thrid':
-                res.push('已审核');
-            break;
-        }
         return res;
     }
   },
