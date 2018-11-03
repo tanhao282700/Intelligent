@@ -291,6 +291,8 @@
             address : ""
           }
 
+          console.log(config);
+
           that.$http.post('users_manage/users_addmodify',config).then(res=>{
             console.log(res);
             if(res.data.code =='0'){
@@ -316,9 +318,9 @@
           this.formTitle = '修改信息';
           this.isAdd = false;
           this.form.name.key = val.username;
-          this.form.department.key = val.dept_title;
-          this.form.position.key = val.position_title;
-          this.form.role.key = val.role_title;
+          this.form.department.key = val.dept_id;
+          this.form.position.key = val.position_id;
+          this.form.role.key = val.role_id;
           this.curEditUserId = val.user_id;
         },
         deleteAccount(val){

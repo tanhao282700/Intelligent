@@ -8,21 +8,43 @@
       <div class="itemsBox">
         <!--筛选查询-->
         <div class="queryBox">
-          <el-select v-model="" placeholder="选择区域" v-model="queryAreaId" ref="powerSelectEl">
-            <el-option :value="powerValue">
-              <el-tree
-                :data="areaArray"
-                show-checkbox
-                default-expand-all
-                node-key="id"
-                ref="tree"
-                highlight-current
-                :props="defaultProps"
-                @check-change="nodeChange">
-              </el-tree>
+          <el-select placeholder="楼栋范围" v-model="areaData.data1" @change="areaData1Chang">
+            <el-option
+              v-for="item1 in areaData1Array"
+              :key="item1.id"
+              :label="item1.title"
+              :value="item1.id">
             </el-option>
           </el-select>
-          <el-date-picker style="margin:0 10px;"
+
+          <el-select placeholder="楼栋" v-model="areaData.data2" v-show="areaData2Array.length>0" @change="areaData2Chang">  
+            <el-option
+              v-for="item2 in areaData2Array"
+              :key="item2.id"
+              :label="item2.title"
+              :value="item2.id">
+            </el-option>
+          </el-select>
+
+          <el-select placeholder="楼层范围" v-model="areaData.data3" v-show="areaData3Array.length>0" @change="areaData3Chang">
+            <el-option
+              v-for="item3 in areaData3Array"
+              :key="item3.id"
+              :label="item3.title"
+              :value="item3.id">
+            </el-option>
+          </el-select>
+
+          <el-select placeholder="楼层" v-model="areaData.data4" v-show="areaData4Array.length>0">
+            <el-option
+              v-for="item4 in areaData4Array"
+              :key="item4.id"
+              :label="item4.title"
+              :value="item4.id">
+            </el-option>
+          </el-select>
+
+          <el-date-picker
             v-model="formData.date"
             align="right"
             type="month"
@@ -35,13 +57,17 @@
         </div>
         <!--导入-->
         <div>
-          <div class="exBth" @click="takeIn('one')">
+          <div class="exBth" @click="takeIn('one')" v-show="formData.floor_id !=0">
             <span></span>
             <span>批量导入</span>
           </div>
-          <div class="exBth" @click="takeIn('more')">
+          <div class="exBth" @click="takeIn('more')" v-show="formData.floor_id !=0">
             <span></span>
             <span>单个录入</span>
+          </div>
+          <div class="exBth" @click="takeIn('more')" >
+            <span></span>
+            <span>模板下载</span>
           </div>
         </div>
       </div>
@@ -143,8 +169,8 @@
 
 
 
-    <Dialog wid = "598" hei = "536" style="display: flex;flex-direction: column" ref = "Historydialog" :tit = "dialogTit">
-      <div class="showBox2 historyBox" style="height:520px;padding-left:20px;">
+    <Dialog wid = "598" hei = "536" style="display: flex;flex-direction: column" ref = "Historydialog" :tit = "dialogTit" class="metersHistoryDialogBox">
+      <div class="showBox2 historyBox" style="padding: .2rem 0 0 .2rem;">
         <div>
           <div class="formGroup">
             <div class="name">区域<i></i></div>
@@ -236,7 +262,7 @@
         </div>
       </div>
       <div class="historyBtn">
-        <span>取消</span>
+        <span @click="cancleImport">取消</span>
         <span>确定</span>
       </div>
     </Dialog>
@@ -250,6 +276,16 @@
   name:'History',
     data(){
       return{
+        areaData1Array:[],
+        areaData2Array:[],
+        areaData3Array:[],
+        areaData4Array:[],
+        areaData:{
+          data1:"",
+          data2:"",
+          data3:"",
+          data4:""
+        },
         powerValue:[],
         defaultProps: {
           children: 'child',
@@ -281,14 +317,16 @@
         curPageData:[],
         formData:{
           date:'',
-          project_id:1,
-          floor_id:1,
+          project_id: "",
+          floor_id: 0,
           sys_menu_id:0,
           page_index:1,   //当前页数
           one_page_num:20,  //显示条数
           total:0,     //总条数
           pageCount:0    //总页数
-        }
+        },
+        nodeIsChange:false,
+        preKeysArray:[]
       }
     },
     components:{
@@ -298,30 +336,72 @@
 
     },
     created(){
-      /*this.formData.sys_menu_id = this.$store.state.sysList[2].sys_menu_id
-      this.formData.project_id = this.$store.state.projectId*/
+      this.formData.sys_menu_id = this.$store.state.sysList[2].sys_menu_id;
+      this.formData.project_id = this.$store.state.projectId;
       this.initData()
     },
     mounted(){
 
     },
     methods:{
-      nodeChange(){
-        let nodes = this.$refs.tree.getCheckedNodes(false,true);
-        console.log(nodes)
+      areaData1Chang(id){
+        let that = this;
+        that.areaData2Array = that.areaData3Array = [];
+        that.areaData.data2 = "";
+
+          let datas = that.areaData1Array;
+        for(var i=0;i<datas.length;i++){
+          var temtp = datas[i];
+          if(temtp.id == id){
+            that.areaData2Array = temtp.child;
+          }
+        }
+      },
+      areaData2Chang(id){
+        let that = this;
+        that.areaData3Array = [];
+        that.areaData.data3 = "";
+
+        let datas = that.areaData2Array;
+        for(var i=0;i<datas.length;i++){
+          var temtp = datas[i];
+          if(temtp.id == id){
+            that.areaData3Array = temtp.child;
+          }
+        }
+      },
+      areaData3Chang(id){
+        let that = this;
+        that.areaData4Array = [];
+        that.areaData.data4 = "";
+
+        console.log(id);
+        let datas = that.areaData3Array;
+        for(var i=0;i<datas.length;i++){
+          var temtp = datas[i];
+          console.log(temtp);
+          if(temtp.id == id){
+            that.areaData4Array = temtp.child;
+          }
+        }
       },
       queryClick(){
         this.loading = true
           this.initData()
       },
       initData(){
-        this.$http.post('/hotel_energy/history_record',this.formData).then((res)=>{
+        let that = this;
+        let config = that.formData;
+        console.log(config);
+
+        this.$http.post('/hotel_energy/history_record',config).then((res)=>{
+          console.log(res);
           if(res.data.code==0){
-            this.curPageData = res.data.data.history_record.data
-            this.formData.total = res.data.data.history_record.total_record_num
-            this.formData.pageCount = res.data.data.history_record.total_page_num
+            that.curPageData = res.data.data.history_record.data
+            that.formData.total = res.data.data.history_record.total_record_num
+            that.formData.pageCount = res.data.data.history_record.total_page_num
             /*this.areaArray = res.data.data.history_record.area_level*/
-            this.areaArray = [
+            that.areaData1Array = [
               {
                 "child": [
                   {
@@ -330,9 +410,9 @@
                         "child": [
                           {
                             "child": [],
-                            "id": 51,
+                            "id": 512,
                             "parent_id": 44,
-                            "title": "06楼"
+                            "title": "0666楼"
                           }
                         ],
                         "id": 44,
@@ -405,8 +485,9 @@
                 "parent_id": 0,
                 "title": "21-30栋"
               }
-            ]
-            this.loading = false
+            ];
+
+            that.loading = false
           }else{
 
           }
@@ -436,10 +517,13 @@
           }else{
               this.dialogTit = '批量导入'
           }
-          this.$refs.Historydialog.show()
+          this.$refs.Historydialog.show();
       },
       revice(data){
           console.log(data)
+      },
+      cancleImport(){
+        this.$refs.Historydialog.hide();
       }
     }
   }
@@ -447,7 +531,6 @@
 <style>
   .historyBtn{
     width:100%;
-    height:50px;
     position:absolute;
     right:0;
     bottom:0;
@@ -455,6 +538,7 @@
     flex-direction: row;
     align-items: flex-start;
     justify-content: flex-end;
+    padding-bottom: .21rem;
   }
   .historyBtn span{
     display: inline-block;
@@ -479,14 +563,14 @@
   }
   .historyBox .formGroup{
     width:100%;
-    height:34px;
-    margin-top:20px;
+    height:.32rem;
+    margin-bottom: .16rem;
     display: flex;
   }
   .historyBox .formGroup .name{
-    width:0.66rem;
-    text-align: justify;
-    line-height: 34px;
+    width:0.42rem;
+    text-align: left;
+    line-height: .32rem;
     color:#324667;
     font-size:0.14rem;
   }
@@ -495,7 +579,7 @@
     width:100%;
   }
   .historyBox .formGroup .inpArea{
-    margin-left:0.18rem;
+    margin-left:0.3rem;
     width:200px;
     height:100%;
   }
@@ -503,8 +587,8 @@
     height:34px!important;
   }
   .historyBox .formGroup .inpArea .el-input__inner{
-    height:34px!important;
-    width:200px!important;
+    height: .32rem!important;
+    width: 2rem!important;
   }
   .history .el-table th>.cell{
     font-size:0.12rem!important;
@@ -513,12 +597,12 @@
     font-size:0.12rem!important;
   }
   .history .titBox{
-    height:50px!important;
-    line-height: 50px!important;
+    height:.5rem!important;
+    line-height: .5rem!important;
   }
   .history .modalBoxIn{
-    width:560px!important;
-    height:660px!important;
+    width:5.47rem!important;
+    height:6.02rem!important;
   }
 </style>
 <style lang="less" rel="stylesheet/less" scoped>
@@ -531,14 +615,22 @@
     width:100%;
     height:100%;
     .queryBox{
-      height:36px;
+      height: .32rem;
+    }
+    .queryBox>div{
+      margin-right: .1rem;
     }
     .queryData{
-      height:36px!important;
+      height: .32rem!important;
+      width: .92rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
     }
     .exBth{
       width:1rem;
-      height:36px;
+      height:.32rem;
       background:#3a84ed;
       color:white;
       border-radius:2px;
@@ -561,12 +653,18 @@
         margin-top:2px;
       }
     }
+    .exBth:last-child{
+      span:first-child{
+        background:url(../../../assets/img/Energy/exin.png);
+        background-size:100% 100%;
+      }
+    }
   }
 </style>
 <style>
   .history .queryBox .el-input__inner{
-    width:120px!important;
-    height:36px!important;
+    width: 1.2rem!important;
+    height: .32rem!important;
     color:white;
   }
   .history .el-button{
@@ -578,5 +676,16 @@
   }
   .history .paginationBox .curPageBox{
     color:white!important;
+  }
+  .metersHistoryDialogBox>.modalBg,.metersHistoryDialogBox{
+    height: 53.3vw!important;
+    min-height: 728px;
+  }
+  .metersHistoryDialogBox.modalBox .modalBoxIn .colseBoxs{
+    right: -.1rem;
+    top:-.1rem;
+  }
+  .metersHistoryDialogBox.modalBox .modalBoxIn{
+    overflow: visible!important;
   }
 </style>

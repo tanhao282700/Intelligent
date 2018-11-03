@@ -147,9 +147,9 @@
           <div class="viewItemContent">
             <div class="energyArea3Item">
               <div class="head">
-                <div class="type1">谷时用电</div>
-                <div class="type2">峰时用电</div>
-                <div class="type3">平时用电</div>
+                <div class="type1">谷时费用</div>
+                <div class="type2">峰时费用</div>
+                <div class="type3">平时费用</div>
               </div>
               <div class="content">
                 <div id="energyArea3Chart1"></div>
@@ -158,9 +158,9 @@
             </div>
             <div class="energyArea3Item">
               <div class="head">
-                <div class="type1">谷时用电</div>
-                <div class="type2">峰时用电</div>
-                <div class="type3">平时用电</div>
+                <div class="type1">谷时费用</div>
+                <div class="type2">峰时费用</div>
+                <div class="type3">平时费用</div>
               </div>
               <div class="content">
                 <div id="energyArea3Chart3"></div>
@@ -418,16 +418,16 @@
               center: ['50%', '50%'],
               color: ['#2DF0E0','#FFA414', '#316EFF' ],
               data:[
-                {value:data.feng, name:'谷时用电'},
-                {value:data.gu, name:'峰时用电'},
-                {value:data.ping, name:'平时用电'}
+                {value:data.gu, name:'谷时费用'},
+                {value:data.feng, name:'峰时费用'},
+                {value:data.ping, name:'平时费用'}
               ],
               roseType: 'radius',
               selectedMode: 'single',
               label: {
                 normal: {
                   position: 'outside',
-                  formatter:'{c}度'
+                  formatter:'{c}元'
                 }
               },
               labelLine: {
@@ -476,9 +476,9 @@
               center: ['50%', '50%'],
               color: ['#2DF0E0','#FFA414', '#316EFF' ],
               data:[
-                {value:data.feng, name:'谷时用电'},
-                {value:data.gu, name:'峰时用电'},
-                {value:data.ping, name:'平时用电'}
+                {value:data.gu, name:'谷时费用'},
+                {value:data.feng, name:'峰时费用'},
+                {value:data.ping, name:'平时费用'}
               ],
               roseType: 'radius',
               selectedMode: 'single',
@@ -538,16 +538,16 @@
               center: ['50%', '50%'],
               color: ['#2DF0E0','#FFA414', '#316EFF' ],
               data:[
-                {value:data.feng, name:'谷时用电'},
-                {value:data.gu, name:'峰时用电'},
-                {value:data.ping, name:'平时用电'}
+                {value:data.gu, name:'谷时费用'},
+                {value:data.feng, name:'峰时费用'},
+                {value:data.ping, name:'平时费用'}
               ],
               roseType: 'radius',
               selectedMode: 'single',
               label: {
                 normal: {
                   position: 'outside',
-                  formatter:'{c}度'
+                  formatter:'{c}元'
                 }
               },
               labelLine: {
@@ -596,9 +596,9 @@
               center: ['50%', '50%'],
               color: ['#2DF0E0','#FFA414', '#316EFF' ],
               data:[
-                {value:data.feng, name:'谷时用电'},
-                {value:data.gu, name:'峰时用电'},
-                {value:data.ping, name:'平时用电'}
+                {value:data.gu, name:'谷时费用'},
+                {value:data.feng, name:'峰时费用'},
+                {value:data.ping, name:'平时费用'}
               ],
               roseType: 'radius',
               selectedMode: 'single',
@@ -1035,6 +1035,7 @@
         $(".allViewArea2 .myChartBox").eq(index).show().siblings().hide();
       },
       calcArea3Data(data){
+        console.log(data);
         let that = this;
         var elecPowerData = [];
         for(var i=0;i<2;i++){
