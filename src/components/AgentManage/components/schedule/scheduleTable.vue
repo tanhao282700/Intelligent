@@ -13,7 +13,7 @@
                 @deletes = 'deletes'
                 @adds    = 'adds'
             />
-            <span class="currMonth" v-show="backOrCurr">7月</span>
+            <span class="currMonth" v-show="backOrCurr">{{month}}月</span>
             <span class="backCurrMonth" v-show="!backOrCurr" @click="backCurr">
                 <img src="../../../../assets/img/AgentManage/return.png" width="1.17vw">
             </span>
@@ -91,8 +91,8 @@
                                 </div>
 
                                 </li>
-                                <li>
-                                    <div class="addBtns" @click="addPerson()">
+                                <li >
+                                    <div class="addBtns" @click="addPerson()" v-show="isShowBtns=='yes'?true:false">
                                         <i class="el-icon-circle-plus"></i>
                                         <span>新增人员</span>
                                     </div>
@@ -112,11 +112,11 @@
             </div>
         </div>
         <div class="tableBot" v-show="isShowBtns=='yes'?true:false">
-            <div class="btnBai1" v-show="active=='exams' || active=='examed' || active=='change'" @click="botClick('change')">
+            <div class="btnBai1" v-show="active=='change'" @click="botClick('change')">
                 修改排班表
             </div>
-            <div class="btnBai1 btnBai2" v-show="active=='examed'">已审核</div>
-            <div class="btnBai1" v-show="active=='saveing'" @click="botClick('save')">
+<!--             <div class="btnBai1 btnBai2" v-show="active=='examed'">已审核</div>
+ -->            <div class="btnBai1" v-show="active=='saveing'" @click="botClick('save')">
                 保存
             </div>
         </div>
@@ -147,13 +147,15 @@ export default {
     return {
         loading:false,
         placeholder:'选择',
-        value7:'2018-7',
-        backOrCurr:false,//右上角图标显示：返回当前月还是显示当前月
+        value7:utils.time((new Date())/1000,9),
+        backOrCurr:true,//右上角图标显示：返回当前月还是显示当前月
         cant:false,
-        active:'exams',
+        active:'change',
+        originNum:0,
         isShow:false,
         ischange:[-1,-1],
         tableT:[],
+        originPaiBanData:[],
         wOptions:[],
         pOption:[],
         dataLlists:[
@@ -166,24 +168,68 @@ export default {
             top:0,
             left:0
         },
-        over:[-5,-5]
+        over:[-5,-5],
+        month:utils.time((new Date())/1000,9).split('-')[1]
     }
   },
   methods:{
-      leaveOver(){
-          this.over = [];
-          this.over.push(-5);
-          this.over.push(-5);
-      },
-      backCurr(){//点击右上角返回当月按钮
-          this.value7 = utils.time((new Date())/1000,9);
-      },
-      changeOver(i,i0){
-          this.over = [];
-          this.over.push(i);
-          this.over.push(i0);
-      },
-    deletess(i){    //这儿需要弹框
+    leaveOver(){
+      this.over = [];
+      this.over.push(-5);
+      this.over.push(-5);
+    },
+    //针对value7的操作开始**************开始***********
+    backCurr(){//点击右上角返回当月按钮
+      this.value7 = utils.time((new Date())/1000,9);
+      this.backOrCurr = utils.time((new Date())/1000,9).split('-')[1]
+      this.$emit('getPaibanData',this.value7);
+    },
+    changes(val){
+        this.value7 = val;
+        if(this.value7.split('-')[1]!=utils.time((new Date())/1000,9)){
+            this.backOrCurr = false;
+        }
+        this.$emit('getPaibanData',val)
+    },
+    deletes(){//月份减少
+        let attrs = this.value7.split('-');
+
+        if(attrs[1]==1){
+            attrs[1] = 12;
+            attrs[0] = Number(attrs[0])-1;
+        }else{
+            attrs[1] = Number(attrs[1])-1;
+        }
+        this.value7 = attrs.join('-');
+        if (utils.time((new Date())/1000,9)!=this.value7) {
+            this.backOrCurr = false;
+        };
+        this.$emit('getPaibanData',this.value7);
+    },
+    adds(){
+        if(this.cant){
+            return;
+        }
+        let attrs = this.value7.split('-');
+        if(attrs[1]==12){
+            attrs[1] = 1;
+            attrs[0] = Number(attrs[0])+1;
+        }else{
+            attrs[1] = Number(attrs[1])+1;
+        }
+        this.value7 = attrs.join('-');
+        if (utils.time((new Date())/1000,9)!=this.value7) {
+            this.backOrCurr = false;
+        };
+        this.$emit('getPaibanData',this.value7);
+    },
+    //针对value7的操作**********结束************
+    changeOver(i,i0){
+      this.over = [];
+      this.over.push(i);
+      this.over.push(i0);
+    },
+    deletess(i){    //删除某人的排班
         this.dataLlists.splice(i,1);
     },
     tkChoose(val){ //弹框选择
@@ -218,6 +264,7 @@ export default {
   //日期组件相关
     change(val,i){  //修改人名带出职务
         this.dataLlists[i].pid = val;
+        this.dataLlists[i].user_id = val;
         this.dataLlists[i].name = this.getItem(val).label;
         this.dataLlists[i].description = this.getItem(val).duty;
         this.placeholder =this.getItem(val).label;
@@ -232,33 +279,8 @@ export default {
         }
         return res;
     },
-    changes(val){
-        this.value7 = val;
-    },
-    deletes(){
-        let attrs = this.value7.split('-');
-        if(attrs[1]==1){
-            attrs[1] = 12;
-            attrs[0] = Number(attrs[0])-1;
-        }else{
-            attrs[1] = Number(attrs[1])-1;
-        }
-        this.value7 = attrs.join('-');
-    },
-    adds(){
-        if(this.cant){
-            return;
-        }
-        let attrs = this.value7.split('-');
-        if(attrs[1]==12){
-            attrs[1] = 1;
-            attrs[0] = Number(attrs[0])+1;
-        }else{
-            attrs[1] = Number(attrs[1])+1;
-        }
-        this.value7 = attrs.join('-');
-    },
-      botClick(type){ //底部按钮操作
+
+    botClick(type){ //底部按钮操作
         let _this = this;
         switch(type){
             case 'change':
@@ -275,27 +297,40 @@ export default {
                 this.active = 'change'
                 break;
         }
-      },
-      saveAddPaiBan(){
-        this.$http.post('/pc_ims/set_work',{content:{
-            "data":[{id:0,woworklist_id:1,user_id:'1',workdate:'2018-07-25'},
-            {id:0,woworklist_id:2,user_id:'1',workdate:'2018-07-26'}],
-
-        }}).then(function(res){
-            console.log(res)
-        });
-      },
-      addPerson(){ //新增人员
+    },
+    saveAddPaiBan(){
+        let param = [];
+        $.each(this.dataLlists,(n,k)=>{
+            $.each(this.originPaiBanData,(n1,k1)=>{
+                if(k1.user_id==k.user_id){
+                    $.each(k.worklist,(n2,k2)=>{
+                        $.each(k1.worklist,(n3,k3)=>{
+                            if(k2.woworklist_id==k3.woworklist_id && k2.title!=k3.title && k2.time==k3.time){
+                                param.push({id:k2.id,woworklist_id:k2.woworklist_id,user_id:k.user_id,workdate:k2.time});
+                            }
+                        })
+                    })
+                }
+            })
+        })
+        console.log(param);
+        param = {content:{
+            "data":param
+        }}
+        this.$emit('saveAddPaiBan',param);
+    },
+    addPerson(){ //新增人员
+        this.originPaiBanData = this.dataLlists;
         if(this.pOptions.length==0){
             return this.$message('没有新员工了！');
         }
-        console.log(this.pOptions);
         if(this.dataLlists[this.dataLlists.length-1].pid==0){ //阻止连续新增操作
             return this.$message('请选择员工！');
         }
         let addPersonBase={
-            id:this.dataLlists.length,
+            id:0,
             pid:0,
+            user_id:'',
             isNew:true,
             name:'',
             duty:'',
@@ -307,8 +342,12 @@ export default {
         this.placeholder = '选择';
         this.dataLlists.push(addPersonBase);
         this.active='saveing'
-      },
-      ckMonNum(year,mon){  //检查年月天数
+        let _this = this;
+        $.each(_this.showLists,function(n,k){
+            _this.showLists[n].allow = true;
+        })
+    },
+    ckMonNum(year,mon){  //检查年月天数
         let res = 0;
         if((year%4==0) && mon==2){
             res =29;
@@ -320,8 +359,8 @@ export default {
             res =31;
         }
          return res;
-      },
-      ckWeek(id){
+    },
+    ckWeek(id){
           let res ='';
           switch(id){
               case 0:
@@ -347,194 +386,185 @@ export default {
               break;
             }
             return res;
-        },
-        getWOptions(){
-            let _this = this;
-            this.$http.post('/pc_ims/work_type')
-            .then(function(res){
-                let arr = [];
-                if(res.data.code==0){
-                    let data = res.data.data;
-                    $.each(data,function(n,k){
-                        data[n].value = data[n].id;
-                        data[n].label = data[n].title;
-                        if(data[n].label!='休'){
-                            arr.push({label:data[n].label+'班',timearea:data[n].starttime+'~'+data[n].endtime});
-                        }
-                    })
-                    _this.tableT = arr;
-                    _this.wOptions =  data;
-                }else{
-                  _this.$message({
-                    type:'error',
-                    message:res.data.msg
-                  })
-               }
-            });
-        },
-        getPaiBanData(){//获取排班数据
-            let _this = this;
-            this.$http.post('/pc_ims/admin/work_list',{year:'2018',month:'07'})
-            .then(function (res) {
-                if(res.data.code==0){
-                    let data = res.data.data;
-                    $.each(data,function(n,k){
-                        data[n].allow = false;
-                    })
-                    _this.dataLlists = res.data.data;
-                }else{
-                  _this.$message({
-                    type:'error',
-                    message:res.data.msg
-                  })
-               }
-            });
-        },
-        getPaiBanPerson(){//获取排班人员
-            let _this = this;
-            this.$http.post('/pc_ims/get_user')
-            .then(function(res){
-                //console.log(res);
-                if(res.data.code==0){
-                    let data = res.data.data;
-                    $.each(data,function(n,k){
-                        data[n].value = data[n].id;
-                        data[n].label = data[n].truename;
-                        data[n].duty = data[n].title;
-                    })
-                    _this.pOption = res.data.data;
-                }else{
-                  _this.$message({
-                    type:'error',
-                    message:res.data.msg
-                  })
-               }
-            })
-        },
-        deletePaiBan(id){
-            let _this = this;
-            this.$http.post('/pc_ims/admin/del_work',{
-                user_id:id,
-                year:'2018',
-                month:'07',
-            }).then(function(res){
-                if(res.data.code==0){
-                    _this.$message({
-                        type:'success',
-                        message:res.data.msg
-                    })
-                }else{
-                    _this.$message({
-                        type:'error',
-                        message:res.data.msg+'请查看是否有换班记录。'
-                    })
-                }
-            })
-        }
-      },
-      computed:{
-        year(){
-           let year =  Number(this.value7.split('-')[0]);
-           return year;
-        },
-        mon(){
-           let mon =  Number(this.value7.split('-')[1]);
-           return mon;
-        },
-        days(){ //对应日期（天数）
-            let attrs = [];
-            for(let i =0;i<31;i++){
-                let str = '';
-                if(i<this.ckMonNum(this.year,this.mon)){
-                    str = i+1;
-                }
-                attrs.push(str);
-            }
-            return attrs;
-        },
-        week(){ //天数对应周
-            let attrs = [];
-            for(let i =0;i<31;i++){
-                let str = '';
-                if(this.days[i]==''){
-
-                }else{
-                  let  date = new Date(this.year, parseInt(this.mon - 1), i+1);
-                  str = this.ckWeek(date.getDay())
-                }
-                attrs.push(str);
-            }
-            return attrs;
-        },
-        showLists(){ //数据列表
-            let res = [];
-            let datas = this.dataLlists;
-            let lens = datas.length;
-            for(let i=0;i<lens;i++){
-                let objs= datas[i];
-                this.dataLlists.splice(i,1,objs);
-                let attrs =Array.apply(null, Array(this.ckMonNum(this.year,this.mon))).map((item,index) => {
-                    let obj = {
-                        time:this.year+'-'+this.mon+'-'+(1+index),
-                        type:0,
-                        title:'休'
-                        };
-                   return obj;
-                });
-                let lens2 = datas[i].worklist.length;
-
-                for(let j=0;j<lens2;j++){
-                    let day = datas[i].worklist[j].time.split('-')[2];
-                    attrs[Number(day)-1] =datas[i].worklist[j];
-                }
-                objs.worklist = attrs;
-                res.push(objs);
-            }
-            // console.log(res)
-            return res;
-        },
-        total(){ //每天上班总人数
-            let attrs =[];
-            let lens = this.ckMonNum(this.year,this.mon);
-            for(let i=0;i<31;i++){
-                let str = 0,str2='';
-                if(i<lens){
-                    let lens2 = this.showLists.length;
-                    for(let j=0;j<lens2;j++){
-                        if(this.showLists[j].worklist[i].type!=0){
-                             str += 1;
-                        }
-                    }
-                     attrs.push(str);
-                }else{
-                     attrs.push(str2);
-                }
-            }
-            return attrs;
-        },
-        pOptions(){
-            let attrs = [];
-            let lens = this.pOption.length;
-            for(let i=0;i<lens;i++){
-                let lens2 = this.dataLlists.length;
-                let bool = true;
-                for(let j=0;j<lens2;j++){
-                    if(this.pOption[i].value==this.dataLlists[j].pid){
-                        bool = false;
-                    }
-                }
-                if(bool){
-                    attrs.push(this.pOption[i]);
-                }
-            }
-            return attrs;
-        }
     },
-  mounted() {
-    this.getPaiBanData();
+    getWOptions(){
+        let _this = this;
+        this.$http.post('/pc_ims/work_type')
+        .then(function(res){
+            let arr = [];
+            if(res.data.code==0){
+                let data = res.data.data;
+                $.each(data,function(n,k){
+                    data[n].value = data[n].id;
+                    data[n].label = data[n].title;
+                    if(data[n].label!='休'){
+                        arr.push({label:data[n].label+'班',timearea:data[n].starttime+'~'+data[n].endtime});
+                    }
+                })
+                _this.tableT = arr;
+                _this.wOptions =  data;
+            }else{
+              _this.$message({
+                type:'error',
+                message:res.data.msg
+              })
+           }
+        });
+    },
+        
+    getPaiBanPerson(){//获取排班人员
+        let _this = this;
+        this.$http.post('/pc_ims/get_user')
+        .then(function(res){
+            //console.log(res);
+            if(res.data.code==0){
+                let data = res.data.data;
+                $.each(data,function(n,k){
+                    data[n].value = data[n].id;
+                    data[n].label = data[n].truename;
+                    data[n].duty = data[n].title;
+                })
+                _this.pOption = res.data.data;
+            }else{
+              _this.$message({
+                type:'error',
+                message:res.data.msg
+              })
+           }
+        })
+    },
+    deletePaiBan(id){
+        let _this = this;
+        this.$http.post('/pc_ims/admin/del_work',{
+            user_id:id,
+            year:'2018',
+            month:'07',
+        }).then(function(res){
+            if(res.data.code==0){
+                _this.$message({
+                    type:'success',
+                    message:res.data.msg
+                })
+            }else{
+                _this.$message({
+                    type:'error',
+                    message:res.data.msg+'请查看是否有换班记录。'
+                })
+            }
+        })
+    }
+},
+  computed:{
+    year(){
+       let year =  Number(this.value7.split('-')[0]);
+       return year;
+    },
+    mon(){
+       let mon =  Number(this.value7.split('-')[1]);
+       return mon;
+    },
+    days(){ //对应日期（天数）
+        let attrs = [];
+        for(let i =0;i<31;i++){
+            let str = '';
+            if(i<this.ckMonNum(this.year,this.mon)){
+                str = i+1;
+            }
+            attrs.push(str);
+        }
+        return attrs;
+    },
+    week(){ //天数对应周
+        let attrs = [];
+        for(let i =0;i<31;i++){
+            let str = '';
+            if(this.days[i]==''){
+
+            }else{
+              let  date = new Date(this.year, parseInt(this.mon - 1), i+1);
+              str = this.ckWeek(date.getDay())
+            }
+            attrs.push(str);
+        }
+        return attrs;
+    },
+    showLists(){ //数据列表
+        let res = [];
+        let datas = this.dataLlists;
+        let lens = datas.length;
+        for(let i=0;i<lens;i++){
+            let objs= datas[i];
+            this.dataLlists.splice(i,1,objs);
+            let attrs =Array.apply(null, Array(this.ckMonNum(this.year,this.mon))).map((item,index) => {
+                let obj = {
+                    time:this.year+'-'+this.mon+'-'+(1+index),
+                    type:0,
+                    title:'休'
+                    };
+               return obj;
+            });
+            let lens2 = datas[i].worklist.length;
+
+            for(let j=0;j<lens2;j++){
+                let day = datas[i].worklist[j].time.split('-')[2];
+                attrs[Number(day)-1] =datas[i].worklist[j];
+            }
+            objs.worklist = attrs;
+            res.push(objs);
+        }
+        // console.log(res)
+        return res;
+    },
+    total(){ //每天上班总人数
+        let attrs =[];
+        let lens = this.ckMonNum(this.year,this.mon);
+        for(let i=0;i<31;i++){
+            let str = 0,str2='';
+            if(i<lens){
+                let lens2 = this.showLists.length;
+                for(let j=0;j<lens2;j++){
+                    if(this.showLists[j].worklist[i].type!=0){
+                         str += 1;
+                    }
+                }
+                 attrs.push(str);
+            }else{
+                 attrs.push(str2);
+            }
+        }
+        return attrs;
+    },
+    pOptions(){
+        let attrs = [];
+        let lens = this.pOption.length;
+        for(let i=0;i<lens;i++){
+            let lens2 = this.dataLlists.length;
+            let bool = true;
+            for(let j=0;j<lens2;j++){
+                if(this.pOption[i].value==this.dataLlists[j].pid){
+                    bool = false;
+                }
+            }
+            if(bool){
+                attrs.push(this.pOption[i]);
+            }
+        }
+        return attrs;
+    }
+},
+watch:{
+    data:{
+       handler(newValue, oldValue) {
+　　　　　　this.dataLlists = newValue;
+　　　　},
+　　　　deep: true
+    }
+},
+mounted() {
+    this.dataLlists = this.data;
     this.getWOptions();
     this.getPaiBanPerson();
-  }
+    }
 }
 </script>
 
@@ -702,6 +732,7 @@ export default {
                         float: left;
                         height: 0.35rem;
                         flex:1;
+                        border-bottom: 0.01rem solid rgba(181, 215, 255, 0.25);
                         .item{
                             border: 0.01rem transparent solid;
                         }

@@ -403,7 +403,7 @@ export default {
           job_id:id
         }).then(res=>{
           if(res.data.code==0){
-            this.infoItem = res.data.data;
+            this.infoItem = res.data.data.info;
             this.infoItem.desc = [
             {label:'类型',value:this.infoItem.sys_name},
             {label:'设备类型',value:this.infoItem.device_name},
@@ -424,6 +424,7 @@ export default {
             }else{
               this.infoItem.sendInfos = []
             }
+            this.infoItem.job_list = this.infoItem.job_list;
           }else{
             this.$message({
               type:'error',

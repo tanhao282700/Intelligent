@@ -61,7 +61,7 @@
                 />
               </div>
             </div>
-            <Dialog wid="1326" hei="640" ref="dialog">
+            <Dialog wid="1200" hei="640" ref="dialog">
               <WorkInfo @tableInfos2Show="tableInfos2Show" :table="table3" :query="query2"/>
             </Dialog> 
             <Dialog wid="910" hei="600" ref="tableInfos2">

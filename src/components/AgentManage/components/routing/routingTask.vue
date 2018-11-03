@@ -7,14 +7,14 @@
         <div class="routingTime" >
           <div class="topBox" v-for="(item,index) in data.job_list" :style="{left:1.8+(index*160*100/1366)+'vw'}">
             <div>
-              <span>{{item.info}}</span></br>
-              {{item.addtime}}
+              <span>{{item.label}}</span></br>
+              {{item.time}}
             </div>
             <i class="el-icon-arrow-down"></i>
           </div>
         </div>    
         <div class="progressDiv">
-            <div v-for="(item,index) in data.steps">
+            <div v-for="(item,index) in data.job_list">
               <img src="../../../../assets/img/AgentManage/point@2x.png" class="item1" :style="{left:6.73+(index*160*100/1366)+'vw'}">
               <img src="../../../../assets/img/AgentManage/point2@2x.png" class="item2" :style="{left:12.59+(index*160*100/1366)+'vw'}">
             </div>
@@ -23,7 +23,7 @@
           <div class="bottomBox" v-for="(item,index) in data.job_list" :style="{left:9.31+(index*160*100/1366)+'vw'}">
             <i class="el-icon-arrow-up"></i>
             <div>
-              {{item.areatime}}
+              {{item.interval}}
             </div>
           </div>
         </div>    

@@ -10,20 +10,43 @@ export default {
   props:['data'],
   data () {
     return {
-
+        newData:{}
     }
   },
   methods:{
-      drawLine(){
+      drawLine(data){
         let _this = this;
-        let data = this.data;
         let myChart = this.$echarts.init(document.getElementById(data.id));
-        var dataAxis =this.data.xData;
+        var dataAxis =data.xData;
         var yMax = 500;
         var dataShadow = [];
-
-        for (var i = 0; i < data.length; i++) {
+        var colors = [['#00C1FF','#008EFE','#008EFE','#00C1FF'],['#FF9A6A','#FE5E83','#FE5E83','#FF9A6A'],['#FEE7BB','#FFD08E','#FFD08E','#FEE7BB']]
+        let barData = [];
+        for (var i = 0; i < dataAxis.length; i++) {
             dataShadow.push(yMax);
+            barData.push({
+                    value:_this.data.data[i],
+                    itemStyle: {
+                        normal: {
+                            color: new echarts.graphic.LinearGradient(
+                                0, 0, 0, 1,
+                                [
+                                    {offset: 0, color:colors[i][0] },
+                                    {offset: 1, color:colors[i][1] }
+                                ]
+                            )
+                        },
+                        emphasis: {
+                            color: new echarts.graphic.LinearGradient(
+                                0, 0, 0, 1,
+                                [
+                                    {offset: 0, color: colors[i][2]},
+                                    {offset: 1, color: colors[i][3]}
+                                ]
+                            )
+                        }
+                    },
+                });
         }
 
         let option = {
@@ -80,73 +103,7 @@ export default {
                 barGap:'-100%',
                 barCategoryGap:'40%',
                 animation: false,
-                data:[{
-                    value:_this.data.data[0],
-                    itemStyle: {
-                        normal: {
-                            color: new echarts.graphic.LinearGradient(
-                                0, 0, 0, 1,
-                                [
-                                    {offset: 0, color: '#00C1FF'},
-                                    {offset: 1, color: '#008EFE'}
-                                ]
-                            )
-                        },
-                        emphasis: {
-                            color: new echarts.graphic.LinearGradient(
-                                0, 0, 0, 1,
-                                [
-                                    {offset: 0, color: '#008EFE'},
-                                    {offset: 1, color: '#00C1FF'}
-                                ]
-                            )
-                        }
-                    },
-                },{
-                    value:_this.data.data[1],
-                    itemStyle: {
-                        normal: {
-                            color: new echarts.graphic.LinearGradient(
-                                0, 0, 0, 1,
-                                [
-                                    {offset: 0, color: '#FF9A6A'},
-                                    {offset: 1, color: '#FE5E83'}
-                                ]
-                            )
-                        },
-                        emphasis: {
-                            color: new echarts.graphic.LinearGradient(
-                                0, 0, 0, 1,
-                                [
-                                    {offset: 0, color: '#FE5E83'},
-                                    {offset: 1, color: '#FF9A6A'}
-                                ]
-                            )
-                        }
-                    }
-                },{
-                    value:_this.data.data[2],
-                    itemStyle: {
-                        normal: {
-                            color: new echarts.graphic.LinearGradient(
-                                0, 0, 0, 1,
-                                [
-                                    {offset: 0, color: '#FEE7BB'},
-                                    {offset: 1, color: '#FFD08E'}
-                                ]
-                            )
-                        },
-                        emphasis: {
-                            color: new echarts.graphic.LinearGradient(
-                                0, 0, 0, 1,
-                                [
-                                    {offset: 0, color: '#FFD08E'},
-                                    {offset: 1, color: '#FEE7BB'}
-                                ]
-                            )
-                        }
-                    }
-                }]
+                data:barData
             }]
         };
 
@@ -162,8 +119,16 @@ export default {
         myChart.setOption(option);
     }
   },
+  watch:{
+    data:{
+        handler(newValue, oldValue) {
+　　　　　   this.drawLine(newValue)
+    　　},
+    　　deep: true
+    }
+  },
   mounted() {
-       this.drawLine();
+       this.drawLine(this.data);
   },
 }
 </script>

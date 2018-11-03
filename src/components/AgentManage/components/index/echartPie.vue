@@ -9,11 +9,14 @@ export default {
   props:['data'],
   data () {
     return {
-        
+        newData:{
+            data:[],
+            total:''
+        }
     }
   },
   methods:{
-    drawLine(){
+    drawLine(data){
             let _this = this;
             var canvas = document.getElementById(this.data.id),  //获取canvas元素
             context = canvas.getContext('2d'),  //获取画图环境，指明为2d
@@ -25,8 +28,10 @@ export default {
 
         //绘制5像素宽的运动外圈
         function blueCircle(data){
+            if(data.length == 0){
+                return;
+            }
             let totaln = data[0]+data[1]+data[2]+data[3]
-            console.log(totaln);
             let n = data[0],n1=data[1],n2 =data[2],n3 = data[3];
             context.save();
             context.translate(centerX,centerY);
@@ -77,7 +82,6 @@ export default {
                 context.closePath();
             }
             if(n1==='' && n2===''){
-                alert(1)
                 context.translate(-Math.round(Math.cos((n*3.6+90)*Math.PI/180 )* 100),-Math.round(Math.sin((n*3.6+90)*Math.PI/180 )* 100));
                 context.strokeStyle = "#fa6074";
                 context.beginPath(); //路径开始
@@ -157,24 +161,23 @@ export default {
             //window.requestAnimationFrame(drawFrame);
             context.clearRect(0, 0, canvas.width, canvas.height);
             whiteCircle();
-            let num = _this.data.total*100
+            let num = data.total*100
             text(num);
-            console.log(_this.data.data)
-            blueCircle(_this.data.data);
+            blueCircle(data.data);
         }());
   
     }
   },
   watch:{
-    data(val){
-        this.data = val;
+    data:{
+        handler(newValue, oldValue) {
+　　　　　   this.drawLine(newValue)
+    　　},
+    　　deep: true
     }
   },
-  created() {
-
-  },
   mounted() {
-       this.drawLine();
+       this.drawLine(this.data);
   },
 }
 </script>

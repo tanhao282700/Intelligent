@@ -10,7 +10,7 @@
                   <span slot="label" class="tabItems">
                       排班表
                   </span>
-                  <ScheduleTable :isShowBtns="'yes'"/>
+                  <ScheduleTable :isShowBtns="'yes'" :data="paibanList" @getPaibanData="getPaiBanData" @saveAddPaiBan='saveAddPaiBan'/>
               </el-tab-pane>
               <el-tab-pane name="second" >
                   <span slot="label" class="tabItems">
@@ -35,9 +35,9 @@
               </el-tab-pane>
           </el-tabs>
           <transition name="fade">
-            <div class="sceBtn btnBai1" v-show="activeName=='first'" @click="exportTable">
+            <div class="sceBtn btnBai1" v-show="activeName=='first'" @click="exportTableList">
               <img src="../../assets/img/AgentManage/export.png">
-              <span>导出排班表</span>              
+              <span>导出排班表</span>  
             </div>
           </transition>
         <Dialog ref="dialog" wid="910" hei="536" class="dialog">
@@ -113,7 +113,7 @@ import ScheduleTable from './components/schedule/scheduleTable';
 export default {
   components:{
     'Examine':examine,
-    'ScheduleTable':ScheduleTable
+    'ScheduleTable':ScheduleTable,
   },
   computed:{
       crumbs(){
@@ -127,7 +127,10 @@ export default {
         examData1:[],  //state状态 -1未审核 0审核失败 1审核通过
         examData2:[],
         indexNow:-1,
-        dia:{}
+        dia:{},
+        paibanList:[],
+        exportTable:'',
+        topDate:''
     }
   },
   methods:{
@@ -165,18 +168,12 @@ export default {
         this.dia = item;
         this.$refs.dialog.show();
       },
-      exportTable(){
-        this.$http.get('/pc_ims/down/admin_work_list',{
-          year:'2018',
-          month:'07'
-        }).then(function(res) {
-           console.log(res);
-        })
+      exportTableList(){
+        window.open('https://tesing.china-tillage.com/pc_ims/down/admin_work_list',{year:this.topDate.split('-')[0],month:this.topDate.split('-')[1]});
       },
       getYesData(){//已审核的排班
         this.$http.post('/pc_ims/admin/approve_work').then(res=> {
            if(res.data.code==0){
-              console.log(res.data);
               let data = res.data.data;
               $.each(data,(n,k)=>{
                 if(data[n].now_process==2){
@@ -211,7 +208,35 @@ export default {
               })
            }
         })
-      }
+      },
+      saveAddPaiBan(param){
+        this.$http.post('/pc_ims/set_work',param).then(function(res){
+            console.log(res)
+        });
+      },
+      getPaiBanData(value7){//获取排班数据
+          let _this = this;
+          if(!value7){
+            value7 = utils.time(new Date()/1000,9);
+          }
+          this.topDate = value7;
+          this.$http.post('/pc_ims/admin/work_list',{year:value7.split('-')[0],month:value7.split('-')[1]})
+          .then(function (res) {
+              if(res.data.code==0){
+                  let data = res.data.data;
+                  $.each(data,function(n,k){
+                      data[n].allow = false;
+                  })
+                  _this.paibanList = res.data.data;
+                  console.log(_this.paibanList)
+              }else{
+                _this.$message({
+                  type:'error',
+                  message:res.data.msg
+                })
+             }
+          });
+      },
   },
   created() {
      //配合路由 定位页面
@@ -226,6 +251,7 @@ export default {
   mounted() {
     this.getNoData();
     this.getYesData();
+    this.getPaiBanData();
   },
 }
 </script>
@@ -256,6 +282,12 @@ export default {
       height:0.16rem;
       margin-right:0.05rem;
       vertical-align:middle;
+    }
+    span{
+      color:#fff;
+      &:hover{
+        color:#cdcdcd;
+      }
     }
   }
 }
