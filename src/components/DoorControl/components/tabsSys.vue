@@ -52,7 +52,7 @@
                    @click.stop="doorInfoPanel(item.device_id,item)"
                    :style="{left:item.position_x*1.74 + 'px',top:item.position_y*1.74 + 'px'}"
                 >{{item.device_name.slice(0,1)}}
-                    <pops v-on:doorInfoHide="doorInfoHide"  :info = "onMouseDoor" :infoSta = "infoSta" :controlDoorFun = "controlDoorFun"></pops>
+                    <pops v-on:doorInfoHide="doorInfoHide"  :info = "onMouseDoor" :infoSta = "infoSta" :controlDoorFun = "controlDoorFun" :itemIndex="index" @changeDoorStatus="changeDoorStatus"></pops>
                 </i>
                 
             </div>
@@ -136,6 +136,21 @@
             popHide(){
                 
             },
+            changeDoorStatus(obj){
+                let status = '';
+                console.log(obj);
+                // this.doorClose = Number(this.doorClose) - 1; 
+                // this.doorOpenN = Number(this.doorOpenN) + 1; 
+                this.infoSta = obj.infoSta;
+                if(this.infoSta == "关闭"){
+                    status = "0";
+                }else if(this.infoSta == "开启"){
+                    status = "1";
+                }else if(this.infoSta == "异常"){
+                    status = "2";
+                }
+                this.iList[obj.itemIndex].device_state=status;
+            },
             doorInfoPanel(id,item){
                 this.doorInfoId = id;
                 this.doorInfoShow = true;
@@ -170,7 +185,7 @@
                     that.doorClose = data.data.data.entrance_guard_info.entrance_guard_close_num;
                     that.doorWarning = data.data.data.entrance_guard_info.entrance_guard_anomaly_num;
                     that.doorOpenN = data.data.data.entrance_guard_info.entrance_guard_open_num;
-                    console.log(that.iList);
+                    console.log(data.data.data.entrance_guard_info.entrance_guard_open_num);
                     //获取联动数据
                     that.areaLevel = data.data.data.area_level;
                     // console.log(that.areaLevel);

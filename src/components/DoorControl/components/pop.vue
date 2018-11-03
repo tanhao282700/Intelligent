@@ -16,10 +16,10 @@
 </template>
 <script>
     export default {
-        props:["info","infoSta","controlDoorFun"],
+        props:["info","infoSta","controlDoorFun",'itemIndex'],
         data () {
         	return {
-                
+                inStatu:''
         	}
         },
         mounted(){
@@ -30,7 +30,10 @@
                 this.$emit("doorInfoHide",false);
             },
             openDoorByInt(){
-                console.log("远程开门控制");
+                // alert(1);
+                console.log(this.infoSta)
+                this.inStatu = '开启';
+                this.$emit('changeDoorStatus',{infoSta:this.inStatu,itemIndex:this.itemIndex,numS:1});
             }
            
         }
