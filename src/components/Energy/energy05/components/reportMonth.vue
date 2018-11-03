@@ -6,7 +6,7 @@
                 <el-option label="电" value="1"></el-option>
                 <el-option label="水" value="2"></el-option>
             </el-select>
-            <span class="todaySpan">{{todaySpan}}</span>
+            <!--<span class="todaySpan">{{todaySpan}}</span>-->
 	        <div class="dateBox">
 	            <el-date-picker v-model="releasetime1" type="year" placeholder="年"></el-date-picker>
 	        </div>
@@ -15,7 +15,7 @@
     	</div>
     	<div class="reportTablesBox">
 
-	    	<el-table  :data="tableData3"  :cell-class-name="cell" style="width: 100%" height="400">
+	    	<el-table class="monthTab firstTab"  :data="tableData3"  :cell-class-name="cell" style="width: 100%;" height="50vh"  >
 	    		<el-table-column type="index" label="序号" width="30">
 	    		</el-table-column>
 	    		<el-table-column prop="date" label="名称">
@@ -94,10 +94,30 @@
 				        </el-table-column>
 			        </el-table-column>
 		        </el-table-column>
+          <el-table-column label="房务部">
+            <el-table-column prop="province" label="5-7楼">
+              <el-table-column prop="city" label="用量" :width="columnw">
+              </el-table-column>
+              <el-table-column prop="city" label="费用" :width="columnw">
+              </el-table-column>
+            </el-table-column>
+            <el-table-column prop="city" label="8-10楼">
+              <el-table-column prop="city" label="用量" :width="columnw">
+              </el-table-column>
+              <el-table-column prop="city" label="费用" :width="columnw">
+              </el-table-column>
+            </el-table-column>
+            <el-table-column prop="address" label="中央空调">
+              <el-table-column prop="city" label="用量" :width="columnw">
+              </el-table-column>
+              <el-table-column prop="city" label="费用" :width="columnw">
+              </el-table-column>
+            </el-table-column>
+          </el-table-column>
 	    	</el-table>
 
 
-	    	<el-table :data="tableData" border style="width: 100%" :cell-class-name="cell" :span-method="objectSpanMethod">
+	    	<el-table class="monthTab" :data="tableData" border :cell-class-name="cell" :span-method="objectSpanMethod">
 			    <el-table-column type="index" label="序号" width="30"> </el-table-column>
 			    <el-table-column prop="dateLab" label="月份" :width="columnw"> </el-table-column>
 			    <el-table-column prop="date" label="月份" :width="columnw"> </el-table-column>
@@ -122,8 +142,14 @@
 			    <el-table-column prop="date" label="月份" :width="columnw"> </el-table-column>
 			    <el-table-column prop="date" label="月份" :width="columnw"> </el-table-column>
 			    <el-table-column prop="date" label="月份" :width="columnw"> </el-table-column>
+          <el-table-column prop="date" label="月份" :width="columnw"> </el-table-column>
+          <el-table-column prop="date" label="月份" :width="columnw"> </el-table-column>
+          <el-table-column prop="date" label="月份" :width="columnw"> </el-table-column>
+          <el-table-column prop="date" label="月份" :width="columnw"> </el-table-column>
+          <el-table-column prop="date" label="月份" :width="columnw"> </el-table-column>
+          <el-table-column prop="date" label="月份" :width="columnw"> </el-table-column>
 			</el-table>
-    		
+
     	</div>
     </div>
 </template>
@@ -155,17 +181,30 @@
 		          city: 4,
 		        }, {
 		          city: 4,
-		        }]
+		        },{
+              city: 4,
+            }, {
+              city: 4,
+            }, {
+              city: 4,
+            }, {
+              city: 4,
+            }]
         	}
         },
         mounted(){
             this.setWidth();
             this.getData();
             this.getDateSet();
+            this.$nextTick(()=>{
+                console.log($(".el-table__header").width())
+              $(".monthTab").width($(".el-table__header").width())
+            $(".firstTab").height('70%')
+        })
         },
         methods:{
         	setWidth(){
-        		this.columnw = $(".reportTabBoxs ").width() / 24;
+        		/*this.columnw = $(".reportTabBoxs ").width() / 24;*/
         	},
         	getData(){
                 let that = this;
@@ -239,5 +278,19 @@
 .el-table .el-table__body td.darkBl .cell{color:#439AFF!important;}
 .el-table .el-table__body td.darkOr .cell{color:#FFA414!important;}
 .el-table__footer-wrapper tbody td{background:rgba(0,0,0,0);color:#fff;}
-
+.el-table__body-wrapper, .el-table__footer-wrapper, .el-table__header-wrapper{
+  width:auto!important;
+}
+.el-table{
+  max-width: inherit!important;
+}
+  .reportTablesBox{
+    width:100%;
+    height:95%;
+    overflow-x:scroll;
+    overflow-y:hidden;
+  }
+/*.energyReport .el-table--border, .energyReport .el-table--group{
+  width:auto!important;
+}*/
 </style>

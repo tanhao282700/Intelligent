@@ -10,7 +10,7 @@
             <button class="btn" @click="getData"><i class="el-icon-search"></i>搜索</button>
 		</div>
         <div class="tableBox">
-            <el-table :data="tableData" style="width: 100%" height="480">
+            <el-table :data="tableData" style="width: 100%;" height="100%">
                 <el-table-column type="index" label="序号" align="cneter"></el-table-column>
                 <el-table-column prop="descript" label="预定大厅" align="cneter"></el-table-column>
                 <el-table-column prop="biz_date" label="预定日期"  align="cneter"></el-table-column>
@@ -85,7 +85,7 @@
                 this.$http.post('/hotel/singe_room',{
                     page:that.currentPage,
                     num:that.pagesize,
-                    room_id:that.roomListAllNumber,
+                    descript:that.roomListAllNumber,
                     biz_date:s,
                 }).then(function(data){
                     //响应成功回调
@@ -134,7 +134,17 @@
                 this.getData()
             },
             changeDescript(vId){
-             
+                console.log(vId);
+                console.log(this.roomListAllNumber);
+                
+            //     var setSele = '';
+            //     $(this.roomListAllNumbers,function(i,k){
+            //         if(i == vId){
+            //             setSele = k.num 
+            //         }
+            //     });
+                // this.roomListAllNumber = setSele;
+                // console.log(setSele);
             },
             format(time, format){
                 var t = new Date(time);

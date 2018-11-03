@@ -14,10 +14,10 @@
                     <el-input v-model="enternameinput" type="text" placeholder="请输入设备名称或门名称"></el-input>
                 </div>
                 <button class="btn btnSearch" @click="getData(releasetime1,releasetime2,enternameinput,toPageNum)"><i class="el-icon-search"></i>查询</button>
-                <button class="btn btnExport floatRt" @click="exportTable"><i class="el-icon-search"></i>导出</button>
+                <button class="btn btnExport floatRt" @click="exportTable"><i class="exportIcon"></i>导出</button>
             </div>
             <div class="tableBox">
-                <el-table :data="tableData" style="width: 100%" height="480">
+                <el-table :data="tableData" style="width: 100%;" height="100%">
                     <el-table-column prop="show_id" label="编号" align="cneter"></el-table-column>
                     <el-table-column prop="id_card" label="ID卡号" align="cneter"></el-table-column>
                     <el-table-column prop="name" label="姓名"  align="cneter"></el-table-column>

@@ -24,7 +24,7 @@
             <button class="btn" @click="getData"><i class="el-icon-search"></i>搜索</button>
 		</div>
         <div class="tableBox">
-            <el-table :data="tableData" style="width: 100%" height="480">
+            <el-table :data="tableData" style="width: 100%;" height="100%">
                 <el-table-column type="index" label="序号" align="cneter"></el-table-column>
                 <el-table-column prop="room_state" label="房间状态" align="cneter" :formatter = "stateFormat"></el-table-column>
                 <el-table-column prop="room_id" label="房间号"  align="cneter"></el-table-column>

@@ -2,12 +2,12 @@
     <div class="doorInfo"> 
         <div class="doorExportPanel">
             <span>消防通道 {{doorInfoId}} 号门信息</span>
-            <button class="btn floatRt" @click="exportTable">导出</button>
+            <button class="btn floatRt" @click="exportTable"><i class="exportIcon"></i>导出</button>
             <a class="closeDoorInfo" @click="doorInfoHide">×</a>
         </div>
         <div class="doorInfoBgBox">
             <div class="tableBox">
-                <el-table :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)" style="width: 100%" height="480">
+                <el-table :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)" style="width: 100%;height:100%;">
                     <el-table-column prop="show_id" label="编号" align="cneter"></el-table-column>
                     <el-table-column prop="id_card" label="ID卡号" align="cneter"></el-table-column>
                     <el-table-column prop="name" label="姓名"  align="cneter"></el-table-column>
