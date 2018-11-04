@@ -64,7 +64,7 @@
           </el-select>
         </div>
         <div class="btn22">
-          <el-button type="primary" @click="query" icon="el-icon-search">查询</el-button>
+          <el-button type="primary" @click="query" icon="el-icon-search" class="metersQueryBtn">查询</el-button>
         </div>
       </div>
     </div>
@@ -303,7 +303,7 @@
           obj.device = item.device;
           item.data.map((ite,i)=>{
             var type = ite.type;
-            if(i == 0){
+            if(type == 1){
               var tempLen = ite.data.toString().length;
               for(var j=0;j< 10-tempLen; j++){
                 ite.data += '0';
@@ -560,22 +560,35 @@
   }
 </script>
 <style>
+  .metersQueryBtn{
+    height: .32rem;
+    width: .82rem;
+    padding: 0;
+  }
   .typesItemBox{
     padding: .1rem 0 0;
     text-align: center;
     line-height: .2rem;
   }
   .readNumber .el-input{
-    height:90%!important;
+    height: .2rem!important;
   }
   .readNumber .querySelectItem{
-    margin-left:10px;
+    margin-left:.1rem;
+  }
+  .readNumber .querySelectItem:last-child{
+    margin-right: .1rem;
+  }
+  .readNumber .querySelectItem::after{
+    background: url('../../../assets/img/Permission/down.png') no-repeat center;
+    height: 100%;
+    right: 2px;
   }
   .readNumber .el-input .el-input__inner{
     border:none!important;
     border-bottom:1px solid #1989fa!important;
     height:90%!important;
-    /*padding:0!important;*/
+    padding:0!important;
   }
   .readNumber .modalBox .modalBoxIn .titBox{
     height:50px!important;
@@ -657,6 +670,7 @@
           height:55.17%;
           display: flex;
           flex-direction: row;
+          align-items: center;
         }
       }
     }
