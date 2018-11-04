@@ -122,30 +122,41 @@
           <div class="content">
             <div class="pic" :class="{'realtime0':realtimeType==0,'realtime1':realtimeType==1,'realtime2':realtimeType==2}">
               <div class="numbers">
-                <span v-for="i in 10">9</span>
+                <span v-for="(i,index) in 10" v-text="item[1][0].data[index]"></span>
               </div>
               <div class="danwei">kw/h</div>
             </div>
-            <div class="realtimeCon" style="height:216px;overflow-y:auto;width:100%;">
-              <div class="types">
-                <div class="title">电流</div>
-                <div>
-                  <span>A：</span>
-                  <span>23.92A</span>
+            <div class="realtimeCon" style="width:100%;overflow: hidden;padding-top: .1rem">
+              <div class="types" style="height:216px;overflow-y:auto;">
+                <div class="typesItemBox" v-if="item[2].length>0">
+                  <div class="title">{{realTimeTypeMap.type_map[2]}}</div>
+                  <div v-for="dianItem in item[2]">
+                    <span>{{dianItem.title}} :</span>
+                    <span>{{dianItem.data}}</span>
+                  </div>
                 </div>
-                <div>
-                  <span>B：</span>
-                  <span>23.92A</span>
+
+                <div class="typesItemBox" v-if="item[3].length>0">
+                  <div class="title">{{realTimeTypeMap.type_map[3]}}</div>
+                  <div v-for="dianItem in item[3]">
+                    <span>{{dianItem.title}} :</span>
+                    <span>{{dianItem.data}}</span>
+                  </div>
                 </div>
-                <div>
-                  <span>C：</span>
-                  <span>23.92A</span>
+
+                <div class="typesItemBox" v-if="item[4].length>0">
+                  <div class="title">{{realTimeTypeMap.type_map[4]}}</div>
+                  <div v-for="dianItem in item[4][0].data">
+                    <span>{{dianItem.title}} :</span>
+                    <span>{{dianItem.value}}</span>
+                  </div>
                 </div>
+
               </div>
             </div>
           </div>
           <div class="leixin">
-            1号电表
+            {{item.device}}
           </div>
         </div>
       </div>
@@ -241,10 +252,7 @@
         areaForm:{// 区域筛选条件
           project_id:1,
           floor_id:0,
-          sys_menu_id:0,
-          id1:'',
-          id2:'',
-          id3:''
+          sys_menu_id:0
         },
         sysForm:{// 系统筛选条件
           project_id:1,
@@ -255,15 +263,15 @@
         shishi:{shui:'',dian:'',qi:''},  //实施能耗
         dian:{},  //电
         qi:{},  //气
-
+        realTimeTypeMap:{},
       }
     },
     created(){
-      window.addEventListener('resize',this.resizeWindow)
-      this.areaForm.sys_menu_id = this.$store.state.sysList[2].sys_menu_id
-      this.areaForm.project_id = this.$store.state.projectId
-      this.sysForm.project_id = this.$store.state.projectId
-      this.initAreaQueryData()
+      window.addEventListener('resize',this.resizeWindow);
+      this.areaForm.sys_menu_id = this.$store.state.sysList[2].sys_menu_id;
+      this.areaForm.project_id = this.$store.state.projectId;
+      this.sysForm.project_id = this.$store.state.projectId;
+      this.initAreaQueryData();
     },
     components:{
       'LineEcharts':LineEcharts
@@ -278,44 +286,52 @@
         window.removeEventListener('resize',this.resizeWindow)
     },
     methods:{
+      calcRealTimeData(data){
+        let that = this;
+        let tempArray = [];
+        let len = data.length;
+        that.realTimeTypeMap = data[len-1];
+        data.splice(len-1,1);
+        data.map((item,index)=>{
+          var obj = {
+            1:[],
+            2:[],
+            3:[],
+            4:[],
+            device:""
+          };
+          obj.device = item.device;
+          item.data.map((ite,i)=>{
+            var type = ite.type;
+            if(i == 0){
+              var tempLen = ite.data.toString().length;
+              for(var j=0;j< 10-tempLen; j++){
+                ite.data += '0';
+              }
+            }
+            obj[type].push(ite);
+          })
+          tempArray.push(obj);
+        })
+        console.log(tempArray);
+        that.realtimeData = tempArray;
+      },
       showRealTime(type){    //实时能耗详情
-        this.realtimeType = type
-        this.$http.post('/hotel_energy/floor_device_real_time',{
-          project_id:this.areaForm.project_id,
-          floor_id:this.areaForm.floor_id,
+        let that = this;
+        that.realtimeType = type
+        that.$http.post('/hotel_energy/floor_device_real_time',{
+          project_id:that.areaForm.project_id,
+          floor_id:that.areaForm.floor_id,
           type:type,
-          sys_menu_id:this.areaForm.sys_menu_id
+          sys_menu_id:that.areaForm.sys_menu_id
         }).then((res)=>{
+          console.log(res);
           if(res.data.code==0){
-                this.realtimeData = [
-                  {
-                    data:[
-                      {
-                        data:['0'],
-                        title:"other",
-                        type:4
-                      },
-                      {
-                        data:'23',
-                        title:"表读数",
-                        type:1
-                      },
-                      {
-                        data:[{title:'三号位水量',data:'7.3A'},{title:'四号位水量',data:'2.0A'},{title:'五号位水量',data:'1.5A'}],
-                        title:"电流",
-                        type:2
-                      },{
-                        data:[{title:'三号位水量',data:'7.3A'},{title:'四号位水量',data:'2.0A'},{title:'五号位水量',data:'1.5A'}],
-                        title:"电压",
-                        type:3
-                      }
-                    ],
-                    device:'1号水表'
-                  }
-                ]
+            let data = res.data.data;
+            that.calcRealTimeData(data);
           }
         })
-        this.$refs.dialog.show()
+        this.$refs.dialog.show();
       },
       query(){
           if(this.currentType==1){   //区域查询
@@ -398,11 +414,12 @@
           })
       },
       initAreaQueryData(){
-        this.$http.post('/hotel_energy/floor_real_time',this.areaForm).then((res)=>{
+        let that = this;
+        that.$http.post('/hotel_energy/floor_real_time',this.areaForm).then((res)=>{
           console.log(res)
           if(res.data.code == 0){
-              this.areaData1 = res.data.data.area_level
-            this.dealData(res)
+            that.areaData1 = res.data.data.area_level;
+            that.dealData(res);
           }else{
 
           }
@@ -498,8 +515,8 @@
         }else if(type==2){
           this.$http.post('/hotel_energy/system_real_time',this.sysForm).then((res)=>{
             if(res.data.code == 0){
-              this.sysData1 = res.data.data.sys_level
-              this.dealData(res)
+              this.sysData1 = res.data.data.sys_level;
+              this.dealData(res);
             }else{
 
             }
@@ -512,11 +529,11 @@
         this.shishi.dian = String(this.shishi.dian)
         this.shishi.shui = String(this.shishi.shui)
         this.shishi.qi = String(this.shishi.qi)
-        let dian = this.shishi.dian
+        let dian = this.shishi.dian;
         let dianStr = ''
-        let qi = this.shishi.qi
+        let qi = this.shishi.qi;
         let qiStr = ''
-        let shui = this.shishi.shui
+        let shui = this.shishi.shui;
         let shuiStr = ''
         for(let i=0;i<10-this.shishi.dian.length;i++){
           dianStr += '0'
@@ -543,6 +560,11 @@
   }
 </script>
 <style>
+  .typesItemBox{
+    padding: .1rem 0 0;
+    text-align: center;
+    line-height: .2rem;
+  }
   .readNumber .el-input{
     height:90%!important;
   }
@@ -736,10 +758,13 @@
     .showBox2{
       display: flex;
       flex-direction: row;
+      justify-content: center;
+      .parts:not(:last-child){
+        margin-left:.3rem;
+      }
       .parts{
         height:100%;
         width:150px;
-        margin-left:34px;
         .content{
           height:386px;
           margin-top:52px;
@@ -816,10 +841,6 @@
             height:108px;
             color:#b5d6ff;
             font-size:.12rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-around;
             margin-top:10px;
             .title{
               color:#4adb80;
