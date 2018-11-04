@@ -58,7 +58,7 @@
         },
 	    data() {
 	        return {
-	        	floorNumber:'10',
+	        	floorNumber:'11',
 	        	floorNumber1:'2018',
 	        	room:[],
 	        	ballroom:[],
@@ -75,14 +75,30 @@
 	        };
 	    },
         mounted(){
-	  
-	        this.getChartData();
-            this.getSelesData();
+	  	 	this.selDateLinkage();  // 日期联动
+	        this.getChartData();    // 图表
+            this.getSelesData();    // 下拉框数据
         },
 	    watch:{
 	
 	    },
 	    methods: {
+	    	selDateLinkage(){
+	    		if(this.floorNumber == 2){
+				    //如果是闰年
+				    if((this.floorNumber1 % 4 === 0 && this.floorNumber1 % 100 !== 0)  || this.floorNumber1 % 400 === 0){
+				        this.xData = 29;
+				    //如果是平年
+				    }else{
+				        this.xData = 28;
+				    }
+				//如果是第4、6、9、11月
+				}else if(this.floorNumber == 4 || this.floorNumber == 6 ||this.floorNumber == 9 ||this.floorNumber == 11){
+				    this.xData = 30;
+				}else{
+				    this.xData = 31;
+				}
+	    	},
 	    	getSelesData(){
 	    		var that = this;
                 this.$http.post('/hotel/get_year',{
@@ -101,18 +117,36 @@
                 });
 	    	},
 	    	getDataChooseMonth(){
+	    		this.selDateLinkage();
+	    		console.log(this.xData);
 	    		console.log(this.floorNumber);
+	    		this.getChartData();
 	    	},
 	    	getDataChooseYear(){
+	    		this.selDateLinkage();
+	    		console.log(this.xData);
 	    		console.log(this.floorNumber1);
+	    		this.getChartData();
 	    	},
 	    	getChartData(){
                 var that = this;
+                var monthPa = '';
+                if(Number(this.floorNumber) <= 9){
+                	monthPa = '0'+ Number(this.floorNumber);
+                }
                 this.$http.post('/hotel/statement',{
-                    project_id:1,
-                    // month:that.floorNumber,
+                    // project_id:1,
+                    month:monthPa,
                     year:that.floorNumber1,
                 }).then(function(data){
+                	that.dining = [];
+                	that.room = [];
+                	that.ballroom = [];
+                	that.others = [];
+                	that.diningY = [];
+                	that.roomY = [];
+                	that.ballroomY = [];
+                	that.othersY = [];
                     // 日
                     console.log(data);
                     $.each(data.data.data.day_data.dining,function(key,value){
@@ -166,7 +200,7 @@
 					  return x[0]-y[0];
 					});
 
-                    that.getData("reportChartMonth",31,that.room,that.dining,that.ballroom,that.others);
+                    that.getData("reportChartMonth",that.xData,that.room,that.dining,that.ballroom,that.others);
                     that.getData("reportChartYear",12,that.roomY,that.diningY,that.ballroomY,that.othersY);
                 }, function(data){
                     // 响应错误回调
@@ -305,7 +339,8 @@
 				    ],
 			        color:["#55F8F0","#FD991B","#1B7FFD","#F26666"]
 		        };
-		        this.chart.setOption(option);
+		        this.chart.setOption(option,true);
+		        option = {};
  			},
 	    }
     }
