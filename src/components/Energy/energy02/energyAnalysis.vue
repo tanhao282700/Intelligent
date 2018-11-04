@@ -1,24 +1,26 @@
 <template>
   <!-- 用能分析模块 -->
-  <div class="energyAnalysis">
+  <div class="energyAnalysis" v-loading="viewsLoading"
+       element-loading-spinner="el-icon-loading"
+       element-loading-background="rgba(0, 0, 0, 0.3)">
   	<Crumbs :data ='crumbs' class="breads"/>
   	<div class="boxs chartTables">
   		<div class="chartTit">
   			<div class="chartLeftTit">
   				<div class="tit1">区域能耗 | </div>
                 <div class="analysisBoxs analysisBoxs1">
-                    <SelectBox 
-                        :options = 'analysis' 
-                        :value = "vanalysis" 
+                    <SelectBox
+                        :options = 'analysis'
+                        :value = "vanalysis"
                         :icon="'el-icon-d-caret'"
                         placeholder="月"
                         @change = 'change1'
                     />
                 </div>
                 <div class="analysisBoxs">
-                    <SelectBox 
-                        :options = 'analysis' 
-                        :value = "vanalysis" 
+                    <SelectBox
+                        :options = 'analysis'
+                        :value = "vanalysis"
                         :icon="'el-icon-d-caret'"
                         placeholder="2018-08-01"
                         @change = 'change1'
@@ -26,9 +28,9 @@
                 </div>
                 <div class="hrline">-</div>
                 <div class="analysisBoxs">
-                    <SelectBox 
-                        :options = 'analysis' 
-                        :value = "vanalysis" 
+                    <SelectBox
+                        :options = 'analysis'
+                        :value = "vanalysis"
                         :icon="'el-icon-d-caret'"
                         placeholder="2018-09-26"
                         @change = 'change1'
@@ -37,7 +39,7 @@
                 <div class="searchBoxs">
                     <i class="el-icon-search"></i>
                     <span>查询</span>
-                </div>   
+                </div>
   			</div>
   			<div class="chartRightTit">
 			  <el-button type="default" :class="{currData:iscur==index}" :key="index" v-for="(item,index) in tabs" @click="loadBarData(index)">{{item.name}}</el-button>
@@ -50,18 +52,18 @@
   			<div class="chartLeftTit">
   				<div class="tit1">设备能耗 | </div>
   				<div class="analysisBoxs analysisBoxs1">
-                    <SelectBox 
-                        :options = 'analysis' 
-                        :value = "vanalysis" 
+                    <SelectBox
+                        :options = 'analysis'
+                        :value = "vanalysis"
                         :icon="'el-icon-d-caret'"
                         placeholder="月"
                         @change = 'change1'
                     />
                 </div>
                 <div class="analysisBoxs">
-                    <SelectBox 
-                        :options = 'analysis' 
-                        :value = "vanalysis" 
+                    <SelectBox
+                        :options = 'analysis'
+                        :value = "vanalysis"
                         :icon="'el-icon-d-caret'"
                         placeholder="2018-08-01"
                         @change = 'change1'
@@ -69,9 +71,9 @@
                 </div>
                 <div class="hrline">-</div>
                 <div class="analysisBoxs">
-                    <SelectBox 
-                        :options = 'analysis' 
-                        :value = "vanalysis" 
+                    <SelectBox
+                        :options = 'analysis'
+                        :value = "vanalysis"
                         :icon="'el-icon-d-caret'"
                         placeholder="2018-09-26"
                         @change = 'change1'
@@ -80,7 +82,7 @@
                 <div class="searchBoxs">
                     <i class="el-icon-search"></i>
                     <span>查询</span>
-                </div> 
+                </div>
   			</div>
   			<div class="chartContent">
   				<div class="charts2Left" id="deviceLeft">
@@ -106,6 +108,7 @@
         },
         data(){
         	return {
+            viewsLoading:false,
         		crumbs:['能源管理系统','用能分析'],
         		iscur:0,
         		tabs: [{name: "电"}, {name: "水"} ,{name: "气"}],
@@ -136,7 +139,7 @@
 				    	name:arr2Label[i],
 				        data: pieData,
 				        type: 'line',
-				        symbol: "circle", 
+				        symbol: "circle",
 				        symbolSize:0,
 				        smooth: true,
 			            lineStyle: {
@@ -232,6 +235,7 @@
 
 	        },
 	        getDatas(){
+        	  let that = this;
 	        	let param = {
 	        		project_id:1,
 	        		sys_menu_id:1,
@@ -241,6 +245,7 @@
 	        		device_query_date_type:'',
 	        		device_date:''
 	        	}
+	        	this.viewsLoading = true;
 	        	this.$http.post('/hotel_energy/analysis',param)
 	        	.then(res=>{
 	        		//区域图
@@ -281,7 +286,7 @@
 	        						this.data.arr1x.push(k2.date);
 	        						this.data.arr1.push(k2.value);
 	        					})
-	        					
+
 	        				}
 	        			});
 	        		})
@@ -305,11 +310,12 @@
 	        						arr2x.push(k2.date);
 	        						arr2.push(k2.value);
 	        					})
-	        					
+
 	        				}
 	        			});
 	        		})
 	        		this.getBottomEcharts(arr,arr2,arr2x,arr2Label);
+	        		that.viewsLoading = false;
 	        	})
 	        }
 

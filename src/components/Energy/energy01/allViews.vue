@@ -9,7 +9,9 @@
       <el-breadcrumb-item>全景查看</el-breadcrumb-item>
     </el-breadcrumb>
 
-    <div class="viewsContentBox">
+    <div class="viewsContentBox" v-loading="viewsLoading"
+         element-loading-spinner="el-icon-loading"
+         element-loading-background="rgba(0, 0, 0, 0.3)">
       <div class="viewRow">
         <!--总能耗-->
         <div class="viewColum">
@@ -50,7 +52,7 @@
                   <div class="percentageTextTip"><span class="percentageRealVal"></span></div>
                 </div>
                 <div class="totalEnergyItemFoot">
-                  <div class="unit">t</div>
+                  <div class="unit">m³</div>
                   <div class="totalVal">{{totalEnergyUsageData.monthPlanUsage[1]}}</div>
                   <div class="title">本月能耗值</div>
                   <div class="type">水</div>
@@ -254,6 +256,7 @@
     name: "all-views",
     data(){
       return{
+        viewsLoading:false,
         energyArea2Type:"0",
         energyTrend0:{
           id: 'energyTrendCharts0',
@@ -387,13 +390,13 @@
       },
       totalEnergyChartRotate(per,ele){
         let that = this;
-        let deg = (232 + 256 * (Number(per)/100));
+        let deg = (232 + 256 * (Number(per.per)/100));
         $(ele).css("transform","rotate("+ deg + "deg)");
-        var ps = that.calcTipPosition(per);
+        var ps = that.calcTipPosition(per.per);
         $(ele).siblings(".percentageTextTip").find("span").css({
           left:ps.left,
           top:ps.top
-        }).text(per+"%");
+        }).text(per.rsNum+"%");
       },
       initArea3Chart1(data){
         let that = this;
@@ -923,6 +926,7 @@
       },
       requestAllData(){
         let that = this;
+        that.viewsLoading = true;
         let projectId = that.$store.state.projectId;
         let config = {
           project_id: projectId
@@ -936,9 +940,11 @@
             that.calcArea2Data(energyData.energy_trend_3_year,'energyTrend0',0);
             that.calcArea3Data(energyData.feng_ping_gu);
             that.calcArea4Data(energyData.finance_info);
+            that.viewsLoading = false;
           }
         }).catch(err=>{
           console.log(err);
+          that.viewsLoading = false;
         })
       },
       requestTrendTypeData(index){
@@ -987,11 +993,17 @@
         var monthPlagUsage = that.totalEnergyUsageData.monthPlanUsage = data.this_month_plan_use_energy;
         that.totalEnergyUsageData.yearActualTotal = data.this_year_actual_carbon_emission;
         that.totalEnergyUsageData.yearPlanTotal = data.this_year_plan_carbon_emission;
-        var perObj = {};
+        var perObj = [{},{},{}];
         for(var i=0;i<3;i++){
           var num = ((Number(monthActuUsage[i]) / Number(monthPlagUsage[i])) * 100).toFixed(1);
-          perObj[i] = Math.round(num);
-          if(i==2){that.totalEnergyUsageData.monthUsagePer = perObj};
+          var rsNum = Math.round(num);
+          rsNum>100?num=100:num=rsNum;
+          perObj[i].per = num;
+          perObj[i].rsNum = rsNum;
+
+          if(i==2){
+            that.totalEnergyUsageData.monthUsagePer = perObj
+          };
         }
         that.totalEnergyChartRotate(perObj[0],'.energyFinger1');
         that.totalEnergyChartRotate(perObj[1],'.energyFinger2');

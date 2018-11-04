@@ -31,6 +31,9 @@
         <!--日志表格-->
         <div class="userTableContainer loginLogTable">
           <el-table
+            v-loading="logLoading"
+            element-loading-spinner="el-icon-loading"
+            element-loading-background="rgba(0, 0, 0, 0.3)"
             :data="curPageData"
             style="width: 100%"
             stripe>
@@ -110,6 +113,7 @@
       name: "login-log",
       data(){
           return{
+            logLoading:false,
             dateRangeValue:[],
             tableData: [],
             currentPage: 1,
@@ -159,6 +163,7 @@
         requestTableData(curPageNum){
           /*请求表格数据*/
           let that = this;
+          that.logLoading = true;
           let config = {
             pagenumber : curPageNum,
             pagesize : that.pageSize,
@@ -168,8 +173,10 @@
 
           that.$http.post('users_manage/users_login_log',config).then(res=>{
             that.getCurPageData(res.data);
+            that.logLoading = false;
           }).catch(err=>{
             console.log(err);
+            that.logLoading = false;
           })
         },
         getCurPageData(data){

@@ -51,6 +51,9 @@
       <!--角色表格-->
       <div class="userTableContainer">
         <el-table
+          v-loading="userLoading"
+          element-loading-spinner="el-icon-loading"
+          element-loading-background="rgba(0, 0, 0, 0.3)"
           :data="curPageData"
           style="width: 100%"
           class="tableAlignCenter tableHeadBlue roleSetTable">
@@ -173,6 +176,7 @@
     name: "role-setting",
     data(){
       return {
+        userLoading:true,
         sysInfo:{}, //系统信息
         options: [], //下拉选项数组
         itemValue:[], //点击查询数据时条件数组
@@ -447,6 +451,7 @@
       requestTableData(curPageNum){
         /*请求表格数据*/
         let that = this;
+        that.userLoading = true;
         let config = {
           pagenumber : curPageNum,
           pagesize : that.pageSize,
@@ -454,9 +459,11 @@
           role_id : that.itemValue[0]
         }
         that.$http.post('users_manage/users_role_manage',config).then(res=>{
+          that.userLoading = false;
           that.getCurPageData(res.data);
         }).catch(err=>{
           console.log(err);
+          that.userLoading = false;
         })
       },
       requestPowerList(){
@@ -471,6 +478,7 @@
             that.powerArray = res.data.data.role_data;
             that.checkedListItems = res.data.data.chk_data;
           }else {
+
             that.bubbleTipShow(res.data.message);
           }
         }).catch(err=>{

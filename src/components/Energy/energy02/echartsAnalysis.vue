@@ -19,8 +19,17 @@
         		areaEnergyKf:[],
         	}
         },
+        watch:{
+          // 深度 watcher
+          data: {
+            handler: function (items) {
+              this.getChartLineData();
+            },
+            deep: true
+          }
+        },
         methods:{
-        	getChartLineData(){	        	
+        	getChartLineData(){
         		let param = {
 	        		project_id:1,
 	        		sys_menu_id:1,
@@ -32,7 +41,7 @@
 	        	}
 	        	this.$http.post('/hotel_energy/analysis',param)
 	        	.then(res=>{
-	        		//区域图	
+	        		//区域图
 	        		let trendData = res.data.data.area_energy_use.trend_data;
 	        		let newRzl = [];
 	        		let newKf = [];
@@ -142,7 +151,7 @@
 				    	name:'客房',
 				        data: this.areaEnergyKf,//data.custom,
 				        type: 'line',
-				        symbol: "circle", 
+				        symbol: "circle",
 				        symbolSize:0,
 				        smooth: true,
 			            lineStyle: {
@@ -157,7 +166,7 @@
 				    	name:'宴会厅',
 				        data:data.party,
 				        type: 'line',
-				        symbol: "circle", 
+				        symbol: "circle",
 				        symbolSize:0,
 				        smooth: true,
 			            lineStyle: {
@@ -173,7 +182,7 @@
 				    	name:'餐厅厨房',
 				        data: data.dinneroom,
 				        type: 'line',
-				        symbol: "circle", 
+				        symbol: "circle",
 				        symbolSize:0,
 				        smooth: true,
 			            lineStyle: {
@@ -189,7 +198,7 @@
 				    	name:'公共区域',
 				        data: data.publicarea,
 				        type: 'line',
-				        symbol: "circle", 
+				        symbol: "circle",
 				        symbolSize:0,
 				        smooth: true,
 			            lineStyle: {
@@ -204,7 +213,7 @@
 				    	name:'餐厅',
 				        data: data.dinner,
 				        type: 'line',
-				        symbol: "circle", 
+				        symbol: "circle",
 				        symbolSize:0,
 				        smooth: true,
 			            lineStyle: {
@@ -219,7 +228,7 @@
 				    	name:'空调',
 				        data: data.airconditioner,
 				        type: 'line',
-				        symbol: "circle", 
+				        symbol: "circle",
 				        symbolSize:0,
 				        smooth: true,
 			            lineStyle: {
@@ -234,7 +243,7 @@
 				    	name:'1-5号主机',
 				        data: data.mainframe,
 				        type: 'line',
-				        symbol: "circle", 
+				        symbol: "circle",
 				        symbolSize:0,
 				        smooth: true,
 			            lineStyle: {
@@ -249,7 +258,7 @@
 				    	name:'入住率',
 				        data: this.areaEnergyRzl,  //data.occupancy,
 				        type: 'line',
-				        symbol: "circle", 
+				        symbol: "circle",
 				        symbolSize:0,
 				        smooth: true,
 			            lineStyle: {

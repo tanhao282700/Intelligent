@@ -481,7 +481,7 @@
           echarts:{
             id:'lineEchartDian'+random,
             type:'dian',
-            unit:'Kg/Kw/h',
+            unit:'Kw/h',
             title:'电',
             titShow:true,
             style:{width:'100%',height:'100%'},
@@ -588,7 +588,7 @@
     border:none!important;
     border-bottom:1px solid #1989fa!important;
     height:90%!important;
-    padding:0!important;
+    padding:0 0 0 2px!important;
   }
   .readNumber .modalBox .modalBoxIn .titBox{
     height:50px!important;

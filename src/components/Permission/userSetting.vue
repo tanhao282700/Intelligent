@@ -1,5 +1,5 @@
 <template>
-  <div class="userBox">
+  <div class="userBox" >
     <!--面包屑-->
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
@@ -57,6 +57,9 @@
       <!--用户表格-->
       <div class="userTableContainer">
         <el-table
+          v-loading="userLoading"
+          element-loading-spinner="el-icon-loading"
+          element-loading-background="rgba(0, 0, 0, 0.3)"
           :data="curPageData"
           style="width: 100%"
           class="tableAlignCenter tableHeadBlue">
@@ -189,6 +192,7 @@
       name: "user-setting",
       data(){
         return {
+          userLoading:true,
           sysInfo:{}, //系统信息
           options: [], //下拉选项数组
           itemValue:[], //点击查询数据时条件数组
@@ -417,6 +421,7 @@
         requestTableData(curPageNum){
           /*请求表格数据*/
           let that = this;
+          that.userLoading = true;
           let config = {
             project_id : that.sysInfo.projectId,
             pagenumber : curPageNum,
@@ -432,8 +437,10 @@
           that.$http.post('users_manage/usersinfo',config).then(res=>{
             console.log(res);
             that.getCurPageData(res.data);
+            that.userLoading = false;
           }).catch(err=>{
             console.log(err);
+            that.userLoading = false;
           })
         }
       },
