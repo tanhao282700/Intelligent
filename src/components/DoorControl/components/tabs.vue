@@ -20,7 +20,7 @@
                 <div class="dateBox">
                     <el-input v-model="enternameinput" type="text" placeholder="请输入设备名称或门名称"></el-input>
                 </div>
-                <button class="btn btnSearch" @click="getData(releasetime1,releasetime2,enternameinput,toPageNum)"><i class="el-icon-search"></i>查询</button>
+                <button class="btn btnSearch" @click="getData(releasetime1,releasetime2,enternameinput,toPageNum)"><i class="el-icon-search marginRt10"></i>查询</button>
                 <button class="btn btnExport floatRt" @click="exportTable"><i class="exportIcon"></i>导出</button>
             </div>
             <div class="tableBox">
