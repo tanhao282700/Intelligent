@@ -1,6 +1,13 @@
 <template>
     <div class="tabsDomBox"> 
-        <div class="navCrumbs">首页 > 门禁系统 > <span>门禁记录</span></div>
+        <!--面包屑--> 
+        <div class="navCrumbs">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+              <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+              <el-breadcrumb-item>门禁系统</el-breadcrumb-item>
+              <el-breadcrumb-item>门禁记录</el-breadcrumb-item>
+            </el-breadcrumb>
+        </div>
         <div class="borderShadow">
             <a :href="downLoadSrc" style="display:none;"></a>
             <div class="searchConditionBox">

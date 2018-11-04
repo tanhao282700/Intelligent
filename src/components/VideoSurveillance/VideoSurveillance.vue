@@ -1,7 +1,14 @@
 <template>
 	<div class="doorControl VideoSurveillance">
 		<sys-head :datas = "sData"></sys-head>
-        <div class="navCrumbs">首页 > 视屏监控系统 > <span>查看视频</span></div>
+        <!--面包屑--> 
+        <div class="navCrumbs">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+              <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+              <el-breadcrumb-item>视频监控系统</el-breadcrumb-item>
+              <el-breadcrumb-item>查看视频</el-breadcrumb-item>
+            </el-breadcrumb>
+        </div>
         <div class="mainContentBox">
         	<ul class="videoConditionsBox">
         		<li>区域选择</li>

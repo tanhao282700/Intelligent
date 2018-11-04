@@ -1,6 +1,13 @@
 <template>
-    <div class="tabsDomBox0"> 
-        <div class="navCrumbs">首页 > 门禁系统 > <span>系统平面</span></div>
+    <div class="tabsDomBox0">
+        <!--面包屑--> 
+        <div class="navCrumbs">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+              <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+              <el-breadcrumb-item>门禁系统</el-breadcrumb-item>
+              <el-breadcrumb-item>门禁平面</el-breadcrumb-item>
+            </el-breadcrumb>
+        </div>
         <div class="topShadow">
             <el-select v-model="buildingNumber" placeholder="楼号" @change="chooseLevels">
                 <el-option  v-for="item in areaLevel"
@@ -47,7 +54,7 @@
                 <img src="../../../assets/img/doorControl/bg_lc.png">
                 <i :class="['doorSta'+item.device_state,'door'+(index+1)]" 
                    v-for="(item,index) in iList" 
-                   @mouseenter = "popToggle(index,item.x,item.y,item.device_name,item.device_state,item.away_handle)" 
+                   @mouseenter = "popToggle(index,item.x,item.y,item.device_name,item.device_state,item.point_list[0].params.showvalue[0])" 
                    @mouseout = "popHide" 
                    @click.stop="doorInfoPanel(item.device_id,item)"
                    :style="{left:item.position_x*1.74 + 'px',top:item.position_y*1.74 + 'px'}"
@@ -139,8 +146,12 @@
             changeDoorStatus(obj){
                 let status = '';
                 console.log(obj);
-                // this.doorClose = Number(this.doorClose) - 1; 
-                // this.doorOpenN = Number(this.doorOpenN) + 1; 
+                if(Number(this.doorClose) <= 0){
+
+                }else{
+                    this.doorClose = Number(this.doorClose) - 1; 
+                    this.doorOpenN = Number(this.doorOpenN) + 1; 
+                }
                 this.infoSta = obj.infoSta;
                 if(this.infoSta == "关闭"){
                     status = "0";
@@ -177,7 +188,7 @@
                 this.$http.post('/entrance/all_info',{
                     sys_menu_id:15,
                     project_id:1,
-                    floor_id:1,
+                    floor_id:0,
                 }).then(function(data){
                     console.log(data.data.data);
                     that.iList = data.data.data.entrance_guard_info.device_2d_pic_state_list;

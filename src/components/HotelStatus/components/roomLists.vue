@@ -1,6 +1,13 @@
 <template>
 	<div class="hotelStatus roomLists">
-    	<div class="navCrumbs">首页 > <span>房单</span></div>
+        <!--面包屑--> 
+        <div class="navCrumbs">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+              <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+              <el-breadcrumb-item>营收数据分析</el-breadcrumb-item>
+              <el-breadcrumb-item>房单</el-breadcrumb-item>
+            </el-breadcrumb>
+        </div>
 		<div class="roomListsTabBox">
 	        <nav class="tabNav">
 	            <span><a :class="isActive1==true?'on':''" @click="toggleTabs(first)">全部房单 <i></i></a></span>

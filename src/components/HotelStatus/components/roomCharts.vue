@@ -1,13 +1,30 @@
 <template>
 	<div class="hotelStatus hotelReportForm">
-    	<div class="navCrumbs">首页 > <span>报表</span></div>
+        <!--面包屑--> 
+        <div class="navCrumbs">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+              <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+              <el-breadcrumb-item>营收数据分析</el-breadcrumb-item>
+              <el-breadcrumb-item>报表</el-breadcrumb-item>
+            </el-breadcrumb>
+        </div>
     	<div class="reportHt50">
     		<div class="reportChartbox">
 	    		<div class="reportChartHeadBox">
 	    			<span>营收报表(日) <i></i></span>
 		            <el-select v-model="floorNumber" placeholder="月份" @change="getDataChooseMonth">
-		                <el-option label="1月" value="1"></el-option>
-		                <el-option label="2月" value="2"></el-option>
+		                <el-option label="1月" value="01"></el-option>
+		                <el-option label="2月" value="02"></el-option>
+		                <el-option label="3月" value="03"></el-option>
+		                <el-option label="4月" value="04"></el-option>
+		                <el-option label="5月" value="05"></el-option>
+		                <el-option label="6月" value="06"></el-option>
+		                <el-option label="7月" value="07"></el-option>
+		                <el-option label="8月" value="08"></el-option>
+		                <el-option label="9月" value="09"></el-option>
+		                <el-option label="10月" value="10"></el-option>
+		                <el-option label="11月" value="11"></el-option>
+		                <el-option label="12月" value="12"></el-option>
 		            </el-select>
 	    		</div>
 	    		<div class="chartDom" id="reportChartMonth"></div>
@@ -17,7 +34,7 @@
 	    	<div class="reportChartbox">
 	    		<div class="reportChartHeadBox">
 	    			<span>营收报表(月) <i></i></span>
-		            <el-select v-model="floorNumber1" placeholder="年份" @change="getData">
+		            <el-select v-model="floorNumber1" placeholder="年份" @change="getDataChooseYear">
 		                <el-option  v-for="item in SelesData"
 		                  :key="item.valueX"
 		                  :label="item.valueX"
@@ -85,6 +102,9 @@
 	    	},
 	    	getDataChooseMonth(){
 	    		console.log(this.floorNumber);
+	    	},
+	    	getDataChooseYear(){
+	    		console.log(this.floorNumber1);
 	    	},
 	    	getChartData(){
                 var that = this;
