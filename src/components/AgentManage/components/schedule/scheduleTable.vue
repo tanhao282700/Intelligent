@@ -147,7 +147,7 @@ export default {
     return {
         loading:false,
         placeholder:'选择',
-        value7:utils.time((new Date())/1000,9),
+        value7:'2018-11',
         backOrCurr:true,//右上角图标显示：返回当前月还是显示当前月
         cant:false,
         active:'change',
@@ -169,7 +169,7 @@ export default {
             left:0
         },
         over:[-5,-5],
-        month:utils.time((new Date())/1000,9).split('-')[1]
+        month:''
     }
   },
   methods:{
@@ -564,6 +564,9 @@ mounted() {
     this.dataLlists = this.data;
     this.getWOptions();
     this.getPaiBanPerson();
+    let curr = utils.time((new Date())/1000,9)
+    this.month = curr.split('-')[1];
+    this.value7 = curr.split('-')[0]+'-'+curr.split('-')[1];
     }
 }
 </script>

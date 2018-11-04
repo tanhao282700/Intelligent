@@ -95,6 +95,15 @@ export default {
 
   data () {
     return {
+        tableData:{}
+    }
+  },
+  watch:{
+    table:{
+        handler(newval,oldval){
+            this.tableData = newval;
+        },
+        deep:true
     }
   },
   methods:{
@@ -145,6 +154,9 @@ export default {
     }
 
   },
+  mounted(){
+    this.tableData = this.table;
+  }
 }
 </script>
 

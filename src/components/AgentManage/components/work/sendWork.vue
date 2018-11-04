@@ -80,8 +80,9 @@
           <InputBox 
           inputType="text" 
           :cssStyle="cssStyle"
-          :readonly="true"
-          :label="labelInput2" :modelValue="formvals.operator" />
+          :readonly="'readonly'"
+          :label="labelInput2" 
+          :modelValue="formvals.operator" />
         </div>
         <div class="sendWork2Boxs" @click="sendWork">
             <span>派发</span>
@@ -108,7 +109,7 @@ export default {
           floor:''
        },
        cssStyle:{
-          'width':'6.73vw',
+          'width':'5.73vw',
           'height':30*100/728+'vh',
           'color':'#4F648B',
           'lineHeight':30*100/728+'vh',

@@ -424,8 +424,24 @@ export default {
               })
            }
         })
-    }
-
+    },
+    getSystemsOptions(){
+        this.$http.post('/pc_ims/get_sysmenu').then(res=> {
+           if(res.data.code==0){
+              let data= res.data.data;
+              $.each(data,(n,k)=>{
+                data[n].label = data[n].title;
+                data[n].value = data[n].id;
+              })
+              this.vSystems = data;
+           }else{
+              this.$message({
+                type:'error',
+                message:res.data.msg
+              })
+           }
+        })
+      }
   },
   created() {
       let val = (this.$router.history.current.fullPath).split('/AgentManage/normalUser/routing')[1];

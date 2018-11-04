@@ -3,18 +3,17 @@
 -->
 <template>
     <div class="routingTask">    
-      <el-row>
-        <el-col :span="24/newData.desc.length" v-for="(item,index) in newData.desc" :key="index">
+      <ul v-if="newData.desc && newData.desc.length>0">
+        <li class="job_det" :span="Math.floor(24/newData.desc.length)" v-for="(item,index) in newData.desc" :key="index">
           <div class="taskDtl">
-            <el-row :gutter="20">
-              <el-col :span="10"><div class="taskLabel">{{item.label}}</div></el-col>
-              <el-col :span="14"><div class="taskCont">{{item.value}}</div></el-col>
-            </el-row>
+              <div class="taskLabel" v-if="item">{{item.label}}</div>
+              <div class="taskCont">{{item.value}}</div>
           </div>
-        </el-col>
-      </el-row>  
+        </li>
+      </ul>  
+      <div style="clear:both"></div>
       <div v-if="backExcu2">
-        <div class="contLabel" v-text="this.backExcu?newData.localDesc.label:''"></div>
+        <div class="contLabel" v-if="backExcu2 && newData.localDesc">{{newData.localDesc.label}}</div>
         <el-input
           type="textarea"
           class="controlCont controlCont1"
@@ -27,14 +26,14 @@
         <el-col :span="12" v-for="(item,index) in newData.sendInfos" :key="index">
           <div class="taskDtl" >
             <el-row :gutter="20">
-              <el-col :span="6"><div class="taskLabel">{{item.label}}</div></el-col>
+              <el-col :span="6"><div class="taskLabel" v-if="item">{{item.label}}</div></el-col>
               <el-col :span="18"><div class="taskCont">{{item.value}}</div></el-col>
             </el-row>
           </div>
         </el-col>
       </el-row> 
-      <div v-if="backExcu">
-        <div class="contLabel" v-text="this.backExcu?newData.localDesc2.label:''"></div>
+      <div v-if="backExcu && newData.localDesc2">
+        <div class="contLabel" v-text="backExcu?newData.localDesc2.label:''"></div>
         <el-input
           type="textarea"
           :rows="2"
@@ -43,7 +42,7 @@
           v-model="newData.localDesc2.value">
         </el-input>
       </div>
-      <div class="dealimg">
+      <div class="dealimg" v-if="(newData.pic1 && newData.pic1!=='') && (newData.pic2 && newData.pic2!=='')">
         <el-row :gutter="20">
           <el-col :span="12">
             <div>处理前</div>
@@ -62,6 +61,13 @@
           </div>
         </div>
       </div>
+      <div v-show="tableShow" class="boxs" style="width:95.6%;margin:0.2rem auto 0">
+        <Table 
+          style="height:2.0rem" 
+          :table = "newData.tableData"
+        />
+      </div>
+      
       <div class="rightHead" v-if="newData.info && newData.info.now_state=='5'">
         <span class="infoBusy" v-text="'拒绝退单'" @click="dealWork(8)"></span>
         <span class="infoSend" v-text="'允许退单'" @click="dealWork(6)"></span>
@@ -75,6 +81,7 @@
 
 <script>
   import utils from "../../../../assets/js/utils.js";
+  import Table from '@/components/common/table';
   export default {
       props:['data'],
       data () {
@@ -82,8 +89,8 @@
           newData:{},
           sendInfo:false,
           backExcu:false,
-          backExcu2:false
-
+          backExcu2:false,
+          tableShow:false
         }
       },
       methods:{
@@ -92,18 +99,48 @@
           }
       },
       watch:{
-        data(val){
-          this.newData = val;
-          console.log(this.newData)
-          this.newData.localDesc.label?this.backExcu=true:this.backExcu=false;
-          this.newData.localDesc2.label?this.backExcu2 =true:this.backExcu2 = false;
-          this.newData.sendInfos.length>0?this.sendInfo = true :this.sendInfo = false;
-        }
+        data:{
+            handler(val){
+              if(val){
+                this.newData = val;
+                if(this.newData.localDesc2){
+                  this.newData.localDesc2.label?this.backExcu=true:this.backExcu=false;
+                }
+                if(this.newData.localDesc){
+                  this.newData.localDesc.label?this.backExcu2 =true:this.backExcu2 = false;
+                }
+                if(this.newData.sendInfos){
+                  this.newData.sendInfos.length>0?this.sendInfo = true :this.sendInfo = false;
+                }
+                if(this.newData.tableData && this.newData.tableData.th.length>0){
+                  this.tableShow = true;
+                }else{
+                  this.tableShow = false;
+                }
+              }
+            },
+            deep:true
+          }
       },
       create(){
         
       },
       mounted() {
+        this.newData = this.data;
+        if(this.newData.localDesc){
+          this.newData.localDesc.label?this.backExcu=true:this.backExcu=false;
+        }
+        if(this.newData.localDesc2){
+          this.newData.localDesc2.label?this.backExcu2 =true:this.backExcu2 = false;
+        }
+        if(this.newData.sendInfos){
+          this.newData.sendInfos.length>0?this.sendInfo = true :this.sendInfo = false;
+        }
+        if(this.newData.tableData && this.newData.tableData.th.length>0){
+          this.tableShow = true;
+        }else{
+          this.tableShow = false;
+        }
       }
   }
 </script>
@@ -125,14 +162,22 @@
   height:100%;
   .taskDtl{
     width:100%;
-    .vhMT(11);
+    margin-top:0.11rem;
+    overflow:hidden;
     padding:0 1.464vw;
     .taskLabel{
+      float:left;
+      padding:0 0.1rem;
       color:#4F648B;
     }
     .taskCont{
+      float:left;
+      padding:0 0.1rem;
       color:#B5D7FF;
     }
+  }
+  .job_det{
+    float:left;
   }
   .contLabel{
       line-height:0.54rem;

@@ -40,13 +40,12 @@ export default {
                 this.txt.color = '#4AE283';
                 break;
           }
-          this.txt = this.txt;
+          return this.txt
       }
   },
   created() {
   },
   mounted() {
-    //console.log(this.states);
        this.txts();
   },
 }
