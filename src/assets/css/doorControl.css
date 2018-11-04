@@ -21,7 +21,7 @@ nav.tabNav span a.on{color:#008aff;}
 .tabsDomBox .searchConditionBox{position: absolute;left:0;top:0px;height:50px;display: block;width:100%;padding-top:9px;padding-left:15px;}
 .searchConditionBox .dateBox{height:32px;padding-right:20px;float: left;}
 .dateBox .el-input__inner,.dateBox .el-input{height:100%!important;}
-.btn{padding:0 15px;color:#fff;border-radius:4px;background: #3a84ee;border:1px solid #1989fa;height:32px;line-height:32px;cursor: pointer;}
+.btn{padding:0 15px;color:#fff;border-radius:2px;background: #3a84ee;border:1px solid #1989fa;height:32px;line-height:32px;cursor: pointer;width:88px;font-size: 14px!important;}
 .btnExport{margin-right:15px;}
 .tableBox .el-table__header{background:rgba(0,0,0,.25);}
 .el-pagination__sizes{display:none!important;}
@@ -91,7 +91,8 @@ nav.tabNav span a.on{color:#008aff;}
 .doorClose{border:1px solid #1989fa;background:#1989fa;}
 .doorWarning{border:1px solid #e04f4f;background:#FF5D3B;}
 .doorOpen{border:1px solid #fff;background:#fff;}
-.exportIcon{display: inline-block;width:16px;height:16px;background:url(../../assets/img/doorControl/export.png) no-repeat;background-size: 100% 100%;margin-right:3px;margin-bottom: -3px;}
+.marginRt10{margin-right: 10px!important;}
+.exportIcon{display: inline-block;width:16px;height:16px;background:url(../../assets/img/doorControl/export.png) no-repeat;background-size: 100% 100%;margin-right:10px;margin-bottom: -3px;}
 /*  门禁模块样式  e*/
 
 /* 视频监控  s*/
