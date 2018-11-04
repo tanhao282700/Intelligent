@@ -290,6 +290,9 @@
       queryForm(){
           console.log(this.timeValue)
           this.loading = true
+          if(this.timeValue && this.timeValue[0]==this.timeValue[1]){
+            this.timeValue[1] = this.timeValue[1].split(' ')[0]+' 23:59:59'
+          }
           if(this.timeValue && this.timeValue.length>0){
             this.formData.start_time = this.timeValue[0]
             this.formData.end_time = this.timeValue[1]
@@ -297,6 +300,7 @@
             this.formData.start_time = ''
             this.formData.end_time = ''
           }
+
           this.initData()
       },
       search(param){
