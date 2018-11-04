@@ -11,7 +11,7 @@
             <span slot="label" class="tabItems">
                 排班表
             </span>
-            <ScheduleTable :isShowBtns="'no'" :data="scheTable" @getPaibanData="getTableList"/>
+            <ScheduleTable :isShowBtns="'no'" :data="scheTable" @getPaibanData="getTableList" style="width:100%"/>
         </el-tab-pane>
         <el-tab-pane name="second" >
           <span slot="label" class="tabItems">
@@ -20,8 +20,8 @@
           <div class="boxs">
             <div class="pBody" >
               <div class="pBox">
-                <div class="imgBox">
-                  <img src="../../../assets/img/AgentManage/head.png" alt="">
+                <div class="imgBox" style="padding:0">
+                  <img src="../../../assets/img/AgentManage/head.png" width="100%" alt="">
                 </div>
                 <div class="nameBox boxs">
                   <div class="labelBox">
@@ -30,7 +30,7 @@
                   </div>
                   <div class="labelBox">
                     <label for="">联系电话：</label>
-                    <span v-text="dia.phone"></span>
+                    <span v-text="dia.tel1"></span>
                   </div>
                   <div class="labelBox">
                     <label for="">申请人班次：</label>
@@ -47,7 +47,7 @@
               </div>
               <Lines :hei="125" :top="20" />
               <div class="pBox">
-                <div class="imgBox">
+                <div class="imgBox" style="padding:0">
                   <img src="../../../assets/img/AgentManage/head.png" alt="">
                 </div>
                 <div class="nameBox boxs">
@@ -57,6 +57,7 @@
                         :options = 'applyhbSelect.peos' 
                         :value = "applyhbSelect.vpeo" 
                         class="selectStyle"
+                        :vmultiple = 'true'
                         :icon="'el-icon-d-caret'"
                         placeholder="选择人员"
                         @change = 'change2'
@@ -107,10 +108,10 @@
             </div>
             <div>
                 <ul v-show="tabPosition=='待审核'" class="tabLists">
-                  <li class="boxs" v-for="dia in noApplyLists">
+                  <li class="boxs" v-for="dia in noApplyLists" style="overflow:visible">
                     <div class="pBox">
                       <div class="imgBox">
-                        <img :src="imgurl" alt="">
+                        <img src="../../../assets/img/AgentManage/head.png" alt="">
                       </div>
                       <div class="descBox">
                         <div class="nameBox">
@@ -127,6 +128,7 @@
                             <span v-text="dia.oldtitle"></span>
                           </div>
                         </div>
+                        <div style="clear:both"></div>
                         <div class="nameBox">
                           <div class="labelBox">
                             <label for="">换班人：</label>
@@ -141,12 +143,14 @@
                             <span v-text="dia.newtitle"></span>
                           </div>
                         </div>
+                        <div style="clear:both"></div>
                         <div class="nameBox">
                           <div class="labelBox">
                             <label for="">换班原因：</label>
                             <span v-text="dia.description" class="hbExcuse"></span>
                           </div>
                         </div>
+                        <div style="clear:both"></div>
                         <div class="nameBox">
                           <div class="labelBox">
                             <label for="">申请时间：</label>
@@ -165,7 +169,7 @@
                   </li>
                 </ul>
                 <ul v-show="tabPosition=='已审核'" class="tabLists">
-                  <li class="boxs" v-for="dia in noApplyLists">
+                  <li class="boxs" v-for="dia in noApplyLists" style="overflow:visible">
                     <div class="pBox">
                       <div class="imgBox">
                         <img src="../../../assets/img/AgentManage/head.png" alt="">
@@ -229,7 +233,7 @@
                   </li>
                 </ul>
                 <ul v-show="tabPosition=='我的处理'" class="tabLists">
-                    <li class="boxs" v-for="dia in noApplyLists">
+                    <li class="boxs" v-for="dia in noApplyLists" style="overflow:visible">
                     <div class="pBox">
                       <div class="imgBox">
                         <img src="../../../assets/img/AgentManage/head.png" alt="">
@@ -356,7 +360,14 @@ export default {
         activeName: 'first',
         indexNow:-1,
         dia:{
-          reason:'请输入换班原因'
+          reason:'请输入换班原因',
+          tel2:'',
+          tel1:'',
+          truename:'',
+          user_id:'',
+          bTime:'',
+          hbTime:'',
+          vpeo:''
         }
     }
   },
@@ -372,13 +383,29 @@ export default {
       this.applyhbSelect.bTime = val;
     },
     change2(val){
+      $.each(this.applyhbSelect.peos,(n,k)=>{
+        if(k.value == val){
+          this.$set(this.dia,'tel2',k.phone);
+        }
+      })
       this.applyhbSelect.vpeo = val;
+      this.getNoApplyed(val);
     },
     change3(val){
       this.applyhbSelect.hbTime = val;
     },
     submitApply(){
-
+      this.$http.post('/pc_ims/staff/send_work',{content:{id:'',now_workusers_id:1, new_workusers_id:2,description:'试一下'}})
+      .then(res=>{
+         if(this.data.code==0){
+          console.log(res.data);
+         }else{
+            this.$message({
+                type:'error',
+                message:res.data.msg
+              })
+         }
+      })
     },
     changeStatus(val){
       if(val=='待审核'){
@@ -420,7 +447,11 @@ export default {
       this.$http.post('/pc_ims/staff/dispose',{id:id,type:type})
       .then(res=>{
           if(res.data.code==0){
-              console.log(res)
+              this.$message({
+                type:'success',
+                message:res.data.msg,
+                duration:2000
+              })
               this.getApplyStatus(this.tabtype);
            }else{
               this.$message({
@@ -431,8 +462,8 @@ export default {
            }
       })
     },
-    getNoApplyed(){//申请被换班列表
-      this.$http.post('/staff/get_worklist',{user_id:'3'})
+    getNoApplyed(id){//获取班次
+      this.$http.post('/staff/get_worklist',{user_id:id})
       .then(res=>{
         console.log(res.data);
         if(res.data.code==0){
@@ -446,6 +477,7 @@ export default {
             phone:data[0].phone
           }
           this.applyhbSelect.bTimes = arr;
+          this.applyhbSelect.hbTimes = arr;
          }else{
             this.$message({
               type:'error',
@@ -460,13 +492,33 @@ export default {
       .then(res=>{
         if(res.data.code==0){
           let data = res.data.data;
-          let arr=[];
+          console.log(res.data);
+          let arr=[],arr2=[];
           $.each(data,(n,k)=>{
             arr.push({label:k.workdate,value:k.id});
           })
-          this.dia.truename = data[0].truename;
-          this.dia.phone = data[0].phone;
           this.applyhbSelect.bTimes = arr;
+          this.applyhbSelect.hbTimes = arr;
+         }else{
+            this.$message({
+              type:'error',
+              message:res.data.msg,
+              duration:2000
+            })
+         }
+      })
+    },
+    getPeosOptions(){
+      this.$http.post('/pc_ims/get_user')
+      .then(res=>{
+        if(res.data.code==0){
+          let data = res.data.data;
+          console.log(data);
+          let arr = []
+          $.each(data,(n,k)=>{
+              arr.push({label:k.truename,value:k.user_id,phone:k.phone})
+          })
+          this.applyhbSelect.peos = arr;
          }else{
             this.$message({
               type:'error',
@@ -496,7 +548,7 @@ export default {
     },
     exportTable(){
       //console.log(this.topDate)
-      window.open('https://tesing.china-tillage.com/pc_ims/down/staff_work_list',{year:this.topDate.split('-')[0],month:this.topDate.split('-')[1]})
+      window.open('https://tesing.china-tillage.com/pc_ims/down/staff_work_list?year='+this.topDate.split('-')[0]+'&month='+this.topDate.split('-')[1]+'&Authorization='+this.$store.state.userInfoTotal.userinfo.password + "_" + this.$store.state.projectId + "_" + this.$store.state.userId);
     }
   },
   created() {
@@ -510,10 +562,13 @@ export default {
       }
   },
   mounted() {
+    this.dia.truename = this.$store.state.userInfoTotal.userinfo.name;
+    this.dia.tel1 = this.$store.state.userInfoTotal.userinfo.phone;
     this.getTableList();
     this.getApplyStatus();
     this.getNoApply();
-    //this.getNoApplyed();
+    this.getNoApplyed(this.$store.state.userInfoTotal.userinfo.id);
+    this.getPeosOptions()
   },
 }
 </script>
@@ -527,6 +582,7 @@ export default {
   width:100%;
   height:100%;
   .tabBoxs{
+    width:100%;
     padding:0 2.2%;
     height :6rem;
     overflow:hidden;
@@ -603,22 +659,23 @@ export default {
         .nameBox{
           margin-left: 0.11rem;
           width: 82.5%;
-          .vh(150);
+          height:1.5rem;
            border-radius: 0.02rem;
            padding-left: 0.2rem;
-           .vhPT(10);
+           padding-top:0.1rem;
            font-size: 0.14rem;
            .labelBox{
-             .vh(40);
-             .vhLH(40);
+             height:0.4rem;
+             line-height:0.4rem;
              label{
                color: #4f648b;
                display:inline-block;
              }
              .selectStyle{
                 width:2.34rem;
-                .vh(36);
-                .vhLH(36);
+                height:0.36rem;
+                line-height:0.36rem;
+                vertical-align:middle;
              }
              span{
                color: #93b7e2;

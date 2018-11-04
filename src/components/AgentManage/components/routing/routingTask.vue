@@ -3,28 +3,44 @@
     2018-10-18
 -->
 <template>
-    <div class="routingTask">
+    <div class="routingTask" v-if="newData.job_list">
         <div class="routingTime" >
-          <div class="topBox" v-for="(item,index) in data.job_list" :style="{left:1.8+(index*160*100/1366)+'vw'}">
+          <div class="topBox" v-show="isZero">
             <div>
-              <span>{{item.label}}</span></br>
+              <span>派发时间</span></br>
+              {{newData.addtime}}
+            </div>
+            <i class="el-icon-arrow-down"></i>
+          </div>
+          <div class="topBox topBox_red" :style="{left:1.7+(1*160*100/1366)+'vw'}" v-show="isZero">
+            <div>
+              <span>未接单</span>
+            </div>
+            <i class="el-icon-arrow-down"></i>
+          </div>
+          
+          <div class="topBox" v-for="(item,index) in newData.job_list" :style="{left:1.7+(index*160*100/1366)+'vw'}" v-show="!isZero">
+            <div>
+              <span v-if="item.label">{{item.label}}</span></br>
               {{item.time}}
             </div>
             <i class="el-icon-arrow-down"></i>
           </div>
         </div>    
         <div class="progressDiv">
-            <div v-for="(item,index) in data.job_list">
+            <div v-for="(item,index) in newData.job_list">
               <img src="../../../../assets/img/AgentManage/point@2x.png" class="item1" :style="{left:6.73+(index*160*100/1366)+'vw'}">
               <img src="../../../../assets/img/AgentManage/point2@2x.png" class="item2" :style="{left:12.59+(index*160*100/1366)+'vw'}">
             </div>
         </div> 
         <div class="middleTime">
-          <div class="bottomBox" v-for="(item,index) in data.job_list" :style="{left:9.31+(index*160*100/1366)+'vw'}">
-            <i class="el-icon-arrow-up"></i>
-            <div>
-              {{item.interval}}
-            </div>
+          <div class="bottomBox"  v-for="(item,index) in newData.job_list" :style="{left:9+(index*160*100/1366)+'vw'}">
+            <span v-if="item.interval && item.interval!=''">
+              <i class="el-icon-arrow-up"></i>
+              <div>
+                {{item.interval}}
+              </div>
+            </span>
           </div>
         </div>    
     </div>
@@ -35,7 +51,8 @@
       props:['data'],
       data () {
         return {
-
+          newData:{},
+          isZero:false,
         }
       },
       methods:{
@@ -44,12 +61,32 @@
       created() {
       },
       watch:{
-        data(val){
-          console.log(val)
+        data:{
+          handler(newval){
+            if(newval){
+               this.newData = newval;
+               if(this.newData.job_list.length==0){
+                  this.newData.job_list = [];
+               }
+               if(this.newData.now_state==0){
+                this.isZero = true;
+               }else{
+                this.isZero = false;
+               }
+            }
+            
+          },
+          deep:true
         }
       },
       mounted() {
-         
+        console.log(this.data);
+         this.newData = this.data;
+         if(this.newData.now_state==0){
+          this.isZero = true;
+         }else{
+          this.isZero = false;
+         }
       }
   }
 </script>
@@ -135,6 +172,13 @@
         border-top: 4px solid #04152c;
       }
     }
+    .topBox_red.topBox{
+      box-shadow:0px 1px 2px 0px rgba(246,108,108,0.35);
+      border:1px solid rgba(246,108,108,1);
+      i{
+        color: rgba(246,108,108,1);
+      }
+    }
   }
   .middleTime{
     .vh(64);
@@ -144,7 +188,7 @@
       .vw(96);
       position:absolute;
       left:9.31vw;
-      top:0;
+      top:0.05rem;
       i{
         position: absolute;
         left: 53%;

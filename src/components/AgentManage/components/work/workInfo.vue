@@ -5,7 +5,7 @@
 <template>
     <div class="workInfo">    
         <div class="infoTit">
-            <span>{{table.title}}</span>
+            <span v-if="table.title">{{table.title}}</span>
             <div class="dateBox">
                 <TimePickerT 
                     :value7= "value7"
@@ -44,6 +44,7 @@
             <div class="tabBoxss">
                 <Table 
                     style="width:100%" 
+                    v-if="tableData.len"
                     :table = "tableData"
                     @rowClick = "showInfos"
                 />    
@@ -84,7 +85,8 @@ export default {
             {label:'白狗汪5',value:5},
         ],
         vName:-1,
-        tableData:{}
+        tableData:{},
+        value7:utils.time(new Date()/1000,5)
     }
   },
   methods:{
@@ -95,7 +97,9 @@ export default {
       this.query.time = val;
     }, 
     getUserList(){
-        this.$emit('getUserList',this.query.type)
+        if(this.tableData.data){
+            this.$emit('getUserList',{type:this.query.type,date:this.query.time})
+        }
     },
     deletes(){
         let attrs = this.query.time.split('-');
@@ -155,11 +159,16 @@ export default {
   },
   watch:{
     table:{
-        handle(newval,oldval){
-            this.tableData = newval;
+        handler(newval,oldval){
+            if(newval){
+                this.tableData = newval;
+            }
+            
         },
-        deep:true
+        deep:true,
     }
+  },
+  created(){
   },
   mounted() {
     this.tableData = this.table;
@@ -175,7 +184,7 @@ export default {
     width: 100%;
     .infoTit{
         width: 100%;
-        .vh(50);
+        height:0.5rem;
         background: rgba(0, 0, 0, 0.2);
         display: flex;
         align-items: center;
@@ -192,7 +201,7 @@ export default {
         }
     }
     .tbalHe{
-        .vh(52);
+        height:0.52rem;
         .vhPT(20);
         position: relative;
         display: flex;
@@ -272,7 +281,7 @@ export default {
         
     }
     .tabBoxss{
-        .vh(538);
+        height:3rem;
         width: 100%;
         padding-left: 0.20rem;
     }

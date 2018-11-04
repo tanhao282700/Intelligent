@@ -31,7 +31,6 @@ const  utils = {
             const h0 = (date0.getHours() < 10 ? '0' + date0.getHours() : date0.getHours());
             const m0 = (date0.getMinutes() <10 ? '0' + date0.getMinutes() : date0.getMinutes());
             const s0 = (date0.getSeconds() <10 ? '0' + date0.getSeconds() : date0.getSeconds());
-
             switch(type){
                 case 1:
                     res = Y+'-'+M+'-'+D;
@@ -46,7 +45,7 @@ const  utils = {
                     res = Y+'-'+M+'-'+D+' '+h+':'+m+':'+s;
                 break;
                 case 5:
-                res = M+'月'+D+'日';
+                res = M+'-'+D;
                 break;
                 case 6:
                 res =Y+'年'+ M+'月'+D+'日';
@@ -63,6 +62,8 @@ const  utils = {
                 break;
                 case 9:
                 res =Y+'-'+ M;
+                case 10:
+                res = Y;
                 break;
             }
             return res;

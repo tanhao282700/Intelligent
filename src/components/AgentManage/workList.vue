@@ -62,21 +62,21 @@
           <i class="el-icon-third-feiji"></i>
         </div>
       </div>
-      <Dialog wid="546" hei="606" ref="send"> 
+      <Dialog wid="526" hei="606" ref="send"> 
         <SendWork @sendInfosShow="sendInfosShow" :query="query2"/> <!-- 派单 -->
       </Dialog> 
-      <Dialog wid="1326" hei="640" ref="dialog">
-        <WorkInfo @tableInfos2Show="tableInfos2Show" :table="table2" :query="query2"/>
+      <Dialog wid="1200" hei="600" ref="dialog">
+        <WorkInfo @tableInfos2Show="tableInfos2Show" :table="table2" :query="query2" @getUserList="rowClick"/>
       </Dialog> 
       <Dialog wid="910" hei="626" ref="tableInfos2">
         <div class="tableInfos">
           <div class="infoHead">
-            <span class="infoName" v-text="infoItem.info.user_name"></span>
-            <span class="infoState" v-text="this.infoTit2(infoItem.info.now_state)"></span>
+            <span class="infoName" v-text="infoItem.user_name"></span>
+            <span class="infoState" v-text="infoTit2(infoItem.now_state)"></span>
           </div>
           <div class="rightHead">
-            <span class="infoBusy" v-text="this.priority(infoItem.info.priority)"></span>
-            <span class="infoPer" v-text="this.infoTit(infoItem.info.type_id)"></span>
+            <span class="infoBusy" v-text="priority(infoItem.priority)"></span>
+            <span class="infoPer" v-text="infoTit(infoItem.type_id)"></span>
           </div>
           <div class="infoWater">
               <RoutingTask :data="infoItem" ></RoutingTask>
@@ -169,20 +169,21 @@ export default {
         table2:{
           title:'工单详情',
           tabs:[],
-          hei:488, //table高度  设置后有滚动条
+          hei:400, //table高度  设置后有滚动条
           len:0, //总条数
           data:[],
           th:[
             {prop:'user_name',label:'名称'},
             {prop:'title',label:'类别'},
-            {prop:'floor',label:'地点',wid:208}, 
-            {prop:'devicename',label:'设备名称',wid:169},
-            {prop:'addtime',label:'派发时间',wid:165},
-            {prop:'description',label:'内容描述',wid:194},
+            {prop:'floor',label:'地点'}, 
+            {prop:'devicename',label:'设备名称'},
+            {prop:'addtime',label:'派发时间'},
+            {prop:'description',label:'内容描述'},
             {prop:'type_id',label:'派发类别'},
-            {prop:'now_state',label:'状态',wid:146,
+            {prop:'now_state',label:'状态',
               operate: true, 
                 render: (h, param)=> {
+                  console.log(param.row.now_state)
                     const btnss = {
                         fills:param.row.now_state,  
                     };
@@ -191,12 +192,11 @@ export default {
                       on:{}
                     });
                 }},
-            {prop:'fill',label:'操作',wid:105,
+            {prop:'fill',label:'操作',
               operate: true, 
                 render: (h, param)=> {
                     const btnss = {
                         item:param.row, 
-                      //   id:param.row.id,  
                     };
                     return h(deal,{
                     props: { btnss:btnss},
@@ -207,7 +207,7 @@ export default {
         },
         vName:-1,
         //日期选择
-        value7:'11-01',
+        value7:utils.time(new Date()/1000,5),
         cant:false,
         table:{
             hei:328, //table高度  设置后有滚动条
@@ -256,62 +256,65 @@ export default {
     },
     changes(val){
           this.value7 = val;
-      }, 
-      deletes(){
-          let attrs = this.value7.split('-');
-          console.log(attrs)
-          if(attrs[2]==1){
-            if(attrs[1]==2 ||attrs[1]==4 || attrs[1]==6 ||attrs[1]==8 ||attrs[1]==9 ||attrs[1]==11 ||attrs[1]==1){
-                attrs[2]=31;
-            }else if(attrs[1]==5 ||attrs[1]==7 || attrs[1]==10 ){
-                attrs[2]=30;
-            }else if(attrs[1]==3 && Number(attrs[0])%4==0){
-                attrs[2]=29;
-            }else if(attrs[1]==3 && Number(attrs[0])%4!=0){
-                attrs[2]=28;
-            }
-            if(attrs[1]==1){
-                attrs[1] = 12;
-                attrs[0] = Number(attrs[0])-1;
-            }else{
-                attrs[1] = Number(attrs[1])-1;
-            }            
-          }else{
-              attrs[2] = Number(attrs[2])-1;
+    }, 
+    deletes(){
+        let attrs = this.value7.split('-');
+        if(attrs[2]==1){
+          if(attrs[1]==2 ||attrs[1]==4 || attrs[1]==6 ||attrs[1]==8 ||attrs[1]==9 ||attrs[1]==11 ||attrs[1]==1){
+              attrs[2]=31;
+          }else if(attrs[1]==5 ||attrs[1]==7 || attrs[1]==10 ){
+              attrs[2]=30;
+          }else if(attrs[1]==3 && Number(attrs[0])%4==0){
+              attrs[2]=29;
+          }else if(attrs[1]==3 && Number(attrs[0])%4!=0){
+              attrs[2]=28;
           }
-          this.value7 = attrs.join('-'); 
+          if(attrs[1]==1){
+              attrs[1] = 12;
+              attrs[0] = Number(attrs[0])-1;
+          }else{
+              attrs[1] = Number(attrs[1])-1;
+          }            
+        }else{
+            attrs[2] = Number(attrs[2])-1;
+        }
+        this.value7 = attrs.join('-'); 
       },
       adds(){
-          if(this.cant){
-              return;
-          }
-          let attrs = this.value7.split('-');
+        if(this.cant){
+            return;
+        }
+        let attrs = this.value7.split('-');
 
-          if(((attrs[1]==1 ||attrs[1]==3 || attrs[1]==5 ||attrs[1]==7 ||attrs[1]==8 ||attrs[1]==10 ||attrs[1]==12) && attrs[2]==31)
-              ||((attrs[1]==2 ||attrs[1]==6 || attrs[1]==9 ||attrs[1]==11) && attrs[2]==30) 
-              ||((attrs[1]==2 && Number(attrs[0])%4==0) && attrs[2]==29)
-              ||((attrs[1]==2 && Number(attrs[0])%4!=0) && attrs[2]==28)
-          ){
-              attrs[2] =1;
-              if(attrs[1]==12){
-                  attrs[1] = 1;
-                  attrs[0] = Number(attrs[0])+1;
-              }else{
-                  attrs[1] = Number(attrs[1])+1;
-              }   
-          }else{
-              attrs[2] = Number(attrs[2])+1;
-          }
-          this.value7 = attrs.join('-');    
+        if(((attrs[1]==1 ||attrs[1]==3 || attrs[1]==5 ||attrs[1]==7 ||attrs[1]==8 ||attrs[1]==10 ||attrs[1]==12) && attrs[2]==31)
+            ||((attrs[1]==2 ||attrs[1]==6 || attrs[1]==9 ||attrs[1]==11) && attrs[2]==30) 
+            ||((attrs[1]==2 && Number(attrs[0])%4==0) && attrs[2]==29)
+            ||((attrs[1]==2 && Number(attrs[0])%4!=0) && attrs[2]==28)
+        ){
+            attrs[2] =1;
+            if(attrs[1]==12){
+                attrs[1] = 1;
+                attrs[0] = Number(attrs[0])+1;
+            }else{
+                attrs[1] = Number(attrs[1])+1;
+            }   
+        }else{
+            attrs[2] = Number(attrs[2])+1;
+        }
+        this.value7 = attrs.join('-');    
       }, 
       rowClick(row){
+        this.infoItem.user_id  = row.user_id;
         this.$refs.dialog.show();
+        if(!row.type){
+          row.type = ''
+        }
         this.$http.post('/pc_ims/admin/user_jobs',{
-          sys_name:'',
-          date:'11-01',
-          user_id:row.user_id
+          sys_name:row.type,
+          date:utils.time(new Date()/1000,5),
+          user_id:this.infoItem.user_id
         }).then(res=>{
-          console.log(res);
+          //console.log(res);
           if(res.data.code==0){
             this.table2.len = res.data.count;
             this.table2.data = res.data.data.info;
@@ -327,14 +330,15 @@ export default {
         })
       },
       agree(item){ //同意
-        let state = item.state;
-        if(state==-1){ //退单
+        this.infoItem = item;
+        let state = item.now_state;
+        if(state==5){ //退单
             this.dialogBoxs = {
                 item:item,
                 state0:1,
                 txt:'是否允许退单'
             };
-        }else if(state==0){ //申请延期处理
+        }else if(state==2){ //申请延期处理
             this.dialogBoxs = {
                 item:item,
                 state0:1,
@@ -344,28 +348,39 @@ export default {
         this.$refs.isRefult.show();
       },
       refult(item){//拒绝
-        let state = item.state;
-        if(state==-1){ //退单
-            this.dialogBoxs = {
-                item:item,
-                state0:0,
-                txt:'是否拒绝退单'
-            };
-        }else if(state==0){ //申请延期处理
-            this.dialogBoxs = {
-                item:item,
-                state0:0,
-                txt:'是否拒绝延期处理'
-            };
-        } 
-        this.$refs.isRefult.show();
-      },
-      submitOk(){ //确认
-        //console.log(this.dialogBoxs);// 延期则直接关闭
-        this.$refs.isRefult.hide();
-        if(this.dialogBoxs.item.state==-1){//退单之后，弹出新的工单分配框
-            this.$refs.sendWork2.show();
+        this.infoItem = item;
+        let state = item.now_state;
+        if(state==2){
+          this.infoItem.now_state = 6;
+        }else if(state==5){
+          this.infoItem.now_state = 7;
         }
+        this.submitOk();
+      },
+      submitOk(){ //处理工单 同意/拒绝退单/延期
+        this.$http.post('/pc_ims/write_job',{
+          id:this.infoItem.id,
+          type:Number(this.infoItem.now_state)+1,
+          pic1:[],
+          pic2:[],
+          end_time:'',
+          user_id:this.$store.state.userInfoTotal.userinfo.id,
+          new_user_id:'',
+          info:'',
+          dispatch_user_id:''
+        })
+        .then(res=>{
+          console.log(res)
+          if(res.data.code==0){
+            this.$refs.isRefult.hide();
+            this.$refs.sendWork2.show();
+          }else{
+            this.$message({
+              type:'error',
+              message:res.data.msg
+            })
+          }
+        })
         
       },
       submitNo(){ //取消
@@ -411,7 +426,7 @@ export default {
             {label:'工单处理人员',value:this.infoItem.user_name}];
             if(this.infoItem.now_state==2){
               this.infoItem.localDesc = {label:'详情描述',value:this.infoItem.description};
-              this.info.localDesc2 = {};
+              this.infoItem.localDesc2 = {};
             }else if(this.infoItem.now_state==3){
               this.infoItem.localDesc = {label:'详情描述',value:this.infoItem.description}
               this.infoItem.localDesc2 = {label:'现场处理情况',value:this.infoItem.complete_info};
@@ -424,7 +439,9 @@ export default {
             }else{
               this.infoItem.sendInfos = []
             }
-            this.infoItem.job_list = this.infoItem.job_list;
+            this.infoItem.job_list = res.data.data.job_list;
+            this.infoItem.pic1 = res.data.data.pic1
+            this.infoItem.pic2 = res.data.data.pic2
           }else{
             this.$message({
               type:'error',
@@ -494,7 +511,6 @@ export default {
         return res;
       },
       dealWork(param){//处理工单
-        alert(123)
         this.getDealResult(param)
       },
       getDealResult(param){
@@ -560,7 +576,7 @@ export default {
           if(res.data.code==0){
             let data = res.data.data;
             $.each(data,(n,k)=>{
-              data[n].value = data[n].id;
+              data[n].value = data[n].title;
               data[n].label = data[n].title;
             })
             this.query2.types = data;
@@ -773,7 +789,7 @@ export default {
   }
   .tableInfos{
     width: 100%;
-    height: 100%;
+    height: 5rem;
     .infoHead{
       height:0.52rem;
       width: 100%;
@@ -799,7 +815,7 @@ export default {
     }
     .rightHead{
         position: absolute;
-        right:0.1rem;
+        right:0.2rem;
         line-height:0.52rem;
         color:#fff;
         top:0;
@@ -873,7 +889,7 @@ export default {
     }
 }
 .isRefTxt{
-    height:1.7rem;
+    height:1.75rem;
     width: 100%;
     text-align: center;
     font-size: 0.18rem;

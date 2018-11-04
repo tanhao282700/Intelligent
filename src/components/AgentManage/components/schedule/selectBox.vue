@@ -12,8 +12,9 @@
             @change = 'change()'
             >
             <el-option                 
-            v-for="item in options"
-            :key="item.value"           
+            v-for="(item,index) in options"
+            :key="index"    
+            :multiple = 'vmultiple'       
             :label="item.label"
             :value="item.value">
             </el-option>
@@ -25,14 +26,13 @@
 
 // 封装失败
 export default {
-  props:['options','value','placeholder','type'],
+  props:['options','value','placeholder','type','vmultiple'],
   data () {
     return {
         value0:''
     }
   },
   computed:{
-    
   },
   methods:{
       beFirst(){
@@ -50,6 +50,15 @@ export default {
     },
     change(){
         this.$emit('change', this.value0)
+    }
+  },
+  watch:{
+    vmultiple(val){
+      if(val){
+        this.vmultiple = true;
+      }else{
+        this.vmultiple = false;
+      }
     }
   },
   created() {

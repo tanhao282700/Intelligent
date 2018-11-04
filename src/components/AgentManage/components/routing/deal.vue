@@ -49,15 +49,24 @@ export default {
        this.$emit('deletes',this.btnss.item);
     }
   },
-  created() {
+  watch: {
+    btnss:{
+      handler(val){
+        if(val){
+          //console.log(val)
+        }
+      },
+      deep:true
+    }
   },
   mounted() {
-      if(this.btnss.item.state=='1'){
-        this.btnss.item.state='启动';
+    //console.log(this.btnss.item.now_state)
+      if(this.btnss.item.now_state=='1'){
+        this.btnss.item.now_state='启动';
       }else{
-        this.btnss.item.state='停用';
+        this.btnss.item.now_state='停用';
       }
-      this.changeStatus(this.btnss.item.state)
+      this.changeStatus(this.btnss.item.now_state)
   },
 }
 </script>

@@ -6,6 +6,7 @@
           class="inputbox"
           :placeholder="placeholder"
           v-model="modelValue"
+          :readonly="readonly"
           clearable>
         </el-input>           
     </div>

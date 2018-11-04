@@ -67,14 +67,14 @@
             <Dialog wid="910" hei="600" ref="tableInfos2">
                 <div class="tableInfos">
                     <div class="infoHead">
-                      <span class="infoName" v-text="infoItem.info.user_name"></span>
-                      <span class="infoState" v-text="infoTit(infoItem.info.now_value)"></span>
+                      <span class="infoName" v-text="infoItem.user_name"></span>
+                      <span class="infoState" v-text="infoTit(infoItem.now_value)"></span>
                     </div>
                     <div class="infoWater">
                         <RoutingTask :data="infoItem" ></RoutingTask>
                     </div>
                     <div class="infoBoxs">
-                      <RoutingInfo :data="infoItem"/>
+                      <RoutingInfo :data="infoItem" @dealWork = "dealWork"/>
                     </div>
                 </div>
             </Dialog>  
@@ -101,6 +101,7 @@ import Percentage from './components/work/Percentage';
 import WorkInfo from './components/work/workInfo';
 import State from './components/routing/state';
 import deal from './components/routing/deal';
+import deal2 from './components/work/deal';
 import RoutingTakModdel from './components/routing/routingTakModdel';
 import RoutingTask from './components/routing/routingTask';
 import RoutingInfo from './components/routing/routingInfo';
@@ -195,43 +196,28 @@ export default {
           },
           data:[],
           th:[
-            {prop:'id',label:'序号',wid:60},
+            {prop:'id',label:'序号',wid:50},
             {prop:'user_name',label:'名称'},
             {prop:'title',label:'类别'},
             {prop:'floorname',label:'地点'}, 
             {prop:'devicename',label:'设备名称'},
             {prop:'addtime',label:'派发时间'},
             {prop:'descript',label:'内容描述'},
-            {prop:'now_state',label:'状态',wid:80,
-            operate:true,render:(h,param)=>{
-              let val = ''
-              switch (param.row.now_state){
-                case 0:
-                val = '未接单'
-                break;
-                case 1:
-                val = '处理中'
-                break;
-                case 2:
-                val = '已完成'
-                break;
-                case 3:
-                val = '申请退单'
-                break;
-                case 4:
-                val = '退单完成'
-                break;
-              }
-              return val;
-            }},
-            {prop:'fill',label:'操作',wid:105,
+            {prop:'now_state',label:'状态',operate: true,render: (h, param)=> {
+                  const btnss = {
+                      fills:param.row.now_state,  
+                  };
+                  return h(State,{
+                    props: { states:btnss}
+                  });
+              }},
+            {prop:'fill',label:'操作',wid:210,
               operate: true, 
                 render: (h, param)=> {
-                    //console.log(param)
                     const btnss = {
                         item:param.row, 
                     };
-                    return h(deal,{
+                    return h(deal2,{
                     props: { btnss:btnss},
                     on:{agree:this.agree,refult:this.refult}
                     });
@@ -272,7 +258,13 @@ export default {
           desc:[],
           localDesc:{},
           localDesc2:{},
-          infoSend:[]
+          infoSend:[],
+          tableData:{
+            len:0,
+            hei:'',
+            data:[],
+            th:[]
+          }
         },  //某个工单的详情
     }
   },
@@ -286,6 +278,32 @@ export default {
     changes(val){
         this.value7 = val;
     }, 
+    dealWork(param){//处理工单
+      this.getDealResult(param)
+    },
+    getDealResult(param){
+      this.$http.post('/pc_ims/write_job',{
+        id:param.infos.info.id,
+        type:param.type,
+        pic1:param.infos.info.pic1,
+        pic2:param.infos.info.pic2,
+        end_time:'',
+        user_id:param.infos.info.user_id,
+        new_user_id:'',
+        info:param.infos.localDesc2.value,
+        dispatch_user_id:''
+      })
+      .then(res=>{
+        if(res.data.code==0){
+          console.log(res.data)
+        }else{
+          this.$message({
+            type:'error',
+            message:res.data.msg
+          })
+        }
+      })
+    },
     update(){
       this.$refs.add.show();
     },
@@ -389,7 +407,8 @@ export default {
       })
     },
     changeStatus(state,item){
-      //console.log(state)
+      console.log(state)
+      console.log(item)
       if(state=='启动'){
         state=1;
       }else{
@@ -415,6 +434,8 @@ export default {
       })
     },
     rowClick(row){
+      console.log(row)
+      this.infoItem.user_id = row.user_id;
       this.$refs.dialog.show();
       this.$http.post('/pc_ims/admin/inspectiondata_all',{sys_name:'',user_id:row.user_id,date:'11-01'})
       .then(res=>{
@@ -442,7 +463,8 @@ export default {
       this.$http.post('/pc_ims/admin/inspectionlist_info',{ins_id:item.id})
       .then(res=>{
         if(res.data.code==0){
-            this.infoItem = res.data.data;
+            console.log(res.data);
+            this.infoItem = res.data.data.info;
             this.infoItem.desc = [
               {label:'巡检人员',value:this.infoItem.user_name},
               {label:'电话',value:this.infoItem.user_phone},
@@ -456,7 +478,17 @@ export default {
             }else{
               this.infoItem.localDesc = {label:'现场处理情况',value:this.infoItem.complete_info};
             }
-            this.infoItem.job_list = this.infoItem.inspection_list;
+            this.infoItem.job_list = res.data.data.inspection_list;
+            this.infoItem.tableData = res.data.data.zhanshi;
+            this.infoItem.tableData.data = this.infoItem.tableData.list;
+            let arr = [];
+            let arrData = [];
+            $.each(this.infoItem.tableData.data,(n,k)=>{
+              arr.push({prop:'now_value'+n,label:k.name,wid:30})
+              arrData['now_value'+n]=k.now_value;
+            })
+            this.infoItem.tableData.data = arrData;
+            this.infoItem.tableData.th = arr;
           }else{
             this.$message({
               type:'error',

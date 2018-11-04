@@ -19,8 +19,8 @@
         <div class="tabHead">
           <div class="jobBoxs">
             <SelectBox 
-              :options = 'jobs' 
-              :value = "vJob" 
+              :options = 'vSystems' 
+              :value = "vsystem" 
               :icon="'el-icon-d-caret'"
               placeholder="类别"
               @change = "change1"
@@ -28,8 +28,8 @@
           </div>
           <div class="nameBoxs">
             <SelectBox 
-              :options = 'names' 
-              :value = "vName" 
+              :options = 'vTypes' 
+              :value = "vtype" 
               :icon="'el-icon-d-caret'"
               placeholder="派发类别" 
               @change = "change2"
@@ -212,14 +212,13 @@ export default {
         tabPosition:'正常处理',
         crumbs:['代维系统','工单'],
         workH:[],
-        jobs:[
-          {label:'给排水',value:1},
-          {label:'电梯',value:2},
-          {label:'变配电',value:3},
-          {label:'照明',value:4},
-          {label:'暖通',value:5},
-        ],
-        vJob:-1,
+        vSystems:[],
+        vTypes:[
+        {label:'系统自动派发',value:'0'},
+        {label:'手工派发',value:'1'},
+        {label:'投诉',value:'2'}],
+        vtype:'',
+        vsystem:'',
         names:[
           {label:'李白',value:1},
           {label:'杜甫',value:2},
@@ -391,10 +390,10 @@ export default {
   },
   methods:{
     change1(val){ //选择
-      this.vJob = val;
+      this.vsystem = val;
     },
     change2(val){ //选择
-      this.vName = val;
+      this.vtype = val;
     },
     changeStatus(val){//切换正常处理、延期处理
       console.log(val);
@@ -540,8 +539,8 @@ export default {
       },
       getTableList(){//有错，要改
         this.$http.post('/pc_ims/staff/jobdata_user',{
-          sys_name:'',
-          type:'',
+          sys_name:this.vsystem,
+          type:this.vtype,
           pagenumber:'1',
           pagesize:'20'
         }).then(res=> {
@@ -555,11 +554,29 @@ export default {
               })
            }
         })
+      },
+      getSystemsOptions(){
+        this.$http.post('/pc_ims/get_sysmenu').then(res=> {
+           if(res.data.code==0){
+              let data= res.data.data;
+              $.each(data,(n,k)=>{
+                data[n].label = data[n].title;
+                data[n].value = data[n].title;
+              })
+              this.vSystems = data;
+           }else{
+              this.$message({
+                type:'error',
+                message:res.data.msg
+              })
+           }
+        })
       }
   },
   mounted() {
     this.getTopData();
     this.getTableList();
+    this.getSystemsOptions();
   }
 }
 </script>

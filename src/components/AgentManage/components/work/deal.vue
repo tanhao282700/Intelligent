@@ -18,7 +18,7 @@ export default {
   computed:{
       canDealing(){
           let res = false;
-          if(this.btnss.item.state==-1||this.btnss.item.state==0){
+          if(this.btnss.item.now_state==2||this.btnss.item.now_state==5){
               res = true;
           }
           return res;
@@ -40,7 +40,7 @@ export default {
   created() {
   },
   mounted() {
-       
+       //console.log(this.btnss)
   },
 }
 </script>

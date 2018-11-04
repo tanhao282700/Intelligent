@@ -26,27 +26,27 @@ export default {
               break;
               case 1:
                 res.txt = '已接单';
-                res.color='"#F35E5E"'
+                res.color='#4ae283'
               break;
               case 2:
                 res.txt = '延期申请';
-                res.color = '"#EEB66E"'
+                res.color = '#fa6074'
               break;
               case 3:
                 res.txt = '延期审请通过'
-                res.color=''
+                res.color='#ffa414'
               break;
               case 4:
                 res.txt = '已完成'
-                res.color=''
+                res.color='#4ae283'
               break;
               case 5:
                 res.txt = '申请退单'
-                res.color=''
+                res.color='#fa6074'
               break;
               case 6:
                 res.txt = '完成退单'
-                res.color=''
+                res.color='#ffa414'
               break;
             }
           this.txt = res;

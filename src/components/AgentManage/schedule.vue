@@ -169,7 +169,7 @@ export default {
         this.$refs.dialog.show();
       },
       exportTableList(){
-        window.open('https://tesing.china-tillage.com/pc_ims/down/admin_work_list',{year:this.topDate.split('-')[0],month:this.topDate.split('-')[1]});
+        window.open('https://tesing.china-tillage.com/pc_ims/down/admin_work_list?year='+this.topDate.split('-')[0]+'&month='+this.topDate.split('-')[1]+'&Authorization='+this.$store.state.userInfoTotal.userinfo.password + "_" + this.$store.state.projectId + "_" + this.$store.state.userId);
       },
       getYesData(){//已审核的排班
         this.$http.post('/pc_ims/admin/approve_work').then(res=> {

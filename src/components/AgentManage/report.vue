@@ -21,12 +21,14 @@
                       v-model="year"
                       class="datetemp"
                       type="year"
+                      @change="changeYear"
                       placeholder="年">
                     </el-date-picker>
                     <el-date-picker
                       v-model="month"
                       type="month"
                       format="MM"
+                      @change="changeMonth"
                       value-format="MM"
                       class="datetemp"
                       placeholder="月">
@@ -35,8 +37,7 @@
                       v-model="day"
                       class="datetemp"
                       type="date"
-                      value-format="d"
-                      format="d"
+                      @change="changeDay"
                       placeholder="日">
                     </el-date-picker>
                   </div>
@@ -155,31 +156,25 @@ export default {
     handleClick(){
 
     },
-    changeYear(){
+    changeYear(val){
 
+      let curr = (utils.time(new Date(val)/1000,10))
+      this.$set(this.year,curr);
     },
-    changeMonth(){
-
+    changeDay(val){
+      if(!val){
+        this.day = ''
+      }
     },
-    changeDay(){
-
+    changeMonth(val){
+      this.month = val;
+      this.day = utils.time(new Date(this.year)/1000,10) +'-'+ val ;
     },
     exportList(){
       if(this.activeName=='first'){// 导出完成情况
-        this.$http.get('/pc_ims/down/count',{
-          year:'',
-          month:'',
-          day:'',
-          pagenumber:1,
-          pagesize:20
-        })
+         window.open('https://tesing.china-tillage.com/pc_ims/down/count?year=&month=&day=&Authorization='+this.$store.state.userInfoTotal.userinfo.password + "_" + this.$store.state.projectId + "_" + this.$store.state.userId);
       }else{//导出重复报修率
-        this.$http.get('/pc_ims/down/count_device',{
-          pagenumber:'1',
-          pagesize:'20'
-        }).then(res=>{
-            console.log(res);
-        })
+        window.open('https://tesing.china-tillage.com/pc_ims/down/count_device?Authorization='+this.$store.state.userInfoTotal.userinfo.password + "_" + this.$store.state.projectId + "_" + this.$store.state.userId);
       }
     },
     mouseOverLi(row){
@@ -202,6 +197,15 @@ export default {
 
     },
     getReportData(){
+      if(!this.year){
+        this.year = ''
+      }
+      if(!this.month){
+        this.month = ''
+      }
+      if(!this.day){
+        this.day = ''
+      }
       this.$http.post('/pc_ims/admin/inspectionlist_count',{
         year:this.format(this.year,'yyyy'),
         month:this.format(this.month,'MM'),
