@@ -15,11 +15,42 @@
     	props:['data'],
         data(){
         	return {
-
+        		areaEnergyRzl:[],
+        		areaEnergyKf:[],
         	}
         },
         methods:{
+        	getChartLineData(){	        	
+        		let param = {
+	        		project_id:1,
+	        		sys_menu_id:1,
+	        		area_query_date_type:'',
+	        		area_date:'',
+	        		// energy_type:this.iscur,
+	        		device_query_date_type:'',
+	        		device_date:''
+	        	}
+	        	this.$http.post('/hotel_energy/analysis',param)
+	        	.then(res=>{
+	        		//区域图	
+	        		let trendData = res.data.data.area_energy_use.trend_data;
+	        		let newRzl = [];
+	        		let newKf = [];
+	        		$.each(trendData.check_in_hotel_rate,function(i,k){
+	        			newRzl.push([k.date,k.value]);
+	        		});
+	        		this.areaEnergyRzl = newRzl;
+
+	        		$.each(trendData.floor_value[0].data,function(i,k){
+	        			newKf.push([k.date,k.value]);
+	        		});
+	        		this.areaEnergyKf = newKf;
+	        		this.drawLine(this.data);
+
+	        	})
+        	},
         	drawLine(data){
+        		console.log(data);
         		let chart = this.$echarts.init(document.getElementById('lines'));
         		let chart2 = this.$echarts.init(document.getElementById('pies'));
         		let chart3 = this.$echarts.init(document.getElementById('bars'));
@@ -84,15 +115,17 @@
 		            },
 		            calculable : true,
 		            xAxis: {
-				        type: 'category',
-				        boundaryGap: true,
+				        type: 'time',
+				        // boundaryGap: true,
 				        axisLine: {show:false},
 				        axisTick: {show:false},
 				        splitLine: {show:false},
 				        axisLabel: {textStyle: {
-						    color: '#708FBE'
+						    color: '#708FBE',
+		                	showMinLabel:false,
+		                	showMaxLabel:false,
 						}},
-						data:['1','2','3','4','5','6','7']
+						// data:['1','2','3','4','5','6','7']
 			        },
 			    	yAxis: {
 				        axisLine: {show:false},
@@ -107,7 +140,7 @@
 			    	},
 				    series: [{
 				    	name:'客房',
-				        data:[4,5,7,7,7,5], //data.custom,
+				        data: this.areaEnergyKf,//data.custom,
 				        type: 'line',
 				        symbol: "circle", 
 				        symbolSize:0,
@@ -122,7 +155,7 @@
 			            },
 				    },{
 				    	name:'宴会厅',
-				        data:[3,3,3,3,3,3,3], //data.party,
+				        data:data.party,
 				        type: 'line',
 				        symbol: "circle", 
 				        symbolSize:0,
@@ -214,7 +247,7 @@
 			            }
 			        },{
 				    	name:'入住率',
-				        data: data.occupancy,
+				        data: this.areaEnergyRzl,  //data.occupancy,
 				        type: 'line',
 				        symbol: "circle", 
 				        symbolSize:0,
@@ -315,8 +348,8 @@
         	}
         },
         mounted(){
-        	//console.log(this.data);
-        	this.drawLine(this.data);
+        	this.getChartLineData();
+        	// this.drawLine(this.data);
         }
     }
 </script>
