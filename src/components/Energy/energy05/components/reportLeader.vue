@@ -261,7 +261,7 @@
     border-top:none!important;
     border-bottom:1px solid rgba(45, 148, 240, 0.2)!important
   }
-  .reportLeader .leaderTab{
-    border-bottom:1px solid rgba(45, 148, 240, 0.2)!important;
+  .energyReport .reportLeader .el-table--border, .energyReport .reportLeader .el-table--group{
+    border-bottom:1px solid rgba(45, 148, 240, 0.4)!important;
   }
 </style>

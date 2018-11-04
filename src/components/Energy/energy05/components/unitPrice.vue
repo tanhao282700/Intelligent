@@ -17,26 +17,35 @@
     			<ul v-for="(item,index) in list" class="itemsBox unit">
     				<li><i class="liCloseBox el-icon-circle-close" @click="removLi(item,index)"></i>{{index+1}}</li>
     				<li>
-			            <el-select v-model="item.energy" placeholder="类型">
-			                <el-option label="电" value="1"></el-option>
-			                <el-option label="水" value="2"></el-option>
-                      <el-option label="气" value="3"></el-option>
+			            <el-select @change="chooseChange(item,index)" v-model="item.energy" placeholder="类型">
+			                <el-option label="电" value="电"></el-option>
+			                <el-option label="水" value="水"></el-option>
+                      <el-option label="气" value="气"></el-option>
                   </el-select>
     				</li>
     				<li>
-			            <el-select v-model="item.user_type" placeholder="能耗用途">
+			            <el-select @change="chooseChange(item,index)" v-model="item.user_type" placeholder="能耗用途">
 			                <el-option label="居民" value="居民"></el-option>
                       <el-option label="商业" value="商业"></el-option>
                   </el-select>
     				</li>
     				<li>
 			            <el-select v-model="item.energyWhere" placeholder="表器选择">
-			                <el-option label="电" value="1"></el-option>
-			                <el-option label="水" value="2"></el-option>
+			                <el-option value="treeVal">
+                        <el-tree
+                          @check-change="treeChange(item,index)"
+                          :data="data2"
+                          show-checkbox
+                          node-key="id"
+                          ref="tree"
+                          :default-checked-keys="item.area"
+                          :props="defaultProps">
+                        </el-tree>
+                      </el-option>
 			            </el-select>
     				</li>
             <li>
-              <el-select v-model="item.time_type" placeholder="时段类型">
+              <el-select @change="chooseChange(item,index)" v-model="item.time_type" placeholder="时段类型">
                 <el-option label="无" value=""></el-option>
                 <el-option label="谷时" value="谷时"></el-option>
                 <el-option label="峰时" value="峰时"></el-option>
@@ -45,6 +54,7 @@
             </li>
     				<li>
     					<el-time-picker
+                @change="timeChange(item,index)"
 						    is-range
 						    v-model="item.dateRange"
 						    range-separator="-"
@@ -56,7 +66,7 @@
 						</el-time-picker>
     				</li>
     				<li class="myInp">
-              <el-input v-model="item.price" placeholder="请输入价格"></el-input>
+              <el-input @change="inputChange(item,index)" v-model="item.price" placeholder="请输入价格"></el-input>
               <span>元</span>
             </li>
     			</ul>
@@ -67,21 +77,33 @@
                 <span @click="setPrise" class="btnOk">确定</span>
             </div>
     	</div>
+      <bubbleTip :tipText="bubbleTip"/>
     </div>
 
 </template>
 
 <script>
+  import bubbleTip from '@/components/common/bubbleTip';
     export default {
+      components:{
+        "bubbleTip":bubbleTip
+      },
         data(){
         	return{
+            bubbleTip:'',
+            treeVal:'',
+            data2: [{}],
+            defaultProps: {
+              children: 'child',
+              label: 'title'
+            },
             list:[],
-        		form:{
-
-        		},
+            listChange:[],
+        		form:{},
             deletForm:{
               project_id:'',
               sys_menu_id:'',
+              query_price:true,
               price_set:''
             },
         	}
@@ -92,8 +114,105 @@
             this.initQuery()
       },
         methods:{
+          inputChange(item,index){
+              let filter  = /^([1-9]\d*|0)(\.\d{1,2})?$/;
+              if(!filter.test(item.price)){
+                this.bubbleTipShow("价格输入不合法");
+                this.list[index].price = ''
+                this.chooseChange(item,index)
+              }
+          },
+          timeChange(item,index){
+            this.list[index].start = this.list[index].dateRange[0]
+            this.list[index].end = this.list[index].dateRange[1]
+            if(this.listChange.length!=0){
+              let isAdd = true
+              for(let i=0;i<this.listChange.length;i++){
+                if(item.self_id==this.listChange[i].self_id){
+                  this.listChange[i] = this.list[index]
+                  return
+                }
+              }
+              if(isAdd){
+                this.listChange.push(item)
+              }
+            }else{
+              this.listChange.push(item)
+            }
+          },
+          treeChange(item,index){
+            let nodes = this.$refs.tree[index].getCheckedKeys();
+            this.list[index].area = nodes
+            if(this.listChange.length!=0){
+              let isAdd = true
+              for(let i=0;i<this.listChange.length;i++){
+                if(item.self_id==this.listChange[i].self_id){
+                  isAdd = false
+                  this.listChange[i] = this.list[index]
+                  return
+                }
+              }
+              if(isAdd){
+                this.listChange.push(item)
+              }
+            }else{
+              this.listChange.push(item)
+            }
+          },
+          chooseChange(item,index){
+            if(this.listChange.length!=0){
+                  let isAdd = true
+              for(let i=0;i<this.listChange.length;i++){
+                  if(item.self_id==this.listChange[i].self_id){
+                    isAdd = false
+                    this.listChange[i] = item
+                    return
+                  }
+              }
+              if(isAdd){
+                this.listChange.push(item)
+              }
+            }else{
+                this.listChange.push(item)
+            }
+          },
           setPrise(){
-            console.log(this.list)
+            if(this.listChange.length==0){
+              this.bubbleTipShow("没有任何修改");
+            }else{
+              for(let j=0;j<this.listChange.length;j++){
+                let k = ''
+                for (k in this.listChange[j]){
+                  if(!this.listChange[j][k] || this.listChange[j][k].length==0){
+                    for(let z=0;z<this.list.length;z++){
+                      if(this.listChange[j].self_id==this.list[z].self_id){
+                        this.bubbleTipShow("请完善第"+(z+1)+"行信息");
+                        return
+                      }
+                    }
+                  }
+                }
+              }
+                this.listChange.map((item,index)=>{
+                  if(item.myId){
+                      delete item.self_id
+                  }
+                })
+              this.$http.post('/hotel_energy/statement',{
+                project_id:this.deletForm.project_id,
+                query_price:true,
+                sys_menu_id:this.deletForm.sys_menu_id,
+                price_set:JSON.stringify(this.listChange)
+              }).then((res)=>{
+                if(res.data.code==0){
+                  this.initQuery()
+                  this.listChange = []
+                  this.bubbleTipShow(res.data.data.result_data.handle_price_record[0]);
+                }else{
+                  this.bubbleTipShow(res.data.message);
+                }
+              })
+            }
           },
           initQuery(){
             let sys_menu_id = this.$store.state.sysList[2].sys_menu_id;
@@ -104,28 +223,77 @@
                 query_price:true
               }).then((res)=>{
                 if(res.data.code==0){
+                    this.data2 = res.data.data.area_level
+                  for(let i=0;i<res.data.data.result_data.price_set_record.length;i++){
+                    res.data.data.result_data.price_set_record[i].dateRange = [res.data.data.result_data.price_set_record[i].start,res.data.data.result_data.price_set_record[i].end]
+                  }
                   this.list = res.data.data.result_data.price_set_record
-                  this.list.map((item)=>{
-                      item.dateRange = [item.start,item.end]
-                  })
                 }else{
 
                 }
               })
           },
+          bubbleTipShow(tip){
+            this.bubbleTip = tip;
+            this.$store.state.bubbleShow = true;
+            var that = this;
+            setTimeout(function () {
+              that.$store.state.bubbleShow = false;
+            },3000)
+          },
         	addMode(){
-        		this.list.push({val:999});
+             let id = Math.floor(Math.random()*900)+600
+        		this.list.push({
+              "energy": "",
+              "user_type": "",
+              "area": [],
+              "time_type": "",
+              "start": "",
+              "end": "",
+              "price":'',
+              "self_id":id,
+              "myId":true
+            });
+             this.listChange.push({
+               "energy": "",
+               "user_type": "",
+               "area": [],
+               "time_type": "",
+               "start": "",
+               "end": "",
+               "price":'',
+               "self_id":id,
+               "myId":true
+             })
         	},
         	removLi(item,index){
-        		/*this.uls.splice(index,1)*/
-        		this.deletForm.price_set = JSON.stringify({
-              self_id:item.self_id
-            })
-            this.$http.post('/hotel_energy/statement',this.deletForm).then((res)=>{
-              if(res.data.code==0){
-                this.list.splice(index,1)
-              }
-            })
+        		console.log(item)
+            if(item.myId){
+        		    this.list.splice(index,1)
+                for(var i=0;i<this.listChange.length;i++){
+        		        if(item.self_id==this.listChange[i].self_id){
+        		            this.listChange.splice(i,1)
+                      return
+                    }
+                }
+            }else{
+              this.deletForm.price_set = JSON.stringify({
+                self_id:item.self_id
+              })
+              this.$http.post('/hotel_energy/statement',this.deletForm).then((res)=>{
+                if(res.data.code==0){
+                  this.bubbleTipShow("删除成功");
+                  this.list.splice(index,1)
+                  for(let i=0;i<this.listChange.length;i++){
+                    if(item.self_id==this.listChange[i].self_id){
+                      this.listChange.splice(i,1)
+                    }
+                  }
+                }else{
+                  this.bubbleTipShow(res.data.message);
+                }
+              })
+            }
         	},
           hideModel(){
             this.$emit("unitShowBool",false);

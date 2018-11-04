@@ -317,8 +317,8 @@
                         }
 
                         let wid = $($(".firstTab td")[1]).width()
-                        $(".mytab td").width(wid)
-                        $(".mytab tr").append('<td style="width:'+wid*2+'px"></td>')
+                        $(".mytab td").width(wid-1)
+                        $(".mytab tr").append('<td style="width:'+(wid*2+2)+'px"></td>')
                         let lenth = []
                         this.areaList.map((item,index)=> {
                             lenth.push(item.child_data.length)
@@ -328,12 +328,12 @@
                               $(".mytab tr").append('<td style="width:'+wid*lenth[i]+'px;color:#439AFF!important;font-size:0.14rem!important;">'+data[4].data[i].parent_area_total[0]+'</td>')
                               $(".mytab tr").append('<td style="width:'+wid*lenth[i]+'px;color:#FFA414;font-size:0.14rem!important;">'+data[4].data[i].parent_area_total[1]+'</td>')
                             }else{
-                              $(".mytab tr").append('<td style="width:'+wid*lenth[i]+'px;color:white;font-size:0.14rem!important;">用量：'+data[4].data[i].parent_area_total[0]+'</td>')
-                              $(".mytab tr").append('<td style="width:'+wid*lenth[i]+'px;color:#FFA414!important;font-size:0.14rem!important;">费用：'+data[4].data[i].parent_area_total[1]+'</td>')
+                              $(".mytab tr").append('<td style="width:'+(wid*lenth[i]+0)+'px;color:white;font-size:0.14rem!important;">用量：'+data[4].data[i].parent_area_total[0]+'</td>')
+                              $(".mytab tr").append('<td style="width:'+(wid*lenth[i]+0)+'px;color:#FFA414!important;font-size:0.14rem!important;">费用：'+data[4].data[i].parent_area_total[1]+'</td>')
                             }
                         }
 
-                        $($(".mytab td")[0]).width($($(".firstTab td")[0]).width()-2)
+                        $($(".mytab td")[0]).width($($(".firstTab td")[0]).width()-1)
 
                         $(".firstTab").height('70%')
 
