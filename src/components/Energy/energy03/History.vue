@@ -274,9 +274,8 @@
     </el-dialog>
 
     <el-dialog title="批量导入" :visible.sync="fileUploadDialogVisible" class="metersHistoryDialogBox uploadFileBox" :close-on-click-modal="false">
-      <div class="upRowBox"><span>上传</span><span class="upBtn">选择文件</span>
-        <form action="uploadServlet.do" method="post"
-              enctype="multipart/form-data">
+      <div class="upRowBox">
+        <span>上传</span><span class="upBtn">选择文件</span><form action="uploadServlet.do" method="post" enctype="multipart/form-data">
           <input type="file" id="upSysFile">
         </form>
       </div>
@@ -412,7 +411,7 @@
             floor_id: that.formData.floor_id,
             sys_menu_id:that.formData.sys_menu_id,
             row_key: that.dialogInfoObj.row_key,
-            update_data:that.dialogInfoObj,
+            update_data: JSON.stringify(that.dialogInfoObj),
             page_index:1
           }
         }else{
@@ -423,7 +422,7 @@
             project_id: that.$store.state.projectId,
             floor_id: that.formData.floor_id,
             sys_menu_id:that.formData.sys_menu_id,
-            insert_one_data:insertData,
+            insert_one_data: JSON.stringify(insertData),
             page_index:1
           }
         }
@@ -892,12 +891,13 @@
     margin-right: .15rem;
     display: inline-block;
   }
+  .upRowBox form{display: inline-block;}
   .upRowBox input{
     width: 2rem;
     height: .32rem;
     border: none;
     vertical-align: bottom;
-    opacity: 1;
+    opacity: 0;
     margin-left: -2rem;
     cursor: pointer;
   }
