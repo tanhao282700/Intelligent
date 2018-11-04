@@ -22,7 +22,7 @@
       </el-tabs>
       <el-row class="block-col-2 userCenter" style="position: absolute;right: 2.2%;top: 0.1rem;">
         <el-col :span="12">
-          <el-dropdown trigger="click" @command="handleCommand" >
+          <el-dropdown trigger="hover" @command="handleCommand" >
             <span class="el-dropdown-link">
               <span @click="showPersonInfo" class="userIcon"></span>
             </span>
@@ -50,6 +50,15 @@
       <component :isShowBannerParam="showBannerParam" @changeBannerParam="updateBannerParam" is="Banner"></component>
     </div>
     <component is="PersonInfo" @showTips="personInfoShowTips" :options="personInfoOptions"></component>
+
+    <el-dialog :visible.sync="personalCenter.isShowDialog" width="364px" top="30vh" custom-class="homeLoginDialog">
+      <span>是否确定退出此账号登录</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="loginOut">确 定</el-button>
+        <el-button @click="personalCenter.isShowDialog = false">取 消</el-button>
+      </span>
+    </el-dialog>
+
   </div>
 
 </template>
@@ -85,6 +94,9 @@ export default {
     }
   },
   methods:{
+    loginOut(){
+        window.location.reload()
+    },
      toLink(tab, event){
           this.$router.replace({ path: tab.$attrs.route});
      },

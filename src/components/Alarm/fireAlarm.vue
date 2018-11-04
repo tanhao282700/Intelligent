@@ -70,7 +70,7 @@
 
           <!--导出-->
           <div>
-            <a style="display: block" :href="downloadFile+'?start_time='+fileTime[0]+'&end_time='+fileTime[1]+'&level='+formData.level+'&sys_id='+formData.sys_id+'&floor_id='+formData.floor_id+'&device_id='+formData.device_id"><el-button class="addNewUserBtn queryBoxBtn export" ><i></i><span>导出</span></el-button></a>
+            <a style="display: block" :href="downloadFile+'?start_time='+fileTime[0]+'&end_time='+fileTime[1]+'&level='+formData.level+'&sys_id='+formData.sys_id+'&floor_id='+formData.floor_id+'&device_id='+formData.device_id+'&project_id='+this.formData.project_id"><el-button class="addNewUserBtn queryBoxBtn export" ><i></i><span>导出</span></el-button></a>
           </div>
         </div>
 
@@ -182,6 +182,7 @@
           device_id:'',
           start_time:'',
           end_time:'',
+          project_id:'',
           pagesize:20,
           pagenumber:1,
           total:0,
@@ -221,7 +222,7 @@
 
     },
     mounted(){
-
+      this.formData.project_id = this.$store.state.projectId;
     },
     methods:{
       indexMethod(index) {

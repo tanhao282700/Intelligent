@@ -131,12 +131,14 @@
             formData:{
               project_id:1,
               choice_page:2,
+              sys_menu_id:'',
               date_type:''
             },
         	}
         },
         mounted(){
-            this.getData()
+          this.formData.sys_menu_id = this.$store.state.sysList[2].sys_menu_id;
+          this.getData()
             this.getDateSet();
           this.$nextTick(()=>{
             $(".leaderTab").width($(".el-table__header").width())

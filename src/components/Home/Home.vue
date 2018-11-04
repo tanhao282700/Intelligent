@@ -889,21 +889,22 @@
 
 
   }
+
+
 </style>
 <style>
-
-  #home .homeLoginDialog{
+.homeLoginDialog{
     height:216px;
     background:#061733;
     box-shadow:0 0 6px 0 #35a3ee;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
   }
-  #home .el-dialog__headerbtn{
+.homeLoginDialog .el-dialog__headerbtn{
     top:6px;
     right:10px;
   }
-  #home .el-dialog__body{
+.homeLoginDialog .el-dialog__body{
     height:142px;
     padding:0;
     color:#b5d6ff;
@@ -911,11 +912,11 @@
     text-align: center;
     font-size:20px;
   }
-  #home .el-dialog__footer{
+.homeLoginDialog .el-dialog__footer{
     padding:0;
     height:44px;
   }
-  #home .el-dialog__footer .dialog-footer{
+.homeLoginDialog .el-dialog__footer .dialog-footer{
     display: inline-block;
     width:100%;
     height:100%;
@@ -924,13 +925,13 @@
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
   }
-  #home .el-dialog__footer .dialog-footer button:first-child{
+.homeLoginDialog .el-dialog__footer .dialog-footer button:first-child{
     border-bottom-left-radius:6px!important;
   }
-  #home .el-dialog__footer .dialog-footer button:last-child{
+.homeLoginDialog .el-dialog__footer .dialog-footer button:last-child{
     border-bottom-left-radius:8px;
   }
-  #home .el-dialog__footer .dialog-footer button{
+.homeLoginDialog .el-dialog__footer .dialog-footer button{
     box-sizing: border-box;
     width:50%;
     margin:0;
@@ -939,7 +940,7 @@
     height:100%;
     float:left;
   }
-  #home .el-button{
+.homeLoginDialog .el-button{
     background:none;
   }
 

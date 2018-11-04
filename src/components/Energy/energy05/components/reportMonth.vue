@@ -196,12 +196,14 @@
             formData:{
               project_id:1,
               choice_page:0,
+              sys_menu_id:'',
               query_date:'',
               energy_type:"0"  //0电  1水  2气
             }
         	}
         },
         mounted(){
+            this.formData.sys_menu_id = this.$store.state.sysList[2].sys_menu_id;
             this.setWidth();
             this.getData();
             this.getDateSet();
@@ -221,6 +223,7 @@
                 choice_page:0,
                 query_date:date,
                 export:true,
+                sys_menu_id:this.formData.sys_menu_id,
                 energy_type:this.formData.energy_type
               }
               this.$http.post('/hotel_energy/statement',data).then((res)=> {
