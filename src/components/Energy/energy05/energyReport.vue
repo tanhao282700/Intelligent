@@ -12,7 +12,8 @@
 	        <tabs :is="currentView" keep-alive></tabs>
 		</div>
 
-		<unit v-on:unitShowBool="unitShowBool" v-show="unitShow"></unit>
+		<!--<unit v-on:unitShowBool="unitShowBool" v-show="unitShow"></unit>-->
+      <component :is="unitComponent" @unitShowBool="unitShowBool" ></component>
 
     </div>
 </template>
@@ -33,6 +34,7 @@
         },
 	    data() {
 	        return {
+	          unitComponent:'',
 	        	unitShow:false,
 	        	//tab切换状态
                 first:'first',
@@ -62,10 +64,14 @@
                 });
             },
             unitShowCli(){
-            	this.unitShow = true;
+                this.unitComponent = 'unit'
+            	/*this.unitShow = true;*/
             },
             unitShowBool(val){
-            	this.unitShow = val;
+              if(val==false){
+                this.unitComponent = ''
+              }
+            	/*this.unitShow = val;*/
             },
             toggleTabs(tabText){
                 if(tabText == "first"){

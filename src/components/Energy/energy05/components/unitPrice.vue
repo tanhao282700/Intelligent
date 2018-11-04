@@ -20,22 +20,23 @@
 			            <el-select v-model="item.energyType" placeholder="类型">
 			                <el-option label="电" value="1"></el-option>
 			                <el-option label="水" value="2"></el-option>
-			            </el-select>
+                      <el-option label="气" value="3"></el-option>
+                  </el-select>
     				</li>
     				<li>
-			            <el-select v-model="item.energyTo" placeholder="类型">
+			            <el-select v-model="item.energyTo" placeholder="能耗用途">
 			                <el-option label="电" value="1"></el-option>
 			                <el-option label="水" value="2"></el-option>
 			            </el-select>
     				</li>
     				<li>
-			            <el-select v-model="item.energyWhere" placeholder="类型">
+			            <el-select v-model="item.energyWhere" placeholder="表器选择">
 			                <el-option label="电" value="1"></el-option>
 			                <el-option label="水" value="2"></el-option>
 			            </el-select>
     				</li>
             <li>
-              <el-select v-model="item.energyWhere" placeholder="类型">
+              <el-select v-model="item.energyWhere" placeholder="时段类型">
                 <el-option label="电" value="1"></el-option>
                 <el-option label="水" value="2"></el-option>
               </el-select>
@@ -55,7 +56,7 @@
     			<div class="addMode"><span @click="addMode"><i class="el-icon-circle-plus"></i>添加模式</span></div>
 			</el-form>
             <div class="btnGroupBox">
-                <span>取消</span>
+                <span @click="hideModel">取消</span>
                 <span class="btnOk">确定</span>
             </div>
     	</div>
@@ -77,17 +78,30 @@
         		}
         	}
         },
+      mounted(){
+            this.initQuery()
+      },
         methods:{
+          initQuery(){
+            let sys_menu_id = this.$store.state.sysList[2].sys_menu_id;
+            let project_id = this.$store.state.projectId;
+              this.$http.post('/hotel_energy/statement',{
+                project_id:project_id,
+                sys_menu_id:sys_menu_id
+              }).then((res)=>{
+
+              })
+          },
         	addMode(){
         		this.uls.push({val:999});
         	},
         	removLi(index){
         		this.uls.splice(index,1)
         	},
-            hideModel(){
-                this.$emit("unitShowBool",false);
-            }
-        }
+          hideModel(){
+            this.$emit("unitShowBool",false);
+          },
+        },
     }
 </script>
 
