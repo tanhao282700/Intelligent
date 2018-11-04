@@ -119,9 +119,10 @@
         let option = {
           title : {
             text: '工单统计',
+            top:'2',
             textStyle:{
                 color:"#fff",
-                fontSize:"14",
+                fontSize:"12",
                 fontWeight:"normal"
             }
           },
@@ -243,15 +244,15 @@
         }
       }
       .titleIcon{
-        width:22px;
-        height:22px;
-        background:url(../../assets/img/home/agent.png) no-repeat center 4px;
-        background-size:cover;
+        width:.16rem;
+        height: .16rem;
+        background:url(../../assets/img/home/agent.png) no-repeat center 2px;
+        background-size:100% auto;
         margin-right:12px;
       }
       .txt{
         color:white;
-        font-size:16px;
+        font-size:.12rem;
       }
     }
   .con{

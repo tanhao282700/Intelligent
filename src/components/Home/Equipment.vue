@@ -231,7 +231,7 @@
     display:flex;
     flex-direction:column;
     .title{
-      height:8.9%;
+      height: .3rem;
       background:rgba(0,12,39,0.4);
       display: flex;
       flex-direction: row;
@@ -256,15 +256,15 @@
         }
       }
       .titleIcon{
-        width:22px;
-        height:22px;
+        width: .16rem;
+        height: .16rem;
         background:url(../../assets/img/home/equipment.png) no-repeat center 2px;
-        background-size:cover;
+        background-size:100% auto;
         margin-right:12px;
       }
       .txt{
         color:white;
-        font-size:16px;
+        font-size:.12rem;
       }
     }
     .hidden{
@@ -272,10 +272,11 @@
     }
   .con{
     flex:1;
+    height: calc(100% - .3rem);
     /*padding:0 5.976%;*/
     display:flex;
     flex-direction: column;
-    padding:0 3.187%;
+    padding:0 .075rem;
     position:relative;
     /*background:#011530;*/
     /*.chart{

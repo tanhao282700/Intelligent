@@ -26,11 +26,11 @@
           <div class="containerBor">
             <div class="container">
               <div class="wave"></div>
+              <div class="info">
+                <span>入住率</span>
+                <span v-text="occupancy"></span>
+              </div>
             </div>
-          </div>
-          <div class="info">
-            <span>入住率</span>
-            <span v-text="occupancy"></span>
           </div>
         </div>
       </div>
@@ -94,7 +94,7 @@
                 this.dian = response.data.data.data[0]
                 this.qi = response.data.data.data[2]
                 this.percentData = response.data.data.data[1].energy  //初始化水的占比
-            this.occupancy = response.data.data.occupancy
+            this.occupancy = response.data.data.occupancy + "%";
                 this.drawEchart2(this.shui)
                 this.loading = false
                 this.revenInterval = setInterval(()=>{
@@ -147,7 +147,7 @@
           title:{
             text:title,
             textStyle:{
-              fontSize:14,
+              fontSize:10,
               color:'white',
             },
             backgroundColor:'rgba(0, 12, 39, 0.4)'
@@ -174,9 +174,13 @@
             padding:0,
             textStyle:{
               color:'#eeeff1',
-              fontSize:10,
+              fontSize:8,
             },
-            top:6
+            top:6,
+            itemGap:0,
+            itemWidth:14,
+            width:200,
+            padding:1
           },
           calculable : true,
           xAxis : [
@@ -281,15 +285,15 @@
         }
       }
       .titleIcon{
-        width:22px;
-        height:22px;
-        background:url(../../assets/img/home/revenue.png) no-repeat left top;
-        background-size:cover;
+        width: .16rem;
+        height: .16rem;
+        background:url(../../assets/img/home/revenue.png) no-repeat center;
+        background-size:100% auto;
         margin-right:12px;
       }
       .txt{
         color:white;
-        font-size:16px;
+        font-size:.12rem;
       }
     }
   .con{
@@ -313,7 +317,8 @@
           display: flex;
           align-items: center;
           color:white;
-          font-size:14px;
+          font-size: .2rem;
+          transform: scale(.5) translate(-50%,0);
         }
         .percent{
           height:37.143%;
@@ -369,6 +374,7 @@
         display: flex;
         align-items: center;
         color:white;
+        font-size: .12rem;
       }
       .pic{
         flex:1;
@@ -378,15 +384,12 @@
           width:56px;
           height:48px;
           color:white;
-          display: flex;
-          flex-direction: column;
-          left:50%;
-          top:50%;
-          margin-left:-22px;
-          margin-top:-22px;
-          z-index:9;
-          justify-content: space-between;
-          align-items: center;
+          display: block;
+          transform: translate(-50%,-50%);
+          left: 50%;
+          top: 50%;
+          z-index: 10;
+          text-align: center;
           span:first-child{
             font-size:12px;
             margin-left:-3px;
@@ -408,15 +411,16 @@
           margin-top:-51px;
         }
         .container{
-          width:100px;
-          height:100px;
+          width:100%;
+          height:100%;
           overflow:hidden;
           border:4px solid #152b43;
           border-radius:50%;
+          position: relative;
           .wave{
             position:relative;
-            width:100px;
-            height:100px;
+            width:100%;
+            height:100%;
             background-color:#309ee9;
             border-radius:50%;
           }

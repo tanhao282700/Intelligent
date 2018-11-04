@@ -377,15 +377,15 @@
         }
       }
       .titleIcon{
-        width:22px;
-        height:22px;
-        background:url(../../assets/img/home/air-conditioner.png) no-repeat left 2px;
-        background-size:cover;
+        width: .16rem;
+        height: .16rem;
+        background:url(../../assets/img/home/air-conditioner.png) no-repeat center 2px;
+        background-size:100% auto;
         margin-right:12px;
       }
       .txt{
         color:white;
-        font-size:16px;
+        font-size:.12rem;
       }
     }
   .con{

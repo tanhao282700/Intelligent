@@ -154,15 +154,16 @@
             this.option2 = {
               title:{
                 text:this.lineData.scoer+'%',
-                left:20,
+                left:10,
+                top:2,
                 textStyle:{
-                  fontSize:18,
+                  fontSize:10,
                   color:'#4be283',
                 },
                 /*backgroundColor:'#1d2d3a'*/
               },
               grid: {
-                top: 26,
+                top: 40,
               },
               tooltip : {
                 trigger: 'axis',
@@ -171,11 +172,14 @@
                 data:['今年计划','2017','2018'],
                 right:0,
                 padding:0,
+                width:'200',
                 textStyle:{
                   color:'#eeeff1',
-                  fontSize:12
+                  fontSize:10
                 },
-                top:8
+                top:8,
+                itemGap:2,
+                itemWidth:22
               },
               calculable : true,
               xAxis : [
@@ -548,15 +552,15 @@
         }
       }
       .titleIcon{
-        width:22px;
-        height:22px;
-        background:url(../../assets/img/home/energy.png) no-repeat center 4px;
-        background-size:cover;
+        width:.16rem;
+        height: .16rem;
+        background:url(../../assets/img/home/energy.png) no-repeat center 2px;
+        background-size: 100% auto;
         margin-right:12px;
       }
       .txt{
         color:white;
-        font-size:16px;
+        font-size:.12rem;
       }
     }
   .con{
@@ -579,12 +583,13 @@
       /*background:#2d475e;*/
       margin-top:8%;
       position:relative;
-      background:url(../../assets/img/home/conservation.png) no-repeat left top;
-      background-size:18px 28px;
+      height: .28rem;
+      background:url(../../assets/img/home/conservation.png) no-repeat left 2px top .06rem;
+      background-size: .09rem .14rem;
       &:before{
         content:'';
         width:100%;
-        height:28px;
+        height:.28rem;
         background:#2d475e;
         position:absolute;
         left:0;
@@ -609,12 +614,14 @@
       span{
         display: inline-block;
         background:#1a365b;
-        width:26px;
-        height:26px;
-        line-height:26px;
+        width: .18rem;
+        height: .18rem;
+        line-height: .18rem;
         text-align:center;
         color:#cdcdcd;
-        margin-left:8px;
+        margin-left: .15rem;
+        border-radius: 4px;
+        font-size: .1rem;
         &:hover{
           cursor:pointer;
         }

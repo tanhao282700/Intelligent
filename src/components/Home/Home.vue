@@ -378,7 +378,8 @@
         this.bubbleTipShow(tips)
       },
       loginOut(){
-          this.$router.push('./')
+          /*this.$router.push('./');*/
+          window.location.reload();
       },
       addModules(index){   //点击模块加号显示所有模块，记录当前模块索引
         this.currentMudel = index;
@@ -554,34 +555,34 @@
     .partOne{
       position:absolute;
       background:rgba(1,21,48,0.6);
-      .widl(30);
-      .wid(502);
-      .hei(674);
-      .heiT(137);
+      width: 2.5rem;
+      height: 3.18rem;
+      left: .15rem;
+      top:.68rem;
     }
     .partTwo{
       position:absolute;
       background:rgba(1,21,48,.6);
-      .widl(2203);
-      .wid(502);
-      .hei(674);
-      .heiT(137);
+      width: 2.5rem;
+      height: 3.18rem;
+      right: .15rem;
+      top:.68rem;
     }
     .partThree{
       position:absolute;
       background:rgba(1,21,48,.6);
-      .widl(30);
-      .wid(502);
-      .hei(674);
-      .heiT(829);
+      width: 2.5rem;
+      height: 3.18rem;
+      left: .15rem;
+      bottom:.16rem;
     }
     .partFour{
       position:absolute;
       background:rgba(1,21,48,.6);
-      .widl(2203);
-      .wid(502);
-      .hei(674);
-      .heiT(829);
+      width: 2.5rem;
+      height: 3.18rem;
+      right: .15rem;
+      bottom:.16rem;
     }
     .smallMonitoring{
       position:absolute;
@@ -818,7 +819,7 @@
         }
         .txt{
           color:white;
-          font-size:16px;
+          font-size:.12rem;
         }
       }
       .addIcon{
@@ -889,22 +890,21 @@
 
 
   }
-
-
 </style>
 <style>
-.homeLoginDialog{
+
+  #home .homeLoginDialog{
     height:216px;
     background:#061733;
     box-shadow:0 0 6px 0 #35a3ee;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
   }
-.homeLoginDialog .el-dialog__headerbtn{
+  #home .el-dialog__headerbtn{
     top:6px;
     right:10px;
   }
-.homeLoginDialog .el-dialog__body{
+  #home .el-dialog__body{
     height:142px;
     padding:0;
     color:#b5d6ff;
@@ -912,11 +912,11 @@
     text-align: center;
     font-size:20px;
   }
-.homeLoginDialog .el-dialog__footer{
+  #home .el-dialog__footer{
     padding:0;
     height:44px;
   }
-.homeLoginDialog .el-dialog__footer .dialog-footer{
+  #home .el-dialog__footer .dialog-footer{
     display: inline-block;
     width:100%;
     height:100%;
@@ -925,13 +925,13 @@
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
   }
-.homeLoginDialog .el-dialog__footer .dialog-footer button:first-child{
+  #home .el-dialog__footer .dialog-footer button:first-child{
     border-bottom-left-radius:6px!important;
   }
-.homeLoginDialog .el-dialog__footer .dialog-footer button:last-child{
+  #home .el-dialog__footer .dialog-footer button:last-child{
     border-bottom-left-radius:8px;
   }
-.homeLoginDialog .el-dialog__footer .dialog-footer button{
+  #home .el-dialog__footer .dialog-footer button{
     box-sizing: border-box;
     width:50%;
     margin:0;
@@ -940,13 +940,14 @@
     height:100%;
     float:left;
   }
-.homeLoginDialog .el-button{
+  #home .el-button{
     background:none;
   }
 
   .homeDropDown{
-    top:72px!important;
-    width:100px;
+    top: .61rem!important;
+    width: 1rem;
+    height: 1.29rem;
     background:#061733!important;
     border: 1px solid #4a90e2!important;
     margin-right:20px!important;

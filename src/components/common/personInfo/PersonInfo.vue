@@ -263,10 +263,10 @@
   }
   .showPersonInfo{
     right:0;
-    transition:all 1s;
+    transition:all .5s;
   }
   .closePersonInfo{
     right:-320px;
-    transition:all 1s;
+    transition:all .5s;
   }
 </style>
