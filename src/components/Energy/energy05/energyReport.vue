@@ -1,7 +1,7 @@
 <template>
     <!-- 用能报表模块 -->
     <div class="energyReport">
-    	<div class="navCrumbs">首页 > 能源管理系统 > <span>用能报表</span></div>
+    	<div class="navCrumbs"><i class="homeTxt" @click="goHome" >首页</i>  > 能源管理系统 > <span>用能报表</span></div>
 		<div class="reportTabBox">
         	<span class="unitPriceBtn" @click="unitShowCli">单价预设</span>
 	        <nav class="tabNav">
@@ -13,7 +13,7 @@
 		</div>
 
 		<unit v-on:unitShowBool="unitShowBool" v-show="unitShow"></unit>
-	
+
     </div>
 </template>
 
@@ -82,7 +82,10 @@
                     this.isActive2 = false;
                 }
                 this.currentView = tabText;
-            }
+            },
+        goHome(){
+                this.$router.push('/home')
+        },
 	    }
     }
 </script>
@@ -91,4 +94,7 @@
 
 	@import '../../../assets/css/doorControl.css' ;
     .todaySpan{position: absolute;left:50%;top:15px;display: block;width:140px;margin-left: -70px;text-align: center;height:20px;line-height: 20px;color:#fff;font-size: 16px;}
+  .homeTxt:hover{
+    cursor: pointer;
+  }
 </style>

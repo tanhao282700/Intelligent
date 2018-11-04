@@ -57,7 +57,7 @@
         </div>
         <!--导入-->
         <div>
-          <div class="exBth" @click="uploadFile" v-show="formData.floor_id !=0">
+          <div class="exBth" @click="openUploadWin" v-show="formData.floor_id !=0">
             <span></span>
             <span>批量导入</span>
           </div>
@@ -276,8 +276,13 @@
     <el-dialog title="批量导入" :visible.sync="fileUploadDialogVisible" class="metersHistoryDialogBox uploadFileBox" :close-on-click-modal="false">
       <div class="upRowBox">
         <span>上传</span><span class="upBtn">选择文件</span><form action="uploadServlet.do" method="post" enctype="multipart/form-data">
-          <input type="file" id="upSysFile">
+          <input type="file" id="upSysFile" name="file" accept="application/vnd.ms-excel" @change="fileChange"/>
         </form>
+      </div>
+      <div class="fileNameBox">{{updateFileName}}</div>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="cancleUpdateFile" class="cancleBtn">取消</el-button>
+        <el-button @click="confirmUpdateFile" class="saveBtn">确认</el-button>
       </div>
     </el-dialog>
     </div>
@@ -292,6 +297,7 @@
     name:'History',
     data(){
       return{
+        updateFileName:"",
         filePath:'',
         fileUploadDialogVisible:false,
         isEdit: true,
@@ -359,6 +365,7 @@
 
     },
     created(){
+      console.log(this.$store.state.sysList);
       this.formData.sys_menu_id = this.$store.state.sysList[2].sys_menu_id;
       this.formData.project_id = this.$store.state.projectId;
       this.initData();
@@ -367,11 +374,37 @@
 
     },
     methods:{
-      handleChange(file, fileList) {
-        this.uploadFile = fileList.slice(-3);
-        console.log(fileList);
+      cancleUpdateFile(){
+        $("#upSysFile").val("");
+        this.updateFileName = "";
+        this.fileUploadDialogVisible = false;
       },
-      uploadFile(){
+      confirmUpdateFile(){
+        let that = this;
+        let path = $("#upSysFile").val();
+
+        let config = {
+          project_id: that.$store.state.projectId,
+          floor_id: that.formData.floor_id,
+          sys_menu_id:that.formData.sys_menu_id,
+          upload_file: path
+        };
+        console.log(config);
+
+        that.$http.post('hotel_energy/history_record',config)
+           .then(response=>{
+             console.log(response.data);
+           })
+
+        that.fileUploadDialogVisible = false;
+      },
+      fileChange(e){
+        let that = this;
+        let file = e.target.files[0];
+        that.updateFileName = file.name;
+        console.log(file);
+      },
+      openUploadWin(){
         let that = this;
         that.fileUploadDialogVisible = true;
       },
@@ -878,6 +911,29 @@
     }
   }
 
+  .uploadFileBox .dialog-footer .cancleBtn{
+    border: 1px solid #4A90E2;
+    background-color: transparent;
+  }
+  .uploadFileBox .dialog-footer .saveBtn{
+    background-color: #3A84EE!important;
+  }
+  .uploadFileBox .dialog-footer .el-button{
+    width: .86rem;
+    height: .32rem;
+    line-height: .32rem;
+    color:#fff;
+    font-size: .14rem;
+    padding: 0;
+  }
+  .uploadFileBox .fileNameBox{
+    height: .2rem;
+    line-height: .2rem;
+    font-size: .14rem;
+    padding-left: .91rem;
+    color: #fff;
+  }
+
   .upRowBox{
     padding: .2rem;
     font-size: .14rem;
@@ -967,5 +1023,12 @@
     width: .16rem;
     height: .16rem;
     color: #3B89F9!important;
+  }
+  .uploadFileBox .el-dialog__footer{
+    padding: 0 .2rem!important;
+    position: absolute;
+    width: 100%;
+    bottom:.2rem;
+    left: 0;
   }
 </style>
