@@ -61,7 +61,7 @@
                   <span v-text = "'实际'+v0.tit"></span>
                   <span
                     v-text = "(v0.Actual==0&&i>dateM)?'——':v0.Actual"
-                    :class ="{'colorFG':v0.Actual<=v0.plan &&v0.Actual!=0,'colorFR':v0.Actual>v0.plan,'colorFF':v0.Actual==0}"
+                    :class ="{'colorFG':Number(v0.Actual)<=Number(v0.plan) && Number(v0.Actual)!=0,'colorFR': Number(v0.Actual)>Number(v0.plan),'colorFF':v0.Actual==0}"
                   ></span>
                 </div>
               </li>
@@ -496,11 +496,11 @@
                 border-bottom:0;
               }
               .planBox{
-                width:1.64rem;
+                width:1.56rem;
                 span:nth-child(1){
                   color:@color-blue;
                   font-size: 0.12rem;
-                  padding-right: 0.24rem;
+                  padding-right: 0.12rem;
                 }
                 span:nth-child(2){
                   font-size: 0.14rem;
@@ -521,7 +521,7 @@
                 span:nth-child(1){
                   color:@color-blue;
                   font-size: 0.12rem;
-                  padding-right: 0.24rem;
+                  padding-right: 0.12rem;
                 }
                 span:nth-child(2){
                   font-size: 0.14rem;

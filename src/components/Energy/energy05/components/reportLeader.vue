@@ -12,8 +12,9 @@
     	</div>
     	<div class="reportTablesBox reportLeader">
 
-	    	<el-table  :data="tableData3"  :cell-class-name="cell"
-	    			   :summary-method="getSummaries" 
+	    	<el-table class="leaderTab"  :data="tableData3"  :cell-class-name="cell"
+	    			   :summary-method="getSummaries"
+               height="50vh"
 	    			   show-summary>
 	    		<el-table-column type="index" label="序号">
 	    		</el-table-column>
@@ -45,6 +46,38 @@
 	    			<el-table-column prop="city" label="昨天">
 	    			</el-table-column>
 	    		</el-table-column>
+          <el-table-column  label="餐饮">
+            <el-table-column prop="city" label="去年昨天">
+            </el-table-column>
+            <el-table-column prop="city" label="上一天">
+            </el-table-column>
+            <el-table-column prop="city" label="昨天">
+            </el-table-column>
+          </el-table-column>
+          <el-table-column  label="餐饮">
+            <el-table-column prop="city" label="去年昨天">
+            </el-table-column>
+            <el-table-column prop="city" label="上一天">
+            </el-table-column>
+            <el-table-column prop="city" label="昨天">
+            </el-table-column>
+          </el-table-column>
+          <el-table-column  label="餐饮">
+            <el-table-column prop="city" label="去年昨天">
+            </el-table-column>
+            <el-table-column prop="city" label="上一天">
+            </el-table-column>
+            <el-table-column prop="city" label="昨天">
+            </el-table-column>
+          </el-table-column>
+          <el-table-column  label="餐饮">
+            <el-table-column prop="city" label="去年昨天">
+            </el-table-column>
+            <el-table-column prop="city" label="上一天">
+            </el-table-column>
+            <el-table-column prop="city" label="昨天">
+            </el-table-column>
+          </el-table-column>
 	    	</el-table>
     		
     	</div>
@@ -72,11 +105,22 @@
 		          city: 4,
 		        }, {
 		          city: 4,
-		        }]
+		        },{
+              city: 4,
+            },{
+              city: 4,
+            },{
+              city: 4,
+            }]
         	}
         },
         mounted(){
             this.getDateSet();
+          this.$nextTick(()=>{
+            console.log($(".el-table__header").width())
+            $(".leaderTab").width($(".el-table__header").width())
+            $(".leaderTab").height('90%')
+          })
         },
         methods:{
         	currentSel(selVal){

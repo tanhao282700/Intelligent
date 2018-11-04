@@ -44,7 +44,7 @@
             <div class="tabBoxss">
                 <Table 
                     style="width:100%" 
-                    :table = "table"
+                    :table = "tableData"
                     @rowClick = "showInfos"
                 />    
             </div>           
@@ -56,6 +56,7 @@
 import TimePickerT from './timePickerTit2';
 import SelectBox from '@/components/form/selectBox';
 import Table from '@/components/common/table';
+import utils from '../../../../assets/js/utils';
 export default {
   props:['query','table'],
   components:{
@@ -83,6 +84,7 @@ export default {
             {label:'白狗汪5',value:5},
         ],
         vName:-1,
+        tableData:{}
     }
   },
   methods:{
@@ -151,8 +153,17 @@ export default {
         listDate = listDate.substring(5,listDate.length)
         this.value7 = listDate;
   },
-  mounted() {
+  watch:{
+    table:{
+        handle(newval,oldval){
+            this.tableData = newval;
+        },
+        deep:true
+    }
   },
+  mounted() {
+    this.tableData = this.table;
+  }
 }
 </script>
 

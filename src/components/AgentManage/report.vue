@@ -21,13 +21,13 @@
                       v-model="year"
                       class="datetemp"
                       type="year"
-                      prefix-icon=''
                       placeholder="年">
                     </el-date-picker>
                     <el-date-picker
                       v-model="month"
                       type="month"
                       format="MM"
+                      value-format="MM"
                       class="datetemp"
                       placeholder="月">
                     </el-date-picker>
@@ -35,6 +35,7 @@
                       v-model="day"
                       class="datetemp"
                       type="date"
+                      value-format="d"
                       format="d"
                       placeholder="日">
                     </el-date-picker>
@@ -89,7 +90,7 @@ export default {
         year:'',
         month:'',
         day:'',
-        crumbs:['代维系统','系统报表'],
+        crumbs:['代维系统','统计报表'],
         activeName:'first',
         jobs:[
           {label:'给排水',value:1},
@@ -317,23 +318,26 @@ export default {
     width:95.6%;
     height:4.80rem;
     .tabHead{
-      width: 100%;
       position: relative;
-      height:0.59rem;
-      padding-top:0.2rem;
+      border:1px solid #1989fa;
+      height:0.32rem;
+      margin-top:0.27rem;
+      width:3.644rem;
+      border-radius:0.02rem;
+      margin-left:0.2rem;
       .jobBoxs{
         float: left;
         height:0.32rem;
         background-color: rgba(255, 255, 255, 0.01);
         border-radius: 0.02rem;
         text-align: center;
-        margin-left: 0.2rem;
+        margin-left: 0.1rem;
       }
       .checkBox{
         float: left;
         margin-left: 0.12rem;
         width: 0.93rem;
-        height:0.32rem;
+        height:0.305rem;
         line-height:0.32rem;
         color: #fff;
         font-size: 0.14rem;
@@ -342,7 +346,7 @@ export default {
         background-image: linear-gradient(0deg, 
         #2772e3 0%, 
         #4b94f9 100%);
-        border-radius: 0.02rem;
+        border-radius:0 0.02rem 0;
         i{
           font-size: 0.16rem;
           margin-right: 0.05rem;
@@ -360,8 +364,9 @@ export default {
     }
     .datetemp{
       display:inline-block;
-      width:0.5rem;
-      margin-right:0.1rem;
+      width:0.4rem;
+      height:0.32rem;
+      padding-right:0.1rem;
     }
   }
 }

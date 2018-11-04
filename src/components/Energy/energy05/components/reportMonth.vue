@@ -16,19 +16,19 @@
     	<div class="reportTablesBox">
 
 	    	<el-table class="monthTab firstTab"  :data="tableData3"  :cell-class-name="cell" style="width: 100%;" height="50vh"  >
-	    		<el-table-column type="index" label="序号" width="30">
+	    		<el-table-column prop="index" label="序号" width="40">
 	    		</el-table-column>
-	    		<el-table-column prop="date" label="名称">
-	    			<el-table-column prop="date" label="月份" :width="columnw">
+	    		<el-table-column label="名称">
+	    			<el-table-column prop="month" label="月份" :width="columnw">
 	    			</el-table-column>
 	    		</el-table-column>
-	    		<el-table-column prop="date" label="电 (KW/h)">
-	    			<el-table-column prop="date" label="总用电量" :width="columnw">
+	    		<el-table-column label="电 (KW/h)">
+	    			<el-table-column prop="elecMount" label="总用电量" :width="columnw">
 	    			</el-table-column>
-	    			<el-table-column prop="date" label="总费用" :width="columnw">
+	    			<el-table-column prop="totalcaost" label="总费用" :width="columnw">
 	    			</el-table-column>
 	    		</el-table-column>
-			    <el-table-column prop="city" label="餐饮部">
+			    <!--<el-table-column prop="city" label="餐饮部">
 			        <el-table-column prop="province" label="4F厨房">
 				        <el-table-column prop="city" label="用量" :width="columnw">
 				        </el-table-column>
@@ -93,62 +93,63 @@
 				        <el-table-column prop="city" label="费用" :width="columnw">
 				        </el-table-column>
 			        </el-table-column>
-		        </el-table-column>
-          <el-table-column label="房务部">
-            <el-table-column prop="province" label="5-7楼">
-              <el-table-column prop="city" label="用量" :width="columnw">
-              </el-table-column>
-              <el-table-column prop="city" label="费用" :width="columnw">
-              </el-table-column>
+		        </el-table-column>-->
+          <template v-for="item in areaList">
+            <el-table-column :label="item.parnt">
+              <template v-for="child in item.child_data">
+                <el-table-column :label="child.child">
+                  <el-table-column :prop="child.id+'useage'" label="用量" :width="columnw">
+                  </el-table-column>
+                  <el-table-column :prop="child.id+'cost'" label="费用" :width="columnw">
+                  </el-table-column>
+                </el-table-column>
+              </template>
             </el-table-column>
-            <el-table-column prop="city" label="8-10楼">
-              <el-table-column prop="city" label="用量" :width="columnw">
-              </el-table-column>
-              <el-table-column prop="city" label="费用" :width="columnw">
-              </el-table-column>
-            </el-table-column>
-            <el-table-column prop="address" label="中央空调">
-              <el-table-column prop="city" label="用量" :width="columnw">
-              </el-table-column>
-              <el-table-column prop="city" label="费用" :width="columnw">
-              </el-table-column>
-            </el-table-column>
-          </el-table-column>
+          </template>
 	    	</el-table>
 
 
-	    	<el-table class="monthTab" :data="tableData" border :cell-class-name="cell" :span-method="objectSpanMethod">
-			    <el-table-column type="index" label="序号" width="30"> </el-table-column>
-			    <el-table-column prop="dateLab" label="月份" :width="columnw"> </el-table-column>
-			    <el-table-column prop="date" label="月份" :width="columnw"> </el-table-column>
-			    <el-table-column prop="date" label="月份" :width="columnw"> </el-table-column>
-			    <el-table-column prop="date" label="月份" :width="columnw"> </el-table-column>
-			    <el-table-column prop="date" label="月份" :width="columnw"> </el-table-column>
-			    <el-table-column prop="date" label="月份" :width="columnw"> </el-table-column>
-			    <el-table-column prop="date" label="月份" :width="columnw"> </el-table-column>
-			    <el-table-column prop="date" label="月份" :width="columnw"> </el-table-column>
-			    <el-table-column prop="date" label="月份" :width="columnw"> </el-table-column>
-			    <el-table-column prop="date" label="月份" :width="columnw"> </el-table-column>
-			    <el-table-column prop="date" label="月份" :width="columnw"> </el-table-column>
-			    <el-table-column prop="date" label="月份" :width="columnw"> </el-table-column>
-			    <el-table-column prop="date" label="月份" :width="columnw"> </el-table-column>
-			    <el-table-column prop="date" label="月份" :width="columnw"> </el-table-column>
-			    <el-table-column prop="date" label="月份" :width="columnw"> </el-table-column>
-			    <el-table-column prop="date" label="月份" :width="columnw"> </el-table-column>
-			    <el-table-column prop="date" label="月份" :width="columnw"> </el-table-column>
-			    <el-table-column prop="date" label="月份" :width="columnw"> </el-table-column>
-			    <el-table-column prop="date" label="月份" :width="columnw"> </el-table-column>
-			    <el-table-column prop="date" label="月份" :width="columnw"> </el-table-column>
-			    <el-table-column prop="date" label="月份" :width="columnw"> </el-table-column>
-			    <el-table-column prop="date" label="月份" :width="columnw"> </el-table-column>
-			    <el-table-column prop="date" label="月份" :width="columnw"> </el-table-column>
-          <el-table-column prop="date" label="月份" :width="columnw"> </el-table-column>
-          <el-table-column prop="date" label="月份" :width="columnw"> </el-table-column>
-          <el-table-column prop="date" label="月份" :width="columnw"> </el-table-column>
-          <el-table-column prop="date" label="月份" :width="columnw"> </el-table-column>
-          <el-table-column prop="date" label="月份" :width="columnw"> </el-table-column>
-          <el-table-column prop="date" label="月份" :width="columnw"> </el-table-column>
-			</el-table>
+	    	<el-table class="monthTab noshow" :data="tableData1" border :cell-class-name="cell">
+			    <el-table-column prop="index" width="40"> </el-table-column>
+			    <el-table-column prop="dateLab" :width="columnw"> </el-table-column>
+			    <el-table-column prop="elecMount" :width="columnw"> </el-table-column>
+			    <el-table-column prop="totalcaost" :width="columnw"> </el-table-column>
+			    <template v-for="item in areaList">
+            <template v-for="child in item.child_data">
+              <el-table-column :prop="child.id+'useage'" label="用量" :width="columnw">
+            </el-table-column>
+              <el-table-column :prop="child.id+'cost'" label="费用" :width="columnw">
+              </el-table-column>
+            </template>
+          </template>
+
+        </el-table>
+        <el-table class="monthTab noshow" :data="tableData2" border :cell-class-name="cell" :span-method="objectSpanMethod">
+          <el-table-column prop="index" width="40"> </el-table-column>
+          <el-table-column prop="dateLab" width="columnw"> </el-table-column>
+          <template v-for="item in areaList">
+            <template v-for="child in item.child_data">
+              <el-table-column :prop="child.id+'useageTotal'" label="用量" :width="columnw">
+              </el-table-column>
+              <el-table-column :prop="child.id+'costTotal'" label="费用" :width="columnw">
+              </el-table-column>
+            </template>
+          </template>
+        </el-table>
+        <el-table class="monthTab noshow" :data="tableData4" border :cell-class-name="cell">
+          <el-table-column prop="index" width="40"> </el-table-column>
+          <el-table-column prop="dateLab" :width="columnw"> </el-table-column>
+          <el-table-column prop="elecMount" :width="columnw"> </el-table-column>
+          <el-table-column prop="totalcaost" :width="columnw"> </el-table-column>
+          <template v-for="item in areaList">
+            <template v-for="child in item.child_data">
+              <el-table-column :prop="child.id+'useageEvel'" label="用量" :width="columnw">
+              </el-table-column>
+              <el-table-column :prop="child.id+'costEvel'" label="费用" :width="columnw">
+              </el-table-column>
+            </template>
+          </template>
+        </el-table>
 
     	</div>
     </div>
@@ -162,56 +163,179 @@
         		energyType:'气',
         		todaySpan:'',
         		releasetime1:'',
-        		tableData:[
-        			{dateLab:"区域合计",data:2},
-        			{dateLab:"部门合计",data:2},
-        			{dateLab:"月均",data:2},
+        		tableData1:[
+        			{dateLab:"区域合计",
+                data:2,
+                index:13,
+                elecMount:'',  //总用电量
+                totalcaost:'', //总费用
+              }
         		],
+            tableData2:[{dateLab:"部门合计",
+              data:2,
+              index:14,
+            }],
+            tableData4:[{dateLab:"月均",
+              data:2,
+              index:15,
+              elecMount:'',  //电量平均
+              totalcaost:'', //总费用平均
+            }],
         		tableData3: [{
-		          city: 4,
+        		  index:1,
+              month:'01',
+              elecMount:'',  //总用电量
+              totalcaost:'', //总费用
 		        }, {
-		          city: 4,
+              index:2,
+              month:'02',
+              totalcaost:'',
+              elecMount:'',
+            }, {
+              index:3,
+              month:'03',
+              elecMount:'',
+              totalcaost:'',
 		        }, {
-		          city: 4,
+              index:4,
+              month:'04',
+              elecMount:'',
+              totalcaost:'',
 		        }, {
-		          city: 4,
+              index:5,
+              month:'05',
+              elecMount:'',
+              totalcaost:'',
 		        }, {
-		          city: 4,
+              index:6,
+              month:'06',
+              elecMount:'',
+              totalcaost:'',
 		        }, {
-		          city: 4,
-		        }, {
-		          city: 4,
+              index:7,
+              month:'07',
+              elecMount:'',
+              totalcaost:'',
 		        },{
-              city: 4,
+              index:8,
+              month:'08',
+              elecMount:'',
+              totalcaost:'',
             }, {
-              city: 4,
+              index:9,
+              month:'09',
+              elecMount:'',
+              totalcaost:'',
             }, {
-              city: 4,
+              index:10,
+              month:'10',
+              elecMount:'',
+              totalcaost:'',
             }, {
-              city: 4,
-            }]
+              index:11,
+              month:'11',
+              elecMount:'',
+              totalcaost:'',
+            },{
+              index:12,
+              month:'12',
+              elecMount:'',
+              totalcaost:'',
+            }],
+            areaList:[],
+            formData:{
+              project_id:1,
+              choice_page:0,
+              query_date:'',
+              energy_type:0  //0电  1水  2气
+            }
         	}
         },
         mounted(){
             this.setWidth();
             this.getData();
             this.getDateSet();
-            this.$nextTick(()=>{
-                console.log($(".el-table__header").width())
-              $(".monthTab").width($(".el-table__header").width())
-            $(".firstTab").height('70%')
-        })
+
         },
         methods:{
         	setWidth(){
         		/*this.columnw = $(".reportTabBoxs ").width() / 24;*/
         	},
         	getData(){
-                let that = this;
-                this.$http.post('/hotel_energy/statement',{
-                    project_id:"1",
-                }).then(function(data){
-                    console.log(data.data.data);
+                this.$http.post('/hotel_energy/statement',this.formData).then((res)=>{
+                  if(res.data.code==0){
+                    let data = res.data.data.result_data
+                    this.tableData3.map((item,index)=>{   //写入总用电量、总费用数据
+                      item.elecMount = data[1].data[index].value[0]
+                      item.totalcaost = data[1].data[index].value[1]
+                    })
+
+                    //存储部门区域数据
+                    this.areaList = data[5].area_monthly_data
+
+                    //写入部门区域用量、费用数据，key为当前域的id+‘useage’||‘cost’
+                    this.areaList.map((item,index)=>{
+                      for(let i=0;i<item.child_data.length;i++){
+                        //写入用量
+                        this.tableData3.map((child,index)=>{
+                          child[item.child_data[i].id+'useage'] = item.child_data[i].detail_use_num[index]
+                        })
+                        //写入费用
+                        this.tableData3.map((child,index)=>{
+                          child[item.child_data[i].id+'cost'] = item.child_data[i].detail_cost[index]
+                        })
+                      }
+                    })
+
+
+                    //写入区域合计
+                    this.tableData1[0].elecMount = data[1].data[12].value[0]
+                    this.tableData1[0].totalcaost = data[1].data[12].value[1]
+
+                    this.areaList.map((item,index)=> {
+                      for (let i = 0; i < item.child_data.length; i++) {
+                        for(let j=0;j<data[2].data.length;j++){
+                          if(item.child_data[i].id==data[2].data[j].area_id){
+                            this.tableData1[0][item.child_data[i].id+'useage'] = data[2].data[j].value[0]
+                            this.tableData1[0][item.child_data[i].id+'cost'] = data[2].data[j].value[1]
+                          }
+                        }
+                      }
+                    })
+
+                    //写入用量平均
+                    this.tableData4[0].elecMount = data[1].data[13].value[0]
+                    this.tableData4[0].totalcaost = data[1].data[13].value[1]
+                    this.areaList.map((item,index)=> {
+                      for (let i = 0; i < item.child_data.length; i++) {
+                        for(let j=0;j<data[3].data.length;j++){
+                          if(item.child_data[i].id==data[3].data[j].area_id){
+                            this.tableData4[0][item.child_data[i].id+'useageEvel'] = data[3].data[j].value[0]
+                            this.tableData4[0][item.child_data[i].id+'costEvel'] = data[3].data[j].value[1]
+                          }
+                        }
+                      }
+                    })
+
+                    //写入部门合计
+                    this.areaList.map((item,index)=> {
+                      for (let i = 0; i < item.child_data.length; i++) {
+                        for(let j=0;j<data[4].data.length;j++){
+                          if(item.parnt==data[4].data[j].parent_area_til){
+                            this.tableData2[0][item.child_data[i].id+'useageTotal'] = data[3].data[j].value[0]
+                            this.tableData2[0][item.child_data[i].id+'costTotal'] = data[3].data[j].value[1]
+                          }
+                        }
+                      }
+                    })
+                    setTimeout(()=>{
+                      console.log($(".el-table__header").width())
+                      $(".monthTab").width($(".el-table__header").width())
+                      $(".firstTab").height('70%')
+                    },500)
+                  }else{
+
+                  }
                 });
 
         	},
@@ -237,7 +361,15 @@
 		        }
 		    },
 	        objectSpanMethod({ row, column, rowIndex, columnIndex }) {
-			    if(rowIndex == 1){
+
+            /*if(columnIndex ==2){
+              return {
+                colspan:2,
+                rowspan:1
+              }
+            }*/
+
+			    /*if(rowIndex == 1){
 			     	if(columnIndex == 2){
 			     		return {
 			     			rowspan:1,
@@ -265,7 +397,7 @@
 			     			colspan:3
 			     		}
 			     	}
-			    }
+			    }*/
 		    }
         }
     }
@@ -287,8 +419,11 @@
   .reportTablesBox{
     width:100%;
     height:95%;
-    overflow-x:scroll;
+    overflow-x:auto;
     overflow-y:hidden;
+  }
+  .noshow .el-table__header-wrapper{
+    display:none!important;
   }
 /*.energyReport .el-table--border, .energyReport .el-table--group{
   width:auto!important;

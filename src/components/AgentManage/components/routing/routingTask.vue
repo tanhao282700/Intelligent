@@ -7,23 +7,23 @@
         <div class="routingTime" >
           <div class="topBox" v-for="(item,index) in data.job_list" :style="{left:1.8+(index*160*100/1366)+'vw'}">
             <div>
-              <span>{{item.name}}</span></br>
-              {{item.date}}&nbsp;&nbsp;&nbsp;{{item.time}}
+              <span>{{item.label}}</span></br>
+              {{item.time}}
             </div>
             <i class="el-icon-arrow-down"></i>
           </div>
         </div>    
         <div class="progressDiv">
-            <div v-for="(item,index) in data.steps">
+            <div v-for="(item,index) in data.job_list">
               <img src="../../../../assets/img/AgentManage/point@2x.png" class="item1" :style="{left:6.73+(index*160*100/1366)+'vw'}">
               <img src="../../../../assets/img/AgentManage/point2@2x.png" class="item2" :style="{left:12.59+(index*160*100/1366)+'vw'}">
             </div>
         </div> 
         <div class="middleTime">
-          <div class="bottomBox" v-for="(item,index) in data.inspection_list" :style="{left:9.31+(index*160*100/1366)+'vw'}">
+          <div class="bottomBox" v-for="(item,index) in data.job_list" :style="{left:9.31+(index*160*100/1366)+'vw'}">
             <i class="el-icon-arrow-up"></i>
             <div>
-              {{item.areatime}}
+              {{item.interval}}
             </div>
           </div>
         </div>    
@@ -71,7 +71,7 @@
 }
 .routingTask{
   width:100%;
-  .vh(164);
+  .vh(144);
   background:rgba(2,33,74,1);
   .progressDiv{
     width:100%;
@@ -93,7 +93,7 @@
     }
   }
   .routingTime{
-    .vh(90);
+    .vh(80);
     position:relative;
     color:#B5D7FF;
     .topBox{
@@ -106,7 +106,7 @@
       font-size:12px;
       .vhLH(24);
       left:1.8vw;
-      .vtop(28);
+      .vtop(23);
       text-align:center;
       span{
         color:#f9f9f9;
@@ -137,7 +137,7 @@
     }
   }
   .middleTime{
-    .vh(72);
+    .vh(64);
     position:relative;
     color:#B5D7FF;
     .bottomBox{

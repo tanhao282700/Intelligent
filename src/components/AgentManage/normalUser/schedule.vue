@@ -11,35 +11,35 @@
             <span slot="label" class="tabItems">
                 排班表
             </span>
-            <ScheduleTable :isShowBtns="'no'" :data="scheTable" style="width:100%;"/>
+            <ScheduleTable :isShowBtns="'no'" :data="scheTable" @getPaibanData="getTableList"/>
         </el-tab-pane>
         <el-tab-pane name="second" >
           <span slot="label" class="tabItems">
               申请换班
           </span>
           <div class="boxs">
-            <div class="pBody">
+            <div class="pBody" >
               <div class="pBox">
                 <div class="imgBox">
-                  <img :src="dia.img1" alt="">
+                  <img src="../../../assets/img/AgentManage/head.png" alt="">
                 </div>
                 <div class="nameBox boxs">
                   <div class="labelBox">
                     <label for="">申请人：</label>
-                    <span v-text="dia.name1"></span>
+                    <span v-text="dia.truename"></span>
                   </div>
                   <div class="labelBox">
                     <label for="">联系电话：</label>
-                    <span v-text="dia.tel1"></span>
+                    <span v-text="dia.phone"></span>
                   </div>
                   <div class="labelBox">
                     <label for="">申请人班次：</label>
                     <SelectBox 
-                        :options = 'peos' 
-                        :value = "vpeo" 
+                        :options = 'applyhbSelect.bTimes' 
+                        :value = "applyhbSelect.bTime" 
                         class="selectStyle"
                         :icon="'el-icon-d-caret'"
-                        placeholder="选择人员"
+                        placeholder="选择班次"
                         @change = 'change1'
                     />
                   </div>
@@ -48,18 +48,18 @@
               <Lines :hei="125" :top="20" />
               <div class="pBox">
                 <div class="imgBox">
-                  <img :src="dia.img2" alt="">
+                  <img src="../../../assets/img/AgentManage/head.png" alt="">
                 </div>
                 <div class="nameBox boxs">
                   <div class="labelBox">
                     <label for="">换班人：</label>
                     <SelectBox 
-                        :options = 'peos' 
-                        :value = "vpeo" 
+                        :options = 'applyhbSelect.peos' 
+                        :value = "applyhbSelect.vpeo" 
                         class="selectStyle"
                         :icon="'el-icon-d-caret'"
                         placeholder="选择人员"
-                        @change = 'change1'
+                        @change = 'change2'
                     />
                   </div>
                   <div class="labelBox">
@@ -69,12 +69,12 @@
                   <div class="labelBox">
                     <label for="">换班人班次：</label>
                     <SelectBox 
-                        :options = 'peos' 
-                        :value = "vpeo" 
+                        :options = 'applyhbSelect.hbTimes' 
+                        :value = "applyhbSelect.hbTime" 
                         class="selectStyle"
                         :icon="'el-icon-d-caret'"
                         placeholder="选择时间段"
-                        @change = 'change1'
+                        @change = 'change3'
                     />
                   </div>
                 </div>
@@ -92,7 +92,7 @@
             
           </div>
         </el-tab-pane>
-        <el-tab-pane name="thrid"  class="tabChilds">
+        <el-tab-pane name="thrid"  class="tabChilds boxs">
             <span slot="label" class="tabItems">
                 申请状态
             </span>
@@ -110,7 +110,7 @@
                   <li class="boxs" v-for="dia in noApplyLists">
                     <div class="pBox">
                       <div class="imgBox">
-                        <img :src="dia.img1" alt="">
+                        <img :src="imgurl" alt="">
                       </div>
                       <div class="descBox">
                         <div class="nameBox">
@@ -168,7 +168,7 @@
                   <li class="boxs" v-for="dia in noApplyLists">
                     <div class="pBox">
                       <div class="imgBox">
-                        <img :src="dia.img1" alt="">
+                        <img src="../../../assets/img/AgentManage/head.png" alt="">
                       </div>
                       <div class="descBox">
                         <div class="nameBox">
@@ -199,12 +199,14 @@
                             <span v-text="dia.new_workdate+' '+dia.newstarttime+'~'+dia.newendtime"></span>
                           </div>
                         </div>
+                        <div style="clear:both"></div>
                         <div class="nameBox">
                           <div class="labelBox">
                             <label for="">换班原因：</label>
                             <span v-text="dia.description" class="hbExcuse"></span>
                           </div>
                         </div>
+                        <div style="clear:both"></div>
                         <div class="nameBox">
                           <div class="labelBox">
                             <label for="">申请时间：</label>
@@ -230,7 +232,7 @@
                     <li class="boxs" v-for="dia in noApplyLists">
                     <div class="pBox">
                       <div class="imgBox">
-                        <img :src="dia.img1" alt="">
+                        <img src="../../../assets/img/AgentManage/head.png" alt="">
                       </div>
                       <div class="descBox">
                         <div class="nameBox">
@@ -261,12 +263,14 @@
                             <span v-text="dia.new_workdate+' '+dia.newstarttime+'~'+dia.newendtime"></span>
                           </div>
                         </div>
+                        <div style="clear:both"></div>
                         <div class="nameBox">
                           <div class="labelBox">
                             <label for="">换班原因：</label>
                             <span v-text="dia.description" class="hbExcuse"></span>
                           </div>
                         </div>
+                        <div style="clear:both"></div>
                         <div class="nameBox">
                           <div class="labelBox">
                             <label for="">申请时间：</label>
@@ -315,32 +319,26 @@ export default {
   computed:{
       crumbs(){
         let res =['代维系统','排班表'];
-        switch(this.activeName){
-            case 'first':
-                res.push('排班表');
-            break;
-            case 'second':
-                res.push('申请换班');
-            break;
-            case 'thrid':
-                res.push('申请状态');
-            break;
-        }
         return res;
     }
   },
   data () {
     return {
+        imgurl:'../../../assets/img/AgentManage/head.png',
+        applyhbSelect:{
+          hbTimes:[],
+          hbTime:'',
+          peos:[],
+          peo:'',
+          bTimes:[],
+          bTime:''
+        },
         tabPosition:'待审核',
         tabtype:0,
         noApplyLists:[],
+        topDate:'',
         excuse:'语雀是一款优雅高效的在线文档编辑与协同工具，让每个企业轻松拥有文档中心阿里巴巴集团内部使用多年，众多中小企业首选。',
-        peos:[
-          {},
-          {}
-        ],
         scheTable:[],
-        vpeo:'',
         radio3:'待审核',
         applyJob:{
           id:0,name:'王1',time:'2018-05-26 00:59~06:19',time2:'2018-05-27 07:59~14:19',name2:'白1',state:-1,img1:'http://img4.imgtn.bdimg.com/it/u=1652942597,4175456571&fm=26&gp=0.jpg',img2:'http://img0.imgtn.bdimg.com/it/u=2242889095,3429329643&fm=26&gp=0.jpg',tel1:'18349171744',tel2:'18349171722',reason:'Ant Design是一个服务于企业级产品的设计体系，基于『确定』和『自然』的设计价值观和模块化的解决方案，让设计者专注于更好的用户体验。'
@@ -358,17 +356,7 @@ export default {
         activeName: 'first',
         indexNow:-1,
         dia:{
-          name1:'娃哈哈',
-          tel1:'18349171744',
-          time1:'2018-7-6 04:08 ~ 13:43',
-          img1:'http://img4.imgtn.bdimg.com/it/u=1652942597,4175456571&fm=26&gp=0.jpg',
-          name2:'娃哈哈2',
-          tel2:'18349171722',
-          time2:'2018-7-7 04:08 ~ 13:43',
-          img2:'http://img0.imgtn.bdimg.com/it/u=2242889095,3429329643&fm=26&gp=0.jpg',
-          reason:'Ant Design是一个服务于企业级产品的设计体系，基于『确定』和『自然』的设计价值观和模块化的解决方案，让设计者专注于更好的用户体验。',
-          applyTime:'2018/09/04 04:44',
-          state:'-1'
+          reason:'请输入换班原因'
         }
     }
   },
@@ -380,8 +368,14 @@ export default {
     search(val,type){
       console.log(val,type)
     },
-    change1(){
-
+    change1(val){
+      this.applyhbSelect.bTime = val;
+    },
+    change2(val){
+      this.applyhbSelect.vpeo = val;
+    },
+    change3(val){
+      this.applyhbSelect.hbTime = val;
     },
     submitApply(){
 
@@ -394,14 +388,20 @@ export default {
       }else{
         this.tabtype=2;
       }
+      this.getApplyStatus(this.tabtype);
     },
-    getTableList(){
+    getTableList(value7){
+      let _this = this;
+      if(!value7){
+        value7 = utils.time(new Date()/1000,9);
+      }
+      this.topDate = value7;
       this.$http.post('/pc_ims/staff/work_list',{
-        year:'2018',
-        month:'07'
+        year:value7.split('-')[0],
+        month:value7.split('-')[1]
       }).then(res=> {
            if(res.data.code==0){
-              console.log(res.data.data);
+              this.scheTable = res.data.data;
            }else{
               this.$message({
                 type:'error',
@@ -421,6 +421,7 @@ export default {
       .then(res=>{
           if(res.data.code==0){
               console.log(res)
+              this.getApplyStatus(this.tabtype);
            }else{
               this.$message({
                 type:'error',
@@ -430,12 +431,58 @@ export default {
            }
       })
     },
-    getNoApply(){
-      
-    },
-    getApplyStatus(){
-      this.$http.post('/pc_ims/staff/work_change',{type:this.tabtype})
+    getNoApplyed(){//申请被换班列表
+      this.$http.post('/staff/get_worklist',{user_id:'3'})
       .then(res=>{
+        console.log(res.data);
+        if(res.data.code==0){
+          let data = res.data.data;
+          let arr=[];
+          $.each(data,(n,k)=>{
+            arr.push({label:k.workdate,value:k.id});
+          })
+          this.dia = {
+            truename:data[0].truename,
+            phone:data[0].phone
+          }
+          this.applyhbSelect.bTimes = arr;
+         }else{
+            this.$message({
+              type:'error',
+              message:res.data.msg,
+              duration:2000
+            })
+         }
+      })
+    },
+    getNoApply(){//申请换班列表
+      this.$http.post('/pc_ims/staff/get_worklist',{user_id:'21'})
+      .then(res=>{
+        if(res.data.code==0){
+          let data = res.data.data;
+          let arr=[];
+          $.each(data,(n,k)=>{
+            arr.push({label:k.workdate,value:k.id});
+          })
+          this.dia.truename = data[0].truename;
+          this.dia.phone = data[0].phone;
+          this.applyhbSelect.bTimes = arr;
+         }else{
+            this.$message({
+              type:'error',
+              message:res.data.msg,
+              duration:2000
+            })
+         }
+      })
+    },
+    getApplyStatus(val){
+      if(!val){
+        val = this.tabtype
+      }
+      this.$http.post('/pc_ims/staff/work_change',{type:val})
+      .then(res=>{
+        console.log(res.data)
           if(res.data.code==0){
               this.noApplyLists = res.data.data;
            }else{
@@ -448,17 +495,8 @@ export default {
       })
     },
     exportTable(){
-      this.$http.get('/pc_ims/down/staff_work_list').then(res=> {
-           if(res.data.code==0){
-              this.scheTable = res.data.data;
-           }else{
-              this.$message({
-                type:'error',
-                message:res.data.msg,
-                duration:2000
-              })
-           }
-        })
+      //console.log(this.topDate)
+      window.open('https://tesing.china-tillage.com/pc_ims/down/staff_work_list',{year:this.topDate.split('-')[0],month:this.topDate.split('-')[1]})
     }
   },
   created() {
@@ -474,6 +512,8 @@ export default {
   mounted() {
     this.getTableList();
     this.getApplyStatus();
+    this.getNoApply();
+    //this.getNoApplyed();
   },
 }
 </script>
@@ -487,8 +527,13 @@ export default {
   width:100%;
   height:100%;
   .tabBoxs{
-    margin:0 2.2%;
-    height :6.78rem;
+    padding:0 2.2%;
+    height :6rem;
+    overflow:hidden;
+    .tabChilds{
+      overflow-y:scroll;
+      height:5.9rem;
+    }
     .reason{
       padding:0.1rem 0.2rem;
       .diaTit2{
@@ -547,8 +592,10 @@ export default {
           border-radius: 0.02rem;
           display: flex;
           overflow:hidden;
+          padding:0.2rem;
           justify-content: center;
           img{
+            width:100%;
             .vh(150);
           }
 
@@ -594,11 +641,13 @@ export default {
       margin:0 0.26rem;
       flex: 1;
       display: flex;
-      height :100%;
+      flex-direction:column;
+      height:4rem;
       li{
         width:100%;
         border:0px solid rgba(181,215,255,0.25);
         background:rgba(74,144,226,0.05);
+        margin-bottom:0.2rem;
         .imgBox{
           float:left;
           padding:0.26rem;
@@ -607,6 +656,8 @@ export default {
           img{
             width:1.26rem;
             height:1.5rem;
+            border: 0px solid rgba(181, 215, 255, 0.25);
+            box-shadow: 0px 4px 10px 0px rgba(73, 143, 226, 0.22), inset 1px 1px 2px 0px rgba(248, 253, 255, 0.15), inset 0px -1px 1px 0px #498fe2;
           }
         }
         .descBox{

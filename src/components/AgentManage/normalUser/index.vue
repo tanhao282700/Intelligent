@@ -9,15 +9,10 @@
       <div class="msgBox boxs">
         <div class="boxsTitG">
           <span class="tit">工单&巡检 完成情况</span>
-          <div class="btnDate"
-            v-for="(v,i) in fillBoxs"
-            :class="{'active':idNow == v.id}"
-            v-text="v.name"
-            @click="changeDateType(v.id)"></div>
         </div>
         <div class="msgsIn0">
           <div class="msgsIn">
-            <div class="msgsInTit" v-text="`本${msgsInTit}工单数`"></div>
+            <div class="msgsInTit" v-text="`本月工单数`"></div>
             <div class="msgsInBoxs">
               <div class="msgsInCircle">
                 <EchartCirFull ref="echartCirData3"  :echartCirData = "echartCirData3"/>
@@ -50,7 +45,7 @@
           </div>
           <Lines :top="20" :hei="213"/>
           <div class="msgsIn">
-            <div class="msgsInTit" v-text="`本${msgsInTit}巡检任务数`"></div>
+            <div class="msgsInTit" v-text="`本月巡检任务数`"></div>
             <div class="msgsInBoxs">
               <div class="msgsInCircle">
                 <EchartCirFull ref="echartCirData4"  :echartCirData = "echartCirData4"/>
@@ -86,21 +81,16 @@
       <div  class="dealed boxs">
         <div class="boxsTitG">
           <span class="tit">工单&巡检 完成率</span>
-          <div class="btnDate"
-            v-for="(v,i) in fillBoxs2"
-            :class="{'active':idNow2 == v.id}"
-            v-text="v.name"
-            @click="changeDateType2(v.id)"></div>
         </div>
         <div class="workBox1">
           <div class="workBox1In">
             <div class="workBox1In1">
-              <p class="marginTop" v-text="crate.monW+'%'"></p>
+              <p class="marginTop" v-text="circleData.crate.monW+'%'"></p>
               <span class="colorY">本月工单完成率</span>
             </div>
             <Lines type="h" :wid="148" :left="35"/>
             <div class="workBox1In1">
-              <p v-text="crate.monR+'%'"></p>
+              <p v-text="circleData.crate.monR+'%'"></p>
               <span class="colorR">本月巡检完成率</span>
             </div>
           </div>
@@ -117,7 +107,7 @@
           <div class="totalNum">
             <div class="lines"></div>
             <span>总数：</span>
-            <span>100单</span>
+            <span>{{barData.total}}单</span>
           </div>
         </div>
         <div class="EchartBarBox">
@@ -144,15 +134,7 @@ export default {
     'Header':Header
   },
   computed:{
-    msgsInTit(){
-      let lens =this.fillBoxs.length,res = '';
-      for(let i=0;i<lens;i++){
-        if(this.fillBoxs[i].id == this.idNow){
-          res = this.fillBoxs[i].name;
-        }
-      }
-      return res;
-    }
+    
   },
   data () {
     return {
@@ -167,15 +149,10 @@ export default {
               {id:4,name:'完成情况',route:'/AgentManage/normalUser/report'},
           ]
       },
-      crate:{
-        monW:'56.2',
-        monR:'78.9',
-        yearW:'88.9',
-        yearR:'71.9'
-      },
+      
       barData:{
           id:'barData',
-          data:[57, 33],
+          data:[],
           total:0,
           xData:['系统派发','人工派发']
       },
@@ -194,8 +171,12 @@ export default {
       circleData:{
         id:'canvas',
         style:{marginLeft:'0.1rem',marginTop:42*100/728+'vh'},
-        data:['56.2','23.5'],
-        total:45.3
+        data:[],
+        total:0,
+        crate:{
+          monW:'0',
+          monR:'0'
+        },
       },
       echartCirData3:{
         id:'echart3',
@@ -225,18 +206,6 @@ export default {
     }
   },
   methods:{
-    changeDateType(id){
-      if(this.idNow==id){
-        return;
-      }
-      this.idNow =id;
-    },
-    changeDateType2(id){
-      if(this.idNow2==id){
-        return;
-      }
-      this.idNow2 =id;
-    },
     getEchartData(){
       let _this =this;
       this.$http.post('/pc_ims/index',{user_id:21,flg:2})
@@ -244,10 +213,11 @@ export default {
           //console.log(res)
           if(res.data.code==0){
              _this.echartCirData3.total = res.data.data.job.count;
+             console.log(res.data.data);
              let gongdanwei = res.data.data.job.wei;
              let gongdanwan = res.data.data.job.wan;
              let xunjianwei = res.data.data.xunjian.wei;
-             let xunjianwan = res.data.data.xunjianwan;
+             let xunjianwan = res.data.data.xunjian.wan;
              //工单
              _this.echartCirData3.data  = [
                 {value:res.data.data.job.wan,name:Math.floor(gongdanwan/(gongdanwan+gongdanwei)*100)+'%',tit:'已完成数'},
@@ -258,14 +228,16 @@ export default {
               {value:res.data.data.xunjian.wan,name:Math.floor(xunjianwan/(xunjianwan+xunjianwei)*100)+'%',tit:'已完成数'},
               {value:res.data.data.xunjian.wei,name:Math.floor(xunjianwei/(xunjianwei+xunjianwan)*100)+'%',tit:'未完成数'}];
               //工单来源
-             _this.barData.data = [res.data.data.sys,res.data.data.people]
-             _this.barData.total = res.data.data.count;
-             _this.circleData.data = [Math.floor(gongdanwan/(gongdanwan+gongdanwei)*100),Math.floor(xunjianwan/(xunjianwan+xunjianwei)*100)]
-             _this.circleData.total = res.data.data.percent;
-             console.log(res.data.data)  //工单的数据
-             // console.log(res.data.data.now) //日/月 巡检&工单总完成率 根据筛选条件决定
-             // console.log(res.data.data.old) //周/年 巡检&工单总完成率 根据筛选条件决定
-             // console.log(res.data.data.percentage_count)//巡检&工单总完成率
+             _this.barData.data = [res.data.data.source.sys,res.data.data.source.people]
+             _this.barData.total = res.data.data.source.count;
+             console.log(_this.barData.data)
+             _this.circleData.data = [Math.floor(gongdanwan/(gongdanwan+gongdanwei)*100),'','',Math.floor(xunjianwan/(xunjianwan+xunjianwei)*100)]
+             _this.circleData.total = (res.data.data.percent.count/100).toFixed(4);
+             _this.circleData.crate = {
+                monW:res.data.data.percent.job,
+                monR:res.data.data.percent.xunjian
+             }
+             console.log(_this.circleData)
           }else{
             _this.$message({
               type:'error',

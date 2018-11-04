@@ -61,14 +61,17 @@
                 />
               </div>
             </div>
-            <Dialog wid="1326" hei="640" ref="dialog">
+            <Dialog wid="1200" hei="640" ref="dialog">
               <WorkInfo @tableInfos2Show="tableInfos2Show" :table="table3" :query="query2"/>
             </Dialog> 
-            <Dialog wid="910" hei="686" ref="tableInfos2">
+            <Dialog wid="910" hei="600" ref="tableInfos2">
                 <div class="tableInfos">
                     <div class="infoHead">
                       <span class="infoName" v-text="infoItem.info.user_name"></span>
                       <span class="infoState" v-text="infoTit(infoItem.info.now_value)"></span>
+                    </div>
+                    <div class="infoWater">
+                        <RoutingTask :data="infoItem" ></RoutingTask>
                     </div>
                     <div class="infoBoxs">
                       <RoutingInfo :data="infoItem"/>
@@ -190,7 +193,7 @@ export default {
               state0:0, //1 同意，0拒绝
               txt:'是否允许退单'
           },
-          data:[{now_state:0},{now_state:1},{now_state:2},{now_state:3},{now_state:4}],
+          data:[],
           th:[
             {prop:'id',label:'序号',wid:60},
             {prop:'user_name',label:'名称'},
@@ -269,6 +272,7 @@ export default {
           desc:[],
           localDesc:{},
           localDesc2:{},
+          infoSend:[]
         },  //某个工单的详情
     }
   },
@@ -371,7 +375,6 @@ export default {
               type:'error',
               message:'巡检任务模板新增成功'
             })
-            console.log(res.data)
             this.table3.len = res.data.count;
             this.table3.data = res.data.data.info;
             this.table3.tabs = [{'name':'今日巡检总数',num:res.data.data.zong},
@@ -401,11 +404,6 @@ export default {
       this.$http.post('/pc_ims/admin/change_state',{id:id,state:state})
       .then(res=>{
           if(res.data.code==0){
-            this.$message({
-              type:'success',
-              message:res.data.msg,
-              duration:2000
-            })
             this.getModelList(this.queryModel);
           }else{
             this.$message({
@@ -453,13 +451,12 @@ export default {
               {label:'巡检设备',value:this.infoItem.devicename},
             ]
             if(item.now_state==4){
-              this.infoItem.localDesc = [
-              {label:'现场处理情况',value:this.infoItem.complete_info},
-              {label:'退回原因',value:this.infoItem.backExcuse}]
+              this.infoItem.localDesc = {label:'现场处理情况',value:this.infoItem.complete_info};
+              this.infoItem.localDesc2 = {label:'退回原因',value:this.infoItem.backExcuse};
             }else{
-              this.infoItem.localDesc = [{label:'现场处理情况',value:this.infoItem.complete_info}];
+              this.infoItem.localDesc = {label:'现场处理情况',value:this.infoItem.complete_info};
             }
-            
+            this.infoItem.job_list = this.infoItem.inspection_list;
           }else{
             this.$message({
               type:'error',
@@ -664,14 +661,6 @@ export default {
   computed:{
       crumbs(){
         let res =['代维系统','巡检'];
-        switch(this.activeName){
-            case 'first':
-                res.push('巡检任务表');
-            break;
-            case 'second':
-                res.push('巡检任务模板');
-            break;
-        }
         return res;
     }
   },
