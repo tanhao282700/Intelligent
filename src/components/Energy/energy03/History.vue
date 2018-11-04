@@ -17,7 +17,7 @@
             </el-option>
           </el-select>
 
-          <el-select placeholder="楼栋" v-model="areaData.data2" v-show="areaData2Array.length>0" @change="areaData2Chang">  
+          <el-select placeholder="楼栋" v-model="areaData.data2" v-show="areaData2Array.length>0" @change="areaData2Chang">
             <el-option
               v-for="item2 in areaData2Array"
               :key="item2.id"
@@ -35,7 +35,7 @@
             </el-option>
           </el-select>
 
-          <el-select placeholder="楼层" v-model="areaData.data4" v-show="areaData4Array.length>0">
+          <el-select placeholder="楼层" v-model="areaData.data4" v-show="areaData4Array.length>0" @change="areaData4Chang">
             <el-option
               v-for="item4 in areaData4Array"
               :key="item4.id"
@@ -57,15 +57,15 @@
         </div>
         <!--导入-->
         <div>
-          <div class="exBth" @click="takeIn('one')" v-show="formData.floor_id !=0">
+          <div class="exBth" @click="uploadFile" v-show="formData.floor_id !=0">
             <span></span>
             <span>批量导入</span>
           </div>
-          <div class="exBth" @click="takeIn('more')" v-show="formData.floor_id !=0">
+          <div class="exBth" @click="takeIn" v-show="formData.floor_id !=0">
             <span></span>
             <span>单个录入</span>
           </div>
-          <div class="exBth" @click="takeIn('more')" >
+          <div class="exBth" @click="downloadModule" >
             <span></span>
             <span>模板下载</span>
           </div>
@@ -139,8 +139,8 @@
           label="操作"
           min-width="15%">
           <template slot-scope="scope">
-            <el-button type="text" @click="revice(scope.row)" size="small">修改</el-button>
-            <el-button type="text" size="small">删除</el-button>
+            <el-button type="text" @click="editRecord(scope.row)" size="small">修改</el-button>
+            <el-button type="text" size="small" @click="openDeleteDialog(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -166,23 +166,14 @@
 
     </div>
 
-
-
-
-    <Dialog wid = "598" hei = "536" style="display: flex;flex-direction: column" ref = "Historydialog" :tit = "dialogTit" class="metersHistoryDialogBox">
+    <!--导入/修改弹窗-->
+    <el-dialog :title="dialogTit" :visible.sync="editInfoDialogVisible" class="metersHistoryDialogBox" :close-on-click-modal="false">
       <div class="showBox2 historyBox" style="padding: .2rem 0 0 .2rem;">
         <div>
           <div class="formGroup">
             <div class="name">区域<i></i></div>
             <div class="inpArea">
-              <el-select :placeholder="items.placeHolder" v-for="(items,index) in options1" v-model="bb" :key="index+1" class="querySelectItem">
-                <el-option
-                  v-for="item in items.data"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
+              <el-input placeholder="请输入" v-model="dialogInfoObj.area_name" disabled></el-input>
             </div>
           </div>
           <!--<div class="formGroup" style="height:60px;">
@@ -202,57 +193,60 @@
           <div class="formGroup">
             <div class="name">水用量<i></i></div>
             <div class="inpArea">
-              <el-input placeholder="请输入" v-model="formData.name"></el-input>
+              <el-input placeholder="请输入" v-model="dialogInfoObj.used_water"></el-input>
             </div>
           </div>
           <div class="formGroup">
             <div class="name">水费用<i></i></div>
             <div class="inpArea">
-              <el-input placeholder="请输入" v-model="formData.val"></el-input>
+              <el-input placeholder="请输入" v-model="dialogInfoObj.used_water_price"></el-input>
             </div>
           </div>
           <div class="formGroup">
             <div class="name">电用量<i></i></div>
             <div class="inpArea">
-              <el-input placeholder="请输入" v-model="formData.name"></el-input>
+              <el-input placeholder="请输入" v-model="dialogInfoObj.used_electric"></el-input>
             </div>
           </div>
           <div class="formGroup">
             <div class="name">电费用<i></i></div>
             <div class="inpArea">
-              <el-input placeholder="请输入" v-model="formData.val"></el-input>
+              <el-input placeholder="请输入" v-model="dialogInfoObj.used_electric_price"></el-input>
             </div>
           </div>
           <div class="formGroup">
             <div class="name">气用量<i></i></div>
             <div class="inpArea">
-              <el-input placeholder="请输入" v-model="formData.name"></el-input>
+              <el-input placeholder="请输入" v-model="dialogInfoObj.used_gas"></el-input>
             </div>
           </div>
           <div class="formGroup">
             <div class="name">气费用<i></i></div>
             <div class="inpArea">
-              <el-input placeholder="请输入" v-model="formData.val"></el-input>
+              <el-input placeholder="请输入" v-model="dialogInfoObj.used_gas_price"></el-input>
             </div>
           </div>
           <div class="formGroup">
             <div class="name">收入<i></i></div>
             <div class="inpArea">
-              <el-input placeholder="请输入" v-model="formData.val"></el-input>
+              <el-input placeholder="请输入" v-model="dialogInfoObj.income"></el-input>
             </div>
           </div>
           <div class="formGroup">
             <div class="name">租房量<i></i></div>
             <div class="inpArea">
-              <el-input placeholder="请输入" v-model="formData.val"></el-input>
+              <el-input placeholder="请输入" v-model="dialogInfoObj.rent_house_num"></el-input>
             </div>
           </div>
           <div class="formGroup">
             <div class="name">日期<i></i></div>
             <div class="inpArea">
               <el-date-picker
-                v-model="value1"
+                v-model="dialogInfoObj.date"
                 type="datetime"
+                format="yyyy-MM-dd HH:mm"
+                value-format="yyyy-MM-dd HH:mm"
+                :disabled = 'isEdit'
                 placeholder="选择日期时间">
               </el-date-picker>
             </div>
@@ -263,19 +257,47 @@
       </div>
       <div class="historyBtn">
         <span @click="cancleImport">取消</span>
-        <span>确定</span>
+        <span @click="saveRecordInfo">确定</span>
       </div>
-    </Dialog>
+      <bubbleTip :tipText="bubbleTip"/>
+    </el-dialog>
 
 
+    <!--删除信息弹窗-->
+    <el-dialog :visible.sync="deleteInfoDialog" class="dialogBox deleteInfoDialog" :close-on-click-modal="false">
+      <div class="deleteTextBox">是否确定删除此信息？</div>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="confirmDelete" class="saveBtn">确定</el-button>
+        <el-button @click="deleteInfoDialog = false" class="cancleBtn">取消</el-button>
+      </div>
+      <bubbleTip :tipText="bubbleTip"/>
+    </el-dialog>
+
+    <el-dialog title="批量导入" :visible.sync="fileUploadDialogVisible" class="metersHistoryDialogBox uploadFileBox" :close-on-click-modal="false">
+      <div class="upRowBox"><span>上传</span><span class="upBtn">选择文件</span>
+        <form action="uploadServlet.do" method="post"
+              enctype="multipart/form-data">
+          <input type="file" id="upSysFile">
+        </form>
+      </div>
+    </el-dialog>
     </div>
 </template>
 <script>
+  import bubbleTip from '../../common/bubbleTip';
 
   export default{
-  name:'History',
+    components:{
+      "bubbleTip":bubbleTip
+    },
+    name:'History',
     data(){
       return{
+        filePath:'',
+        fileUploadDialogVisible:false,
+        isEdit: true,
+        editInfoDialogVisible:false,
+        bubbleTip:'',
         areaData1Array:[],
         areaData2Array:[],
         areaData3Array:[],
@@ -296,24 +318,10 @@
         loading:true,
         fileList:[],
         value1:'',
-        dialogTit:"单个录入",
+        dialogTit:"",
         bb:'',
         cc:'',
         dd:'',
-        options1: [
-          {
-            placeHolder: '选择区域',
-            data: [{
-              "value": 0,
-              "label": "预警"
-            }, {
-              "value": 1,
-              "label": "提醒"
-            }, {
-              "value": 2,
-              "label": '告警'
-            }]
-          }],
         curPageData:[],
         formData:{
           date:'',
@@ -325,12 +333,28 @@
           total:0,     //总条数
           pageCount:0    //总页数
         },
+        areaCheckedTitle:"",
         nodeIsChange:false,
-        preKeysArray:[]
+        preKeysArray:[],
+        deleteInfoDialog:false,
+        delRecordDate:"",
+        roleKey:"",
+        dialogInfoObj:{
+          used_water:"",
+          used_water_price:"",
+          used_electric:"",
+          used_electric_price:"",
+          used_gas:"",
+          used_gas_price:"",
+          income:"",
+          rent_house_num:"",
+          date:"",
+          area_name:"",
+          show_id:"",
+          row_key:""
+        },
+        inputExp:/^\d+(\.\d+)?$/
       }
-    },
-    components:{
-
     },
     watch:{
 
@@ -338,56 +362,211 @@
     created(){
       this.formData.sys_menu_id = this.$store.state.sysList[2].sys_menu_id;
       this.formData.project_id = this.$store.state.projectId;
-      this.initData()
+      this.initData();
     },
     mounted(){
 
     },
     methods:{
+      handleChange(file, fileList) {
+        this.uploadFile = fileList.slice(-3);
+        console.log(fileList);
+      },
+      uploadFile(){
+        let that = this;
+        that.fileUploadDialogVisible = true;
+      },
+      saveRecordInfo(){
+        let that = this;
+        let config,successInfo;
+        let type = that.isEdit;
+        let insertData = that.dialogInfoObj;
+
+        if(!type){
+          insertData.show_id = insertData.row_key = 1;
+          successInfo =  '录入成功';
+        }else{
+          successInfo =  '修改成功';
+        }
+
+        for(var i in insertData){
+          let temp = insertData[i];
+
+          if(!temp){
+            that.bubbleTipShow("请完善信息");
+            return;
+          }else {
+            if(i != 'area_name' && i!='date' && i!='row_key'){
+              if(!that.inputExp.test( Number(temp) )){
+                console.log(temp);
+                that.bubbleTipShow("请输入纯数字");
+                return;
+              };
+            }
+          }
+        }
+
+        if(type){
+          config = {
+            project_id: that.$store.state.projectId,
+            floor_id: that.formData.floor_id,
+            sys_menu_id:that.formData.sys_menu_id,
+            row_key: that.dialogInfoObj.row_key,
+            update_data:that.dialogInfoObj,
+            page_index:1
+          }
+        }else{
+          let roleKey = "floor_id:" + that.formData.floor_id + ".date:" + insertData.date.substring(0,10).replace(/-/g,"");
+          insertData.row_key = roleKey;
+
+          config = {
+            project_id: that.$store.state.projectId,
+            floor_id: that.formData.floor_id,
+            sys_menu_id:that.formData.sys_menu_id,
+            insert_one_data:insertData,
+            page_index:1
+          }
+        }
+        console.log(config);
+
+        that.$http.post('hotel_energy/history_record',config).then(res=>{
+          console.log(res);
+          if(res.data.code =='0'){
+            that.initData();
+            that.bubbleTipShow(successInfo);
+            setTimeout(function () {
+              that.editInfoDialogVisible = false;
+              that.dialogInfoObj = {};
+            },2000)
+          }else {
+            that.bubbleTipShow(res.data.message);
+            that.editInfoDialogVisible = false;
+            that.dialogInfoObj = {};
+          }
+        }).catch(err=>{
+          console.log(err);
+        })
+      },
+      downloadModule(){
+        let that = this;
+        let config = {
+          project_id: that.$store.state.projectId,
+          floor_id: that.formData.floor_id,
+          sys_menu_id:that.formData.sys_menu_id,
+          download_file : true
+        }
+
+        that.$http.post('hotel_energy/history_record',config).then(res=>{
+          console.log(res);
+          let path = "http://" + res.data;
+          window.location.href = path;
+
+        }).catch(err=>{
+          console.log(err);
+        })
+      },
+      bubbleTipShow(tip){
+        this.bubbleTip = tip;
+        this.$store.state.bubbleShow = true;
+        var that = this;
+        setTimeout(function () {
+          that.$store.state.bubbleShow = false;
+        },3000)
+      },
+      confirmDelete(){
+        let that = this;
+        let config = {
+          project_id: that.$store.state.projectId,
+          floor_id: that.formData.floor_id,
+          sys_menu_id:that.formData.sys_menu_id,
+          del_record_date : that.delRecordDate,
+          row_key: that.roleKey
+        }
+        console.log(config);
+
+        that.$http.post('hotel_energy/history_record',config).then(res=>{
+          console.log(res);
+          if(res.data.code =='0'){
+            that.isReset = false;
+            that.initData();
+            that.bubbleTipShow('删除成功');
+            setTimeout(function () {
+              that.deleteInfoDialog = false;
+            },2000)
+          }else {
+            that.bubbleTipShow(res.data.message);
+            that.deleteInfoDialog = false;
+          }
+        }).catch(err=>{
+          console.log(err);
+        })
+      },
+      openDeleteDialog(val){
+        var that = this;
+        that.deleteInfoDialog = true;
+        let curDate = val.date;
+        that.delRecordDate = curDate.substring(0,10).replace(/-/g,"");
+        that.roleKey = val.row_key;
+      },
       areaData1Chang(id){
         let that = this;
+        that.formData.floor_id = id;
         that.areaData2Array = that.areaData3Array = [];
-        that.areaData.data2 = "";
 
           let datas = that.areaData1Array;
         for(var i=0;i<datas.length;i++){
-          var temtp = datas[i];
-          if(temtp.id == id){
-            that.areaData2Array = temtp.child;
+          var temp = datas[i];
+          if(temp.id == id){
+            that.areaData2Array = temp.child;
+            that.areaCheckedTitle = temp.title;
           }
         }
       },
       areaData2Chang(id){
         let that = this;
+        that.formData.floor_id = id;
         that.areaData3Array = [];
         that.areaData.data3 = "";
 
         let datas = that.areaData2Array;
         for(var i=0;i<datas.length;i++){
-          var temtp = datas[i];
-          if(temtp.id == id){
-            that.areaData3Array = temtp.child;
+          var temp = datas[i];
+          if(temp.id == id){
+            that.areaData3Array = temp.child;
+            that.areaCheckedTitle = temp.title;
           }
         }
       },
       areaData3Chang(id){
         let that = this;
+        that.formData.floor_id = id;
         that.areaData4Array = [];
         that.areaData.data4 = "";
 
-        console.log(id);
         let datas = that.areaData3Array;
         for(var i=0;i<datas.length;i++){
-          var temtp = datas[i];
-          console.log(temtp);
-          if(temtp.id == id){
-            that.areaData4Array = temtp.child;
+          var temp = datas[i];
+          if(temp.id == id){
+            that.areaData4Array = temp.child;
+            that.areaCheckedTitle = temp.title;
+          }
+        }
+      },
+      areaData4Chang(id){
+        let that = this;
+        that.formData.floor_id = id;
+
+        let datas = that.areaData4Array;
+        for(var i=0;i<datas.length;i++){
+          var temp = datas[i];
+          if(temp.id == id){
+            that.areaCheckedTitle = temp.title;
           }
         }
       },
       queryClick(){
-        this.loading = true
-          this.initData()
+        this.loading = true;
+        this.initData();
       },
       initData(){
         let that = this;
@@ -397,11 +576,11 @@
         this.$http.post('/hotel_energy/history_record',config).then((res)=>{
           console.log(res);
           if(res.data.code==0){
-            that.curPageData = res.data.data.history_record.data
-            that.formData.total = res.data.data.history_record.total_record_num
-            that.formData.pageCount = res.data.data.history_record.total_page_num
-            /*this.areaArray = res.data.data.history_record.area_level*/
-            that.areaData1Array = [
+            that.curPageData = res.data.data.history_record.data;
+            that.formData.total = res.data.data.history_record.total_record_num;
+            that.formData.pageCount = res.data.data.history_record.total_page_num;
+            that.areaData1Array = res.data.data.history_record.area_level;
+           /* that.areaData1Array = [
               {
                 "child": [
                   {
@@ -485,11 +664,11 @@
                 "parent_id": 0,
                 "title": "21-30栋"
               }
-            ];
+            ];*/
 
             that.loading = false
           }else{
-
+            that.$message.error(res.data.message);
           }
         })
       },
@@ -511,19 +690,26 @@
       submitUpload() {
         this.$refs.upload.submit();
       },
-      takeIn(type){
-          if(type==='one'){
-              this.dialogTit = '单个录入'
-          }else{
-              this.dialogTit = '批量导入'
-          }
-          this.$refs.Historydialog.show();
+      takeIn(){
+        let that = this;
+        that.isEdit = false;
+        that.dialogInfoObj.area_name = that.areaCheckedTitle;
+        that.dialogTit = '单个录入';
+        that.editInfoDialogVisible = true;
       },
-      revice(data){
-          console.log(data)
+      editRecord(data){
+        console.log(data);
+        let that = this;
+        that.isEdit = true;
+        that.dialogTit = '修改记录';
+        that.editInfoDialogVisible = true;
+        that.dialogInfoObj = data;
       },
       cancleImport(){
-        this.$refs.Historydialog.hide();
+        let that = this;
+        that.editInfoDialogVisible = false;
+        that.dialogTit = '';
+        that.dialogInfoObj = {};
       }
     }
   }
@@ -600,10 +786,42 @@
     height:.5rem!important;
     line-height: .5rem!important;
   }
-  .history .modalBoxIn{
+  .history .modalBoxIn,.history .metersHistoryDialogBox .el-dialog{
     width:5.47rem!important;
     height:6.02rem!important;
+    margin: 0!important;
+    background: #051732;
+    border-radius: 10px;
   }
+  .history .metersHistoryDialogBox.uploadFileBox .el-dialog{
+    height: 2.25rem!important;
+    box-shadow:0px 2px 8px 0px rgba(39,141,255,0.3),8px 24px 50px 0px rgba(113,166,241,0.1);
+  }
+
+  .history .metersHistoryDialogBox .el-dialog .el-dialog__header{
+    height: .5rem;
+    line-height: .5rem;
+    background: rgba(0, 0, 0, 0.25);
+    text-align: center;
+    padding: 0;
+  }
+  .history .metersHistoryDialogBox.uploadFileBox .el-dialog .el-dialog__header{
+    text-align: left;
+    padding-left: .2rem;
+    color: #fff;
+  }
+
+  .history .metersHistoryDialogBox .el-dialog .el-dialog__title{
+    color: #008aff!important;
+    font-size: .16rem!important;
+  }
+  .history .metersHistoryDialogBox.uploadFileBox .el-dialog .el-dialog__title{
+    color: #fff!important;
+  }
+  .history .metersHistoryDialogBox .el-dialog .el-dialog__body{
+    padding: 0;
+  }
+
 </style>
 <style lang="less" rel="stylesheet/less" scoped>
   .history{
@@ -655,10 +873,44 @@
     }
     .exBth:last-child{
       span:first-child{
-        background:url(../../../assets/img/Energy/exin.png);
+        background:url(../../../assets/img/Energy/modelDown.png);
         background-size:100% 100%;
       }
     }
+  }
+
+  .upRowBox{
+    padding: .2rem;
+    font-size: .14rem;
+    color: #4F648B;
+    line-height: .32rem;
+  }
+  .upRowBox span:first-child{
+    width: .56rem;
+    text-align: justify;
+    text-align-last: justify;
+    margin-right: .15rem;
+    display: inline-block;
+  }
+  .upRowBox input{
+    width: 2rem;
+    height: .32rem;
+    border: none;
+    vertical-align: bottom;
+    opacity: 1;
+    margin-left: -2rem;
+    cursor: pointer;
+  }
+  .upRowBox .upBtn{
+    width: 2rem;
+    height: .32rem;
+    display: inline-block;
+    vertical-align: bottom;
+    border: 1px solid #1989FA;
+    border-radius: 2px;
+    padding-left: .2rem;
+    color: #fff;
+    font-size: .14rem;
   }
 </style>
 <style>
@@ -680,6 +932,9 @@
   .metersHistoryDialogBox>.modalBg,.metersHistoryDialogBox{
     height: 53.3vw!important;
     min-height: 728px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .metersHistoryDialogBox.modalBox .modalBoxIn .colseBoxs{
     right: -.1rem;
@@ -687,5 +942,30 @@
   }
   .metersHistoryDialogBox.modalBox .modalBoxIn{
     overflow: visible!important;
+  }
+
+
+  .el-dialog  .el-dialog__headerbtn{
+    position: absolute;
+    right: -.1rem;
+    top: -.1rem;
+    background-color: #00275B;
+    width: .2rem;
+    height: .2rem;
+    border-radius: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+  }
+  .el-dialog .el-dialog__close {
+    width: .16rem;
+    height: .16rem;
+    color: #3B89F9!important;
   }
 </style>
