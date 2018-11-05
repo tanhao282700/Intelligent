@@ -85,12 +85,12 @@
               type="index"
               :index="indexMethod"
               label="序号"
-              min-width="8%">
+              min-width="14%">
             </el-table-column>
             <el-table-column
               prop="time"
               label="日期"
-              min-width="12%">
+              min-width="11%">
             </el-table-column>
             <el-table-column
               prop="level"
@@ -100,7 +100,7 @@
             <el-table-column
               prop="word"
               label="报警描述"
-              min-width="20%">
+              min-width="15%">
             </el-table-column>
             <el-table-column
               prop="sys_name"
@@ -290,10 +290,10 @@
       queryForm(){
           console.log(this.timeValue)
           this.loading = true
-          if(this.timeValue.length!=0 && this.timeValue[0]==this.timeValue[1]){
+          if(this.timeValue&&this.timeValue.length!=0 && this.timeValue[0]==this.timeValue[1]){
             this.timeValue[1] = this.timeValue[1].split(' ')[0]+' 23:59:59'
           }
-          if(this.timeValue.length!=0 && this.timeValue.length>0){
+          if(this.timeValue&&this.timeValue.length!=0 && this.timeValue.length>0){
             this.formData.start_time = this.timeValue[0]
             this.formData.end_time = this.timeValue[1]
           }else{
@@ -319,7 +319,7 @@
         this.initData()
       },
       exports(){
-        if(this.timeValue && this.timeValue.length>0){
+        if(this.timeValue&&this.timeValue.length!=0 && this.timeValue.length>0){
           this.formData.start_time = this.timeValue[0]
           this.formData.end_time = this.timeValue[1]
         }else{
@@ -347,13 +347,26 @@
   }
   .paginationBox{
     position:static!important;
-    margin-top: 20px!important;
+    margin-top: 0.2rem!important;
+    margin-bottom: 0.2rem!important;
   }
 </style>
 <style>
   .fireAlarm .userBox td:first-child{
     padding-left:0!important;
   }
+  .fireAlarm .fireAlarmTable{
+    padding-left:1%;
+  }
+  .fireAlarm .tableHeadBlue th{
+    background:none!important;
+  }
+  /*.fireAlarm .fireAlarmTable tr .cell:first-child{
+    padding-left:0.2rem!important;
+  }
+  .fireAlarm tr th:first-child .cell{
+    padding-left:0.2rem;
+  }*/
   .fireAlarm .el-table .el-table__body td .cell{
     font-size:0.12rem!important;
   }
@@ -373,6 +386,7 @@
     background-color: #3A84EE!important;
   }
   .fireAlarm .export i{
-    background:url(../../assets/img/Alarm/export.png)
+    background:url(../../assets/img/Alarm/export.png);
+    margin-right:0.06rem;
   }
 </style>

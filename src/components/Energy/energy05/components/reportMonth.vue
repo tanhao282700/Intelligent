@@ -19,7 +19,7 @@
     	</div>
     	<div class="reportTablesBox">
         <div class="con" :class="{opacity0:loading==true}" style="height:100%;">  <!--宽度要和表格宽度一致-->
-          <el-table class="monthTab firstTab"  :data="tableData3"  :cell-class-name="cell" height="50vh"  >
+          <el-table class="monthTab firstTab"  :data="tableData3" show-summary  :cell-class-name="cell" height="50vh"  >
             <el-table-column prop="index" label="序号" width="40">
             </el-table-column>
             <el-table-column label="名称">
@@ -45,7 +45,7 @@
               </el-table-column>
             </template>
           </el-table>
-          <el-table class="monthTab noshow" :data="tableData1" border :cell-class-name="cell">
+          <!--<el-table class="monthTab noshow" :data="tableData1" border :cell-class-name="cell">
             <el-table-column prop="index" width="40"> </el-table-column>
             <el-table-column prop="dateLab" :width="columnw"> </el-table-column>
             <el-table-column prop="elecMount" :width="columnw"> </el-table-column>
@@ -59,7 +59,7 @@
               </template>
             </template>
 
-          </el-table>
+          </el-table>-->
           <!--<el-table class="monthTab noshow mytab" :data="tableData2" border :cell-class-name="cell" :span-method="objectSpanMethod">
             <el-table-column prop="index" width="40"> </el-table-column>
             <el-table-column prop="dateLab" :width="columnw"> </el-table-column>
@@ -75,7 +75,7 @@
             </template>
           </template>&ndash;&gt;
           </el-table>-->
-          <table class="mytab">
+          <!--<table class="mytab">
             <tr>
               <td class="noRemove" style="height:0.4rem;color:white;">14</td>
               <td class="noRemove" style="color:#2DF0E0!important;">部门合计</td>
@@ -94,7 +94,7 @@
                 </el-table-column>
               </template>
             </template>
-          </el-table>
+          </el-table>-->
         </div>
     	</div>
     </div>
@@ -203,6 +203,8 @@
         	}
         },
         mounted(){
+            let day = new Date()
+            this.formData.query_date = String(day.getFullYear())
             this.formData.sys_menu_id = this.$store.state.sysList[2].sys_menu_id;
             this.setWidth();
             this.getData();
@@ -316,6 +318,54 @@
 
 
                     setTimeout(()=>{
+
+                      $(".firstTab").height($(".con").height())
+
+
+                      $(".el-table__footer td").remove()
+                      if($(".el-table__body").width()>$(".con").width()){
+                        $(".con").width($(".el-table__body").width())
+                      }else{
+                        $(".el-table__header").width($(".con").width())
+                        $(".el-table__body").width($(".con").width())
+                        $(".el-table__body").css("padding-right","7px")
+                      }
+                      $(".el-table__footer").width($(".con").width())
+
+                      $($(".el-table__footer tbody tr")[0]).append("<td style='border-top:none!important;'>13</td><td style='color:#439AFF!important;border-top:none!important;'>区域合计</td><td style='color:#439AFF!important;border-top:none!important;'>"+data[1].data[12].value[0]+"</td><td style='color:#FFA414!important;border-top:none!important;'>"+data[1].data[12].value[1]+"</td>")
+                      for(let i=0;i<data[2].data.length;i++){
+                        $($(".el-table__footer tbody tr")[0]).append("<td style='color:#439AFF!important;border-top:none!important;'>"+data[2].data[i].value[0]+"</td><td style='color:#FFA414!important;border-top:none!important;'>"+data[2].data[i].value[1]+"</td>")
+                      }
+
+                      $(".el-table__footer tbody").append("<tr><td style='border-top:none!important;'>14</td><td style='color:#439AFF!important;border-top:none!important;'>部门合计</td><td style='border-top:none!important;' colspan='2'></td></tr>")
+                      let lenth = []
+                      this.areaList.map((item,index)=> {
+                        lenth.push(item.child_data.length)
+                      })
+                      for(let i=0;i<lenth.length;i++){
+                        if(lenth[i]==1){
+                          $($(".el-table__footer tbody tr")[1]).append('<td colspan="'+lenth[i]+'" style="color:#439AFF!important;font-size:0.14rem!important;border-top:none!important;">'+data[4].data[i].parent_area_total[0]+'</td>')
+                          $($(".el-table__footer tbody tr")[1]).append('<td colspan="'+lenth[i]+'"style="color:#FFA414!important;font-size:0.14rem!important;border-top:none!important;">'+data[4].data[i].parent_area_total[1]+'</td>')
+                        }else{
+                          $($(".el-table__footer tbody tr")[1]).append('<td colspan="'+lenth[i]+'" style="color:white;font-size:0.14rem!important;border-top:none!important;">用量：'+data[4].data[i].parent_area_total[0]+'</td>')
+                          $($(".el-table__footer tbody tr")[1]).append('<td colspan="'+lenth[i]+'"style="color:#FFA414!important;font-size:0.14rem!important;border-top:none!important;">费用：'+data[4].data[i].parent_area_total[1]+'</td>')
+                        }
+                      }
+
+                      $(".el-table__footer tbody").append("<tr><td style='border-top:none!important;'>15</td><td style='color:#439AFF!important;border-top:none!important;'>月均</td><td style='color:#439AFF!important;border-top:none!important;'>"+data[1].data[13].value[0]+"</td><td style='color:#FFA414!important;border-top:none!important;'>"+data[1].data[13].value[1]+"</td></tr>")
+
+                      for(let j=0;j<data[3].data.length;j++){
+                        $($(".el-table__footer tbody tr")[2]).append("<td style='color:#439AFF!important;border-top:none!important;'>"+data[3].data[j].value[0]+"</td><td style='color:#FFA414!important;border-top:none!important;'>"+data[3].data[j].value[1]+"</td>")
+                      }
+
+
+                      this.loading = false
+                    },500)
+
+
+
+
+                    /*setTimeout(()=>{
                         if($(".el-table__body").width()>$(".con").width()){
                           $(".con").width($(".el-table__body").width())
                         }else{
@@ -346,7 +396,7 @@
                         $(".firstTab").height('70%')
 
                         this.loading = false
-                    },500)
+                    },500)*/
                   }else{
 
                   }
@@ -483,5 +533,9 @@
 .reportMonthQu .dateBox .el-input__prefix{
   left:inherit!important;
   right:0!important;
+}
+
+.el-table__footer td{
+  text-align: center;
 }
 </style>

@@ -93,6 +93,8 @@
       }
     },
     mounted(){
+      let day = new Date()
+      this.formData.query_date = String(day.getFullYear())+(day.getMonth()+1)
       this.formData.sys_menu_id = this.$store.state.sysList[2].sys_menu_id;
       this.setWidth();
       this.getData();

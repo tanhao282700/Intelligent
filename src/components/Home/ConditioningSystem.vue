@@ -40,8 +40,7 @@
           <div class="long" :class="{'anim':animate2}">
             <div class="item" v-for="item in broadTwoList">
               <span>{{item.name}}</span>
-              <span v-if="item.value==0">正常</span>
-              <span v-if="item.value==1">异常</span>
+              <span v-text="item.param.showvalue[item.value]"></span>
             </div>
           </div>
         </div>
@@ -134,6 +133,9 @@
       initData(){
         this.$http.get('/index_pc/pc/model',{self_id:1})
             .then((response)=>{
+              response.data.data[0].data4.map((item,index)=>{
+                item.param = JSON.parse(item.param)
+              })
               this.broadOneList = response.data.data[0].data3
               this.broadTwoList = response.data.data[0].data4
               this.patternData = response.data.data[0].data2
@@ -142,7 +144,7 @@
               this.patternData[0].param.showvalue[1] = this.patternData[0].param.showvalue[1].replace('一键','')
 
               this.conditionData = response.data.data
-              this.conditionData[1] =  {
+              /*this.conditionData[1] =  {
                 "data1": [
                   {
                     "name": "系统COP",
@@ -228,7 +230,8 @@
                   }
                 ],
                 "name": "测试"
-              }
+              }*/
+
               this.conditionInterval = setInterval(this.scroll,5000);
               if(this.conditionData[0].data1.length == 1){
                 this.drawEchart1(this.conditionData[0].data1)
@@ -428,7 +431,8 @@
       display: flex;
       padding:0 2.272%;
       .type{
-        flex:1;
+        width:50%;
+        /*flex:1;*/
         display: flex;
         flex-direction: column;
         font-size:12px;
