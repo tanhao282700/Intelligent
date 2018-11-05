@@ -62,6 +62,7 @@ const  utils = {
                 break;
                 case 9:
                 res =Y+'-'+ M;
+                break;
                 case 10:
                 res = Y;
                 break;
