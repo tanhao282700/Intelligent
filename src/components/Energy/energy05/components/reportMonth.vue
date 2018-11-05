@@ -227,7 +227,7 @@
                 energy_type:this.formData.energy_type
               }
               this.$http.post('/hotel_energy/statement',data).then((res)=> {
-                this.$http.get(res.data)
+                window.location.href='http://'+res.data
               })
           },
           query(){
@@ -255,8 +255,16 @@
                   if(res.data.code==0){
                     let data = res.data.data.result_data
                     this.tableData3.map((item,index)=>{   //写入总用电量、总费用数据
-                      item.elecMount = data[1].data[index].value[0]
-                      item.totalcaost = data[1].data[index].value[1]
+                      if(data[1].data[index].value[0]==0){
+                        item.elecMount = ''
+                      }else{
+                        item.elecMount = data[1].data[index].value[0]
+                      }
+                      if(data[1].data[index].value[1]==0){
+                        item.totalcaost = ''
+                      }else{
+                        item.totalcaost = data[1].data[index].value[1]
+                      }
                     })
 
                     //存储部门区域数据

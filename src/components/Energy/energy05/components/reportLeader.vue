@@ -151,10 +151,11 @@
               project_id:1,
               choice_page:2,
               export:true,
+              sys_menu_id:this.formData.sys_menu_id,
               date_type:this.formData.date_type
             }
             this.$http.post('/hotel_energy/statement',data).then((res)=> {
-              this.$http.get(res.data)
+              window.location.href='http://'+res.data
             })
           },
           queryCli(){
