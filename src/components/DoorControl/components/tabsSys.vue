@@ -52,13 +52,14 @@
         <div class="bottomShadow">
             <div class="floorImgBox">
                 <img src="../../../assets/img/doorControl/bg_lc.png">
+                <!-- {{item.device_name.slice(0,1)}} -->
                 <i :class="['doorSta'+item.device_state,'door'+(index+1)]" 
                    v-for="(item,index) in iList" 
                    @mouseenter = "popToggle(index,item.x,item.y,item.device_name,item.device_state,item.point_list)" 
                    @mouseout = "popHide" 
                    @click.stop="doorInfoPanel(item.device_id,item.device_name,item)"
                    :style="{left:item.position_x*1.74 + 'px',top:item.position_y*1.74 + 'px'}"
-                >{{item.device_name.slice(0,1)}}
+                ><span v-html = "item.all_state_pic[item.device_state]" ></span>
                     <pops v-on:doorInfoHide="doorInfoHide" :doorControlMsg = "doorControlMsg"  :info = "onMouseDoor" :infoSta = "infoSta" :controlDoorFun = "controlDoorFun" :itemIndex="index" @changeDoorStatus="changeDoorStatus"></pops>
                 </i>
                 
@@ -108,10 +109,9 @@
         },
         methods:{
             chooseLevels(selVal){
-                
+
                 this.floorIds = selVal;
                 this.getDoorData();
-                console.log(this.floorIds);
                 var arrL=[];
                 $.each(this.areaLevel,function(item,key){
                     if(key.id == selVal){
@@ -126,7 +126,6 @@
             chooseLevelNum(selVal){
                 this.floorIds = selVal;
                 this.getDoorData();
-                console.log(this.floorIds);
                 var arrLs=[];
                 $.each(this.levels,function(item,key){
                     if(key.id == selVal){

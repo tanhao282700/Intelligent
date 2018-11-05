@@ -64,10 +64,10 @@ nav.tabNav span a.on{color:#008aff;}
 .bottomShadow .floorImgBox{position:absolute;left:50%;top:50%;display:block;width:900px;height:430px;margin-left: -450px;margin-top:-215px;}
 .bottomShadow .floorImgBox img{display: block;width:100%;height:100%;}
 .bottomShadow .floorImgBox i{position:absolute;display: block;width:22px;height:31px;cursor: pointer;font-size: 12px;line-height: 24px;text-align: center;}
-.bottomShadow .floorImgBox i.doorSta0{background:url(../../assets/img/doorControl/door1.png) no-repeat;background-size: 100% 100%;}
+/*.bottomShadow .floorImgBox i.doorSta0{background:url(../../assets/img/doorControl/door1.png) no-repeat;background-size: 100% 100%;}
 .bottomShadow .floorImgBox i.doorSta1{background:url(../../assets/img/doorControl/door3.png) no-repeat;background-size: 100% 100%;}
-.bottomShadow .floorImgBox i.doorSta2{background:url(../../assets/img/doorControl/door2.png) no-repeat;background-size: 100% 100%;}
-.bottomShadow .floorImgBox i.door1{left:48px;top:74px;}
+.bottomShadow .floorImgBox i.doorSta2{background:url(../../assets/img/doorControl/door2.png) no-repeat;background-size: 100% 100%;}*/
+/*.bottomShadow .floorImgBox i.door1{left:48px;top:74px;}
 .bottomShadow .floorImgBox i.door2{left:94px;top:180px;}
 .bottomShadow .floorImgBox i.door3{left:192px;top:277px;}
 .bottomShadow .floorImgBox i.door4{left:300px;top:260px;}
@@ -78,7 +78,7 @@ nav.tabNav span a.on{color:#008aff;}
 .bottomShadow .floorImgBox i.door9{left:602px;top:246px;}
 .bottomShadow .floorImgBox i.door10{left:638px;top:30px;}
 .bottomShadow .floorImgBox i.door11{left:734px;top:119px;}
-.bottomShadow .floorImgBox i.door12{left:822px;top:350px;}
+.bottomShadow .floorImgBox i.door12{left:822px;top:350px;}*/
 
 .doorStatusBox{position: absolute;right:0;top:22px;height:16px;}
 .doorStatusBox li{float: left;padding:0 20px;border-right:2px solid #4a90e2;height:16px;line-height: 16px;font-size: 12px;}
