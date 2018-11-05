@@ -23,7 +23,7 @@
                   :value="item.id">
                 </el-option>
             </el-select>
-            <el-select v-model="floorNum" placeholder="层号">
+            <el-select v-model="floorNum" placeholder="层号" @change="getFloorIdData">
                 <el-option  v-for="item in levelNum"
                   :key="item.value"
                   :label="item.title"
@@ -94,8 +94,8 @@
                 buildingNumber:"", //楼号
 				floorNumber:"", //层号
                 floorNum:"",  //楼层
-                iList:[]
-				
+                iList:[],
+				floorIds:0,
         	}
         },
         components:{
@@ -113,18 +113,27 @@
                         arrL = key.child;
                     }
                 });
+                this.floorNumber = "";
+                this.floorNum = "";
                 this.levels = arrL;
+
             },
             chooseLevelNum(selVal){
                 var arrLs=[];
                 $.each(this.levels,function(item,key){
                     if(key.id == selVal){
                         console.log(key);
-                        arrLs = key.child;
+                        arrLs.push(key);
                     }
                 });
+                this.floorNum = "";
                 this.levelNum = arrLs;
-                // console.log(arrLs);
+                console.log(this.levelNum);
+            },
+            getFloorIdData(selVal){
+                this.floorIds = selVal;
+                this.getDoorData();
+                console.log(this.floorIds);
             },
             popToggle(i,x,y,id,sta,handle){
                 //this.popShow = true;
@@ -188,7 +197,7 @@
                 this.$http.post('/entrance/all_info',{
                     sys_menu_id:15,
                     project_id:1,
-                    floor_id:0,
+                    floor_id:that.floorIds,
                 }).then(function(data){
                     console.log(data.data.data);
                     that.iList = data.data.data.entrance_guard_info.device_2d_pic_state_list;
@@ -196,10 +205,10 @@
                     that.doorClose = data.data.data.entrance_guard_info.entrance_guard_close_num;
                     that.doorWarning = data.data.data.entrance_guard_info.entrance_guard_anomaly_num;
                     that.doorOpenN = data.data.data.entrance_guard_info.entrance_guard_open_num;
-                    console.log(data.data.data.entrance_guard_info.entrance_guard_open_num);
+                    // console.log(data.data.data.entrance_guard_info.entrance_guard_open_num);
                     //获取联动数据
                     that.areaLevel = data.data.data.area_level;
-                    // console.log(that.areaLevel);
+                    console.log(that.areaLevel);
                 });
             }
         }
