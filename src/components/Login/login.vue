@@ -13,7 +13,7 @@
               <div class="forgetPw" @click=" forgetPw = true">忘记密码</div>
             </div>
             <div class="inputItem code">
-              <input v-model="validateCode" type="text" :placeholder="codeText" id="validateCode" :class="{error:codeError}"/>
+              <input v-model="validateCode" type="text" :placeholder="codeText" id="validateCode" :class="{error:codeError}" @focus="codeFocus"/>
               <span class="break breakWidth2"></span>
               <div class="codeImg"><img :src="codeImgPath" alt=""></div>
               <div class="refreshBtn" @click="refrenshCode"></div>
@@ -65,6 +65,11 @@
         }
       },
       methods:{
+        codeFocus(){
+          this.validateCode = "";
+          this.codeError = false;
+          this.errorTipShow = false;
+        },
         refrenshCode(){
           var num=Math.ceil(Math.random()*10);//生成一个随机数（防止缓存）
           this.codeImgPath= this.imgApi + '?' + num;
@@ -364,8 +369,9 @@
   }
   .error{color: #f00!important;}
   .errTipBox{
-    width: 2.29rem;
-    line-height: .48rem;
+    width: auto;
+    padding: .1rem .2rem;
+    line-height: .28rem;
     background-color: #051732;
     border-radius: 4px;
     text-align: center;
