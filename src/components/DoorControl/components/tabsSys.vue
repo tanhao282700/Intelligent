@@ -108,6 +108,10 @@
         },
         methods:{
             chooseLevels(selVal){
+                
+                this.floorIds = selVal;
+                this.getDoorData();
+                console.log(this.floorIds);
                 var arrL=[];
                 $.each(this.areaLevel,function(item,key){
                     if(key.id == selVal){
@@ -120,6 +124,9 @@
 
             },
             chooseLevelNum(selVal){
+                this.floorIds = selVal;
+                this.getDoorData();
+                console.log(this.floorIds);
                 var arrLs=[];
                 $.each(this.levels,function(item,key){
                     if(key.id == selVal){
