@@ -469,15 +469,15 @@
     .systemName{
       position:absolute;
       width:100%;
-      height:54px;
+      height:0.54rem;
       left:0;
       top:0;
       text-align: center;
       .systemCon{
-        font-size:16px;
+        font-size:0.16rem;
         color:#f2fdff;
-        line-height:54px;
-        height:54px;
+        line-height:0.54rem;
+        height:0.54rem;
         display: inline-block;
         padding:0 5.929%;
         background:url(../../assets/img/home/topbg.png) no-repeat center center;
@@ -487,17 +487,19 @@
     .header{
       color:#f2fdff;
       width:100%;
-      height:54px;
-      line-height:54px;
+      /*height:54px;
+      line-height:54px;*/
+      height:0.54rem;
+      line-height:0.54rem;
       position:absolute;
       background:url(../../assets/img/home/titlebg.png) no-repeat left top;
-      background-size:100% 54px;
+      background-size:100% 0.54rem;
       top:0;
       left:0;
       display:flex;
       flex-direction: row;
       justify-content: space-between;
-      font-size:14px;
+      font-size:0.14rem;
       .companyName{
         margin-left:16px;
         display: flex;
@@ -521,7 +523,7 @@
         }
       }
       .systemName{
-        font-size:18px;
+        font-size:0.18rem;
       }
       .info{
         display: flex;
@@ -947,7 +949,7 @@
   .homeDropDown{
     top: .61rem!important;
     width: 1rem;
-    height: 1.29rem;
+    height: 1.1rem!important;
     background:#061733!important;
     border: 1px solid #4a90e2!important;
     margin-right:20px!important;
@@ -956,6 +958,10 @@
   }
   .homeDropDown .popper__arrow{
     left:68px!important;
+  }
+  .homeDropDown .homeDropdownItem{
+    height:0.3rem!important;
+    font-size:0.14rem;
   }
   .homeDropDown .homeDropdownItem:hover{
     background:#093365;
