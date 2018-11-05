@@ -54,12 +54,12 @@
                 <img src="../../../assets/img/doorControl/bg_lc.png">
                 <i :class="['doorSta'+item.device_state,'door'+(index+1)]" 
                    v-for="(item,index) in iList" 
-                   @mouseenter = "popToggle(index,item.x,item.y,item.device_name,item.device_state,item.point_list[0].params.showvalue[0])" 
+                   @mouseenter = "popToggle(index,item.x,item.y,item.device_name,item.device_state,item.point_list)" 
                    @mouseout = "popHide" 
-                   @click.stop="doorInfoPanel(item.device_id,item)"
+                   @click.stop="doorInfoPanel(item.device_id,item.device_name,item)"
                    :style="{left:item.position_x*1.74 + 'px',top:item.position_y*1.74 + 'px'}"
                 >{{item.device_name.slice(0,1)}}
-                    <pops v-on:doorInfoHide="doorInfoHide"  :info = "onMouseDoor" :infoSta = "infoSta" :controlDoorFun = "controlDoorFun" :itemIndex="index" @changeDoorStatus="changeDoorStatus"></pops>
+                    <pops v-on:doorInfoHide="doorInfoHide" :doorControlMsg = "doorControlMsg"  :info = "onMouseDoor" :infoSta = "infoSta" :controlDoorFun = "controlDoorFun" :itemIndex="index" @changeDoorStatus="changeDoorStatus"></pops>
                 </i>
                 
             </div>
@@ -96,6 +96,7 @@
                 floorNum:"",  //楼层
                 iList:[],
 				floorIds:0,
+                doorControlMsg:[],
         	}
         },
         components:{
@@ -140,7 +141,17 @@
                 this.onMouseDoor = id;
                 this.xLeft = x;
                 this.yTop = y;
-                this.controlDoorFun = handle;
+                let handleMsgs = '';
+                let ss = [];
+                $.each(handle,function(i,k){
+                    if(k.is_command == 1){
+                        handleMsgs = k.params.showvalue[0];
+                        ss.push({pointNow:k.now_value,pointId:k.point_id});
+                    }
+                });
+                this.controlDoorFun = handleMsgs;
+                this.doorControlMsg = ss;
+                console.log(ss);
                 if(sta == "0"){
                     this.infoSta = "关闭";
                 }else if(sta == "1"){
@@ -171,8 +182,8 @@
                 }
                 this.iList[obj.itemIndex].device_state=status;
             },
-            doorInfoPanel(id,item){
-                this.doorInfoId = id;
+            doorInfoPanel(id,name,item){
+                this.doorInfoId = name;
                 this.doorInfoShow = true;
                 var that = this;
                 this.$http.post('/entrance/record',{

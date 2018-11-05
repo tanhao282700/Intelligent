@@ -16,10 +16,12 @@
 </template>
 <script>
     export default {
-        props:["info","infoSta","controlDoorFun",'itemIndex'],
+        props:["info","infoSta","controlDoorFun",'itemIndex','doorControlMsg'],
         data () {
         	return {
-                inStatu:''
+                inStatu:'',
+                pointId:'',
+                nowValue:''
         	}
         },
         mounted(){
@@ -30,10 +32,24 @@
                 this.$emit("doorInfoHide",false);
             },
             openDoorByInt(){
-                // alert(1);
-                console.log(this.infoSta)
+                console.log(this.doorControlMsg);
+                this.pointId = this.doorControlMsg[0].pointId;
+                this.nowValue = this.doorControlMsg[0].pointNow;
                 this.inStatu = '开启';
                 this.$emit('changeDoorStatus',{infoSta:this.inStatu,itemIndex:this.itemIndex,numS:1});
+
+                var that = this;
+                this.$http.get('/realtime_pc/pc/control',{
+                    point_id:that.pointId,
+                    now_value:that.nowValue
+                }).then(function(res){
+                    // 响应成功回调
+                    console.log(res.message);
+                    
+                }, function(response){
+                    // 响应错误回调
+                });
+
             }
            
         }
