@@ -4,7 +4,7 @@
       <span class="logo"></span>
       <span class="txt">泰立智汇</span>
     </div>
-    <div class="banerCon">
+    <div class="banerCon" @click="stopPropa" >
       <el-row class="tac b-box">
         <el-col class="b-box">
           <el-menu
@@ -90,14 +90,17 @@
       }else{
         this.isPermissionPath = true
       }
-      /*window.addEventListener('click',this.listenBannerClick)*/
+
+      $(document).on('click', () => {
+        this.$emit('changeBannerParam', false);
+      })
     },
     methods:{
+      stopPropa(){
+        event.stopPropagation()
+      },
       showBanerClick(){
         this.$emit('changeBannerParam', !this.isShowBannerParam);
-      },
-      listenBannerClick(){
-        console.log(11)
       }
     }
   }

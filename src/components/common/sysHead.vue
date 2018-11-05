@@ -105,7 +105,11 @@ export default {
          this.$emit('searchCont',this.inputs);
      },
      showBanerClick(){
+        this.personInfoOptions.isPersonInfo = false
+       this.personInfoOptions.isEditInfo = false
+       this.personInfoOptions.isChangePassword = false
          this.showBannerParam = !this.showBannerParam
+        event.stopPropagation()
      },
      updateBannerParam(data){
          this.showBannerParam = data
@@ -125,6 +129,7 @@ export default {
         },3000)
       },
      handleCommand(command){
+       this.showBannerParam = false
         if(command == 'loginOut'){
           this.personalCenter.isShowDialog = true
         }else if(command==='personInfo'){

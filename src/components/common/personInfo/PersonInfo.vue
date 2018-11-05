@@ -166,7 +166,9 @@
   .personInfoComponent {
     z-index:999;
     width: 320px;
-    height: 100%;
+    /*height: 100%;*/
+    height: 53.3vw;
+    min-height: 728px;
     position: fixed;
     right: -320px;
     top: 0;

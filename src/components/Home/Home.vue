@@ -268,12 +268,14 @@
     created(){
       this.url3d=this.$store.state.userInfoTotal.projectInfo[0].bim_page
         console.log(this.$store.state)
-      this.bgStyle.backgroundImage = this.$store.state.userInfoTotal.projectInfo[0].bim_page
       this.routerInfo = this.$store.state.sysList
 
       this.dateInfoInit()
     },
     mounted(){
+        $(".companyName").click(()=>{
+            event.stopPropagation()
+        })
       const that = this;
       window.onresize = function(){
         that.isResize++
@@ -420,6 +422,9 @@
         this.isOpenMonitor = !this.isOpenMonitor
       },
       showBanerClick(){
+        this.personInfoOptions.isPersonInfo = false
+        this.personInfoOptions.isEditInfo = false
+        this.personInfoOptions.isChangePassword = false
         this.showBannerParam = true
       },
       updateBannerParam(data){
@@ -429,6 +434,7 @@
         this.personalCenter.isShowBounced = !this.personalCenter.isShowBounced
       },
       handleCommand(command){
+          this.showBannerParam = false
         if(command == 'loginOut'){
           this.personalCenter.isShowDialog = true
         }else if(command==='personInfo'){
