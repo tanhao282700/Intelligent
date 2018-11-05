@@ -66,7 +66,7 @@
         <SendWork @sendInfosShow="sendInfosShow" :query="query3" @getDevVal="getDevice"/> <!-- 派单 -->
       </Dialog> 
       <Dialog wid="1200" hei="600" ref="dialog">
-        <WorkInfo @tableInfos2Show="tableInfos2Show" :table="table2" :query="query2" @getUserList="rowClick"/>
+        <WorkInfo @tableInfos2Show="tableInfos2Show" :table="table2" :query="query2" @getUserList="rowClick" @getDetailTime="getDetailTime"/>
       </Dialog> 
       <Dialog wid="910" hei="626" ref="tableInfos2">
         <div class="tableInfos">
@@ -217,6 +217,7 @@ export default {
         vName:-1,
         //日期选择
         value7:utils.time(new Date()/1000,5),
+        value8:utils.time(new Date()/1000,5),
         cant:false,
         table:{
             hei:328, //table高度  设置后有滚动条
@@ -256,6 +257,9 @@ export default {
     }
   },
   methods:{
+    getDetailTime(date){
+      this.value8 = date;
+    },
     change1(val){ //选择
       this.query.department = val;
     },
@@ -264,6 +268,7 @@ export default {
     },
     changes(val){
           this.value7 = val;
+          this.getTableList();
     }, 
     deletes(){
         let attrs = this.value7.split('-');
@@ -294,6 +299,7 @@ export default {
           }
         }
         this.value7 = attrs.join('-'); 
+        this.getTableList();
       },
       adds(){
         if(this.cant){
@@ -327,17 +333,23 @@ export default {
             }
             
         }
-        this.value7 = attrs.join('-');    
+        this.value7 = attrs.join('-');  
+        this.getTableList();  
       }, 
       rowClick(row){
-        this.infoItem.user_id  = row.user_id;
+        if(row.user_id){
+          this.infoItem.user_id  = row.user_id;
+        }
         this.$refs.dialog.show();
         if(!row.type){
           row.type = ''
         }
+        if(!row.date){
+          row.date = utils.time(new Date()/1000,9)
+        }
         this.$http.post('/pc_ims/admin/user_jobs',{
           sys_name:row.type,
-          date:utils.time(new Date()/1000,5),
+          date:row.date,
           user_id:this.infoItem.user_id
         }).then(res=>{
           //console.log(res);
@@ -694,7 +706,7 @@ export default {
         this.$http.post('/pc_ims/admin/job_userdata',{
           user_id:this.query.name,
           department:this.query.department,
-          date:'11-01',//this.value7
+          date:this.value7,//this.value7
         }).then(res=>{
           if(res.data.code==0){
             $.each(res.data.data,(n,k)=>{

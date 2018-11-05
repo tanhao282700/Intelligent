@@ -293,6 +293,7 @@ export default {
     },
     changes(val){
         this.value7 = val;
+        this.getTableList();
     }, 
     dealWork(param){//处理工单
       this.getDealResult(param)
@@ -367,6 +368,7 @@ export default {
           }
         }
         this.value7 = attrs.join('-'); 
+        this.getTableList();
       },
       adds(){
         if(this.cant){
@@ -400,7 +402,8 @@ export default {
             }
             
         }
-        this.value7 = attrs.join('-');    
+        this.value7 = attrs.join('-');  
+        this.getTableList();  
       }, 
     checkDetail(rowData){
       //console.log(rowData);
@@ -484,12 +487,16 @@ export default {
       })
     },
     rowClick(row){
-      this.infoItem.user_id = row.user_id;
-      console.log(row)
+      if(row.user_id){
+        this.infoItem.user_id = row.user_id;
+      }
+      if(!row.date){
+        row.date = utils.time(new Date()/1000,9);
+      }
       this.$refs.dialog.show();
       this.$http.post('/pc_ims/admin/inspectiondata_all',{
         sys_name:row.type,
-        user_id:row.user_id,
+        user_id:this.infoItem.user_id,
         date:row.date
       }).then(res=>{
           if(res.data.code==0){
@@ -588,11 +595,10 @@ export default {
       })
     },
     getTableList(){
-      //console.log(this.query);
       this.$http.post('/pc_ims/admin/inspectiondata_user',{
         department_id:this.query.department,
         user_id:this.query.name,
-        date:'11-01'
+        date:this.value7
       })
       .then(res => {
         if(res.data.code==0){

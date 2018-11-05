@@ -92,13 +92,15 @@ export default {
   methods:{
     change1(val){ //选择
       this.query.type = val;
+      this.getUserList();
     },
     changes(val){
-      this.query.time = val;
+      this.value7 = val;
+      this.getUserList();
     }, 
     getUserList(){
         if(this.tableData.data){
-            this.$emit('getUserList',{type:this.query.type,date:this.query.time})
+            this.$emit('getUserList',{type:this.query.type,date:this.value7})
         }
     },
     deletes(){
@@ -130,6 +132,7 @@ export default {
           }
         }
         this.value7 = attrs.join('-'); 
+        this.getUserList();
       },
       adds(){
         if(this.cant){
@@ -163,7 +166,8 @@ export default {
             }
             
         }
-        this.value7 = attrs.join('-');    
+        this.value7 = attrs.join('-'); 
+        this.getUserList();  
       }, 
     showInfos(item){
         this.$emit('tableInfos2Show',item);
@@ -179,7 +183,7 @@ export default {
         handler(newval,oldval){
             if(newval){
                 this.tableData = newval;
-                console.log(newval)
+                //console.log(newval)
             }
             
         },

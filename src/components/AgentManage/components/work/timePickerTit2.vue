@@ -12,14 +12,14 @@
         <div class="timeBox">
             <el-date-picker  
                 class="times"             
-                v-model="value7"
+                v-model="value7s"
                 type="date"   
                 align = 'center'
                 :clearable = "false"                           
-                value-format = 'yyyy-M-d'  
+                value-format = 'MM-dd'  
                 @change = "changes()"                        
                 />   
-            <span v-text="value7.split('-')[0]+'月'+'      '+value7.split('-')[1]+'日'"></span>
+            <span v-text="value7s.split('-')[0]+'月'+'      '+value7s.split('-')[1]+'日'"></span>
         </div>
         <div class="HeadTabBox">
             <div class="HeadTab HeadTab2" @click="adds()" :class="{'cantTab':cant}">
@@ -36,7 +36,7 @@ export default {
   props:['value7'],
   data () {
     return {
-        value7s:((new Date()).getFullYear()+'-'+(new Date()).getMonth()+'='+(new Date()).getDate()),
+        value7s:((new Date()).getMonth()+'='+(new Date()).getDate()),
         cant:false
     }
   },
@@ -98,12 +98,17 @@ export default {
      }
   },
   created() {
-      if(this.value7!==undefined){
-          this.value7s = this.value7;
-      } 
+  },
+  watch:{
+    value7:{
+        handler(val){
+            this.value7s = val;
+        },
+        deep:true
+    }
   },
   mounted() {
-
+    this.value7s = this.value7;
   },
 }
 </script>
