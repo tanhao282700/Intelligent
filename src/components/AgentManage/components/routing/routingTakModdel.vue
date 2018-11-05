@@ -76,16 +76,17 @@
       },
       methods:{
           change1(val){ //选择
-            this.vSystem = val;
+            this.query.system = val;
+            this.$emit('getSys',val);
           },
           change2(val){ //选择
-            this.vArea = val;
+            this.query.area = val;
           },
           change4(val){ //选择
-            this.vExamine = val;
+            this.query.exam = val;
           },
           change3(val){ //选择
-            this.vStatus = val;
+            this.query.taskStatu = val;
           },
           rowClick(rowData){
             this.$emit('checkDetail',rowData);
@@ -116,6 +117,7 @@
 @import '../../../../assets/css/comon.less';
 .routingTaskModdel{
   width:95.6%;
+  height:5.35rem;
   .tabHead{
       width: 100%;
       position: relative;

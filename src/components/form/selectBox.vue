@@ -8,6 +8,7 @@
             v-model="value0" 
             class = 'chooseBox areaBox' 
             :placeholder="placeholder"
+            :multiple = 'multiple'
             @change = 'change()'
             >
             <el-option                 
@@ -24,7 +25,7 @@
 
 // 封装失败
 export default {
-  props:['options','value','placeholder','icon'],
+  props:['options','value','placeholder','icon','multiple'],
   data () {
     return {
         value0:''

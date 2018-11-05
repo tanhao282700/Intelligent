@@ -71,7 +71,7 @@ rowClick(row){
         </el-table-column>
 
         </el-table>
-        <div class="pageBoxs" v-if = "table.len!=undefined">
+       <!--  <div class="pageBoxs" v-if = "table.!=undefined">
             <el-pagination
                 @current-change="handleCurrentChange"
                 :current-page.sync="table.page"
@@ -80,7 +80,7 @@ rowClick(row){
                 layout="total, prev, pager, next, jumper"
                 :total="table.len">
             </el-pagination>
-        </div>
+        </div> -->
     </div>
 </template>
 

@@ -53,7 +53,7 @@ export default {
     btnss:{
       handler(val){
         if(val){
-          //console.log(val)
+          console.log(this.btnss)
         }
       },
       deep:true
@@ -63,7 +63,7 @@ export default {
     //console.log(this.btnss.item.now_state)
       if(this.btnss.item.now_state=='1'){
         this.btnss.item.now_state='启动';
-      }else{
+      }else if(this.btnss.item.now_state==2){
         this.btnss.item.now_state='停用';
       }
       this.changeStatus(this.btnss.item.now_state)

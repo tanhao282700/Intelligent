@@ -63,7 +63,7 @@
         </div>
       </div>
       <Dialog wid="526" hei="606" ref="send"> 
-        <SendWork @sendInfosShow="sendInfosShow" :query="query2"/> <!-- 派单 -->
+        <SendWork @sendInfosShow="sendInfosShow" :query="query3" @getDevVal="getDevice"/> <!-- 派单 -->
       </Dialog> 
       <Dialog wid="1200" hei="600" ref="dialog">
         <WorkInfo @tableInfos2Show="tableInfos2Show" :table="table2" :query="query2" @getUserList="rowClick"/>
@@ -150,6 +150,15 @@ export default {
           department:'',
           name:''
         },
+        query3:{//工单详情的查询条件
+          types:[],
+          type:'',
+          time:'10-29',
+          devices:[],
+          names:[],
+          priority:[{label:'一般',value:1},{label:'普通',value:2},{label:'严重',value:3}],
+          type_id:[{label:'系统自动派发',value:0},{label:'手工派发',value:1},{label:'投诉工单',value:2},{label:'维保工单',value:3}]
+        },
         query2:{//工单详情的查询条件
           types:[],
           type:'',
@@ -183,7 +192,7 @@ export default {
             {prop:'now_state',label:'状态',
               operate: true, 
                 render: (h, param)=> {
-                  console.log(param.row.now_state)
+                  //console.log(param.row.now_state)
                     const btnss = {
                         fills:param.row.now_state,  
                     };
@@ -211,10 +220,9 @@ export default {
         cant:false,
         table:{
             hei:328, //table高度  设置后有滚动条
-            len:0, //总条数
             data:[],
             th:[
-              {prop:'id',label:'序号'},
+              {prop:'serial',label:'序号'},
               {prop:'name',label:'名称'},
               {prop:'phone',label:'电话',wid:180},
               {prop:'department',label:'专业岗位'},
@@ -566,6 +574,7 @@ export default {
             })
             this.names = data;
             this.query2.names = data;
+            this.query3.names = data;
           }else{
             this.$message({
               type:'error',
@@ -591,6 +600,23 @@ export default {
           }
         });
       },
+      getSystemId(){
+        this.$http.post('/pc_ims/get_sysmenu').then(res=>{
+          if(res.data.code==0){
+            let data = res.data.data;
+            $.each(data,(n,k)=>{
+              data[n].value = data[n].id;
+              data[n].label = data[n].title;
+            })
+            this.query3.types = data;
+          }else{
+            this.$message({
+              type:'error',
+              message:res.data.msg
+            })
+          }
+        });
+      },
       getSystemList(){
         this.$http.post('/pc_ims/get_sysmenu').then(res=>{
           if(res.data.code==0){
@@ -600,6 +626,25 @@ export default {
               data[n].label = data[n].title;
             })
             this.query2.types = data;
+          }else{
+            this.$message({
+              type:'error',
+              message:res.data.msg
+            })
+          }
+        });
+      },
+      getDevice(val){
+        this.$http.post('/pc_ims/get_device',{sys_id:val}).then(res=>{
+          console.log(res);
+          if(res.data.code==0){
+            let data = res.data.data;
+            console.log(res.data.data);
+            $.each(data,(n,k)=>{
+              data[n].value = data[n].id;
+              data[n].label = data[n].title;
+            })
+            this.query3.devices = data;
           }else{
             this.$message({
               type:'error',
@@ -652,7 +697,9 @@ export default {
           date:'11-01',//this.value7
         }).then(res=>{
           if(res.data.code==0){
-            this.table.len = res.data.count;
+            $.each(res.data.data,(n,k)=>{
+              res.data.data[n].serial = n+1;
+            })
             this.table.data = res.data.data;
           }else{
             this.$message({
@@ -671,6 +718,7 @@ export default {
     this.getTableList();
     this.getSystemList();
     this.getDepartList();
+    this.getSystemId();
   }
 }
 </script>
@@ -712,7 +760,7 @@ export default {
   }
   .tableBoxs{
     width: 95.6%;
-    height:3.76rem;
+    height:4rem;
     margin-top:0.2rem;
     margin-left: 0.3rem;
     .tabHead{

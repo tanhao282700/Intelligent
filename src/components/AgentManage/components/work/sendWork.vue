@@ -12,7 +12,7 @@
           <SelectBox :options="query.types" 
            class="selectdown"
            :value="formvals.sys_id"
-           :placeholder="'给排水系统'"
+           :placeholder="'类型'"
            @change="change1"
            :icon="'el-icon-d-caret'"/>
         </div>
@@ -22,7 +22,7 @@
            :value="formvals.device_name"
            class="selectdown"
            @change="change2"
-           :placeholder="'1号集水坑'"
+           :placeholder="'设备名称'"
            :icon="'el-icon-d-caret'"/>
         </div>
         <div class="selectX">
@@ -31,7 +31,7 @@
            :value="formvals.user_id"
            class="selectdown"
            @change="change3"
-           :placeholder="'张三'"
+           :placeholder="'处理人员'"
            :icon="'el-icon-caret-top'"/>
         </div>
         <div class="selectX">
@@ -40,14 +40,14 @@
            :value="formvals.type_id"
            class="selectdown"
            @change="change4"
-           :placeholder="'内部报修'"
+           :placeholder="'工单来源'"
            :icon="'el-icon-caret-top'"/>
         </div>
         <div class="selectX">
           <span>任务优先</span>
           <SelectBox :options="query.priority"
            :value="formvals.priority"
-           :placeholder="'严重'"
+           :placeholder="'任务优先级'"
            @change="change5"
            class="selectdown"
            :icon="'el-icon-caret-top'"/>
@@ -142,6 +142,7 @@ export default {
       },
       change1(val){
         this.formvals.sys_id = val;
+        this.$emit('getDevVal',val)
       },
       change2(val){
         this.formvals.device_name = val;

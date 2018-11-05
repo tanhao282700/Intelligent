@@ -110,6 +110,8 @@
                 <el-date-picker
                   v-model="formval.starttime"
                   type="date"
+                  format="yyyy-MM-dd"
+                  value-format="yyyy-MM-dd"
                   placeholder="选择日期">
                 </el-date-picker>
               </el-col>
@@ -140,6 +142,7 @@
                 <SelectBox 
                   :options = 'formvals1.datas' 
                   :value = "formval.data" 
+                  :multiple="true"
                   :icon="'el-icon-d-caret'"
                   placeholder="采集数据点"
                   @change="change9"
@@ -179,6 +182,7 @@
 
 <script>
   import SelectBox from '@/components/form/selectBox';
+  import utils from '@/assets/js/utils'
   import '@/assets/css/fs_common.css'
   export default {
       props:['data','title','formvals'],
@@ -188,12 +192,15 @@
       data () {
         return {
             formvals1:{},
-            formval:{}
+            formval:{
+              starttime:'',
+              device:''
+            }
         }
       },
       methods:{
          change1(val){
-            this.formval.name=val;
+            this.formval.exam=val;
          },
          change2(val){
             this.formval.department = val;
@@ -203,12 +210,21 @@
          },
          change4(val){
             this.formval.system=val;
+            this.$emit('getSystemval',val);
          },
          change5(val){
+            let res = '';
+            $.each(this.formvals1.areas,(n,k)=>{
+              if(k.value==val){
+                res = k.label;
+                this.$emit('getFloorVal',res)
+              }
+            })
             this.formval.area = val;
          },
          change6(val){
             this.formval.device = val;
+            this.$emit('getDeviceVal',val)
          },
          change7(val){
             this.formval.starttime=val;
@@ -223,9 +239,19 @@
             this.$emit('cancelAdd')
          },
          saveAdd(){
+          if(this.formval.starttime){
+            this.formval.starttime = utils.time(new Date(this.formval.starttime)/1000,1)
+          }
+          if(this.formval.data){
+            let res = []
+            $.each(this.formval.data,(n,k)=>{
+              res.push({'cate_id':k})
+            })
+            this.formval.data = res;
+          }
           this.$emit('saveAdd',{
               id:this.formvals.id,
-              start_date: this.formvals.starttime,
+              start_date: this.formval.starttime,
               user_id: this.formval.exam,
               sys_id: this.formval.system,
               floor_id: this.formval.area,

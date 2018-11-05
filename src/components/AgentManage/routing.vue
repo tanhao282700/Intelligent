@@ -83,11 +83,11 @@
             <span slot="label" class="tabItems">
                 巡检任务模板
             </span>
-            <RoutingTakModdel v-show="activeName=='second'" @addDetail="addDetail" :table="table2" :query="queryModel" @searchXJ="getModelList"/>
+            <RoutingTakModdel v-show="activeName=='second'" @addDetail="addDetail" :table="table2" :query="queryModel" @searchXJ="getModelList" @getSys="getSys"/>
         </el-tab-pane>      
       </el-tabs>  
       <Dialog wid="910" hei="622" ref="add" > <!-- 新增巡检模板 -->
-        <AddModel :data="rowData" :formvals="queryModel" :title="tempTitle" @cancelAdd="cancelAdd" @saveAdd="saveAdd" />
+        <AddModel :data="rowData" :formvals="queryModel" :title="tempTitle" @cancelAdd="cancelAdd" @saveAdd="saveAdd" @getFloorVal="getFloorVal" @getDeviceVal="getDeviceVal" @getSystemval="getSystemval"/>
       </Dialog> 
   </div>
 </template>
@@ -244,7 +244,6 @@ export default {
         },
         table:{
             hei:328, //table高度  设置后有滚动条
-            len:0, //总条数
             data:[],
             th:[
               {prop:'id',label:'序号'},
@@ -320,6 +319,21 @@ export default {
           })
         }
       })
+    },
+    getDeviceVal(val){
+      this.queryModel.device = val;
+      this.getDatasList(val)
+    },
+    getFloorVal(val){
+      this.queryModel.area = val;
+      this.getDeviceList(val)
+    },
+    getSys(val){
+      this.getAreaList(val)
+    },
+    getSystemval(val){
+      this.queryModel.system = val;
+      this.getAreaList(val)
     },
     update(){
       this.$refs.add.show();
@@ -421,18 +435,14 @@ export default {
       this.$refs.add.hide();
     },
     saveAdd(formData){
-      this.$http.post('/pc_ims/set_template',formData)
+      this.$http.post('/pc_ims/set_template',{data:JSON.stringify(formData)})
       .then(res=>{
           if(res.data.code==0){
             this.$message({
-              type:'error',
+              type:'success',
               message:'巡检任务模板新增成功'
             })
-            this.table3.len = res.data.count;
-            this.table3.data = res.data.data.info;
-            this.table3.tabs = [{'name':'今日巡检总数',num:res.data.data.zong},
-            {'name':'已完成',num:res.data.data.wan},
-            {'name':'未完成',num:res.data.data.wei}];
+            this.getModelList();
           }else{
             this.$message({
               type:'error',
@@ -458,6 +468,11 @@ export default {
       this.$http.post('/pc_ims/admin/change_state',{id:id,state:state})
       .then(res=>{
           if(res.data.code==0){
+            this.$message({
+              type:'success',
+              message:res.data.msg,
+              duration:2000
+            })
             this.getModelList(this.queryModel);
           }else{
             this.$message({
@@ -581,7 +596,6 @@ export default {
       })
       .then(res => {
         if(res.data.code==0){
-          this.table.len = res.data.count;
           this.table.data = res.data.data;
         }else{
           this.$message({
@@ -592,6 +606,7 @@ export default {
       })
     },
     getModelList(param){
+      console.log(param)
       this.$http.post('/pc_ims/get_template',{
         sys_id:param.system,
         floor_id:param.area,
@@ -628,13 +643,14 @@ export default {
           }
         });
       },
-      getDatasList(){//采集数据点下拉框数据
-        this.$http.post('/pc_ims/get_points',{device_id:this.queryModel.device})
+      getDatasList(id){//采集数据点下拉框数据
+        this.$http.post('/pc_ims/get_points',{device_id:id})
         .then(res=>{
           if(res.data.code==0){
+            //console.log(res.data);
             let data = res.data.data;
             $.each(data,(n,k)=>{
-              data[n].value = data[n].id;
+              data[n].value = data[n].cate_id;
               data[n].label = data[n].title;
             })
             this.queryModel.datas = data;
@@ -646,7 +662,7 @@ export default {
           }
         });
       },
-      getDepartList(){
+      getDepartList(){//专业
         this.$http.post('/pc_ims/get_description').then(res=>{
           if(res.data.code==0){
             let data = res.data.data;
@@ -664,7 +680,7 @@ export default {
           }
         });
       },
-      getSystemList(){
+      getSystemList(){//系统
         this.$http.post('/pc_ims/get_sysmenu').then(res=>{
           if(res.data.code==0){
             let data = res.data.data;
@@ -682,10 +698,17 @@ export default {
           }
         });
       },
-      getAreaList(){
-        this.$http.post('/pc_ims/get_floor').then(res=>{
+      getAreaList(id){//区域
+        if(!this.queryModel.system){
+          this.$message({
+            type:'error',
+            message:'请先选择巡检系统'
+          })
+        }
+        this.$http.post('/pc_ims/get_floor',{sys_id:id}).then(res=>{
           if(res.data.code==0){
             let data = res.data.data;
+            console.log(data)
             $.each(data,(n,k)=>{
               data[n].value = data[n].floor_id;
               data[n].label = data[n].floor_name;
@@ -699,15 +722,20 @@ export default {
           }
         });
       },
-      getDeviceList(){
-        this.$http.post('/pc_ims/get_device',{floor_name:this.queryModel.area}).then(res=>{
+      getDeviceList(id){//设备
+        if(!this.queryModel.system){
+          this.$message({
+            type:'error',
+            message:'请先选择巡检区域'
+          })
+        }
+        this.$http.post('/pc_ims/get_device',{floor_name:id}).then(res=>{
           //console.log(res);
           if(res.data.code==0){
             let data = res.data.data;
-            
             $.each(data,(n,k)=>{
-              data[n].value = data[n].floor_id;
-              data[n].label = data[n].floor_name;
+              data[n].value = data[n].id;
+              data[n].label = data[n].title;
             })
             this.queryModel.devices = data;
           }else{
@@ -741,9 +769,6 @@ export default {
       this.getNameList();
       this.getSystemList();
       this.getDepartList();
-      this.getAreaList();
-      this.getDeviceList();
-      this.getDatasList();
   },
 }
 </script>

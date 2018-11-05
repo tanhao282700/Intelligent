@@ -48,13 +48,13 @@
           />
         </div>
       </div>
-      <Dialog wid="910" hei="686" ref="tableInfos2">
+      <Dialog wid="910" hei="500" ref="tableInfos2">
         <div class="tableInfos">
           <div class="infoHead">
-            <span class="infoState" v-text="'人工派发'"></span>
+            <span class="infoState" v-text="dtlObj.sendSrc"></span>
           </div>
           <div class="rightHead">
-            <span class="infoBusy" v-text="'普通'"></span>
+            <span class="infoBusy" v-text="dtlObj.jinji"></span>
           </div>
           <div class="infoBoxs">
             <div class="statusTabs">
@@ -68,9 +68,9 @@
             <div>
               <div v-show="tabPosition=='正常处理'" class="tabLists">
                 <ul>
-                  <li v-for="(item,index) in dtlObj.tableDtl.data[0].device" :key="index">
+                  <li v-for="(item,index) in dtlObj.devices" :key="index">
                     <span class="taskLabel">{{item.label}}</span>
-                    <span class="taskCont">{{item.type}}</span>
+                    <span class="taskCont">{{item.value}}</span>
                   </li>
                   </ul>
                 </el-row>  
@@ -81,17 +81,17 @@
                     class="controlCont controlCont1"
                     :rows="2"
                     placeholder="请输入内容"
-                    v-model="dtlObj.tableDtl.data[0].desc">
+                    v-model="dtlObj.description">
                   </el-input>
                 </div> 
                 <ul>
                   <li>
                     <span class="taskLabel">派发人员</span>
-                    <span class="taskCont">本姑娘</span>
+                    <span class="taskCont">{{dtlObj.user_name}}</span>
                   </li>
                   <li>
                     <span class="taskLabel">联系电话</span>
-                    <span class="taskCont">18767678765</span>
+                    <span class="taskCont">{{dtlObj.user_phone}}</span>
                   </li>
                 </ul>
                 <div style="clear:both">
@@ -101,7 +101,7 @@
                     :rows="2"
                     class="controlCont controlCont2"
                     placeholder="请输入内容"
-                    v-model="dtlObj.tableDtl.data[0].backExcuse">
+                    v-model="dtlObj.complete_info">
                   </el-input>
                 </div>
                 <div class="dealimg">
@@ -115,11 +115,11 @@
                   </el-row>
                   <div>
                     <div class="imgs1">
-                      <img :src="item.src" v-for="item in dtlObj.tableDtl.data[0].imgs1">
+                      <img :src="item.src" v-for="item in dtlObj.pic1">
                     </div>
                     <Lines :top="0" :hei="100" class="lines"/>
                     <div class="imgs2">
-                      <img :src="item.src" v-for="item in dtlObj.tableDtl.data[0].imgs2">
+                      <img :src="item.src" v-for="item in dtlObj.pic2">
                     </div>
                   </div>
                 </div>
@@ -182,19 +182,13 @@
 import Header from '@/components/common/sysHead'
 import utils from "../../../assets/js/utils.js";
 import SelectBox from '@/components/form/selectBox';
-import TimePickerT from '../components/work/timePickerTit2';
 import State from './state';
 import deal from './deal';
 import Table from '@/components/common/table';
-import RoutingTask from '../components/routing/routingTask'
-import RoutingInfo from '../components/routing/routingInfo'
 export default {
   components:{
     'Table':Table,
     'SelectBox':SelectBox,
-    'TimePickerT':TimePickerT,
-    'RoutingTask':RoutingTask,
-    'RoutingInfo':RoutingInfo,
     'Header':Header
   },
   data () {
@@ -219,13 +213,7 @@ export default {
         {label:'投诉',value:'2'}],
         vtype:'',
         vsystem:'',
-        names:[
-          {label:'李白',value:1},
-          {label:'杜甫',value:2},
-          {label:'王安石',value:3},
-          {label:'白居易',value:4},
-          {label:'狗蛋儿',value:5},
-        ],
+        names:[],
         dialogBoxs:{
             item:{name:''},
             state0:0, //1 同意，0拒绝
@@ -238,110 +226,11 @@ export default {
         },
         dtlObj:{
           title:'工单详情',
-          value7:'7-20',
-          tabs:[{
-            'name':'今日工单总数',
-            num:78
-          },{
-            'name':'已完成',
-            num:65
-          },{
-            'name':'未完成',
-            num:13
-          }],
-          tableDtl:{
-              hei:488, //table高度  设置后有滚动条
-              len:800, //总条数
-              data:[
-                  {id:1,u_id:1,name:'白狗汪1',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:-1,desc:'范珊看哪个阶段呢是范珊的咖啡店给你的肌肤喝点水放辣椒是非得失，反倒是',backExcuse:'范珊看哪个阶段呢是范珊的咖啡店给你的肌肤喝点水放辣椒是非得失，反倒是',
-                  imgs1:[{
-                      src:'../../../../assets/img/logo.png'
-                    },{
-                      src:'../../../../assets/img/logo.png'
-                    },{
-                      src:'../../../../assets/img/logo.png'
-                    },{
-                      src:'../../../../assets/img/logo.png'
-                    },{
-                      src:'../../../../assets/img/logo.png'
-                    }],
-                    imgs2:[{
-                      src:'../../../../assets/img/logo.png'
-                    },{
-                      src:'../../../../assets/img/logo.png'
-                    },{
-                      src:'../../../../assets/img/logo.png'
-                    },{
-                      src:'../../../../assets/img/logo.png'
-                    },{
-                      src:'../../../../assets/img/logo.png'
-                    }],
-                  steps:[{
-                    name:'派发时间',date:'2018/09/14',time:'09:13',areatime:'3h',
-                  },{
-                    name:'接单时间',date:'2018/09/16',time:'09:13',areatime:'48h'
-                  },{
-                    name:'派发时间',date:'2018/09/16',time:'11:15',areatime:'2h'
-                  }],
-                  device:[{
-                    label:'类型',
-                    type:'给排水系统'
-                  },{
-                    label:'设备类型',
-                    type:'给排水系统'
-                  },{
-                    label:'设备地点',
-                    type:'这边字宽130PX'
-                  },{
-                    label:'工单处理人员',
-                    type:'李宏源'
-                  }],
-                }, 
-                  {id:2,u_id:1,name:'白狗汪1',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:0}, 
-                  {id:3,u_id:1,name:'白狗汪1',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:1}, 
-                  {id:4,u_id:1,name:'白狗汪1',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:2}, 
-                  {id:5,u_id:1,name:'白狗汪1',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:3}, 
-                  {id:6,u_id:1,name:'白狗汪1',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:3}, 
-                  {id:7,u_id:1,name:'白狗汪1',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:3}, 
-                  {id:8,u_id:1,name:'白狗汪1',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:3}, 
-                  {id:9,u_id:1,name:'白狗汪1',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:3}, 
-                  {id:10,u_id:1,name:'白狗汪1',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:3}, 
-                  {id:11,u_id:1,name:'白狗汪1',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:3},                       
-              ],
-              th:[
-                {prop:'name',label:'名称'},
-                {prop:'type',label:'类别'},
-                {prop:'addr',label:'地点',wid:208}, 
-                {prop:'eName',label:'设备名称',wid:169},
-                {prop:'sTime',label:'派发时间',wid:165},
-                {prop:'info',label:'内容描述',wid:194},
-                {prop:'sType',label:'派发类别'},
-                {prop:'states',label:'状态',wid:146,
-                  operate: true, 
-                    render: (h, param)=> {
-                        const btnss = {
-                            fills:param.row.state,  
-                        };
-                        return h(State,{
-                        props: { state:btnss},
-                        on:{}
-                        });
-                    }},
-                {prop:'fill',label:'操作',wid:105,
-                  operate: true, 
-                    render: (h, param)=> {
-                        const btnss = {
-                            item:param.row, 
-                          //   id:param.row.id,  
-                        };
-                        return h(deal,{
-                        props: { btnss:btnss},
-                        on:{agree:this.agree,refult:this.refult}
-                        });
-                    } 
-                },
-              ]
-          }
+          sendSrc:'',
+          jinji:'',
+          pic1:[],
+          pic2:[],
+          devices:[],
         },
         vName:-1,
         //日期选择
@@ -451,10 +340,36 @@ export default {
       rowClick(row){
         this.infoItem = row;
         this.$refs.tableInfos2.show();
-        this.$http.post('/pc_ims/staff/jobinfo_user').then(res=> {
+        this.$http.post('/pc_ims/staff/jobinfo_user',{job_id:row.id}).
+        then(res=> {
            if(res.data.code==0){
-             let data = res.data.data;
-              console.log(data);
+
+             this.dtlObj = res.data.data.info;
+             this.dtlObj.pic1 = res.data.data.pic1;
+             this.dtlObj.pic2 = res.data.data.pic2;
+             if(this.dtlObj.priority==1){
+                this.dtlObj.jinji='一般'
+             }else if(this.dtlObj.priority==2){
+                this.dtlObj.jinji ='普通'
+             }else{
+                this.dtlObj.jinji ='严重'
+             }
+             if(this.dtlObj.type_id==0){
+                this.dtlObj.sendSrc='系统自动派发';
+             }else if(this.dtlObj.type_id==1){
+                this.dtlObj.sendSrc='手工派发';
+             }else if(this.dtlObj.type_id==2){
+                this.dtlObj.sendSrc='投诉工单';
+             }else{
+                this.dtlObj.sendSrc = '维保工单'
+             }
+             this.dtlObj.devices = [
+             {label:'类型',value:this.dtlObj.sys_name},
+             {label:'设备名称',value:this.dtlObj.device_name},
+             {label:'设备地点',value:this.dtlObj.floor},
+             {label:'工单处理人员',value:this.dtlObj.user_name}]
+             // if(data.info.now_state==0){data.info.未接单 1：已接单，2：延期申请，3：延期审请通过，4：完成’)
+              
            }else{
               this.$message({
                 type:'error',
@@ -545,8 +460,12 @@ export default {
           pagesize:'20'
         }).then(res=> {
            if(res.data.code==0){
+             $.each(res.data.data,(n,k)=>{
+                res.data.data[n].serial = (1 - 1) * 20 + 1 + n;
+
+             })
              this.table.data = res.data.data;
-             this.table.len = res.data.count;
+
            }else{
               this.$message({
                 type:'error',
@@ -714,7 +633,7 @@ export default {
   }
   .tableInfos{
     width: 100%;
-    height: 100%;
+    height: 8rem;
     .infoHead{
       .vh(52);
       width: 100%;
@@ -798,7 +717,7 @@ export default {
             }
           }
           .btnsgroups{
-            margin-top:0.7rem;
+            margin-top:0.3rem;
             text-align:right;
             color:#fff;
             .infoBusy{

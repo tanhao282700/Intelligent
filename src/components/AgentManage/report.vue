@@ -234,12 +234,12 @@ export default {
     getRepeatRate(){
       this.$http.post('/pc_ims/admin/count_device',{
         pagenumber:1,
-        pagesize:10
+        pagesize:20
       }).then(res=>{
         console.log(res)
         if(res.data.code==0){
-            this.table2.len = res.data.data.count;
-            this.table2.data = res.data.data.data;
+            //序号
+            this.table2.data = res.data.data;
           }else{
             this.$message({
               type:'error',
@@ -326,13 +326,13 @@ export default {
   }
   .tableBoxs{
     width:95.6%;
-    height:4.80rem;
+    height:5.35rem;
     .tabHead{
       position: relative;
       border:1px solid #1989fa;
-      height:0.32rem;
-      margin-top:0.27rem;
-      width:3.644rem;
+      height: 0.3rem;
+      margin-top: 0.27rem;
+      width: 3.65rem;
       border-radius:0.02rem;
       margin-left:0.2rem;
       .jobBoxs{
@@ -366,7 +366,6 @@ export default {
     }
     .tableIn{
       width: 99%;
-      height:3.28rem;
       margin-left: 1%;
       .tableBox{
          margin-left:0;

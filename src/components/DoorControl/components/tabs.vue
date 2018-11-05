@@ -42,7 +42,7 @@
 
                 <!--分页器-->
                 <div class="paginationBox">
-                    <div class="totalPageNumBox">共{{totalPageNum}}页</div>
+                    <div class="totalPageNumBox">共{{table.paging}}页</div>
 
                     <div class="el-input el-pagination__editor is-in-pagination curPageBox">
                         <input type="number" autocomplete="off" class="el-input__inner" v-model="currPage">
