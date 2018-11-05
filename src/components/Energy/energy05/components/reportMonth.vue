@@ -332,12 +332,12 @@
                       }
                       $(".el-table__footer").width($(".con").width())
 
-                      $($(".el-table__footer tbody tr")[0]).append("<td style='border-top:none!important;'>13</td><td style='color:#439AFF!important;border-top:none!important;'>区域合计</td><td style='color:#439AFF!important;border-top:none!important;'>"+data[1].data[12].value[0]+"</td><td style='color:#FFA414!important;border-top:none!important;'>"+data[1].data[12].value[1]+"</td>")
+                      $($(".el-table__footer tbody tr")[0]).append("<td style='border-top:none!important;'>13</td><td style='color:#439AFF!important;border-top:none!important;font-size:0.12rem!important;'>区域合计</td><td style='color:#439AFF!important;border-top:none!important;font-size:0.12rem!important;'>"+data[1].data[12].value[0]+"</td><td style='color:#FFA414!important;border-top:none!important;font-size:0.12rem!important;'>"+data[1].data[12].value[1]+"</td>")
                       for(let i=0;i<data[2].data.length;i++){
-                        $($(".el-table__footer tbody tr")[0]).append("<td style='color:#439AFF!important;border-top:none!important;'>"+data[2].data[i].value[0]+"</td><td style='color:#FFA414!important;border-top:none!important;'>"+data[2].data[i].value[1]+"</td>")
+                        $($(".el-table__footer tbody tr")[0]).append("<td style='color:#439AFF!important;border-top:none!important;font-size:0.12rem!important;'>"+data[2].data[i].value[0]+"</td><td style='color:#FFA414!important;border-top:none!important;font-size:0.12rem!important;'>"+data[2].data[i].value[1]+"</td>")
                       }
 
-                      $(".el-table__footer tbody").append("<tr><td style='border-top:none!important;'>14</td><td style='color:#439AFF!important;border-top:none!important;'>部门合计</td><td style='border-top:none!important;' colspan='2'></td></tr>")
+                      $(".el-table__footer tbody").append("<tr><td style='border-top:none!important;font-size:0.12rem!important;'>14</td><td style='color:#439AFF!important;border-top:none!important;font-size:0.12rem!important;'>部门合计</td><td style='border-top:none!important;' colspan='2'></td></tr>")
                       let lenth = []
                       this.areaList.map((item,index)=> {
                         lenth.push(item.child_data.length)
@@ -352,10 +352,10 @@
                         }
                       }
 
-                      $(".el-table__footer tbody").append("<tr><td style='border-top:none!important;'>15</td><td style='color:#439AFF!important;border-top:none!important;'>月均</td><td style='color:#439AFF!important;border-top:none!important;'>"+data[1].data[13].value[0]+"</td><td style='color:#FFA414!important;border-top:none!important;'>"+data[1].data[13].value[1]+"</td></tr>")
+                      $(".el-table__footer tbody").append("<tr><td style='border-top:none!important;font-size:0.12rem!important;'>15</td><td style='color:#439AFF!important;border-top:none!important;font-size:0.12rem!important;'>月均</td><td style='color:#439AFF!important;border-top:none!important;font-size:0.12rem!important;'>"+data[1].data[13].value[0]+"</td><td style='color:#FFA414!important;border-top:none!important;font-size:0.12rem!important;'>"+data[1].data[13].value[1]+"</td></tr>")
 
                       for(let j=0;j<data[3].data.length;j++){
-                        $($(".el-table__footer tbody tr")[2]).append("<td style='color:#439AFF!important;border-top:none!important;'>"+data[3].data[j].value[0]+"</td><td style='color:#FFA414!important;border-top:none!important;'>"+data[3].data[j].value[1]+"</td>")
+                        $($(".el-table__footer tbody tr")[2]).append("<td style='color:#439AFF!important;border-top:none!important;font-size:0.12rem!important;'>"+data[3].data[j].value[0]+"</td><td style='color:#FFA414!important;border-top:none!important;font-size:0.12rem!important;'>"+data[3].data[j].value[1]+"</td>")
                       }
 
 

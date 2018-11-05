@@ -23,8 +23,8 @@
                 <!--<template slot="title">分组一</template>-->
                 <el-menu-item v-if="userRouterInfo[14]" index="/DoorControl"><span class="textPL">门禁系统</span></el-menu-item>
                 <el-menu-item v-if="userRouterInfo[5]" index="/VideoSurveillance"><span class="textPL">视频监控系统</span></el-menu-item>
-                <el-menu-item v-if="userRouterInfo[16]" index="/fireAlarm/fireMonitor"><span class="textPL">消防系统</span></el-menu-item>
-                <el-menu-item v-if="userRouterInfo[1]" index="1-4"><span class="textPL">中央空调系统</span></el-menu-item>
+                <el-menu-item v-if="userRouterInfo[16]" index="/fireAlarm"><span class="textPL">消防系统</span></el-menu-item>
+                <el-menu-item v-if="userRouterInfo[1]" index="/airConditioner"><span class="textPL">中央空调系统</span></el-menu-item>
               </el-menu-item-group>
             </el-submenu>
             <el-submenu index="2" v-if="userRouterInfo[2]||userRouterInfo[17]">
@@ -41,7 +41,7 @@
               <i class="el-icon-location noLog maintainmanagement"></i>
               <span class="textPL">运维管理</span>
             </el-menu-item>
-            <el-menu-item class="noChildModule" index="/fireAlarm">
+            <el-menu-item class="noChildModule" index="/alarm">
               <i class="el-icon-location noLog alarmmanage"></i>
               <span class="textPL">告警管理</span>
             </el-menu-item>

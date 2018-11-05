@@ -25,10 +25,14 @@ import normalWorkList from '@/components/AgentManage/normalUser/workList';
 import normalRouting from '@/components/AgentManage/normalUser/routing';
 import normalReport from '@/components/AgentManage/normalUser/report';
 
+//告警
+import alarm from '@/components/Alarm/fireAlarm';
+
+
 //消防报警
-import fireAlarm from '@/components/Alarm/fireAlarm';
-import fireMonitor from '@/components/Alarm/components/fireMonitor';
-import fireHistory from '@/components/Alarm/components/fireHistory';
+import fireAlarm from '@/components/fireAlarm/fireAlarm';
+import fireMonitor from '@/components/fireAlarm/fireMonitor';
+import fireHistory from '@/components/fireAlarm/fireHistory';
 
 //权限系统
 import permission from '@/components/Permission/Permission';
@@ -55,7 +59,11 @@ import HotelStatus from '@/components/HotelStatus/HotelStatus';
 import HotelRoomStatus from '@/components/HotelStatus/components/HotelRoomStatus';
 import roomLists from '@/components/HotelStatus/components/roomLists';
 import roomCharts from '@/components/HotelStatus/components/roomCharts';
-
+//空调
+import airConditioner from '@/components/airConditioner/airConditioner'
+import telecontrol from '@/components/airConditioner/components/telecontrol'
+import sysMonitor from '@/components/airConditioner/components/sysMonitor'
+import timerMode from '@/components/airConditioner/components/timerMode'
 Vue.use(Router);
 
 export default new Router({
@@ -149,17 +157,20 @@ export default new Router({
       path:'/AgentManage/normalUser/report',
       component:normalReport
     },{
+      path: '/alarm',
+      component: alarm,
+    },
+    {
       path: '/fireAlarm',
       component: fireAlarm,
+      redirect: '/fireAlarm/fireMonitor',
       children:[
         {
-          path: 'fireMonitor',
-          name:fireMonitor,
+          path: '/fireAlarm/fireMonitor',
           component:fireMonitor
         },
         {
-          path: 'fireHistory',
-          name:'fireHistory',
+          path: '/fireAlarm/fireHistory',
           component: fireHistory
         }
       ]
@@ -186,7 +197,26 @@ export default new Router({
         { path: '/HotelStatus/components/roomLists',component: roomLists},
         { path: '/HotelStatus/components/roomCharts',component: roomCharts},
       ]
-    }
+    },
+    {
+      path: '/airConditioner',
+      component: airConditioner,
+      redirect: '/airConditioner/components/telecontrol',
+      children:[
+        {
+          path: '/airConditioner/components/telecontrol',
+          component:telecontrol
+        },
+        {
+          path: '/airConditioner/components/sysMonitor',
+          component: sysMonitor
+        },
+        {
+          path: '/airConditioner/components/timerMode',
+          component: timerMode
+        }
+      ]
+    },
 
   ]
 })
