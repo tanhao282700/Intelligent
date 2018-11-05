@@ -338,10 +338,11 @@
               position:absolute;
               right:-14px;
               bottom:-20px;
-              width:27px;
-              height:18px;
-              background:url(../../assets/img/home/percent.png) no-repeat left top;
-              background-size:cover;
+              background:rgba(1, 21, 48, 0.3);
+              /*width:27px;
+              height:18px;*/
+              /*background:url(../../assets/img/home/percent.png) no-repeat left top;
+              background-size:cover;*/
               font-size:10px;
               color:white;
               line-height:20px;

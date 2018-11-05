@@ -9,7 +9,7 @@
       <div v-if="options.isPersonInfo || options.isEditInfo" class="personInfoCon" :class="{'editInfo': options.isEditInfo}" >
         <div class="formInput canEdit">
           <span>姓名</span>
-          <input type="text" :readonly="options.isPersonInfo" v-model="personInfo.userinfo.name" >
+          <input type="text" class="Myname" placeholder="请输入姓名" :readonly="options.isPersonInfo" v-model="personInfo.userinfo.name" >
         </div>
         <div class="formInput">
           <span>部门</span>
@@ -159,6 +159,10 @@
   }
 </script>
 <style lang="less" rel="stylesheet/less">
+  .Myname::-webkit-input-placeholder {
+    /* placeholder字体大小  */
+    font-size: 15px!important;
+  }
   .personInfoComponent {
     z-index:999;
     width: 320px;

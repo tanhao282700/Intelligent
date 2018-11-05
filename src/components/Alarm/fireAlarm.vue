@@ -85,7 +85,7 @@
               type="index"
               :index="indexMethod"
               label="序号"
-              min-width="4%">
+              min-width="8%">
             </el-table-column>
             <el-table-column
               prop="time"
@@ -120,12 +120,12 @@
             <el-table-column
               prop="recovery_time"
               label="持续时间"
-              min-width="8%">
+              min-width="6%">
             </el-table-column>
             <el-table-column
               prop="now_state"
               label="维修状态"
-              min-width="8%">
+              min-width="6%">
             </el-table-column>
             <el-table-column
               prop="control_user"
@@ -290,10 +290,10 @@
       queryForm(){
           console.log(this.timeValue)
           this.loading = true
-          if(this.timeValue && this.timeValue[0]==this.timeValue[1]){
+          if(this.timeValue.length!=0 && this.timeValue[0]==this.timeValue[1]){
             this.timeValue[1] = this.timeValue[1].split(' ')[0]+' 23:59:59'
           }
-          if(this.timeValue && this.timeValue.length>0){
+          if(this.timeValue.length!=0 && this.timeValue.length>0){
             this.formData.start_time = this.timeValue[0]
             this.formData.end_time = this.timeValue[1]
           }else{
@@ -351,6 +351,9 @@
   }
 </style>
 <style>
+  .fireAlarm .userBox td:first-child{
+    padding-left:0!important;
+  }
   .fireAlarm .el-table .el-table__body td .cell{
     font-size:0.12rem!important;
   }

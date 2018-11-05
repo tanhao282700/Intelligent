@@ -7,7 +7,7 @@
         frameborder="0"
         width="100%"
         height="100%"
-        src="../../../static/bim3d/Web3D/Web3D.html">
+        :src="url3d">
       </iframe>-->
     </div>
     <div class="systemName">
@@ -261,12 +261,14 @@
         monitoringData:[{}],  //实时监控数据
         bubbleTip:'', //提示信息
         routerInfo:{},  //权限信息
-        dateInfo:{}   //日期信息
+        dateInfo:{},   //日期信息
+        url3d:''
       }
     },
     created(){
-      console.log(111)
-        console.log(this.$store.state.sysList)
+      this.url3d=this.$store.state.userInfoTotal.projectInfo[0].bim_page
+        console.log(this.$store.state)
+      this.bgStyle.backgroundImage = this.$store.state.userInfoTotal.projectInfo[0].bim_page
       this.routerInfo = this.$store.state.sysList
 
       this.dateInfoInit()
