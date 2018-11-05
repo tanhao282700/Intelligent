@@ -273,10 +273,12 @@
       <bubbleTip :tipText="bubbleTip"/>
     </el-dialog>
 
+    <!--批量导入弹窗-->
     <el-dialog title="批量导入" :visible.sync="fileUploadDialogVisible" class="metersHistoryDialogBox uploadFileBox" :close-on-click-modal="false">
       <div class="upRowBox">
-        <span>上传</span><span class="upBtn">选择文件</span><form action="uploadServlet.do" method="post" enctype="multipart/form-data">
-          <input type="file" id="upSysFile" name="file" accept="application/vnd.ms-excel" @change="fileChange"/>
+        <span>上传</span><span class="upBtn">选择文件</span>
+        <form id="uploadFileForm" action="https://tesing.china-tillage.com/hotel_energy/history_record" method="post" enctype="multipart/form-data" name="fileForm">
+          <input type="file" name="upload_file" value="选择文件" id="upSysFile" accept="application/vnd.ms-excel" @change="fileChange"/>
         </form>
       </div>
       <div class="fileNameBox">{{updateFileName}}</div>
@@ -289,6 +291,7 @@
 </template>
 <script>
   import bubbleTip from '../../common/bubbleTip';
+  import '../../../assets/js/jquery.form.js';
 
   export default{
     components:{
@@ -374,13 +377,40 @@
 
     },
     methods:{
+      submitFile(){
+
+      },
       cancleUpdateFile(){
         $("#upSysFile").val("");
         this.updateFileName = "";
         this.fileUploadDialogVisible = false;
       },
       confirmUpdateFile(){
-        let that = this;
+        /*var formdata = new FormData(document.getElementById("uploadFileForm"));
+        $.ajax({
+          url:"https://tesing.china-tillage.com/hotel_energy/history_record",
+          type:"post",
+          data:{
+            "upload_file":formdata
+          },
+          contentType:false, //- 必须false才会自动加上正确的Content-Type
+          processData: false, //- 必须false才会避开jQuery对 formdata 的默认处理,XMLHttpRequest会对 formdata 进行正确的处理
+          success:function(res){
+            console.log(res);
+            alert("ok");
+          },
+          error:function(){
+            alert("fail");
+          }
+        });*/
+
+        $("#uploadFileForm").ajaxSubmit(function(message) {
+          // 对于表单提交成功后处理，message为表单正常提交后返回的内容
+          console.log(message);
+        });
+        return false;
+
+        /*let that = this;
         let path = $("#upSysFile").val();
 
         let config = {
@@ -396,7 +426,7 @@
              console.log(response.data);
            })
 
-        that.fileUploadDialogVisible = false;
+        that.fileUploadDialogVisible = false;*/
       },
       fileChange(e){
         let that = this;
@@ -954,7 +984,7 @@
     border: none;
     vertical-align: bottom;
     opacity: 0;
-    margin-left: -2rem;
+    margin-left: -2.1rem;
     cursor: pointer;
   }
   .upRowBox .upBtn{
