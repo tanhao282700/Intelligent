@@ -198,20 +198,26 @@ export default {
     },
     getReportData(){
       if(!this.year){
-        this.year = ''
+        this.year = '';
+      }else{
+        this.year = this.format(this.year,'yyyy');
       }
       if(!this.month){
         this.month = ''
+      }else{
+        this.month = this.format(this.month,'MM')
       }
       if(!this.day){
         this.day = ''
+      }else{
+        this.day = this.format(this.day,'dd')
       }
       this.$http.post('/pc_ims/admin/inspectionlist_count',{
-        year:this.format(this.year,'yyyy'),
-        month:this.format(this.month,'MM'),
-        day:this.format(this.day,'dd'),
+        year:this.year,
+        month:this.month,
+        day:this.day,
         pagenumber:1,
-        pagesize:10
+        pagesize:20
       }).then(res=> {
         console.log(res);
          if(res.data.code==0){

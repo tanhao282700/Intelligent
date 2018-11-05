@@ -11,7 +11,7 @@
               <el-col :span="6" class="addContLabel">
                 巡检人员
               </el-col>
-              <el-col :span="18" class="addContInput">
+              <el-col :span="18" class="addContInput" v-if="formvals1.examine">
                 <SelectBox 
                   :options = 'formvals1.examine' 
                   :value = "formval.exam" 
@@ -27,7 +27,7 @@
               <el-col :span="6" class="addContLabel">
                 专业
               </el-col>
-              <el-col :span="18" class="addContInput">
+              <el-col :span="18" class="addContInput" v-if="formvals1.departments">
                 <SelectBox 
                   :options = 'formvals1.departments' 
                   :value = "formval.department" 
@@ -56,7 +56,7 @@
               <el-col :span="6" class="addContLabel">
                 巡检系统<i>*</i>
               </el-col>
-              <el-col :span="18" class="addContInput">
+              <el-col :span="18" class="addContInput" v-if="formvals1.systems">
                 <SelectBox 
                   :options = 'formvals1.systems' 
                   :value = "formval.system" 
@@ -72,7 +72,7 @@
               <el-col :span="6" class="addContLabel">
                 巡检区域<i>*</i>
               </el-col>
-              <el-col :span="18" class="addContInput">
+              <el-col :span="18" class="addContInput" v-if="formvals1.areas">
                 <SelectBox 
                   :options = 'formvals1.areas' 
                   :value = "formval.area" 
@@ -88,7 +88,7 @@
               <el-col :span="6" class="addContLabel">
                 巡检设备
               </el-col>
-              <el-col :span="18" class="addContInput">
+              <el-col :span="18" class="addContInput" v-if="formvals1.devices">
                 <SelectBox 
                   :options = 'formvals1.devices' 
                   :value = "formval.device" 
@@ -108,7 +108,7 @@
               </el-col>
               <el-col :span="18" class="addContInput">
                 <el-date-picker
-                  v-model="formvals1.starttime"
+                  v-model="formval.starttime"
                   type="date"
                   placeholder="选择日期">
                 </el-date-picker>
@@ -120,7 +120,7 @@
               <el-col :span="6" class="addContLabel">
                 巡检周期<i>*</i>
               </el-col>
-              <el-col :span="18" class="addContInput">
+              <el-col :span="18" class="addContInput" v-if="formvals1.periods">
                 <SelectBox 
                   :options = 'formvals1.periods' 
                   :value = "formval.period" 
@@ -136,7 +136,7 @@
               <el-col :span="6" class="addContLabel">
                 采集数据点
               </el-col>
-              <el-col :span="18"  class="addContInput">
+              <el-col :span="18"  class="addContInput" v-if="formvals1.datas">
                 <SelectBox 
                   :options = 'formvals1.datas' 
                   :value = "formval.data" 
@@ -187,7 +187,8 @@
       },
       data () {
         return {
-            
+            formvals1:{},
+            formval:{}
         }
       },
       methods:{
@@ -222,16 +223,33 @@
             this.$emit('cancelAdd')
          },
          saveAdd(){
-            this.$emit('saveAdd',this.formval)
+          this.$emit('saveAdd',{
+              id:this.formvals.id,
+              start_date: this.formvals.starttime,
+              user_id: this.formval.exam,
+              sys_id: this.formval.system,
+              floor_id: this.formval.area,
+              cycle: this.formval.period,
+              ins_place: this.formval.addr,
+              remarks: this.formval.remarks,
+              device_id: this.formval.device,
+              time_limit: this.formval.time_limit,
+              department_id: this.formval.department,
+              device_info:this.formval.data})
          }
       },
       watch:{
-        formvals(val){
-          this.formvals1 = val
+        formvals:{
+          handler(val){
+            if(val){
+              this.formvals1 = val;
+            }
+          },
+          deep:true
         }
       },
       mounted() {
-        //this.formvals = this.data;
+        this.formvals1 = this.formvals;
       }
   }
 </script>

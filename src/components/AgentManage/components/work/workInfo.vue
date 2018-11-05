@@ -102,52 +102,69 @@ export default {
         }
     },
     deletes(){
-        let attrs = this.query.time.split('-');
-        // console.log(attrs)
-        if(attrs[2]==1){
-          if(attrs[1]==2 ||attrs[1]==4 || attrs[1]==6 ||attrs[1]==8 ||attrs[1]==9 ||attrs[1]==11 ||attrs[1]==1){
-              attrs[2]=31;
-          }else if(attrs[1]==5 ||attrs[1]==7 || attrs[1]==10 ){
-              attrs[2]=30;
-          }else if(attrs[1]==3 && Number(attrs[0])%4==0){
-              attrs[2]=29;
-          }else if(attrs[1]==3 && Number(attrs[0])%4!=0){
-              attrs[2]=28;
+        let attrs = this.value7.split('-');
+        if(Number(attrs[1])==1){
+          if(Number(attrs[0])>1){
+            if(Number(attrs[0]-1)>9){
+              attrs[0] = attrs[0]-1;
+            }else{
+              attrs[0] = '0'+Number(attrs[0]-1);
+            }
+            if(attrs[0]==1 || attrs[0]==3 || attrs[0]==5 || attrs[0]==7 || attrs[0]==8 || attrs[0]==10 || attrs[0]==12){
+              attrs[1]=31;
+            }else if(attrs[0]==4 || attrs[0]==6 || attrs[0]==9 || attrs[0]==11){
+              attrs[1]=30;
+            }else{
+              if(utils.time(new Date()/1000,10)%4==0){
+                attrs[1]= 29;
+              }else{
+                attrs[1]= 28;
+              }
+            }
           }
-          if(attrs[1]==1){
-              attrs[1] = 12;
-              attrs[0] = Number(attrs[0])-1;
-          }else{
-              attrs[1] = Number(attrs[1])-1;
-          }            
         }else{
-            attrs[2] = Number(attrs[2])-1;
+          if((Number(attrs[1])-1)<10){
+            attrs[1] = '0'+(Number(attrs[1])-1);
+          }else{
+            attrs[1] = Number(attrs[1])-1;
+          }
         }
-        this.query.time = attrs.join('-'); 
-    },
-    adds(){
+        this.value7 = attrs.join('-'); 
+      },
+      adds(){
         if(this.cant){
             return;
         }
-        let attrs = this.query.time.split('-');
-
-        if(((attrs[1]==1 ||attrs[1]==3 || attrs[1]==5 ||attrs[1]==7 ||attrs[1]==8 ||attrs[1]==10 ||attrs[1]==12) && attrs[2]==31)
-            ||((attrs[1]==2 ||attrs[1]==6 || attrs[1]==9 ||attrs[1]==11) && attrs[2]==30) 
-            ||((attrs[1]==2 && Number(attrs[0])%4==0) && attrs[2]==29)
-            ||((attrs[1]==2 && Number(attrs[0])%4!=0) && attrs[2]==28)
+        let attrs = this.value7.split('-');
+        if(((attrs[0]==1 ||attrs[0]==3 || attrs[0]==5 ||attrs[0]==7 ||attrs[0]==8 ||attrs[0]==10 ||attrs[0]==12) && attrs[1]==31)
+            ||((attrs[0]==4 ||attrs[0]==6 || attrs[0]==9 ||attrs[0]==11) && attrs[1]==30) 
+            ||((attrs[0]==2 && Number(attrs[0])%4==0) && attrs[1]==29)
+            ||((attrs[0]==2 && Number(attrs[0])%4!=0) && attrs[1]==28)
         ){
-            attrs[2] =1;
-            if(attrs[1]==12){
-                attrs[1] = 1;
-                attrs[0] = Number(attrs[0])+1;
+            attrs[1] =1;
+            if(attrs[0]==12){
+                attrs[0] = '01';
+                attrs[1] = '01';
             }else{
-                attrs[1] = Number(attrs[1])+1;
+                if(Number(attrs[0])+1>10){
+                  attrs[0] = Number(attrs[0])+1;
+                  attrs[1] = '01';
+                }else{
+                  attrs[0] = '0'+(Number(attrs[0])+1);
+                  attrs[1] = '01';
+                }
+                
             }   
         }else{
-            attrs[2] = Number(attrs[2])+1;
+            if(Number(attrs[1])+1>9){
+              attrs[1] = Number(attrs[1])+1;
+            }else{
+              attrs[1] = '0'+(Number(attrs[1])+1)
+            }
+            
         }
-        this.query.time = attrs.join('-');    
-    }, 
+        this.value7 = attrs.join('-');    
+      }, 
     showInfos(item){
         this.$emit('tableInfos2Show',item);
     }
@@ -162,6 +179,7 @@ export default {
         handler(newval,oldval){
             if(newval){
                 this.tableData = newval;
+                console.log(newval)
             }
             
         },

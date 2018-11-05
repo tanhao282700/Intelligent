@@ -109,6 +109,7 @@ import '@/assets/css/fs_common.css'
 import utils from "../../assets/js/utils.js";
 import examine from './components/schedule/examine';
 import ScheduleTable from './components/schedule/scheduleTable';
+import axios from 'axios'
 
 export default {
   components:{
@@ -210,8 +211,19 @@ export default {
         })
       },
       saveAddPaiBan(param){
-        this.$http.post('/pc_ims/set_work',param).then(function(res){
-            console.log(res)
+        this.$http.post('/pc_ims/set_work',param).then(res=>{
+            if(res.data.code==0){
+              this.$message({
+                type:'success',
+                message:res.data.msg
+              })
+              this.getPaibanData();
+            }else{
+              this.$message({
+                type:'error',
+                message:res.data.msg
+              })
+            }
         });
       },
       getPaiBanData(value7){//获取排班数据
@@ -228,7 +240,6 @@ export default {
                       data[n].allow = false;
                   })
                   _this.paibanList = res.data.data;
-                  console.log(_this.paibanList)
               }else{
                 _this.$message({
                   type:'error',

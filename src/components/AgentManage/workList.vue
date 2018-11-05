@@ -259,24 +259,31 @@ export default {
     }, 
     deletes(){
         let attrs = this.value7.split('-');
-        if(attrs[2]==1){
-          if(attrs[1]==2 ||attrs[1]==4 || attrs[1]==6 ||attrs[1]==8 ||attrs[1]==9 ||attrs[1]==11 ||attrs[1]==1){
-              attrs[2]=31;
-          }else if(attrs[1]==5 ||attrs[1]==7 || attrs[1]==10 ){
-              attrs[2]=30;
-          }else if(attrs[1]==3 && Number(attrs[0])%4==0){
-              attrs[2]=29;
-          }else if(attrs[1]==3 && Number(attrs[0])%4!=0){
-              attrs[2]=28;
+        if(Number(attrs[1])==1){
+          if(Number(attrs[0])>1){
+            if(Number(attrs[0]-1)>9){
+              attrs[0] = attrs[0]-1;
+            }else{
+              attrs[0] = '0'+Number(attrs[0]-1);
+            }
+            if(attrs[0]==1 || attrs[0]==3 || attrs[0]==5 || attrs[0]==7 || attrs[0]==8 || attrs[0]==10 || attrs[0]==12){
+              attrs[1]=31;
+            }else if(attrs[0]==4 || attrs[0]==6 || attrs[0]==9 || attrs[0]==11){
+              attrs[1]=30;
+            }else{
+              if(utils.time(new Date()/1000,10)%4==0){
+                attrs[1]= 29;
+              }else{
+                attrs[1]= 28;
+              }
+            }
           }
-          if(attrs[1]==1){
-              attrs[1] = 12;
-              attrs[0] = Number(attrs[0])-1;
-          }else{
-              attrs[1] = Number(attrs[1])-1;
-          }            
         }else{
-            attrs[2] = Number(attrs[2])-1;
+          if((Number(attrs[1])-1)<10){
+            attrs[1] = '0'+(Number(attrs[1])-1);
+          }else{
+            attrs[1] = Number(attrs[1])-1;
+          }
         }
         this.value7 = attrs.join('-'); 
       },
@@ -285,21 +292,32 @@ export default {
             return;
         }
         let attrs = this.value7.split('-');
-
-        if(((attrs[1]==1 ||attrs[1]==3 || attrs[1]==5 ||attrs[1]==7 ||attrs[1]==8 ||attrs[1]==10 ||attrs[1]==12) && attrs[2]==31)
-            ||((attrs[1]==2 ||attrs[1]==6 || attrs[1]==9 ||attrs[1]==11) && attrs[2]==30) 
-            ||((attrs[1]==2 && Number(attrs[0])%4==0) && attrs[2]==29)
-            ||((attrs[1]==2 && Number(attrs[0])%4!=0) && attrs[2]==28)
+        if(((attrs[0]==1 ||attrs[0]==3 || attrs[0]==5 ||attrs[0]==7 ||attrs[0]==8 ||attrs[0]==10 ||attrs[0]==12) && attrs[1]==31)
+            ||((attrs[0]==4 ||attrs[0]==6 || attrs[0]==9 ||attrs[0]==11) && attrs[1]==30) 
+            ||((attrs[0]==2 && Number(attrs[0])%4==0) && attrs[1]==29)
+            ||((attrs[0]==2 && Number(attrs[0])%4!=0) && attrs[1]==28)
         ){
-            attrs[2] =1;
-            if(attrs[1]==12){
-                attrs[1] = 1;
-                attrs[0] = Number(attrs[0])+1;
+            attrs[1] =1;
+            if(attrs[0]==12){
+                attrs[0] = '01';
+                attrs[1] = '01';
             }else{
-                attrs[1] = Number(attrs[1])+1;
+                if(Number(attrs[0])+1>10){
+                  attrs[0] = Number(attrs[0])+1;
+                  attrs[1] = '01';
+                }else{
+                  attrs[0] = '0'+(Number(attrs[0])+1);
+                  attrs[1] = '01';
+                }
+                
             }   
         }else{
-            attrs[2] = Number(attrs[2])+1;
+            if(Number(attrs[1])+1>9){
+              attrs[1] = Number(attrs[1])+1;
+            }else{
+              attrs[1] = '0'+(Number(attrs[1])+1)
+            }
+            
         }
         this.value7 = attrs.join('-');    
       }, 
@@ -358,6 +376,9 @@ export default {
         this.submitOk();
       },
       submitOk(){ //处理工单 同意/拒绝退单/延期
+        if(this.infoItem.now_state==5){
+            this.$refs.sendWork2.show();
+        }
         this.$http.post('/pc_ims/write_job',{
           id:this.infoItem.id,
           type:Number(this.infoItem.now_state)+1,
@@ -373,7 +394,6 @@ export default {
           console.log(res)
           if(res.data.code==0){
             this.$refs.isRefult.hide();
-            this.$refs.sendWork2.show();
           }else{
             this.$message({
               type:'error',

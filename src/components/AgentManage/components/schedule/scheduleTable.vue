@@ -64,7 +64,7 @@
                                 <div class="tableBDuty item" v-text="v.description"></div>
                                 <div class="spanBox">
                                     <span class="item "
-                                        @click="v.allow && changeIschange(i,i0)"
+                                        @click="v.allow && changeIschange(i,i0,v0,v)"
                                         @mouseover="changeOver(i,i0)"
                                         @mouseout="leaveOver()"
                                         :class="{
@@ -147,16 +147,18 @@ export default {
     return {
         loading:false,
         placeholder:'选择',
-        value7:'2018-11',
+        value7:utils.time((new Date())/1000,9),
         backOrCurr:true,//右上角图标显示：返回当前月还是显示当前月
         cant:false,
         active:'change',
         originNum:0,
+        addparam:{},
         isShow:false,
         ischange:[-1,-1],
         tableT:[],
         originPaiBanData:[],
         wOptions:[],
+        addParams:[],
         pOption:[],
         dataLlists:[
             {id:1,pid:1,name:'王尼玛',description:'项目总管',worklist:[
@@ -169,7 +171,7 @@ export default {
             left:0
         },
         over:[-5,-5],
-        month:''
+        month:utils.time((new Date())/1000,9).split('-')[1]
     }
   },
   methods:{
@@ -240,11 +242,27 @@ export default {
                 objs.worklist[_this.ischange[1]].title = _this.wOptions[n].label;
             }
         })
+
         objs.worklist[this.ischange[1]].type = val;
+        if(val!=this.addparam.worklist_id){
+            this.addparam.worklist_id = val;
+            $.each(this.addParams,(n,k)=>{
+                if(k.user_id==this.addparam.user_id && k.workdate==this.addparam.workdate){
+                    addParams[n] = this.addparam;
+                }
+            })
+            this.addParams.push(this.addparam);
+        }
+        console.log(this.addParams);
         this.ischange = [-1,-1];
         this.isShow=false;
     },
-    changeIschange(i,i0,event){
+    changeIschange(i,i0,v0,v,event){
+        if(!v.worklist[i0].id){
+            this.addparam = {id:0,user_id:v.user_id,worklist_id:v.worklist[i0].type,workdate:v0.time}
+        }else{
+            this.addparam = {id:v.worklist[i0].id,user_id:v.user_id,worklist_id:v.worklist[i0].type,workdate:v0.time}
+        }
         this.isShow = true;
         this.ischange = [];
         this.ischange.push(i);
@@ -299,25 +317,9 @@ export default {
         }
     },
     saveAddPaiBan(){
-        let param = [];
-        $.each(this.dataLlists,(n,k)=>{
-            $.each(this.originPaiBanData,(n1,k1)=>{
-                if(k1.user_id==k.user_id){
-                    $.each(k.worklist,(n2,k2)=>{
-                        $.each(k1.worklist,(n3,k3)=>{
-                            if(k2.woworklist_id==k3.woworklist_id && k2.title!=k3.title && k2.time==k3.time){
-                                param.push({id:k2.id,woworklist_id:k2.woworklist_id,user_id:k.user_id,workdate:k2.time});
-                            }
-                        })
-                    })
-                }
-            })
-        })
-        console.log(param);
-        param = {content:{
-            "data":param
-        }}
-        this.$emit('saveAddPaiBan',param);
+        let param = {content:JSON.stringify({"data":this.addParams})}
+        this.$emit('saveAddPaiBan',param)
+        this.addParams = [];
     },
     addPerson(){ //新增人员
         this.originPaiBanData = this.dataLlists;
@@ -416,11 +418,11 @@ export default {
         let _this = this;
         this.$http.post('/pc_ims/get_user')
         .then(function(res){
-            //console.log(res);
+            console.log(res);
             if(res.data.code==0){
                 let data = res.data.data;
                 $.each(data,function(n,k){
-                    data[n].value = data[n].id;
+                    data[n].value = data[n].user_id;
                     data[n].label = data[n].truename;
                     data[n].duty = data[n].title;
                 })
@@ -562,11 +564,11 @@ watch:{
 },
 mounted() {
     this.dataLlists = this.data;
+    //console.log(this.data);
     this.getWOptions();
     this.getPaiBanPerson();
     let curr = utils.time((new Date())/1000,9)
-    this.month = curr.split('-')[1];
-    this.value7 = curr.split('-')[0]+'-'+curr.split('-')[1];
+    this.addParams= [];
     }
 }
 </script>

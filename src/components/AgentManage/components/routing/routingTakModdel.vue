@@ -97,7 +97,7 @@
              this.$emit('deleteDetail',item);
           },
           addTemp(){
-            this.$emit('addDetail');
+            this.$emit('addDetail',0);
           },
           searchXJ(){
             this.$emit('searchXJ',this.query)

@@ -52,9 +52,9 @@ export default {
         let option = {
             grid:{
                 left:10,
-                top:10,
                 bottom:10,
                 right:10,
+                top:10,
                 containLabel: true
             },
             xAxis: {

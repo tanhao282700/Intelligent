@@ -10,6 +10,7 @@
         v-text="'>'+val+' '"
         :class="{'isNow':i==data.length-1}"
     >
+      
     </li>
     <div class="modeBox" v-if="isIfff">
       <div class="mode">

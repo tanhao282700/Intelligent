@@ -40,6 +40,8 @@ export default {
                 this.txt.color = '#4AE283';
                 break;
           }
+          this.txt = this.txt;
+          console.log(this.txt);
           return this.txt
       }
   },

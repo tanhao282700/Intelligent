@@ -9,7 +9,6 @@ export default {
     render: Function
   },
   render: (h, ctx) => {
-    //console.log(ctx);
     const params = {
       row: ctx.props.row,
       index: ctx.props.index

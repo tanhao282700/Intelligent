@@ -284,8 +284,9 @@
                         <div style="clear:both"></div>
                         <div class="nameBox">
                           <div class="labelBox">
-                            <el-button class="refuseHb" @click="agreeReplace(dia.id)">拒绝换班</el-button>
-                            <el-button class="agreeHb" @click="noAgree(dia.id)">同意换班</el-button>
+                            <el-button class="refuseHb" @click="noAgree(dia.id)"  v-show="dia.now_process==0">拒绝换班</el-button>
+                            <el-button class="agreeHb" @click="agreeReplace(dia.id)" v-show="dia.now_process==0">同意换班</el-button>
+                            <el-button class="refuseHb" v-show="dia.now_process!=0">{{dia.text}}</el-button>
                           </div>
                         </div>
                       </div>
@@ -389,16 +390,19 @@ export default {
         }
       })
       this.applyhbSelect.vpeo = val;
-      this.getNoApplyed(val);
     },
     change3(val){
       this.applyhbSelect.hbTime = val;
     },
     submitApply(){
-      this.$http.post('/pc_ims/staff/send_work',{content:{id:'',now_workusers_id:1, new_workusers_id:2,description:'试一下'}})
+      this.$http.post('/pc_ims/staff/send_work',{content:JSON.stringify({id:'',now_workusers_id:this.applyhbSelect.bTime, new_workusers_id:this.applyhbSelect.hbTime,description:this.dia.reason})})
       .then(res=>{
-         if(this.data.code==0){
-          console.log(res.data);
+        console.log(res);
+         if(res.data.code==0){
+            this.$message({
+                type:'success',
+                message:res.data.msg
+              })
          }else{
             this.$message({
                 type:'error',
@@ -446,6 +450,7 @@ export default {
     dealSchedule(id,type){
       this.$http.post('/pc_ims/staff/dispose',{id:id,type:type})
       .then(res=>{
+          console.log(res);
           if(res.data.code==0){
               this.$message({
                 type:'success',
@@ -460,31 +465,6 @@ export default {
                 duration:2000
               })
            }
-      })
-    },
-    getNoApplyed(id){//获取班次
-      this.$http.post('/staff/get_worklist',{user_id:id})
-      .then(res=>{
-        console.log(res.data);
-        if(res.data.code==0){
-          let data = res.data.data;
-          let arr=[];
-          $.each(data,(n,k)=>{
-            arr.push({label:k.workdate,value:k.id});
-          })
-          this.dia = {
-            truename:data[0].truename,
-            phone:data[0].phone
-          }
-          this.applyhbSelect.bTimes = arr;
-          this.applyhbSelect.hbTimes = arr;
-         }else{
-            this.$message({
-              type:'error',
-              message:res.data.msg,
-              duration:2000
-            })
-         }
       })
     },
     getNoApply(){//申请换班列表
@@ -534,8 +514,15 @@ export default {
       }
       this.$http.post('/pc_ims/staff/work_change',{type:val})
       .then(res=>{
-        console.log(res.data)
           if(res.data.code==0){
+              let data = res.data.data;
+              $.each(data,(n,k)=>{
+                 if(k.now_process==1){
+                  data[n].text = '已同意换班'
+                 }else if(k.now_process==10){
+                  data[n].text = '已拒绝换班'
+                 }
+              })
               this.noApplyLists = res.data.data;
            }else{
               this.$message({
@@ -567,7 +554,6 @@ export default {
     this.getTableList();
     this.getApplyStatus();
     this.getNoApply();
-    this.getNoApplyed(this.$store.state.userInfoTotal.userinfo.id);
     this.getPeosOptions()
   },
 }

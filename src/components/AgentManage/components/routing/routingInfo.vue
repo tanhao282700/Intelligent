@@ -64,7 +64,7 @@
       <div v-show="tableShow" class="boxs" style="width:95.6%;margin:0.2rem auto 0">
         <Table 
           style="height:2.0rem" 
-          :table = "newData.tableData"
+          :table = "data.tableData"
         />
       </div>
       
@@ -103,6 +103,7 @@
             handler(val){
               if(val){
                 this.newData = val;
+                this.data = val;
                 if(this.newData.localDesc2){
                   this.newData.localDesc2.label?this.backExcu=true:this.backExcu=false;
                 }

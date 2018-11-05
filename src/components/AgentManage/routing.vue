@@ -62,7 +62,7 @@
               </div>
             </div>
             <Dialog wid="1200" hei="640" ref="dialog">
-              <WorkInfo @tableInfos2Show="tableInfos2Show" :table="table3" :query="query2"/>
+              <WorkInfo @tableInfos2Show="tableInfos2Show" @getUserList="rowClick" :table="table3" :query="query2"/>
             </Dialog> 
             <Dialog wid="910" hei="600" ref="tableInfos2">
                 <div class="tableInfos">
@@ -138,15 +138,30 @@ export default {
         },
         names:[],
         //日期选择
-        value7:'8-24',
+        value7:utils.time(new Date()/1000,5),
         cant:false,
         queryModel:{//巡检任务模板的查询条件
-          systems:[],areas:[],examine:[],
+          id:0,
+          systems:[],
+          areas:[],
+          examine:[],
           taskStatus:[{value:1,label:'启用'},{value:2,label:'停用'}],
-          system:'',area:'',exam:'',taskStatu:'',periods:[{value:0,label:'每天'},{value:1,label:'每周'},{value:2,label:'每月'},{value:3,label:'每年'}],
-          period:'',departments:[],department:'',starttimes:[],
-          starttime:'',limits:[],time_limit:'',devices:[],device:'',
-          datas:[],data:''
+          system:'',
+          area:'',
+          exam:'',
+          taskStatu:'',
+          periods:[{value:0,label:'每天'},{value:1,label:'每周'},{value:2,label:'每月'},{value:3,label:'每年'}],
+          period:'',
+          departments:[],
+          department:'',
+          starttimes:[],
+          starttime:'',
+          limits:[],
+          time_limit:'',
+          devices:[],
+          device:'',
+          datas:[],
+          data:''
         },
         table2:{
           hei:328, //table高度  设置后有滚动条
@@ -203,7 +218,9 @@ export default {
             {prop:'devicename',label:'设备名称'},
             {prop:'addtime',label:'派发时间'},
             {prop:'descript',label:'内容描述'},
-            {prop:'now_state',label:'状态',operate: true,render: (h, param)=> {
+            {prop:'now_state',label:'状态',wid:100,
+            operate: true, 
+              render: (h, param)=> {
                   const btnss = {
                       fills:param.row.now_state,  
                   };
@@ -308,52 +325,69 @@ export default {
       this.$refs.add.show();
     },
     deletes(){
-      let attrs = this.value7.split('-');
-      // console.log(attrs)
-      if(attrs[2]==1){
-        if(attrs[1]==2 ||attrs[1]==4 || attrs[1]==6 ||attrs[1]==8 ||attrs[1]==9 ||attrs[1]==11 ||attrs[1]==1){
-            attrs[2]=31;
-        }else if(attrs[1]==5 ||attrs[1]==7 || attrs[1]==10 ){
-            attrs[2]=30;
-        }else if(attrs[1]==3 && Number(attrs[0])%4==0){
-            attrs[2]=29;
-        }else if(attrs[1]==3 && Number(attrs[0])%4!=0){
-            attrs[2]=28;
-        }
-        if(attrs[1]==1){
-            attrs[1] = 12;
-            attrs[0] = Number(attrs[0])-1;
+        let attrs = this.value7.split('-');
+        if(Number(attrs[1])==1){
+          if(Number(attrs[0])>1){
+            if(Number(attrs[0]-1)>9){
+              attrs[0] = attrs[0]-1;
+            }else{
+              attrs[0] = '0'+Number(attrs[0]-1);
+            }
+            if(attrs[0]==1 || attrs[0]==3 || attrs[0]==5 || attrs[0]==7 || attrs[0]==8 || attrs[0]==10 || attrs[0]==12){
+              attrs[1]=31;
+            }else if(attrs[0]==4 || attrs[0]==6 || attrs[0]==9 || attrs[0]==11){
+              attrs[1]=30;
+            }else{
+              if(utils.time(new Date()/1000,10)%4==0){
+                attrs[1]= 29;
+              }else{
+                attrs[1]= 28;
+              }
+            }
+          }
         }else{
-            attrs[1] = Number(attrs[1])-1;
-        }            
-      }else{
-          attrs[2] = Number(attrs[2])-1;
-      }
-      this.value7 = attrs.join('-'); 
-    },
-    adds(){
-      if(this.cant){
-          return;
-      }
-      let attrs = this.value7.split('-');
-
-      if(((attrs[1]==1 ||attrs[1]==3 || attrs[1]==5 ||attrs[1]==7 ||attrs[1]==8 ||attrs[1]==10 ||attrs[1]==12) && attrs[2]==31)
-          ||((attrs[1]==2 ||attrs[1]==6 || attrs[1]==9 ||attrs[1]==11) && attrs[2]==30) 
-          ||((attrs[1]==2 && Number(attrs[0])%4==0) && attrs[2]==29)
-          ||((attrs[1]==2 && Number(attrs[0])%4!=0) && attrs[2]==28)
-      ){
-          attrs[2] =1;
-          if(attrs[1]==12){
-              attrs[1] = 1;
-              attrs[0] = Number(attrs[0])+1;
+          if((Number(attrs[1])-1)<10){
+            attrs[1] = '0'+(Number(attrs[1])-1);
           }else{
+            attrs[1] = Number(attrs[1])-1;
+          }
+        }
+        this.value7 = attrs.join('-'); 
+      },
+      adds(){
+        if(this.cant){
+            return;
+        }
+        let attrs = this.value7.split('-');
+        if(((attrs[0]==1 ||attrs[0]==3 || attrs[0]==5 ||attrs[0]==7 ||attrs[0]==8 ||attrs[0]==10 ||attrs[0]==12) && attrs[1]==31)
+            ||((attrs[0]==4 ||attrs[0]==6 || attrs[0]==9 ||attrs[0]==11) && attrs[1]==30) 
+            ||((attrs[0]==2 && Number(attrs[0])%4==0) && attrs[1]==29)
+            ||((attrs[0]==2 && Number(attrs[0])%4!=0) && attrs[1]==28)
+        ){
+            attrs[1] =1;
+            if(attrs[0]==12){
+                attrs[0] = '01';
+                attrs[1] = '01';
+            }else{
+                if(Number(attrs[0])+1>10){
+                  attrs[0] = Number(attrs[0])+1;
+                  attrs[1] = '01';
+                }else{
+                  attrs[0] = '0'+(Number(attrs[0])+1);
+                  attrs[1] = '01';
+                }
+                
+            }   
+        }else{
+            if(Number(attrs[1])+1>9){
               attrs[1] = Number(attrs[1])+1;
-          }   
-      }else{
-          attrs[2] = Number(attrs[2])+1;
-      }
-      this.value7 = attrs.join('-');    
-    }, 
+            }else{
+              attrs[1] = '0'+(Number(attrs[1])+1)
+            }
+            
+        }
+        this.value7 = attrs.join('-');    
+      }, 
     checkDetail(rowData){
       //console.log(rowData);
       this.rowData = rowData;
@@ -377,7 +411,8 @@ export default {
           }
       })
     },
-    addDetail(){
+    addDetail(id){
+      this.queryModel.id = 0;
       this.rowData = {};
       this.tempTitle = '新增';
       this.$refs.add.show();
@@ -434,11 +469,14 @@ export default {
       })
     },
     rowClick(row){
-      console.log(row)
       this.infoItem.user_id = row.user_id;
+      console.log(row)
       this.$refs.dialog.show();
-      this.$http.post('/pc_ims/admin/inspectiondata_all',{sys_name:'',user_id:row.user_id,date:'11-01'})
-      .then(res=>{
+      this.$http.post('/pc_ims/admin/inspectiondata_all',{
+        sys_name:row.type,
+        user_id:row.user_id,
+        date:row.date
+      }).then(res=>{
           if(res.data.code==0){
             this.table3.len = res.data.count;
             this.table3.data = res.data.data.info;
