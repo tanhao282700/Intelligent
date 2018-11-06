@@ -34,7 +34,7 @@ nav.tabNav span a.on{color:#008aff;}
 .tableBox .el-pagination__jump{margin-right:10px;}
 .tableBox .el-table thead th.is-leaf{padding:0!important;border:0!important;}
 .tabsDomBox0{padding-top: 170px;position: relative;height: 100%;}
-.tabsDomBox0 .el-select .el-input__inner{height:32px;width:98px;}
+.tabsDomBox0 .el-select .el-input__inner{height:32px;width:98px;font-size: 12px!important;}
 .el-select:hover .el-input__inner,.el-input__inner:hover{border:1px solid #1989fa;}
 .tabsDomBox0 .el-select{margin-top:14px;margin-left: 20px;}
 .tabsDomBox0 .el-select:nth-child(2){margin-left: 10px;}
@@ -61,7 +61,7 @@ nav.tabNav span a.on{color:#008aff;}
 .popBgBox .popDoorStatus span,.popBgBox .popDoorControl span{float: left;}
 .topShadow{position: absolute;top:90px;-webkit-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);-moz-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);box-shadow:0 0 10px rgba(74, 144, 226, 0.22);display: block;width: 100%;height:60px;}
 .bottomShadow{position:relative;width:100%;height:100%;-webkit-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);-moz-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);box-shadow:0 0 10px rgba(74, 144, 226, 0.22);}
-.bottomShadow .floorImgBox{position:absolute;left:50%;top:50%;display:block;width:900px;height:430px;margin-left: -450px;margin-top:-215px;}
+.bottomShadow .floorImgBox{position:absolute;left:50%;top:50%;display:block;width:68%;margin-left: -34%;margin-top:-240px;}
 .bottomShadow .floorImgBox img{display: block;width:100%;height:100%;}
 .bottomShadow .floorImgBox i{position:absolute;display: block;width:22px;height:31px;cursor: pointer;font-size: 12px;line-height: 24px;text-align: center;}
 /*.bottomShadow .floorImgBox i.doorSta0{background:url(../../assets/img/doorControl/door1.png) no-repeat;background-size: 100% 100%;}
@@ -100,8 +100,9 @@ nav.tabNav span a.on{color:#008aff;}
 .VideoSurveillance .navCrumbs{padding-left: 20px;}
 .VideoSurveillance .mainContentBox{width:100%;height:100%;border-radius: 4px;-webkit-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);-moz-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);box-shadow:0 0 10px rgba(74, 144, 226, 0.22);position: relative;padding-top: 40px;}
 .videoConditionsBox{position:absolute;top:0;left:0;height:40px;width:100%;background:rgba(0,0,0,.25);border-radius: 4px 4px 0 0;padding-top: 4px;}
-.videoConditionsBox li{float: left;width:100px;height:32px;text-align: right;padding-right:20px;line-height: 32px;font-size: 12px;}
-.videoConditionsBox li .el-input__inner{height:32px;}
+.videoConditionsBox li{float: left;width:120px;height:32px;text-align: right;padding-right:20px;line-height: 32px;font-size: 12px;}
+.videoConditionsBox li:first-child{width:100px;}
+.videoConditionsBox li .el-input__inner{height:32px;font-size: 12px!important;}
 .videoConditionsBox li.floatRt{width:140px;}
 .videoConditionsBox li span.totleVideosNum{color:#f38a00;padding-left: 10px;}
 .VideoSurveillance .bottomShadow .floorImgBox span{position: absolute;left:100px;top:100px;z-index: 10;display: block;cursor:pointer;width:30px;height:20px;background:url(../../assets/img/Video/monitor1.png) no-repeat;background-size: 100% 100%;}

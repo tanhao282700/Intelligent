@@ -42,7 +42,7 @@
 
                 <!--分页器-->
                 <div class="paginationBox">
-                    <div class="totalPageNumBox">共{{table.paging}}页</div>
+                    <div class="totalPageNumBox">共{{totalPageNum}}页</div>
 
                     <div class="el-input el-pagination__editor is-in-pagination curPageBox">
                         <input type="number" autocomplete="off" class="el-input__inner" v-model="currPage">
@@ -90,7 +90,8 @@
         methods:{
             getData(){
                 var that = this;
-                var s,e;
+                var s = "";
+                var e = "";
                 if(this.releasetime1 == "" || this.releasetime2 ==""){
                     s="";
                     e="";
@@ -106,11 +107,11 @@
                     sys_menu_id:15,
                     project_id:1,
                     floor_id:1,
-                    page_index:this.currentPage,
-                    one_page_num:this.pagesize,
+                    page_index:that.currentPage,
+                    one_page_num:that.pagesize,
                     start_date:s,
                     end_date:e,
-                    query_name:this.enternameinput,
+                    query_name:that.enternameinput,
                 }).then(function(response){
                     // 响应成功回调
                     console.log(response);

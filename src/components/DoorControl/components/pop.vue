@@ -36,7 +36,7 @@
                 this.pointId = this.doorControlMsg[0].pointId;
                 this.nowValue = this.doorControlMsg[0].pointNow;
                 this.inStatu = '开启';
-                this.$emit('changeDoorStatus',{infoSta:this.inStatu,itemIndex:this.itemIndex,numS:1});
+                // this.$emit('changeDoorStatus',{infoSta:this.inStatu,itemIndex:this.itemIndex,numS:1});
 
                 var that = this;
                 this.$http.get('/realtime_pc/pc/control',{

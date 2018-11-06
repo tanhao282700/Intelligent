@@ -230,9 +230,9 @@
 				        }
 				    },
 		            grid:{
-		          	    left:0,
+		          	    left:10,
 		          	    top:35,
-		          	    right:0,
+		          	    right:10,
 		                bottom:4,
 		                containLabel: true,
 		            },
@@ -246,16 +246,17 @@
 		            calculable : true,
 		            xAxis: {
 				        type: 'value',
-				        min:0,
-				        max:xData+1,
+				        min:1,
+				        max:xData,
 				        interval:1,
 				        // boundaryGap: true,
 				        axisLine: {show:false},
 				        axisTick: {show:false},
 				        splitLine: {show:false},
 				        axisLabel: {
-				        	showMinLabel:false,
-				        	showMaxLabel:false,
+				        	// showMinLabel:false,
+				        	// showMaxLabel:false,
+				        	interval:0,
 				        	textStyle: {
 						    	color: '#708FBE'
 							}

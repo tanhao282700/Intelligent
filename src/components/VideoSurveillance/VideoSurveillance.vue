@@ -133,6 +133,8 @@
                         arrL = key.child;
                     }
                 });
+                this.selectedValue1 = '';
+                this.selectedValue2 = '';
                 this.buildDatas1 = arrL;
             },
             chooseBuild1(selVal){
@@ -142,6 +144,7 @@
                         arrLs = key.child;
                     }
                 });
+                this.selectedValue2 = '';
                 this.buildDatas2 = arrLs;
             },
             getData(){

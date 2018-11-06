@@ -50,7 +50,7 @@
             </ul>
         </div>
         <div class="bottomShadow">
-            <div class="floorImgBox">
+            <div class="floorImgBox" id="floorImgBox">
                 <img src="../../../assets/img/doorControl/bg_lc.png">
                 <!-- {{item.device_name.slice(0,1)}} -->
                 <i :class="['doorSta'+item.device_state,'door'+(index+1)]" 
@@ -58,7 +58,7 @@
                    @mouseenter = "popToggle(index,item.x,item.y,item.device_name,item.device_state,item.point_list)" 
                    @mouseout = "popHide" 
                    @click.stop="doorInfoPanel(item.device_id,item.device_name,item)"
-                   :style="{left:item.position_x*1.74 + 'px',top:item.position_y*1.74 + 'px'}"
+                   :style="{left:item.position_x*coefficientX + 'px',top:item.position_y*coefficientY + 'px'}"
                 ><span v-html = "item.all_state_pic[item.device_state]" ></span>
                     <pops v-on:doorInfoHide="doorInfoHide" :doorControlMsg = "doorControlMsg"  :info = "onMouseDoor" :infoSta = "infoSta" :controlDoorFun = "controlDoorFun" :itemIndex="index" @changeDoorStatus="changeDoorStatus"></pops>
                 </i>
@@ -80,6 +80,8 @@
                 levels:[],  //楼层
                 areaLevel:[], //栋号
                 infoSta:'',
+                coefficientX:1.74, //定位系数
+                coefficientY:1.74, //定位系数
                 controlDoorFun:'',
                 onDoorName:'', //当前门禁名字
                 totleDoors:'', //当前门禁数量
@@ -125,12 +127,13 @@
             },
             chooseLevelNum(selVal){
                 this.floorIds = selVal;
+                console.log(selVal);
                 this.getDoorData();
                 var arrLs=[];
                 $.each(this.levels,function(item,key){
                     if(key.id == selVal){
                         console.log(key);
-                        arrLs.push(key);
+                        arrLs = key.child;
                     }
                 });
                 this.floorNum = "";
@@ -172,20 +175,20 @@
             changeDoorStatus(obj){
                 let status = '';
                 console.log(obj);
-                if(Number(this.doorClose) <= 0){
+                // if(Number(this.doorClose) <= 0){
 
-                }else{
-                    this.doorClose = Number(this.doorClose) - 1; 
-                    this.doorOpenN = Number(this.doorOpenN) + 1; 
-                }
-                this.infoSta = obj.infoSta;
-                if(this.infoSta == "关闭"){
-                    status = "0";
-                }else if(this.infoSta == "开启"){
-                    status = "1";
-                }else if(this.infoSta == "异常"){
-                    status = "2";
-                }
+                // }else{
+                //     this.doorClose = Number(this.doorClose) - 1; 
+                //     this.doorOpenN = Number(this.doorOpenN) + 1; 
+                // }
+                // this.infoSta = obj.infoSta;
+                // if(this.infoSta == "关闭"){
+                //     status = "0";
+                // }else if(this.infoSta == "开启"){
+                //     status = "1";
+                // }else if(this.infoSta == "异常"){
+                //     status = "2";
+                // }
                 this.iList[obj.itemIndex].device_state=status;
             },
             doorInfoPanel(id,name,item){
@@ -210,6 +213,8 @@
             },
             //获取页面数据
             getDoorData(){
+                this.coefficientX = document.getElementById("floorImgBox").offsetWidth / 518;
+                this.coefficientY = document.getElementById("floorImgBox").offsetHeight / 247;
                 let that = this;
                 this.$http.post('/entrance/all_info',{
                     sys_menu_id:15,
