@@ -680,6 +680,12 @@ background-color: #65a3fa!important;
 .energyAnalysis .analysisBoxs1 .el-input__inner{
   padding: .06rem!important;
 }
+.energyAnalysis .el-select>.el-input{
+  display: flex;
+  align-items: center;
+}
 .energyAnalysis .analysisBoxs .el-input__inner{
-  height: .3rem!important;
+  height: .24rem!important;
+  border: none;
+  border-bottom: 1px solid #1989fa;
 }

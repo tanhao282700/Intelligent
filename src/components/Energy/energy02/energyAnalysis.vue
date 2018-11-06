@@ -556,6 +556,11 @@
 				  background:rgba(142,187,255,.05);
 				  color:#B5D7FF;
 				}
+        .chartLeftTit{
+          height:100%;
+          display: flex;
+          align-items: center;
+        }
 			}
 			.chartContent{
 				display:flex;
@@ -583,7 +588,6 @@
 	        float: left;
 	        width:1rem;
 	        height: 100%;
-	        background-color: rgba(255, 255, 255, 0.01);
 	        text-align: center;
           display: flex;
           align-items: center;
@@ -601,6 +605,7 @@
 	     	float:left;
 	     	margin-left:0.16rem;
         cursor: pointer;
+        font-size: .14rem;
 	     }
 		.chartTables2{
 			margin-top:0.2rem;

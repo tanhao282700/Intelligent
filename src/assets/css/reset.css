@@ -37,15 +37,17 @@ img{
     zoom:1;
 }
 .icon {
-   width: 1em; height: 1em;
-   vertical-align: -0.15em;
-   fill: currentColor;
-   overflow: hidden;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
 }
 html{
   font-size: 7.32vw;
   width: 100vw;
   height: 100vh;
+  overflow-x: hidden;
 }
 *{
 	box-sizing: border-box;
