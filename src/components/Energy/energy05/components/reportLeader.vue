@@ -189,7 +189,11 @@
                           }else if(index==7){
                             item[keyName] = data[i].data[j].detail_data.total_cost
                           }else if(index==8){
-                            item[keyName] = data[i].data[j].detail_data.by_rate + '%'
+                              if(data[i].data[j].detail_data.by_rate!='-'){
+                                item[keyName] = data[i].data[j].detail_data.by_rate + '%'
+                              }else{
+                                item[keyName] = data[i].data[j].detail_data.by_rate
+                              }
                           }
                         }
                       }
