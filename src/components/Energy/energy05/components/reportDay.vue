@@ -257,13 +257,13 @@
     border-right:1px solid rgba(45, 148, 240, 0.2)!important;
     text-align:center;
   }
-  .reportDayQu .dateBox{
+  .reportMonth .reportDayQu .dateBox{
     width:1rem!important;
   }
-  .reportDayQu .dateBox .el-input__inner{
+  .reportMonth .reportDayQu .dateBox .el-input__inner{
     width:1rem!important;
   }
-  .reportDayQu .dateBox .el-input__prefix{
+  .reportMonth .reportDayQu .dateBox .el-input__prefix{
     left:inherit!important;
     right:0!important;
   }

@@ -1,5 +1,5 @@
 <template>
-  <div class="permissionBox autoComponent fireAlarm" v-loading="loading"
+  <div class="permissionBox autoComponent alarm" v-loading="loading"
        element-loading-background="rgba(0, 0, 0, 0.5)"
        element-loading-spinner="el-icon-loading"
        element-loading-text="拼命加载中">
@@ -70,7 +70,7 @@
 
           <!--导出-->
           <div>
-            <a style="display: block" :href="downloadFile+'?start_time='+fileTime[0]+'&end_time='+fileTime[1]+'&level='+formData.level+'&sys_id='+formData.sys_id+'&floor_id='+formData.floor_id+'&device_id='+formData.device_id+'&project_id='+this.formData.project_id"><el-button class="addNewUserBtn queryBoxBtn export" ><i></i><span>导出</span></el-button></a>
+            <a style="display: block" :href="downloadFile+'?start_time='+fileTime[0]+'&end_time='+fileTime[1]+'&level='+formData.level+'&sys_id='+formData.sys_id+'&floor_id='+formData.floor_id+'&device_id='+formData.device_id+'&project_id='+this.formData.project_id"><el-button class=" queryBoxBtn exports" ><i></i><span>导出</span></el-button></a>
           </div>
         </div>
 
@@ -352,13 +352,13 @@
   }
 </style>
 <style>
-  .fireAlarm .userBox td:first-child{
+  .alarm .userBox td:first-child{
     padding-left:0!important;
   }
-  .fireAlarm .fireAlarmTable{
+  .alarm .fireAlarmTable{
     padding-left:1%;
   }
-  .fireAlarm .tableHeadBlue th{
+  .alarm .tableHeadBlue th{
     background:none!important;
   }
   /*.fireAlarm .fireAlarmTable tr .cell:first-child{
@@ -367,26 +367,26 @@
   .fireAlarm tr th:first-child .cell{
     padding-left:0.2rem;
   }*/
-  .fireAlarm .el-table .el-table__body td .cell{
+  .alarm .el-table .el-table__body td .cell{
     font-size:0.12rem!important;
   }
-  .fireAlarm .el-table th>.cell{
+  .alarm .el-table th>.cell{
     font-size:0.12rem!important;
   }
-  .fireAlarm .el-range-input{
+  .alarm .el-range-input{
     width:80px!important;
     background:none;
     color:white;
   }
-  .fireAlarm .el-range-separator{
+  .alarm .el-range-separator{
     color:white;
   }
-  .fireAlarm .export{
+  .alarm .exports{
     width:0.88rem;
     background-color: #3A84EE!important;
   }
-  .fireAlarm .export i{
-    background:url(../../assets/img/Alarm/export.png);
+  .alarm .exports i{
+    background:url(../../assets/img/Alarm/export.png)!important;
     margin-right:0.06rem;
   }
 </style>

@@ -527,7 +527,7 @@
     font-size:0.12rem!important;
   }
 
-.reportMonthQu .dateBox .el-input__inner{
+.reportMonth .reportMonthQu .dateBox .el-input__inner{
   width:1rem!important;
 }
 .reportMonthQu .dateBox .el-input__prefix{
@@ -536,6 +536,6 @@
 }
 
 .el-table__footer td{
-  text-align: center;
+  text-align: center!important;
 }
 </style>
