@@ -1,4 +1,4 @@
-<template>
+fpid<template>
     <div class="examineTable boxs"
         v-loading="loading"
         element-loading-background="rgba(0, 0, 0, 0.5)"
@@ -326,9 +326,12 @@ export default {
         if(this.pOptions.length==0){
             return this.$message('没有新员工了！');
         }
-        if(this.dataLlists[this.dataLlists.length-1].pid==0){ //阻止连续新增操作
-            return this.$message('请选择员工！');
+        if(this.dataLlists.length>0){
+            if(this.dataLlists[this.dataLlists.length-1].pid==0){ //阻止连续新增操作
+                return this.$message('请选择员工！');
+            }
         }
+        
         let addPersonBase={
             id:0,
             pid:0,
@@ -339,10 +342,18 @@ export default {
             worklist:[],
             allow:true
         };
-        this.dataLlists[this.dataLlists.length-1].isNew = false;
-        this.dataLlists[this.dataLlists.length-1].allow = true;
+        if(this.dataLlists.length>0){
+            this.dataLlists[this.dataLlists.length-1].isNew = false;
+            this.dataLlists[this.dataLlists.length-1].allow = true;
+            this.dataLlists.push(addPersonBase);
+        }else{
+           this.dataLlists.push(addPersonBase);
+           // this.dataLlists[0].isNew = false;
+           // this.dataLlists[0].allow = true;
+        }
+        
         this.placeholder = '选择';
-        this.dataLlists.push(addPersonBase);
+        
         this.active='saveing'
         let _this = this;
         $.each(_this.showLists,function(n,k){

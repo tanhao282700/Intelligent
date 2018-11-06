@@ -62,7 +62,7 @@
               </div>
             </div>
             <Dialog wid="1200" hei="640" ref="dialog">
-              <WorkInfo @tableInfos2Show="tableInfos2Show" @getUserList="rowClick" :table="table3" :query="query2"/>
+              <WorkInfo @tableInfos2Show="tableInfos2Show" @getUserList="rowClick" :table="table3" :query="query2" :dtltime="value7"/>
             </Dialog> 
             <Dialog wid="910" hei="600" ref="tableInfos2">
                 <div class="tableInfos">
@@ -455,8 +455,6 @@ export default {
       })
     },
     changeStatus(state,item){
-      console.log(state)
-      console.log(item)
       if(state=='启动'){//改变启动为停用
         state=2;
       }else{//改变停用为启动
@@ -487,11 +485,14 @@ export default {
       })
     },
     rowClick(row){
+      if(!row.type){
+        row.type = '';
+      }
       if(row.user_id){
         this.infoItem.user_id = row.user_id;
       }
-      if(!row.date){
-        row.date = utils.time(new Date()/1000,9);
+      if(!row.date || row.date.split('-')[0].length>2){
+        row.date = utils.time(new Date()/1000,5);
       }
       this.$refs.dialog.show();
       this.$http.post('/pc_ims/admin/inspectiondata_all',{
@@ -690,11 +691,18 @@ export default {
           if(res.data.code==0){
             let data = res.data.data;
             $.each(data,(n,k)=>{
-              data[n].value = data[n].id;
-              data[n].label = data[n].title;
+              data[n].value = data[n].title;
+              data[n].id = data[n].title;
             })
-            this.queryModel.systems = data;
             this.query2.types= data;
+            console.log(this.query2.types)
+            let data2 = res.data.data;
+            $.each(data2,(n,k)=>{
+              data2[n].value = data2[n].id;
+              data2[n].label = data2[n].title;
+            })
+            this.queryModel.systems = data2;
+            
           }else{
             this.$message({
               type:'error',

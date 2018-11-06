@@ -242,12 +242,12 @@
           if(this.formval.starttime){
             this.formval.starttime = utils.time(new Date(this.formval.starttime)/1000,1)
           }
+          let res = []
           if(this.formval.data){
-            let res = []
-            $.each(this.formval.data,(n,k)=>{
-              res.push({'cate_id':k})
+            let data = this.formval.data;
+            $.each(data,(n,k)=>{
+              res[n]=({'cate_id':k})
             })
-            this.formval.data = res;
           }
           this.$emit('saveAdd',{
               id:this.formvals.id,
@@ -261,7 +261,7 @@
               device_id: this.formval.device,
               time_limit: this.formval.time_limit,
               department_id: this.formval.department,
-              device_info:this.formval.data})
+              device_info:res})
          }
       },
       watch:{

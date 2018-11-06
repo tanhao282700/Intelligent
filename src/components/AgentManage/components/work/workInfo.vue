@@ -59,7 +59,7 @@ import SelectBox from '@/components/form/selectBox';
 import Table from '@/components/common/table';
 import utils from '../../../../assets/js/utils';
 export default {
-  props:['query','table'],
+  props:['query','table','dtltime'],
   components:{
       "TimePickerT":TimePickerT,
       'SelectBox':SelectBox,
@@ -86,13 +86,12 @@ export default {
         ],
         vName:-1,
         tableData:{},
-        value7:utils.time(new Date()/1000,5)
+        value7:''
     }
   },
   methods:{
     change1(val){ //选择
       this.query.type = val;
-      this.getUserList();
     },
     changes(val){
       this.value7 = val;
@@ -183,7 +182,6 @@ export default {
         handler(newval,oldval){
             if(newval){
                 this.tableData = newval;
-                //console.log(newval)
             }
             
         },
@@ -194,6 +192,7 @@ export default {
   },
   mounted() {
     this.tableData = this.table;
+    this.value7 = this.dtltime;
   }
 }
 </script>

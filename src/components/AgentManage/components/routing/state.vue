@@ -41,7 +41,7 @@ export default {
                 break;
           }
           this.txt = this.txt;
-          console.log(this.txt);
+          //console.log(this.txt);
           return this.txt
       }
   },

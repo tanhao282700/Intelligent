@@ -66,7 +66,7 @@
         <SendWork @sendInfosShow="sendInfosShow" :query="query3" @getDevVal="getDevice"/> <!-- 派单 -->
       </Dialog> 
       <Dialog wid="1200" hei="600" ref="dialog">
-        <WorkInfo @tableInfos2Show="tableInfos2Show" :table="table2" :query="query2" @getUserList="rowClick" @getDetailTime="getDetailTime"/>
+        <WorkInfo @tableInfos2Show="tableInfos2Show" :table="table2" :query="query2" @getUserList="rowClick" @getDetailTime="getDetailTime" :dtltime="value7"/>
       </Dialog> 
       <Dialog wid="910" hei="626" ref="tableInfos2">
         <div class="tableInfos">
@@ -93,10 +93,10 @@
               <span @click="submitNo">取消</span>
           </div>
       </Dialog> 
-      <Dialog wid="414" hei="256" ref="sendWork2"><!-- 重新选择工单处理人员 -->
+      <Dialog wid="414" hei="260" ref="sendWork2"><!-- 重新选择工单处理人员 -->
           <div class="sendWork2">
-              <div class="oldName">
-                  <label for="">原处理人员：</label>
+              <div class="oldName" style="padding-top:0.2rem">
+                  <label for="">原处理人员：{{detalrowdata.user_name}}</label>
                   <span class="namess" v-text="dialogBoxs.item.name"></span>
               </div>
               <div class="newName">
@@ -105,8 +105,8 @@
                       <SelectBox
                           :options = 'names' 
                           :value = "vName" 
-                          placeholder='姓名'
-                          @change = 'change2'
+                          placeholder='选择人员'
+                          @change = 'changeNew'
                       />
                   </div>
               </div>
@@ -246,6 +246,7 @@ export default {
               },
             ]
         },
+        detalrowdata:{},
         infoItem:{
           info:{},
           desc:[],
@@ -270,6 +271,10 @@ export default {
           this.value7 = val;
           this.getTableList();
     }, 
+    changeNew(val){
+      this.vName = val;
+      this.detalrowdata.infos.info.new_user_id = val;
+    },
     deletes(){
         let attrs = this.value7.split('-');
         if(Number(attrs[1])==1){
@@ -344,8 +349,8 @@ export default {
         if(!row.type){
           row.type = ''
         }
-        if(!row.date){
-          row.date = utils.time(new Date()/1000,9)
+        if(!row.date || row.date.split('-')[0].length>2){
+          row.date = utils.time(new Date()/1000,5)
         }
         this.$http.post('/pc_ims/admin/user_jobs',{
           sys_name:row.type,
@@ -368,7 +373,21 @@ export default {
         })
       },
       agree(item){ //同意
-        this.infoItem = item;
+        this.detalrowdata = {
+            infos:{
+                id:item.id,
+                pic1:[],
+                pic2:[],
+                user_id:item.user_id,
+                localDesc:{
+                  info:''
+                }
+            },
+            type:item.now_state,
+            end_time:'',
+            user_name:this.$store.state.userInfoTotal.userinfo.name,
+            dispatch_user_id:this.$store.state.userInfoTotal.userinfo.id
+          }
         let state = item.now_state;
         if(state==5){ //退单
             this.dialogBoxs = {
@@ -386,6 +405,21 @@ export default {
         this.$refs.isRefult.show();
       },
       refult(item){//拒绝
+        this.detalrowdata = {
+          infos:{
+              id:item.id,
+              pic1:[],
+              pic2:[],
+              user_id:item.user_id,
+              localDesc:{
+                info:''
+              }
+          },
+          end_time:'',
+          type:item.now_state,
+          user_name:this.$store.state.userInfoTotal.userinfo.name,
+          dispatch_user_id:this.$store.state.userInfoTotal.userinfo.id
+        }
         this.infoItem = item;
         let state = item.now_state;
         if(state==2){
@@ -393,41 +427,18 @@ export default {
         }else if(state==5){
           this.infoItem.now_state = 7;
         }
-        this.submitOk();
+        this.getDealResult(this.detalrowdata);
       },
       submitOk(){ //处理工单 同意/拒绝退单/延期
-        if(this.infoItem.now_state==5){
-            this.$refs.sendWork2.show();
-        }
-        this.$http.post('/pc_ims/write_job',{
-          id:this.infoItem.id,
-          type:Number(this.infoItem.now_state)+1,
-          pic1:[],
-          pic2:[],
-          end_time:'',
-          user_id:this.$store.state.userInfoTotal.userinfo.id,
-          new_user_id:'',
-          info:'',
-          dispatch_user_id:''
-        })
-        .then(res=>{
-          console.log(res)
-          if(res.data.code==0){
-            this.$refs.isRefult.hide();
-          }else{
-            this.$message({
-              type:'error',
-              message:res.data.msg
-            })
-          }
-        })
-        
+          this.$refs.isRefult.hide();
+          this.$refs.sendWork2.show();
       },
       submitNo(){ //取消
         this.$refs.isRefult.hide();
       },
       sendWork2(){ //重新派发工单
         this.$refs.sendWork2.hide();
+        this.getDealResult(this.detalrowdata);
       },
       sendWork(){
         this.$refs.send.show();
@@ -554,20 +565,28 @@ export default {
         this.getDealResult(param)
       },
       getDealResult(param){
+        let info ='';
+        if(param.infos.localDesc2 && param.infos.localDesc2.value){
+          info = param.infos.localDesc2.value
+        }
         this.$http.post('/pc_ims/write_job',{
-          id:param.infos.info.id,
+          id:param.infos.id,
           type:param.type,
-          pic1:param.infos.info.pic1,
-          pic2:param.infos.info.pic2,
+          pic1:param.infos.pic1,
+          pic2:param.infos.pic2,
           end_time:'',
-          user_id:param.infos.info.user_id,
-          new_user_id:'',
-          info:param.infos.localDesc2.value,
-          dispatch_user_id:''
+          user_id:param.infos.user_id,
+          new_user_id:this.vName,
+          info:info,
+          dispatch_user_id:this.$store.state.userInfoTotal.userinfo.id
         })
         .then(res=>{
           if(res.data.code==0){
-            console.log(res.data)
+            this.$message({
+              type:'success',
+              message:res.data.msg
+            })
+            this.rowClick({})
           }else{
             this.$message({
               type:'error',
@@ -584,6 +603,7 @@ export default {
               data[n].value = data[n].user_id;
               data[n].label = data[n].truename;
             })
+            console.log(data);
             this.names = data;
             this.query2.names = data;
             this.query3.names = data;

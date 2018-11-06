@@ -26,7 +26,7 @@
               @change = "change1"
             />
           </div>
-          <div class="searchBoxs">
+          <div class="searchBoxs" @click="getTableData">
             <i class="el-icon-search"></i>
             <span>筛选</span>
           </div>
@@ -39,6 +39,17 @@
           />
         </div>
       </div>
+      <Dialog wid="910" hei="600" ref="tableInfos2">
+          <div class="tableInfos">
+              <div class="infoHead">
+                <span class="infoName" v-text="infoItem.user_name"></span>
+                <span class="infoState" v-text="infoTit(infoItem.now_value)"></span>
+              </div>
+              <div class="infoBoxs">
+                <RoutingInfo :data="infoItem" @dealWork = "dealWork"/>
+              </div>
+          </div>
+      </Dialog>
   </div>
 </template>
 
@@ -96,123 +107,6 @@ export default {
         //日期选择
         value7:'8-24',
         cant:false,
-        dtlObj:{
-          title:'巡检单详情',
-          value7:'8-24',
-          
-          tabs:[{
-            'name':'今日巡检总数',
-            num:78
-          },{
-            'name':'已完成',
-            num:65
-          },{
-            'name':'未完成',
-            num:13
-          }],
-
-          tableDtl:{
-              hei:488, //table高度  设置后有滚动条
-              len:8, //总条数
-              dialogBoxs:{
-                  item:{name:''},
-                  state0:0, //1 同意，0拒绝
-                  txt:'是否允许退单'
-              },
-              data:[
-                  {id:1,u_id:1,name:'白狗汪11',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:-1,desc:'范珊看哪个阶段呢是范珊的咖啡店给你的肌肤喝点水放辣椒是非得失，反倒是',backExcuse:'范珊看哪个阶段呢是范珊的咖啡店给你的肌肤喝点水放辣椒是非得失，反倒是',
-                  imgs1:[{
-                      src:'../../../assets/img/logo.png'
-                    },{
-                      src:'../../../assets/img/logo.png'
-                    },{
-                      src:'../../../assets/img/logo.png'
-                    },{
-                      src:'../../../assets/img/logo.png'
-                    },{
-                      src:'../../../assets/img/logo.png'
-                    }],
-                    imgs2:[{
-                      src:'../../../assets/img/logo.png'
-                    },{
-                      src:'../../../assets/img/logo.png'
-                    },{
-                      src:'../../../assets/img/logo.png'
-                    },{
-                      src:'../../../assets/img/logo.png'
-                    },{
-                      src:'../../../assets/img/logo.png'
-                    }],
-                  steps:[{
-                    name:'派发时间',date:'2018/09/14',time:'09:13',areatime:'3h',
-                    },{
-                      name:'接单时间',date:'2018/09/16',time:'09:13',areatime:'48h'
-                    },{
-                      name:'派发时间',date:'2018/09/16',time:'11:15',areatime:'2h'
-                    }],
-                    device:[{
-                      label:'巡检人员',
-                      type:'田阿菊'
-                    },{
-                      label:'电话',
-                      type:'18876768766'
-                    },{
-                      label:'设备类型',
-                      type:'给排水系统'
-                    },{
-                      label:'设备地点',
-                      type:'这边自宽130PX'
-                    },{
-                      label:'巡检设备',
-                      type:'给排水泵房'
-                    }],
-                  }, 
-                  {id:2,u_id:1,name:'白狗汪1',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:2}, 
-                  {id:3,u_id:1,name:'白狗汪1',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:3}, 
-                  {id:4,u_id:1,name:'白狗汪1',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:-1}, 
-                  {id:5,u_id:1,name:'白狗汪1',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:2}, 
-                  {id:6,u_id:1,name:'白狗汪1',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:3}, 
-                  {id:7,u_id:1,name:'白狗汪1',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:3}, 
-                  {id:8,u_id:1,name:'白狗汪1',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:3}, 
-                  {id:9,u_id:1,name:'白狗汪1',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:3}, 
-                  {id:10,u_id:1,name:'白狗汪1',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:3}, 
-                  {id:11,u_id:1,name:'白狗汪1',type:'给排水系统',addr:'青羊区工业园区T区8栋9楼',eName:'二号会议室照明系统',sTime:'2018-08-27 11:35',info:'几水泵房水泵温度异',sType:'系统派发',state:3},                       
-              ],
-              th:[
-                {prop:'name',label:'名称'},
-                {prop:'type',label:'类别'},
-                {prop:'addr',label:'地点',wid:208}, 
-                {prop:'eName',label:'设备名称',wid:169},
-                {prop:'sTime',label:'派发时间',wid:165},
-                {prop:'info',label:'内容描述',wid:194},
-                {prop:'sType',label:'派发类别'},
-                {prop:'states',label:'状态',wid:146,
-                  operate: true, 
-                    render: (h, param)=> {
-                        const btnss = {
-                            fills:param.row.state,  
-                        };
-                        return h(State,{
-                        props: { state:btnss},
-                        on:{}
-                        });
-                    }},
-                {prop:'fill',label:'操作',wid:105,
-                  operate: true, 
-                    render: (h, param)=> {
-                        const btnss = {
-                            item:param.row, 
-                          //   id:param.row.id,  
-                        };
-                        return h(deal,{
-                        props: { btnss:btnss},
-                        on:{agree:this.agree,refult:this.refult}
-                        });
-                    } 
-                },
-              ]
-          }
-        },
         table:{
             // small:'small',
             hei:328, //table高度  设置后有滚动条
@@ -252,21 +146,27 @@ export default {
           active:'item3',
           lists:[
               {id:0,name:'首页',route:'/AgentManage/normalUser'},
-              {id:1,name:'排班表',route:'/AgentManage/normalUser/schedules'},
+              {id:1,name:'排班表',route:'/AgentManage/normalUser/schedule'},
               {id:2,name:'工单',route:'/AgentManage/normalUser/workList'},
               {id:3,name:'巡检',route:'/AgentManage/normalUser/routing'},
               {id:4,name:'完成情况',route:'/AgentManage/normalUser/report'},
           ]
         },
-        infoItem:{},  //某个工单的详情
+        infoItem:{
+          desc:[],
+          tableData:{
+            data:[],
+            th:[]
+          }
+        },  //某个工单的详情
     }
   },
   methods:{
     change1(val){ //选择
       this.vJob = val;
     },
-    change2(val){ //选择
-      this.vName = val;
+    dealWork(){
+
     },
     changes(val){
         this.value7 = val;
@@ -346,20 +246,30 @@ export default {
       console.log(state);
     },
     rowClick(row){
-      console.log(row)
       this.rowData = row;
+      this.$ref.tableInfos2.show();
       this.rowData.operate='check';
-      this.$http.post('/pc_ims/staff/inspectiondata_info',{
-        sys_name:row.type,
-        user_id:this.infoItem.user_id,
-        date:row.date
-      }).then(res=>{
+      this.$http.post('/pc_ims/staff/inspectiondata_info',{ins_id:row.id}).then(res=>{
+        console.log(res.data)
           if(res.data.code==0){
-            this.table3.len = res.data.count;
-            this.table3.data = res.data.data.info;
-            this.table3.tabs = [{'name':'今日巡检总数',num:res.data.data.zong},
-            {'name':'已完成',num:res.data.data.wan},
-            {'name':'未完成',num:res.data.data.wei}];
+            this.infoItem.desc = [
+              {label:'类别',value:this.infoItem.user_name},
+              {label:'设备名称',value:this.infoItem.user_phone},
+              {label:'设备地点',value:this.infoItem.title},
+              {label:'检查人员',value:this.infoItem.floorname},
+              {label:'电话',value:this.infoItem.devicename},
+            ]
+            this.infoItem.localDesc = {label:'现场处理情况',value:this.infoItem.complete_info};
+            this.infoItem.tableData = res.data.data.zhanshi;
+            this.infoItem.tableData.data = this.infoItem.tableData.list;
+            let arr = [];
+            let arrData = [];
+            $.each(this.infoItem.tableData.data,(n,k)=>{
+              arr.push({prop:'now_value'+n,label:k.name,wid:30})
+              arrData['now_value'+n]=k.now_value;
+            })
+            this.infoItem.tableData.data = arrData;
+            this.infoItem.tableData.th = arr;
           }else{
             this.$message({
               type:'error',
@@ -367,8 +277,6 @@ export default {
             })
           }
       })
-      
-      //this.$refs.add.show();
     },
     agree(item){ //同意
         console.log(item)
@@ -429,7 +337,7 @@ export default {
     },
     getTableData(){
       this.$http.post('/pc_ims/staff/inspectiondata_user',{
-        sys_name:'',
+        sys_name:this.vJob,
         pagenumber:1,
         pagesize:20})
       .then(res=> {
@@ -450,10 +358,10 @@ export default {
            if(res.data.code==0){
               let data= res.data.data;
               $.each(data,(n,k)=>{
-                data[n].label = data[n].title;
-                data[n].value = data[n].id;
+                data[n].id = data[n].title;
+                data[n].value = data[n].title;
               })
-              this.vSystems = data;
+              this.jobs = data;
            }else{
               this.$message({
                 type:'error',

@@ -53,7 +53,7 @@ export default {
     btnss:{
       handler(val){
         if(val){
-          console.log(this.btnss)
+          //console.log(this.btnss)
         }
       },
       deep:true

@@ -68,11 +68,11 @@
         />
       </div>
       
-      <div class="rightHead" v-if="newData.info && newData.info.now_state=='5'">
+      <div class="rightHead" v-if="newData && newData.now_state=='5'">
         <span class="infoBusy" v-text="'拒绝退单'" @click="dealWork(8)"></span>
         <span class="infoSend" v-text="'允许退单'" @click="dealWork(6)"></span>
       </div>
-      <div class="rightHead" v-else-if="newData.info && newData.info.now_state=='2'">
+      <div class="rightHead" v-else-if="newData && newData.now_state=='2'">
         <span class="infoBusy" v-text="'拒绝延期'" @click="dealWork(7)"></span>
         <span class="infoSend" v-text="'允许延期'" @click="dealWork(3)"></span>
       </div>
