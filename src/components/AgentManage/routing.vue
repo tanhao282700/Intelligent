@@ -457,10 +457,10 @@ export default {
     changeStatus(state,item){
       console.log(state)
       console.log(item)
-      if(state=='启动'){
-        state=1;
-      }else{
+      if(state=='启动'){//改变启动为停用
         state=2;
+      }else{//改变停用为启动
+        state=1;
       }
       this.dealroutState(item.id,state);
     },
@@ -612,7 +612,6 @@ export default {
       })
     },
     getModelList(param){
-      console.log(param)
       this.$http.post('/pc_ims/get_template',{
         sys_id:param.system,
         floor_id:param.area,

@@ -189,6 +189,7 @@
                             <span v-text="dia.old_workdate+' '+dia.oldstarttime+'~'+dia.oldendtime"></span>
                           </div>
                         </div>
+                        <div style="clear:both"></div>
                         <div class="nameBox">
                           <div class="labelBox">
                             <label for="">换班人：</label>
@@ -253,6 +254,7 @@
                             <span v-text="dia.old_workdate+' '+dia.oldstarttime+'~'+dia.oldendtime"></span>
                           </div>
                         </div>
+                        <div style="clear:both"></div>
                         <div class="nameBox">
                           <div class="labelBox">
                             <label for="">换班人：</label>
@@ -390,6 +392,7 @@ export default {
         }
       })
       this.applyhbSelect.vpeo = val;
+      this.getNoApply2(val);
     },
     change3(val){
       this.applyhbSelect.hbTime = val;
@@ -407,7 +410,7 @@ export default {
             this.$message({
                 type:'error',
                 message:res.data.msg
-              })
+            })
          }
       })
     },
@@ -450,14 +453,13 @@ export default {
     dealSchedule(id,type){
       this.$http.post('/pc_ims/staff/dispose',{id:id,type:type})
       .then(res=>{
-          console.log(res);
           if(res.data.code==0){
               this.$message({
                 type:'success',
                 message:res.data.msg,
                 duration:2000
               })
-              this.getApplyStatus(this.tabtype);
+              this.getApplyStatus(0);
            }else{
               this.$message({
                 type:'error',
@@ -467,17 +469,34 @@ export default {
            }
       })
     },
-    getNoApply(){//申请换班列表
-      this.$http.post('/pc_ims/staff/get_worklist',{user_id:'21'})
+    getNoApply(val){//申请换班列表
+      this.$http.post('/pc_ims/staff/get_worklist',{user_id:this.$store.state.userInfoTotal.userinfo.id})
       .then(res=>{
         if(res.data.code==0){
           let data = res.data.data;
-          console.log(res.data);
           let arr=[],arr2=[];
           $.each(data,(n,k)=>{
             arr.push({label:k.workdate,value:k.id});
           })
           this.applyhbSelect.bTimes = arr;
+         }else{
+            this.$message({
+              type:'error',
+              message:res.data.msg,
+              duration:2000
+            })
+         }
+      })
+    },
+    getNoApply2(val){//申请被换班列表
+      this.$http.post('/pc_ims/staff/get_worklist',{user_id:val})
+      .then(res=>{
+        if(res.data.code==0){
+          let data = res.data.data;
+          let arr=[],arr2=[];
+          $.each(data,(n,k)=>{
+            arr.push({label:k.workdate,value:k.id});
+          })
           this.applyhbSelect.hbTimes = arr;
          }else{
             this.$message({

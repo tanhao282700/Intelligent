@@ -140,6 +140,11 @@ export default {
         this.$router.replace({ path: `/AgentManage/schedule/${activeName}`});     
       },
       search(val,type){
+        if(type==1){
+          this.getNoData(val);
+        }else if(type==2){
+          this.getYesData(val)
+        }
         console.log(val,type)
       },
       isNo(item){//*****************待调
@@ -172,8 +177,11 @@ export default {
       exportTableList(){
         window.open('https://tesing.china-tillage.com/pc_ims/down/admin_work_list?year='+this.topDate.split('-')[0]+'&month='+this.topDate.split('-')[1]+'&Authorization='+this.$store.state.userInfoTotal.userinfo.password + "_" + this.$store.state.projectId + "_" + this.$store.state.userId);
       },
-      getYesData(){//已审核的排班
-        this.$http.post('/pc_ims/admin/approve_work').then(res=> {
+      getYesData(val){//已审核的排班
+        if(!val){
+          val==''
+        }
+        this.$http.post('/pc_ims/admin/approve_work',{key_word:val}).then(res=> {
            if(res.data.code==0){
               let data = res.data.data;
               $.each(data,(n,k)=>{
@@ -192,8 +200,11 @@ export default {
            }
         })
       },
-      getNoData(){//待审核的排班
-        this.$http.post('/pc_ims/admin/get_worklist').then(res=> {
+      getNoData(val){//待审核的排班
+        if(!val){
+          val == ''
+        }
+        this.$http.post('/pc_ims/admin/get_worklist',{key_word:val}).then(res=> {
            if(res.data.code==0){
               let data = res.data.data;
               $.each(data,(n,k)=>{

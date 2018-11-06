@@ -346,9 +346,29 @@ export default {
       console.log(state);
     },
     rowClick(row){
+      console.log(row)
       this.rowData = row;
       this.rowData.operate='check';
-      this.$refs.add.show();
+      this.$http.post('/pc_ims/staff/inspectiondata_info',{
+        sys_name:row.type,
+        user_id:this.infoItem.user_id,
+        date:row.date
+      }).then(res=>{
+          if(res.data.code==0){
+            this.table3.len = res.data.count;
+            this.table3.data = res.data.data.info;
+            this.table3.tabs = [{'name':'今日巡检总数',num:res.data.data.zong},
+            {'name':'已完成',num:res.data.data.wan},
+            {'name':'未完成',num:res.data.data.wei}];
+          }else{
+            this.$message({
+              type:'error',
+              message:res.data.msg
+            })
+          }
+      })
+      
+      //this.$refs.add.show();
     },
     agree(item){ //同意
         console.log(item)

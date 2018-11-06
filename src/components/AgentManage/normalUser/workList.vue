@@ -48,7 +48,7 @@
           />
         </div>
       </div>
-      <Dialog wid="910" hei="500" ref="tableInfos2">
+      <Dialog wid="910" hei="600" ref="tableInfos2">
         <div class="tableInfos">
           <div class="infoHead">
             <span class="infoState" v-text="dtlObj.sendSrc"></span>
@@ -123,14 +123,68 @@
                     </div>
                   </div>
                 </div>
+              </div>
+              <div v-show="tabPosition=='延期处理'" class="tabLists">
+                <ul>
+                  <li v-for="(item,index) in dtlObj.devices" :key="index">
+                    <span class="taskLabel">{{item.label}}</span>
+                    <span class="taskCont">{{item.value}}</span>
+                  </li>
+                  </ul>
+                </el-row>  
+                <div>
+                  <div class="contLabel">详情描述</div>
+                  <el-input
+                    type="textarea"
+                    class="controlCont controlCont1"
+                    :rows="2"
+                    placeholder="请输入内容"
+                    v-model="dtlObj.description">
+                  </el-input>
+                </div> 
+                <ul>
+                  <li>
+                    <span class="taskLabel">派发人员</span>
+                    <span class="taskCont">{{dtlObj.user_name}}</span>
+                  </li>
+                  <li>
+                    <span class="taskLabel">联系电话</span>
+                    <span class="taskCont">{{dtlObj.user_phone}}</span>
+                  </li>
+                </ul>
+                <div style="clear:both" class="yuji">
+                  <div class="contLabel">延后预计完成时间</div>
+                  <div class="yujiDate">
+                    <el-date-picker
+                      v-model="value2"
+                      align="right"
+                      type="date"
+                      placeholder="选择日期"
+                      :picker-options="pickerOptions1">
+                    </el-date-picker>
+                  </div>
+                  <div class="yujitime"> 
+                    <el-time-select
+                      v-model="value1"
+                      placeholder="选择时间">
+                    </el-time-select>
+                  </div>
+                </div> 
+                <div style="clear:both">
+                  <div class="contLabel">现场处理情况</div>
+                  <el-input
+                    type="textarea"
+                    :rows="2"
+                    class="controlCont controlCont2"
+                    placeholder="请输入内容"
+                    v-model="dtlObj.complete_info">
+                  </el-input>
+                </div>
                 <div class="btnsgroups">
                   <span class="infoBusy" v-text="'退单'"></span>
                   <span class="infoSend" v-text="'取消'"></span>
                   <span class="infoSubmit" v-text="'提交'"></span>
                 </div>
-              </div>
-              <div v-show="tabPosition=='延期处理'" class="tabLists">
-                
               </div>
             </div>
           </div>
@@ -193,6 +247,8 @@ export default {
   },
   data () {
     return {
+        value1:'',
+        value2:'',
         navsData:{
           active:'item2',
           lists:[
@@ -202,6 +258,31 @@ export default {
               {id:3,name:'巡检',route:'/AgentManage/normalUser/routing'},
               {id:4,name:'完成情况',route:'/AgentManage/normalUser/report'},
           ]
+        },
+        pickerOptions1: {
+          disabledDate(time) {
+            return time.getTime() > Date.now();
+          },
+          shortcuts: [{
+            text: '今天',
+            onClick(picker) {
+              picker.$emit('pick', new Date());
+            }
+          }, {
+            text: '昨天',
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24);
+              picker.$emit('pick', date);
+            }
+          }, {
+            text: '一周前',
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', date);
+            }
+          }]
         },
         tabPosition:'正常处理',
         crumbs:['代维系统','工单'],
@@ -679,7 +760,7 @@ export default {
         padding-top:0.22rem;
         text-align:center;
         .statusTabs{
-          margin-bottom:0.44rem;
+          margin-bottom:0.34rem;
         }
         .tabLists{
           padding:0 0.2rem;
@@ -717,8 +798,9 @@ export default {
             }
           }
           .btnsgroups{
-            margin-top:0.3rem;
-            text-align:right;
+            position:absolute;
+            bottom:0.2rem;
+            right:0.2rem;
             color:#fff;
             .infoBusy{
               display:inline-block;
@@ -777,6 +859,18 @@ export default {
           .taskCont{
             color:#fff;
             text-align:left;
+          }
+          .yuji{
+            width:100%;
+            height:0.34rem;
+            margin-bottom:0.2rem;
+            .contLabel,.yujiDate,.yujitime{
+              float:left;
+              margin-right:0.15rem;
+            }
+            .yujiDate{
+              margin-right:0.05rem;
+            }
           }
         }
       }

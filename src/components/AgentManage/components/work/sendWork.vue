@@ -104,7 +104,7 @@ export default {
     return {
        options:[],
        formvals:{
-          operator:'姜媛媛',
+          operator:this.$store.state.userInfoTotal.userinfo.name,
           description:'',
           floor:''
        },
