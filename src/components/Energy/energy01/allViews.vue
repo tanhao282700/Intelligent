@@ -933,7 +933,7 @@
         }
 
         that.$http.post('hotel_energy/index',config).then(res=>{
-          console.log(res);
+
           if(res.data.code == 0){
             var energyData = that.allDatas = res.data.data;
             that.calcArea1Data(energyData.total_energy_use);
@@ -1047,7 +1047,6 @@
         $(".allViewArea2 .myChartBox").eq(index).show().siblings().hide();
       },
       calcArea3Data(data){
-        console.log(data);
         let that = this;
         var elecPowerData = [];
         for(var i=0;i<2;i++){

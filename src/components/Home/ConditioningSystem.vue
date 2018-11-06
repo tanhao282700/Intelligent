@@ -356,7 +356,7 @@
     display:flex;
     flex-direction:column;
     .title{
-      height:8.9%;
+      height:.3rem;
       background:rgba(0,12,39,0.4);
       display: flex;
       flex-direction: row;
@@ -401,7 +401,7 @@
       margin-top:1.623%;
       background:rgba(0,0,0,0.15);
       opacity:.8;
-      /*height:29.22%;*/
+      height: .74rem;
       flex:1;
       display: flex;
       flex-direction: row;
@@ -475,7 +475,7 @@
         background:rgba(0,0,0,0.3);
         width:12.64%;
         color:white;
-        font-size:12px;
+        font-size: 12px;
         display: flex;
         justify-content: center;
         align-items: center;

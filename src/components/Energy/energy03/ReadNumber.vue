@@ -1,8 +1,7 @@
 <template>
   <div class="readNumber" v-loading="loading"
        element-loading-background="rgba(0, 0, 0, 0.5)"
-       element-loading-spinner="el-icon-loading"
-       element-loading-text="拼命加载中">
+       element-loading-spinner="el-icon-loading">
     <div class="head">
       <div class="type">
         <span @click="changeType(1)" :class="{'active':currentType==1}">区域
@@ -264,10 +263,10 @@
         dian:{},  //电
         qi:{},  //气
         realTimeTypeMap:{},
+        allDatas: {}
       }
     },
     created(){
-      window.addEventListener('resize',this.resizeWindow);
       this.areaForm.sys_menu_id = this.$store.state.sysList[2].sys_menu_id;
       this.areaForm.project_id = this.$store.state.projectId;
       this.sysForm.project_id = this.$store.state.projectId;
@@ -280,10 +279,16 @@
 
     },
     mounted(){
-
+      let that = this;
+      $(window).resize(function () {
+        that.resizeWindow();
+      })
+    },
+    beforeDestroy(){
+      $(window).unbind( "resize" );
     },
     destroyed(){
-        window.removeEventListener('resize',this.resizeWindow)
+
     },
     methods:{
       calcRealTimeData(data){
@@ -313,7 +318,6 @@
           })
           tempArray.push(obj);
         })
-        console.log(tempArray);
         that.realtimeData = tempArray;
       },
       showRealTime(type){    //实时能耗详情
@@ -419,6 +423,7 @@
           console.log(res)
           if(res.data.code == 0){
             that.areaData1 = res.data.data.area_level;
+            that.allDatas = res;
             that.dealData(res);
           }else{
 
@@ -433,7 +438,9 @@
                 data.shui.data = data.shui.data.slice(data.shui.data.length-12,data.shui.data.length)
               }
             data.shui.time.map((item,index)=>{
-              data.shui.time[index] = item.split(' ')[1].split(':')[0]+':'+item.split(' ')[1].split(':')[1]
+              let temp = item.split(' ');
+              let len = temp.length;
+              data.shui.time[index] = temp[len-1].split(':')[0]+':'+temp[len-1].split(':')[1]
             })
           }
           if(data.dian.time){
@@ -443,7 +450,9 @@
               data.dian.data = data.dian.data_t.slice(data.dian.data.length-12,data.dian.data.length)
             }
             data.dian.time.map((item,index)=>{
-              data.dian.time[index] = item.split(' ')[1].split(':')[0]+':'+item.split(' ')[1].split(':')[1]
+              let temp = item.split(' ');
+              let len = temp.length;
+              data.dian.time[index] = temp[len-1].split(':')[0]+':'+temp[len-1].split(':')[1]
             })
           }
 
@@ -454,7 +463,9 @@
             data.qi.data = data.qi.data_t.slice(data.qi.data.length-12,data.qi.data.length)
           }
           data.qi.time.map((item,index)=>{
-            data.qi.time[index] = item.split(' ')[1].split(':')[0]+':'+item.split(' ')[1].split(':')[1]
+            let temp = item.split(' ');
+            let len = temp.length;
+            data.qi.time[index] = temp[len-1].split(':')[0]+':'+temp[len-1].split(':')[1]
           })
         }
 
@@ -540,6 +551,7 @@
 
       },
       dealData(res){
+        let that = this;
         this.shishi = res.data.data.read //实时能耗
         this.shishi.dian = String(this.shishi.dian)
         this.shishi.shui = String(this.shishi.shui)
@@ -563,12 +575,12 @@
         }
         this.shishi.shui = shuiStr+shui
 
-        this.refreshCanvas(res.data.data.table)
+        that.refreshCanvas(res.data.data.table);
       },
       resizeWindow(){
-        /*this.$refs.lineEchartssss1.drawLine();
-        this.$refs.lineEchartssss2.drawLine();
-        this.$refs.lineEchartssss3.drawLine();*/
+        let that = this;
+        let res = that.allDatas;
+        that.dealData(res);
       }
 
     }

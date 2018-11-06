@@ -9,7 +9,9 @@
     </el-breadcrumb>
 
   	<!--<Crumbs :data ='crumbs' class="breads"/>-->
-  	<div class="boxs chartTables">
+  	<div class="boxs chartTables" v-loading="loading"
+         element-loading-background="rgba(0, 0, 0, 0.5)"
+         element-loading-spinner="el-icon-loading">
   		<div class="chartTit">
   			<div class="chartLeftTit">
   				<div class="tit1">区域能耗 | </div>
@@ -60,7 +62,9 @@
   		</div>
   		<EchartsAnalysis :data="data"/>
   	</div>
-  	<div class="boxs chartTables2">
+  	<div class="boxs chartTables2" v-loading="loading"
+         element-loading-background="rgba(0, 0, 0, 0.5)"
+         element-loading-spinner="el-icon-loading">
   		<div class="chartTit">
   			<div class="chartLeftTit">
   				<div class="tit1">设备能耗 | </div>
@@ -116,6 +120,7 @@
   		</div>
   	</div>
   </div>
+
 </template>
 
 <script>
@@ -129,6 +134,7 @@
         },
         data(){
         	return {
+            loading:false,
             sys_menu_id:"",
             project_id:"",
             deviceDateTypes:[
@@ -197,11 +203,9 @@
         },
         methods:{
           deviceDateTypeChange(val){
-            console.log(val);
             this.deviceDate = "";
           },
           areaDateTypeChange(val){
-            console.log(val);
             this.areaDate = "";
           },
         	getBottomEcharts(pieData2,pieData,arr2x,arr2Label){
@@ -369,7 +373,6 @@
                 }
               })
 
-              console.log(thisData);
               $.each(thisData,(o,w)=>{
                 if(k.area_id == w.area_id){
                   tempArray1.push(k.title);
@@ -472,6 +475,7 @@
           },
 	        getDatas(){
             let that = this;
+            that.loading = true;
 	        	let param = {
               sys_menu_id: this.sys_menu_id,
               project_id: this.project_id,
@@ -484,22 +488,37 @@
             that.$http.post('/hotel_energy/analysis',param)
 	        	.then(res=>{
 	        		//区域图
-              console.log(res);
               that.calcDeviceData(res);
               that.calcAreaData(res);
+              setTimeout(function () {
+                that.loading = false;
+              },200)
 	        	})
-	        }
+	        },
+          resizeCharts(){
+            let that = this;
+            that.$echarts.init(document.getElementById('deviceLeft')).resize();
+            that.$echarts.init(document.getElementById('deviceRight')).resize();
+            that.$echarts.init(document.getElementById('lines')).resize();
+            that.$echarts.init(document.getElementById('pies')).resize();
+            that.$echarts.init(document.getElementById('bars')).resize();
+          }
 
         },
         created(){
           this.data.config.sys_menu_id = this.sys_menu_id = this.$store.state.sysList[2].sys_menu_id;
           this.data.config.project_id = this.project_id = this.$store.state.projectId;
-          console.log( this.sys_menu_id, this.project_id );
         },
         mounted(){
-        	this.getDatas();
+          let that = this;
+          that.getDatas();
 
-
+          $(window).resize(function () {
+            that.resizeCharts();
+          })
+        },
+        beforeDestroy(){
+          $(window).unbind( "resize" );
         }
     }
 </script>
@@ -509,6 +528,9 @@
 	.energyAnalysis{
 		width:100%;
 		height:100%;
+    .el-breadcrumb{
+      padding: .1rem .3rem 0;
+    }
 		.breads{
 			margin:0 0.12rem 0.3rem 0;
 		}

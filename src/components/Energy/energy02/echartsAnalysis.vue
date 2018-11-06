@@ -29,7 +29,6 @@
           // 深度 watcher
           data: {
             handler: function (items) {
-              console.log(items);
               let that = this;
               that.drawLine(items);
             },
@@ -40,7 +39,7 @@
         	getChartLineData(){
         	  let that = this;
         	  let datas = this.data;
-        	  console.log(datas);
+
         		let param = {
 	        		project_id: datas.config.project_id,
 	        		sys_menu_id: datas.config.sys_menu_id,
@@ -69,7 +68,6 @@
         			// 		}
         			// 	});
         			// });
-              console.log(res);
 
 	        		let trendData = res.data.data.area_energy_use.trend_data;
 	        		let newRzl = [];
@@ -89,7 +87,6 @@
             return false;
         	},
         	drawLine(data){
-        	  console.log(data);
         	  let that = this;
         		let chart = that.$echarts.init(document.getElementById('lines'));
         		let chart2 = that.$echarts.init(document.getElementById('pies'));

@@ -343,11 +343,10 @@
           year: that.years,
           update: that.updateData
         };
-        console.log(config);
 
         that.loading = true;
         that.$http.post('hotel_energy/energy_plan',config).then(res=>{
-          console.log(res);
+
           if(res.data.code == '0'){
             let datas = res.data.data;
             var actualData = datas.query_year_actual;
