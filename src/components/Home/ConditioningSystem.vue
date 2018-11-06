@@ -28,8 +28,9 @@
           <div class="long" :class="{'anim':animate1}">
             <div class="item" v-for="item in broadOneList">
               <span>{{item.name}}</span>
-              <span v-if="item.value==0">正常</span>
-              <span v-if="item.value==1">异常</span>
+              <!--<span v-if="item.value==0">正常</span>
+              <span v-if="item.value==1">异常</span>-->
+              <span v-text="item.value"></span>
             </div>
           </div>
         </div>

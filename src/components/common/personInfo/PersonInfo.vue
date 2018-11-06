@@ -178,7 +178,8 @@
     display: flex;
     .title{
       margin-top:60px;
-      height:36px;
+      /*height:36px;*/
+      height:0.36rem;
       background:#061b3a;
       box-shadow: 1px 0 8px black;
       padding-left:38px;

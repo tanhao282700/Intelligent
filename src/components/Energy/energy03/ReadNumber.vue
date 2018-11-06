@@ -427,17 +427,32 @@
       },
       refreshCanvas(data){
           if(data.shui.time){
+              if(data.shui.time.length>12){
+                data.shui.time = data.shui.time.slice(data.shui.time.length-12,data.shui.time.length)
+                data.shui.data_t = data.shui.data_t.slice(data.shui.data_t.length-12,data.shui.data_t.length)
+                data.shui.data = data.shui.data.slice(data.shui.data.length-12,data.shui.data.length)
+              }
             data.shui.time.map((item,index)=>{
               data.shui.time[index] = item.split(' ')[1].split(':')[0]+':'+item.split(' ')[1].split(':')[1]
             })
           }
           if(data.dian.time){
+            if(data.dian.time.length>12){
+              data.dian.time = data.dian.time.slice(data.dian.time.length-12,data.dian.time.length)
+              data.dian.data_t = data.dian.data_t.slice(data.dian.data_t.length-12,data.dian.data_t.length)
+              data.dian.data = data.dian.data_t.slice(data.dian.data.length-12,data.dian.data.length)
+            }
             data.dian.time.map((item,index)=>{
               data.dian.time[index] = item.split(' ')[1].split(':')[0]+':'+item.split(' ')[1].split(':')[1]
             })
           }
 
         if(data.qi.time){
+          if(data.qi.time.length>12){
+            data.qi.time = data.qi.time.slice(data.qi.time.length-12,data.qi.time.length)
+            data.qi.data_t = data.qi.data_t.slice(data.qi.data_t.length-12,data.qi.data_t.length)
+            data.qi.data = data.qi.data_t.slice(data.qi.data.length-12,data.qi.data.length)
+          }
           data.qi.time.map((item,index)=>{
             data.qi.time[index] = item.split(' ')[1].split(':')[0]+':'+item.split(' ')[1].split(':')[1]
           })
