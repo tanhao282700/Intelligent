@@ -172,7 +172,25 @@
                       for(let i=0;i<data.length;i++){
                         for(let j=0;j<data[i].data.length;j++){
                             let keyName = data[i].title+data[i].data[j].title
+                          if(index==0){
                             item[keyName] = data[i].data[j].detail_data.jt_water
+                          }else if(index==1){
+                            item[keyName] = data[i].data[j].detail_data.jt_electric
+                          }else if(index==2){
+                            item[keyName] = data[i].data[j].detail_data.jt_gas
+                          }else if(index==3){
+                            item[keyName] = data[i].data[j].detail_data.by_water
+                          }else if(index==4){
+                            item[keyName] = data[i].data[j].detail_data.by_electric
+                          }else if(index==5){
+                            item[keyName] = data[i].data[j].detail_data.by_gas
+                          }else if(index==6){
+                            item[keyName] = data[i].data[j].detail_data.jt_cost
+                          }else if(index==7){
+                            item[keyName] = data[i].data[j].detail_data.total_cost
+                          }else if(index==8){
+                            item[keyName] = data[i].data[j].detail_data.by_rate
+                          }
                         }
                       }
                   })
