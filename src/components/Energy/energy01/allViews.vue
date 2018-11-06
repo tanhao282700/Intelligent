@@ -149,9 +149,9 @@
           <div class="viewItemContent">
             <div class="energyArea3Item">
               <div class="head">
-                <div class="type1">谷时费用</div>
-                <div class="type2">峰时费用</div>
-                <div class="type3">平时费用</div>
+                <div class="type1">谷时用电</div>
+                <div class="type2">峰时用电</div>
+                <div class="type3">平时用电</div>
               </div>
               <div class="content">
                 <div id="energyArea3Chart1"></div>
@@ -421,16 +421,16 @@
               center: ['50%', '50%'],
               color: ['#2DF0E0','#FFA414', '#316EFF' ],
               data:[
-                {value:data.gu, name:'谷时费用'},
-                {value:data.feng, name:'峰时费用'},
-                {value:data.ping, name:'平时费用'}
+                {value:data.gu, name:'谷时用电'},
+                {value:data.feng, name:'峰时用电'},
+                {value:data.ping, name:'平时用电'}
               ],
               roseType: 'radius',
               selectedMode: 'single',
               label: {
                 normal: {
                   position: 'outside',
-                  formatter:'{c}元'
+                  formatter:'{c}度'
                 }
               },
               labelLine: {
@@ -479,9 +479,9 @@
               center: ['50%', '50%'],
               color: ['#2DF0E0','#FFA414', '#316EFF' ],
               data:[
-                {value:data.gu, name:'谷时费用'},
-                {value:data.feng, name:'峰时费用'},
-                {value:data.ping, name:'平时费用'}
+                {value:data.gu, name:'谷时用电'},
+                {value:data.feng, name:'峰时用电'},
+                {value:data.ping, name:'平时用电'}
               ],
               roseType: 'radius',
               selectedMode: 'single',
@@ -525,7 +525,7 @@
           backgroundColor: 'transparent',
           tooltip : {
             trigger: 'item',
-            formatter: "{b} : {c} 度"
+            formatter: "{b} : {c} 元"
           },
           visualMap: {
             show: false,
@@ -583,7 +583,7 @@
           backgroundColor: 'transparent',
           tooltip : {
             trigger: 'item',
-            formatter: "{b} : {c} 度"
+            formatter: "{b} : {c} 元"
           },
           visualMap: {
             show: false,

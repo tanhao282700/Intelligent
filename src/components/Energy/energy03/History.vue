@@ -274,11 +274,14 @@
     </el-dialog>
 
     <!--批量导入弹窗-->
-    <el-dialog title="批量导入" :visible.sync="fileUploadDialogVisible" class="metersHistoryDialogBox uploadFileBox" :close-on-click-modal="false">
+    <el-dialog title="批量导入" :visible.sync="fileUploadDialogVisible" class="metersHistoryDialogBox uploadFileBox" :close-on-click-modal="false" @close="cancleUpdateFile">
       <div class="upRowBox">
         <span>上传</span><span class="upBtn">选择文件</span>
         <form id="uploadFileForm" action="https://tesing.china-tillage.com/hotel_energy/history_record" method="post" enctype="multipart/form-data" name="fileForm">
           <input type="file" name="upload_file" value="选择文件" id="upSysFile" accept="application/vnd.ms-excel" @change="fileChange"/>
+          <input type="hidden" name="project_id" v-model="formData.project_id">
+          <input type="hidden" name="floor_id" v-model="formData.floor_id">
+          <input type="hidden" name="sys_menu_id" v-model="formData.sys_menu_id">
         </form>
       </div>
       <div class="fileNameBox">{{updateFileName}}</div>
@@ -368,7 +371,6 @@
 
     },
     created(){
-      console.log(this.$store.state.sysList);
       this.formData.sys_menu_id = this.$store.state.sysList[2].sys_menu_id;
       this.formData.project_id = this.$store.state.projectId;
       this.initData();
@@ -377,56 +379,31 @@
 
     },
     methods:{
-      submitFile(){
-
-      },
       cancleUpdateFile(){
         $("#upSysFile").val("");
         this.updateFileName = "";
         this.fileUploadDialogVisible = false;
       },
       confirmUpdateFile(){
-        /*var formdata = new FormData(document.getElementById("uploadFileForm"));
-        $.ajax({
-          url:"https://tesing.china-tillage.com/hotel_energy/history_record",
-          type:"post",
-          data:{
-            "upload_file":formdata
-          },
-          contentType:false, //- 必须false才会自动加上正确的Content-Type
-          processData: false, //- 必须false才会避开jQuery对 formdata 的默认处理,XMLHttpRequest会对 formdata 进行正确的处理
-          success:function(res){
-            console.log(res);
-            alert("ok");
-          },
-          error:function(){
-            alert("fail");
-          }
-        });*/
+        let that = this;
 
         $("#uploadFileForm").ajaxSubmit(function(message) {
           // 对于表单提交成功后处理，message为表单正常提交后返回的内容
           console.log(message);
+          let rsMsg = message.data.handle_result;
+          if(rsMsg){
+            that.cancleUpdateFile();
+            that.initData();
+            that.$message({
+              message: rsMsg,
+              type: 'success'
+            });
+          }else {
+            that.$message.error(message.message);
+          }
         });
         return false;
 
-        /*let that = this;
-        let path = $("#upSysFile").val();
-
-        let config = {
-          project_id: that.$store.state.projectId,
-          floor_id: that.formData.floor_id,
-          sys_menu_id:that.formData.sys_menu_id,
-          upload_file: path
-        };
-        console.log(config);
-
-        that.$http.post('hotel_energy/history_record',config)
-           .then(response=>{
-             console.log(response.data);
-           })
-
-        that.fileUploadDialogVisible = false;*/
       },
       fileChange(e){
         let that = this;
@@ -573,6 +550,7 @@
       areaData1Chang(id){
         let that = this;
         that.formData.floor_id = id;
+        that.areaData.data2 = "";
         that.areaData2Array = that.areaData3Array = [];
 
           let datas = that.areaData1Array;
@@ -745,12 +723,6 @@
         this.loading = true
         this.formData.page_index = aa
         this.initData()
-      },
-      beforeUpload(file,fileList){
-        this.fileList = [file]
-      },
-      submitUpload() {
-        this.$refs.upload.submit();
       },
       takeIn(){
         let that = this;
@@ -1060,5 +1032,8 @@
     width: 100%;
     bottom:.2rem;
     left: 0;
+  }
+  .upRowBox input[type='hidden']{
+    margin: 0!important;
   }
 </style>

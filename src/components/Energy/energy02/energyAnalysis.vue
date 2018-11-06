@@ -1,46 +1,61 @@
 <template>
   <!-- 用能分析模块 -->
   <div class="energyAnalysis">
-  	<Crumbs :data ='crumbs' class="breads"/>
+    <!--面包屑-->
+    <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>能源管理系统</el-breadcrumb-item>
+      <el-breadcrumb-item>用能分析</el-breadcrumb-item>
+    </el-breadcrumb>
+
+  	<!--<Crumbs :data ='crumbs' class="breads"/>-->
   	<div class="boxs chartTables">
   		<div class="chartTit">
   			<div class="chartLeftTit">
   				<div class="tit1">区域能耗 | </div>
                 <div class="analysisBoxs analysisBoxs1">
-                    <SelectBox 
-                        :options = 'analysis' 
-                        :value = "vanalysis" 
-                        :icon="'el-icon-d-caret'"
-                        placeholder="月"
-                        @change = 'change1'
-                    />
+                  <el-select v-model="areaDateType" @change="areaDateTypeChange">
+                    <el-option
+                      v-for="item in areaDateTypes"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
                 </div>
                 <div class="analysisBoxs">
-                    <SelectBox 
-                        :options = 'analysis' 
-                        :value = "vanalysis" 
-                        :icon="'el-icon-d-caret'"
-                        placeholder="2018-08-01"
-                        @change = 'change1'
-                    />
+                  <el-date-picker
+                    v-if=" areaDateType=='year' "
+                    v-model="areaDate"
+                    value-format="yyyy"
+                    type="year"
+                    placeholder="请选择">
+                  </el-date-picker>
+
+                  <el-date-picker
+                    v-if=" areaDateType=='month' "
+                    v-model="areaDate"
+                    type="month"
+                    value-format="yyyyMM"
+                    placeholder="请选择">
+                  </el-date-picker>
+
+                  <el-date-picker
+                    v-if=" areaDateType=='day' "
+                    v-model="areaDate"
+                    type="date"
+                    value-format="yyyyMMdd"
+                    placeholder="请选择">
+                  </el-date-picker>
                 </div>
-                <div class="hrline">-</div>
-                <div class="analysisBoxs">
-                    <SelectBox 
-                        :options = 'analysis' 
-                        :value = "vanalysis" 
-                        :icon="'el-icon-d-caret'"
-                        placeholder="2018-09-26"
-                        @change = 'change1'
-                    />
-                </div>
-                <div class="searchBoxs">
+
+                <div class="searchBoxs" @click="areaQueryData">
                     <i class="el-icon-search"></i>
-                    <span>查询</span>
-                </div>   
+                    <span >查询</span>
+                </div>
   			</div>
   			<div class="chartRightTit">
-			  <el-button type="default" :class="{currData:iscur==index}" :key="index" v-for="(item,index) in tabs" @click="loadBarData(index)">{{item.name}}</el-button>
+			  <el-button type="default" :class="{currData:iscur==index}" :key="item.id" v-for="(item,index) in tabs" @click="loadBarData(index)">{{item.name}}</el-button>
   			</div>
   		</div>
   		<EchartsAnalysis :data="data"/>
@@ -50,37 +65,45 @@
   			<div class="chartLeftTit">
   				<div class="tit1">设备能耗 | </div>
   				<div class="analysisBoxs analysisBoxs1">
-                    <SelectBox 
-                        :options = 'analysis' 
-                        :value = "vanalysis" 
-                        :icon="'el-icon-d-caret'"
-                        placeholder="月"
-                        @change = 'change1'
-                    />
+                  <el-select v-model="deviceDateType" @change="deviceDateTypeChange">
+                    <el-option
+                      v-for="item in deviceDateTypes"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
                 </div>
                 <div class="analysisBoxs">
-                    <SelectBox 
-                        :options = 'analysis' 
-                        :value = "vanalysis" 
-                        :icon="'el-icon-d-caret'"
-                        placeholder="2018-08-01"
-                        @change = 'change1'
-                    />
+                  <el-date-picker
+                    v-if=" deviceDateType=='year' "
+                    v-model="deviceDate"
+                    type="year"
+                    value-format="yyyy"
+                    placeholder="请选择">
+                  </el-date-picker>
+
+                  <el-date-picker
+                    v-if=" deviceDateType=='month' "
+                    v-model="deviceDate"
+                    type="month"
+                    value-format="yyyyMM"
+                    placeholder="请选择">
+                  </el-date-picker>
+
+                  <el-date-picker
+                    v-if=" deviceDateType=='day' "
+                    v-model="deviceDate"
+                    type="date"
+                    value-format="yyyyMMdd"
+                    placeholder="请选择">
+                  </el-date-picker>
                 </div>
-                <div class="hrline">-</div>
-                <div class="analysisBoxs">
-                    <SelectBox 
-                        :options = 'analysis' 
-                        :value = "vanalysis" 
-                        :icon="'el-icon-d-caret'"
-                        placeholder="2018-09-26"
-                        @change = 'change1'
-                    />
-                </div>
-                <div class="searchBoxs">
+
+                <div class="searchBoxs" @click="deviceQueryData">
                     <i class="el-icon-search"></i>
                     <span>查询</span>
-                </div> 
+                </div>
   			</div>
   			<div class="chartContent">
   				<div class="charts2Left" id="deviceLeft">
@@ -106,9 +129,38 @@
         },
         data(){
         	return {
+            sys_menu_id:"",
+            project_id:"",
+            deviceDateTypes:[
+              {
+              value: 'year',
+              label: '年'
+            }, {
+              value: 'month',
+              label: '月'
+            }, {
+              value: 'day',
+              label: '日'
+            }],
+            deviceDateType:"month",
+            deviceDate:"",
+            areaDateTypes:[
+              {
+              value: 'year',
+              label: '年'
+            }, {
+              value: 'month',
+              label: '月'
+            }, {
+              value: 'day',
+              label: '日'
+            }],
+            areaDateType:"month",
+            areaDate:"",
+            energy_type: "0",
         		crumbs:['能源管理系统','用能分析'],
         		iscur:0,
-        		tabs: [{name: "电"}, {name: "水"} ,{name: "气"}],
+        		tabs: [{name: "电",id:0}, {name: "水",id:1} ,{name: "气",id:2}],
         		data:{
         			topPie:[],
         			axisLabel:[],
@@ -129,12 +181,29 @@
         					rooms4:[],
         				}
         			},
+              config:{
+                sys_menu_id: this.sys_menu_id,
+                project_id: this.project_id,
+                area_query_date_type:this.areaDateType,
+                area_date: this.areaDate,
+                energy_type: this.energy_type,
+                device_query_date_type: this.deviceDateType,
+                device_date: this.deviceDate
+              }
         		},
         		vanalysis:'',
         		analysis:[]
         	}
         },
         methods:{
+          deviceDateTypeChange(val){
+            console.log(val);
+            this.deviceDate = "";
+          },
+          areaDateTypeChange(val){
+            console.log(val);
+            this.areaDate = "";
+          },
         	getBottomEcharts(pieData2,pieData,arr2x,arr2Label){
         		let data = this.data;
         		let chart = this.$echarts.init(document.getElementById('deviceLeft'));
@@ -146,7 +215,7 @@
 				    	name:arr2Label[i],
 				        data: pieData,
 				        type: 'line',
-				        symbol: "circle", 
+				        symbol: "circle",
 				        symbolSize:0,
 				        smooth: true,
 			            lineStyle: {
@@ -209,167 +278,228 @@
 				    series: series,
 			        color:["#F35E5E","#EEB66E","#008AFF"]
 				};
-				let option2 = {
-				    tooltip : {
-				        trigger: 'item',
-				        formatter: "{a}{b} : {c} ({d}%)"
-				    },
-				    series : [
-				        {
-				            name: '',
-				            type: 'pie',
-				            radius : '65%',
-				            center: ['50%', '50%'],
-				            color:["#008AFF","#F35E5E","#EEB66E","#FD97AA","#EBF191","#C382EF","#95EDC5",'#b5d7ff'],
-				            data:pieData2,
-				            itemStyle: {
-				                emphasis: {
-				                    shadowBlur: 10,
-				                    shadowOffsetX: 0,
-				                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-				                }
-				            }
-				        }
-				    ]
-				};
-				chart.setOption(option3);
-				chart2.setOption(option2);
+            let option2 = {
+                tooltip : {
+                    trigger: 'item',
+                    formatter: "{a}{b} : {c} ({d}%)"
+                },
+                series : [
+                    {
+                        name: '',
+                        type: 'pie',
+                        radius : '65%',
+                        center: ['50%', '50%'],
+                        color:["#008AFF","#F35E5E","#EEB66E","#FD97AA","#EBF191","#C382EF","#95EDC5",'#b5d7ff'],
+                        data:pieData2,
+                        itemStyle: {
+                            emphasis: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }
+                ]
+            };
+            chart.setOption(option3);
+            chart2.setOption(option2);
 	        },
 	        loadBarData(i){
-	        	this.iscur = i;
+        	  let that = this;
+            that.energy_type = that.iscur = i;
+            let config = {
+              sys_menu_id: that.sys_menu_id,
+              project_id: that.project_id,
+              area_query_date_type:that.areaDateType,
+              area_date: that.areaDate,
+              energy_type: that.energy_type,
+            }
+            that.$http.post('/hotel_energy/analysis',config).then(res=>{
+              //区域图
+              that.calcAreaData(res);
+            })
 	        },
-	        change1(){
+          areaQueryData(){
+            let that = this;
+            let config = {
+              sys_menu_id: that.sys_menu_id,
+              project_id: that.project_id,
+              area_query_date_type:that.areaDateType,
+              area_date: that.areaDate,
+              energy_type: that.energy_type,
+            }
+            that.$http.post('/hotel_energy/analysis',config).then(res=>{
+                //区域图
+                that.calcAreaData(res);
+              })
+          },
+          deviceQueryData(){
+        	  let that = this;
+        	  let config = {
+              sys_menu_id: that.sys_menu_id,
+              project_id: that.project_id,
+              device_query_date_type: that.deviceDateType,
+              device_date: that.deviceDate
+            }
+            that.$http.post('/hotel_energy/analysis',config).then(res=>{
+              console.log(res);
+              if(res.data.code==0){
+                that.calcDeviceData(res);
+              }
+            })
+          },
+          calcAreaData(res){
+        	  let that = this;
+            let barData = res.data.data.area_energy_use.column_data;
+            let lastThisData = barData.last_this_time;//同期
+            let thisData = barData.this_time;//本期
+            let lastData = barData.last_time;//上期
+            let chineseData = res.data.data.area_energy_use.floor_map;
+            let pieData = res.data.data.area_energy_use.pie_data;
+            let trendData = res.data.data.area_energy_use.trend_data;
+            let tempArray1 = [];
+            let tempArray2 = [];
+            let tempArray3 = [];
+            let tempArray4 = [];
 
-	        },
+            $.each(chineseData,(n,k)=>{
+              $.each(pieData,(n1,k1)=>{
+                if(k.area_id==k1.area_id){
+                  tempArray4.push({'value':k1.data,'name':k.title})
+                }
+              })
+
+              console.log(thisData);
+              $.each(thisData,(o,w)=>{
+                if(k.area_id == w.area_id){
+                  tempArray1.push(k.title);
+                  tempArray2.push(w.data[0].date);
+                  tempArray3.push(w.data[0].value);
+                }
+              });
+
+              that.data.topPie = tempArray4;
+              that.data.axisLabel = tempArray1;
+              that.data.legendData = tempArray2;
+              that.data.arrData1 = tempArray3;
+
+              // if(k.area_id == thisData.area_id){
+              // 	that.data.axisLabel.push(k.title);
+              // 	$.each(thisData.data,(n2,k2)=>{
+              // 		console.log(k2);
+              // 		that.data.legendData.push(k2.date);
+              // 		that.data.arrData1.push(k2.value);
+              // 	})
+              // }
+
+              $.each(lastData,(o1,w1)=>{
+                if(k.area_id == w1.area_id){
+                  that.data.legendData.push(w1.data[0].date);
+                  that.data.arrData2.push(w1.data[0].value);
+                }
+              });
+              // if(k.area_id == lastData.area_id){
+              // 	$.each(lastData.data,(n2,k2)=>{
+              // 		that.data.arrData2.push(k2.value);
+              // 	})
+              // }
+              $.each(lastThisData,(o2,w2)=>{
+                if(k.area_id == w2.area_id){
+                  that.data.arrData3.push(w2.value);
+                }
+              });
+              // if(k.area_id == lastThisData.area_id){
+              // 	$.each(lastThisData.data,(n2,k2)=>{
+              // 		that.data.arrData3.push(k2.value);
+              // 	})
+              // }
+              // $.each(trendData,(n1,k1)=>{
+              // 	that.data.arr1Label.push(k.title);
+              // 	if(k1.device_id==k.device_id){
+              // 		$.each(k1.data,(n2,k2)=>{
+              // 			that.data.arr1x.push(k2.date);
+              // 			that.data.arr1.push(k2.value);
+              // 		})
+
+              // 	}
+              // });
+            })
+            $.each(trendData.check_in_hotel_rate,(n,k)=>{
+              that.data.leftTopChart.rzl.push([k.date,k.value]);
+            });
+            $.each(trendData.floor_value,(n,k)=>{
+              // that.data.floorVal.rooms0
+              // console.log(that.data.floorVal);
+              // if(n == 0){
+              // 	that.data.leftTopChart.floorVal.rooms0.push([k.data.date,k.data.value]);
+              // }else if (n == 1){
+              // 	that.data.leftTopChart.floorVal.rooms1.push([k.data.date,k.data.value]);
+              // }else if(n == 2){
+              // 	that.data.leftTopChart.floorVal.rooms2.push([k.data.date,k.data.value]);
+              // }else if(n == 3){
+              // 	that.data.leftTopChart.floorVal.rooms3.push([k.data.date,k.data.value]);
+              // }else if(n == 4){
+              // 	that.data.leftTopChart.floorVal.rooms4.push([k.data.date,k.data.value]);
+              // }
+            });
+          },
+          calcDeviceData(res){
+        	  let that = this;
+            //设备图
+            let pieData2 = res.data.data.device_energy_use.pie_data;
+            let chineseData2 = res.data.data.device_energy_use.device_map;
+            let trendData2 = res.data.data.device_energy_use.trend_data;
+            let arr = [],arr2=[],arr2x=[],arr2Label=[];
+
+            $.each(chineseData2,(n,k)=>{
+              $.each(pieData2,(n1,k1)=>{
+                if(k.device_id==k1.device_id){
+                  arr.push({'value':k1.data,'name':k.title})
+                }
+              })
+              $.each(trendData2,(n1,k1)=>{
+                arr2Label.push(k.title);
+                if(k1.device_id==k.device_id){
+                  $.each(k1.data,(n2,k2)=>{
+                    arr2x.push(k2.date);
+                    arr2.push(k2.value);
+                  })
+
+                }
+              });
+            })
+            that.getBottomEcharts(arr,arr2,arr2x,arr2Label);
+          },
 	        getDatas(){
+            let that = this;
 	        	let param = {
-	        		project_id:1,
-	        		sys_menu_id:1,
-	        		area_query_date_type:'',
-	        		area_date:'',
-	        		energy_type:this.iscur,
-	        		device_query_date_type:'',
-	        		device_date:''
+              sys_menu_id: this.sys_menu_id,
+              project_id: this.project_id,
+             /* area_query_date_type:this.areaDateType,
+              area_date: this.areaDate,
+              energy_type: this.energy_type,
+              device_query_date_type: this.deviceDateType,
+              device_date: this.deviceDate*/
 	        	}
-	        	this.$http.post('/hotel_energy/analysis',param)
+            that.$http.post('/hotel_energy/analysis',param)
 	        	.then(res=>{
 	        		//区域图
-	        		var that = this;
-	        		let barData = res.data.data.area_energy_use.column_data;
-	        		let lastThisData = barData.last_this_time;//同期
-	        		let thisData = barData.this_time;//本期
-	        		let lastData = barData.last_time;//上期
-	        		let chineseData = res.data.data.area_energy_use.floor_map;
-	        		let pieData = res.data.data.area_energy_use.pie_data;
-	        		let trendData = res.data.data.area_energy_use.trend_data;
-	        		console.log(trendData);
-
-					console.log(that.data.arrData1);
-	        		//设备图
-	        		console.log(res.data.data.area_energy_use);
-	        		let pieData2 = res.data.data.device_energy_use.pie_data;
-	        		let chineseData2 = res.data.data.device_energy_use.device_map;
-	        		let trendData2 = res.data.data.device_energy_use.trend_data;
-	        		let arr = [],arr2=[],arr2x=[],arr2Label=[];
-
-	        		$.each(chineseData2,(n,k)=>{
-	        			$.each(pieData2,(n1,k1)=>{
-	        				if(k.device_id==k1.device_id){
-	        					arr.push({'value':k1.data,'name':k.title})
-	        				}
-	        			})
-	        			$.each(trendData2,(n1,k1)=>{
-	        				arr2Label.push(k.title);
-	        				if(k1.device_id==k.device_id){
-	        					$.each(k1.data,(n2,k2)=>{
-	        						arr2x.push(k2.date);
-	        						arr2.push(k2.value);
-	        					})
-	        					
-	        				}
-	        			});
-	        		})
-	        		this.getBottomEcharts(arr,arr2,arr2x,arr2Label);
-
-	        		$.each(chineseData,(n,k)=>{
-	        			$.each(pieData,(n1,k1)=>{
-	        				if(k.area_id==k1.area_id){
-	        					that.data.topPie.push({'value':k1.data,'name':k.title})
-	        				}
-	        			})
-	        			$.each(thisData,(o,w)=>{
-	        				if(k.area_id == w.area_id){
-	        					that.data.axisLabel.push(k.title);
-	        					that.data.legendData.push(w.data[0].date);
-	        					that.data.arrData1.push(w.data[0].value);
-	        				}
-	        			});
-	        			// if(k.area_id == thisData.area_id){
-	        			// 	that.data.axisLabel.push(k.title);
-	        			// 	$.each(thisData.data,(n2,k2)=>{
-	        			// 		console.log(k2);
-	        			// 		that.data.legendData.push(k2.date);
-	        			// 		that.data.arrData1.push(k2.value);
-	        			// 	})
-	        			// }
-	        			$.each(lastData,(o1,w1)=>{
-	        				if(k.area_id == w1.area_id){
-	        					that.data.legendData.push(w1.data[0].date);
-	        					that.data.arrData2.push(w1.data[0].value);
-	        				}
-	        			});
-	        			// if(k.area_id == lastData.area_id){
-	        			// 	$.each(lastData.data,(n2,k2)=>{
-	        			// 		that.data.arrData2.push(k2.value);
-	        			// 	})
-	        			// }
-	        			$.each(lastThisData,(o2,w2)=>{
-	        				if(k.area_id == w2.area_id){
-	        					that.data.arrData3.push(w2.value);
-	        				}
-	        			});
-	        			// if(k.area_id == lastThisData.area_id){
-	        			// 	$.each(lastThisData.data,(n2,k2)=>{
-	        			// 		that.data.arrData3.push(k2.value);
-	        			// 	})
-	        			// }
-	        			// $.each(trendData,(n1,k1)=>{
-	        			// 	that.data.arr1Label.push(k.title);
-	        			// 	if(k1.device_id==k.device_id){
-	        			// 		$.each(k1.data,(n2,k2)=>{
-	        			// 			that.data.arr1x.push(k2.date);
-	        			// 			that.data.arr1.push(k2.value);
-	        			// 		})
-	        					
-	        			// 	}
-	        			// });
-	        		})
-        			$.each(trendData.check_in_hotel_rate,(n,k)=>{
-        				that.data.leftTopChart.rzl.push([k.date,k.value]);
-        			});
-
-					$.each(trendData.floor_value,(n,k)=>{
-						// that.data.floorVal.rooms0
-						// console.log(that.data.floorVal);
-						// if(n == 0){
-						// 	that.data.leftTopChart.floorVal.rooms0.push([k.data.date,k.data.value]);
-						// }else if (n == 1){
-						// 	that.data.leftTopChart.floorVal.rooms1.push([k.data.date,k.data.value]);
-						// }else if(n == 2){
-						// 	that.data.leftTopChart.floorVal.rooms2.push([k.data.date,k.data.value]);
-						// }else if(n == 3){
-						// 	that.data.leftTopChart.floorVal.rooms3.push([k.data.date,k.data.value]);
-						// }else if(n == 4){
-						// 	that.data.leftTopChart.floorVal.rooms4.push([k.data.date,k.data.value]);
-						// }
-        			});
-
+              console.log(res);
+              that.calcDeviceData(res);
+              that.calcAreaData(res);
 	        	})
 	        }
 
         },
+        created(){
+          this.data.config.sys_menu_id = this.sys_menu_id = this.$store.state.sysList[2].sys_menu_id;
+          this.data.config.project_id = this.project_id = this.$store.state.projectId;
+          console.log( this.sys_menu_id, this.project_id );
+        },
         mounted(){
         	this.getDatas();
+
+
         }
     }
 </script>
@@ -380,7 +510,7 @@
 		width:100%;
 		height:100%;
 		.breads{
-			margin:0 0.12rem 0.48rem 0;
+			margin:0 0.12rem 0.3rem 0;
 		}
 		.chartTables{
 			width:95.6%;
@@ -452,10 +582,15 @@
 		.analysisBoxs{
 	        float: left;
 	        width:1rem;
-	        height:0.32rem;
+	        height: 100%;
 	        background-color: rgba(255, 255, 255, 0.01);
-	        border-bottom: solid 0.01rem #1989fa;
 	        text-align: center;
+          display: flex;
+          align-items: center;
+
+          .el-input__inner{
+            height: .32rem;
+          }
 	      }
 	     .analysisBoxs1{
 	     	margin: 0 0.1rem 0 0.16rem;
@@ -465,6 +600,7 @@
 	     	color:#fff;
 	     	float:left;
 	     	margin-left:0.16rem;
+        cursor: pointer;
 	     }
 		.chartTables2{
 			margin-top:0.2rem;

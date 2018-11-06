@@ -15,33 +15,40 @@
     	props:['data'],
         data(){
         	return {
+        	  isReset:false,
         		rtChartLabel:[],
         		rtArr1:[],
         		rtArr2:[],
         		rtArr3:[],
         		areaEnergyRzl:[],
         		areaEnergyKf:[],
+
         	}
         },
         watch:{
           // 深度 watcher
           data: {
             handler: function (items) {
-              this.getChartLineData();
+              console.log(items);
+              let that = this;
+              that.drawLine(items);
             },
             deep: true
           }
         },
         methods:{
         	getChartLineData(){
+        	  let that = this;
+        	  let datas = this.data;
+        	  console.log(datas);
         		let param = {
-	        		project_id:1,
-	        		sys_menu_id:1,
-	        		area_query_date_type:'',
-	        		area_date:'',
-	        		// energy_type:this.iscur,
-	        		device_query_date_type:'',
-	        		device_date:''
+	        		project_id: datas.config.project_id,
+	        		sys_menu_id: datas.config.sys_menu_id,
+	        		area_query_date_type: datas.config.area_query_date_type,
+	        		area_date: datas.config.area_date,
+	        		device_query_date_type: datas.config.device_query_date_type,
+	        		device_date: datas.config.device_date,
+              energy_type: datas.config.energy_type
 	        	}
 	        	this.$http.post('/hotel_energy/analysis',param)
 	        	.then(res=>{
@@ -62,30 +69,37 @@
         			// 		}
         			// 	});
         			// });
+              console.log(res);
+
 	        		let trendData = res.data.data.area_energy_use.trend_data;
 	        		let newRzl = [];
 	        		let newKf = [];
 	        		$.each(trendData.check_in_hotel_rate,function(i,k){
 	        			newRzl.push([k.date,k.value]);
 	        		});
-	        		this.areaEnergyRzl = newRzl;
+              that.areaEnergyRzl = newRzl;
 
 	        		$.each(trendData.floor_value[0].data,function(i,k){
 	        			newKf.push([k.date,k.value]);
 	        		});
-	        		this.areaEnergyKf = newKf;
-	        		this.drawLine(this.data);
+              that.areaEnergyKf = newKf;
+              that.drawLine(that.data);
 
 	        	})
+            return false;
         	},
         	drawLine(data){
-        		console.log(data);
-        		let chart = this.$echarts.init(document.getElementById('lines'));
-        		let chart2 = this.$echarts.init(document.getElementById('pies'));
-        		let chart3 = this.$echarts.init(document.getElementById('bars'));
+        	  console.log(data);
+        	  let that = this;
+        		let chart = that.$echarts.init(document.getElementById('lines'));
+        		let chart2 = that.$echarts.init(document.getElementById('pies'));
+        		let chart3 = that.$echarts.init(document.getElementById('bars'));
         		let legendData = data.legendData;
-        		console.log(legendData);
-		        let bgColorList = [{color1:"#FD99AC",color2:'#FA6074'},{color1:'#FFD12D',color2:"#FFA414"},{color1:'#6DBEFD',color2:'#3B89F9'}];
+
+            legendData = legendData.filter(function(element,index,self){
+                return self.indexOf(element) === index;
+            });
+
 		        let axisLabel = data.axisLabel;
 		        let arrData = [data.arrData1,data.arrData2,data.arrData3];
 		        let seriesValue = [];
@@ -95,30 +109,12 @@
 		                barWidth: 8,//柱状条宽度
 		                name:legendData[i],
 		                type:'bar',
-		            	itemStyle: {
-	                        normal: {
-	                            color: new echarts.graphic.LinearGradient(
-	                                0, 0, 0, 1,
-	                                [
-	                                    {offset: 0, color: "#FD99AC"}, //bgColorList[i].color1
-	                                    {offset: 1, color: '#FA6074'}  //bgColorList[i].color2
-	                                ]
-	                            )
-	                        },
-	                        emphasis: {
-	                            color: new echarts.graphic.LinearGradient(
-	                                0, 0, 0, 1,
-	                                [
-	                                    {offset: 0, color: '#008EFE'},
-	                                    {offset: 1, color: '#00C1FF'}
-	                                ]
-	                            )
-	                        }
-	                    },
+                    barGap: 0,
 		                data:arrData[i]
 		            };
 		            seriesValue.push(seriesDataVal);
 		        }
+
 		        let option = {
 				    tooltip : {
 				        trigger: 'axis',
@@ -316,7 +312,8 @@
 				        }
 				    ]
 				};
-				let option3={
+				    let option3={
+                color: ['#FA6074', '#FFA414', '#3B89F9'],
 		            tooltip: {
 		                trigger: 'axis',
 		                axisPointer: {
@@ -359,7 +356,7 @@
 				        splitLine: {show:false},
 		                splitArea: {
 				        	show:true,
-				        	areaStyle: {color:['rgba(142,187,255,.1)','rgba(142,187,255,.05)']},
+				        	/*areaStyle: {color:['rgba(142,187,255,.1)','rgba(142,187,255,.05)']},*/
 				        },
 		            }],
 		            label: {
@@ -371,10 +368,10 @@
 		            series: seriesValue
 		        };
 
-
 		        chart.setOption(option);
 		        chart2.setOption(option2);
 		        chart3.setOption(option3);
+
         	}
         },
         mounted(){
