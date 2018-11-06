@@ -15,11 +15,14 @@
                 完成情况
             </span>
             <div class="boxs tableBoxs">
-                <div class="tabHead">
-                  <div class="jobBoxs">
-                    <el-date-picker
+                <div class="tabHead thHead">
+                  <div class="jobBoxs thJobBoxs">
+                    <!--<el-date-picker
                       v-model="year"
                       class="datetemp"
+                      popper-class="noTitle"
+                      format="yyyy"
+                      value-format="yyyy"
                       type="year"
                       @change="changeYear"
                       placeholder="年">
@@ -29,47 +32,86 @@
                       type="month"
                       format="MM"
                       @change="changeMonth"
-                      value-format="MM"
+                      value-format="yyyy-MM"
                       class="datetemp"
+                      popper-class="noTitle"
                       placeholder="月">
                     </el-date-picker>
                     <el-date-picker
                       v-model="day"
                       class="datetemp"
+                      popper-class="noTitle"
+                      value-format="yyyy-MM-dd"
+                      format="dd"
                       type="date"
                       @change="changeDay"
                       placeholder="日">
-                    </el-date-picker>
+                    </el-date-picker>-->
+                    <el-select placeholder="请选择" v-model="dateUnit" class="dateUnitSelectItem" clearable @change="dateTypeChange">
+                      <el-option
+                        v-for="item in dateOptions"
+                        :key="item.id"
+                        :label="item.title"
+                        :value="item.id">
+                      </el-option>
+                    </el-select>
+                    <div class="yearRangeBox" v-show=" dateUnit=='year' ">
+                      <el-date-picker
+                        v-model="dateRangeValue"
+                        type="year"
+                        value-format="yyyy"
+                        placeholder="请选择">
+                      </el-date-picker>
+                    </div>
+                    <div class="yearRangeBox" v-show=" dateUnit=='month' ">
+                      <el-date-picker
+                        v-model="dateRangeValue"
+                        format="yyyy-M"
+                        value-format="yyyyMM"
+                        type="month"
+                        placeholder="请选择">
+                      </el-date-picker>
+                    </div>
+                    <div class="yearRangeBox" v-show=" dateUnit=='day' ">
+                      <el-date-picker
+                        v-model="dateRangeValue"
+                        format="yyyy-M-d"
+                        value-format="yyyyMMdd"
+                        type="date"
+                        placeholder="请选择">
+                      </el-date-picker>
+                    </div>
+
                   </div>
                   <div class="checkBox" @click="getReportData">
                     <i class="el-icon-search"></i>
                     <span>查询</span>
                   </div>
                 </div>
-                <div class="tableIn">
-                  <Table 
-                    style="width:100%" 
+                <div class="tableIn myAgenTab">
+                  <Table
+                    style="width:100%"
                     :table = "table"
                   />
                 </div>
-            </div> 
+            </div>
         </el-tab-pane>
         <el-tab-pane name="second" >
             <span slot="label" class="tabItems">
                 重复报修率
             </span>
             <div class="boxs tableBoxs">
-                <div class="tableIn">
-                  <Table 
-                    style="width:100%" 
+                <div class="tableIn myAgenTab2">
+                  <Table
+                    style="width:100%"
                     :table = "table2"
                     @rowEnter="mouseOverLi"
                     @rowLeave = "mouseOutLi"
                   />
                 </div>
-            </div> 
-        </el-tab-pane>      
-      </el-tabs>   
+            </div>
+        </el-tab-pane>
+      </el-tabs>
   </div>
 </template>
 
@@ -88,6 +130,9 @@ export default {
   },
   data () {
     return {
+        dateUnit:'year',
+      dateOptions:[{id:'year',title:"年"},{id:'month',title:"月"},{id:'day',title:"日"}],
+      dateRangeValue:"",
         year:'',
         month:'',
         day:'',
@@ -117,16 +162,16 @@ export default {
               {prop:'count_xun',label:'本月所派巡检数',width:200},
               {prop:'wan_xun',label:'完成数量'},
               {prop:'percent_xun',label:'完成率',wid:180,
-                operate: true, 
+                operate: true,
                   render: (h, param)=> {
                       const btnss = {
-                          fills:param.row.percent_xun,  
+                          fills:param.row.percent_xun,
                       };
                       return h(Percentage,{
                       props: { btnss:btnss},
                       on:{}
                       });
-                  } 
+                  }
               },
             ]
         },
@@ -135,40 +180,56 @@ export default {
             len:0, //总条数
             data:[],
             th:[
-              {prop:'id',label:'编号'},
-              {prop:'floor',label:'位置'},
-              {prop:'type',label:'类别',wid:150},
-              {prop:'device_name',label:'设备名称'},
-              {prop:'count',label:'本周保修次数'
+              {prop:'index',label:'编号',minWid:'20%'},
+              {prop:'floor',label:'位置',minWid:'20%'},
+              {prop:'type',label:'类别',minWid:'20%'},
+              {prop:'device_name',label:'设备名称',minWid:'20%'},
+              {prop:'count',label:'本周保修次数',minWid:'20%'
               // ,operate:true,
               //   render: (h, param)=> {
               //       console.log(param)
               //         const btnss = {
-              //             fills:param.row.count,  
+              //             fills:param.row.count,
               //         };
-              //     } 
+              //     }
                  }
             ]
         },
     }
   },
   methods:{
+    dateTypeChange(){
+      this.dateRangeValue = "";
+      $(".el-date-editor.el-range-editor").css({border:'none!important'});
+    },
     handleClick(){
 
     },
     changeYear(val){
-
-      let curr = (utils.time(new Date(val)/1000,10))
-      this.$set(this.year,curr);
+        console.log(this.month)
+      console.log(this.day)
+        /*if(this.month){
+          this.month = this.year +'-'+ (parseInt(this.month.split('-')[0])+1)
+        }
+        if(this.day){
+            this.day = this.month + '-'+this.day.split('-')[2]
+        }*/
+      /*let curr = (utils.time(new Date(val)/1000,10))
+      this.$set(this.year,curr);*/
     },
     changeDay(val){
-      if(!val){
+
+      /*if(!val){
         this.day = ''
-      }
+      }*/
     },
     changeMonth(val){
-      this.month = val;
-      this.day = utils.time(new Date(this.year)/1000,10) +'-'+ val ;
+        /*if(this.day){
+            this.day = this.month+'-'+(parseInt(this.day.split('-')[2])+1)
+        }*/
+      /*this.day = this.month*/
+      /*this.month = val;
+      this.day = utils.time(new Date(this.year)/1000,10) +'-'+ val ;*/
     },
     exportList(){
       if(this.activeName=='first'){// 导出完成情况
@@ -197,25 +258,30 @@ export default {
 
     },
     getReportData(){
-      if(!this.year){
-        this.year = '';
-      }else{
-        this.year = this.format(this.year,'yyyy');
+      let year = ''
+      let month = ''
+      let day = ''
+
+      if(this.dateRangeValue){
+        if(this.dateRangeValue.length==4){
+            year = this.dateRangeValue
+        }
+        if(this.dateRangeValue.length==6){
+            year = this.dateRangeValue[0]+this.dateRangeValue[1]+this.dateRangeValue[2]+this.dateRangeValue[3]
+            month = this.dateRangeValue[4]+this.dateRangeValue[5]
+        }
+        if(this.dateRangeValue.length==8){
+            year = this.dateRangeValue[0]+this.dateRangeValue[1]+this.dateRangeValue[2]+this.dateRangeValue[3]
+            month = this.dateRangeValue[4]+this.dateRangeValue[5]
+            day = this.dateRangeValue[6]+this.dateRangeValue[7]
+        }
       }
-      if(!this.month){
-        this.month = ''
-      }else{
-        this.month = this.format(this.month,'MM')
-      }
-      if(!this.day){
-        this.day = ''
-      }else{
-        this.day = this.format(this.day,'dd')
-      }
+
+
       this.$http.post('/pc_ims/admin/inspectionlist_count',{
-        year:this.year,
-        month:this.month,
-        day:this.day,
+        year:year,
+        month:month,
+        day:day,
         pagenumber:1,
         pagesize:20
       }).then(res=> {
@@ -240,6 +306,9 @@ export default {
         if(res.data.code==0){
             //序号
             this.table2.data = res.data.data;
+            this.table2.data.map((item,index)=>{
+                item.index = index+1
+            })
           }else{
             this.$message({
               type:'error',
@@ -270,13 +339,13 @@ export default {
                 break;
                 case 'ss':
                 return tf(t.getSeconds());
-                break; 
+                break;
             }
         })
     }
   },
   created() {
-    
+
   },
   mounted() {
     this.getReportData();
@@ -302,8 +371,8 @@ export default {
     font-size: 0.14rem;
     text-align: center;
     cursor: pointer;
-    background: linear-gradient(0deg, 
-    #2772e3 0%, 
+    background: linear-gradient(0deg,
+    #2772e3 0%,
     #4b94f9 100%);
     border-radius: 0.02rem;
     i{
@@ -353,8 +422,8 @@ export default {
         font-size: 0.14rem;
         text-align: center;
         cursor: pointer;
-        background-image: linear-gradient(0deg, 
-        #2772e3 0%, 
+        background-image: linear-gradient(0deg,
+        #2772e3 0%,
         #4b94f9 100%);
         border-radius:0 0.02rem 0;
         i{
@@ -379,4 +448,48 @@ export default {
     }
   }
 }
+</style>
+<style>
+  .noTitle .el-date-picker__header{
+    display:none!important;
+  }
+  .myAgenTab{
+    height:100%!important;
+  }
+  .myAgenTab .tableBox{
+    height:100%!important;
+  }
+  .myAgenTab .tableBox .el-table{
+    height:80%!important;
+  }
+  .myAgenTab2{
+    height:100%!important;
+  }
+  .myAgenTab2 .tableBox{
+    height:100%!important;
+  }
+  .myAgenTab2 .tableBox .el-table{
+    height:100%!important;
+  }
+  .thJobBoxs{
+    display: flex;
+  }
+  .thJobBoxs .el-select{
+    padding-left:0!important;
+  }
+  .thJobBoxs .yearRangeBox{
+    margin-left:0.2rem!important;
+    width:0.8rem!important;
+  }
+  .thJobBoxs .yearRangeBox .el-input__inner{
+    border:none!important;
+    border-bottom:1px solid #1989fa!important;
+    text-align: center;
+  }
+  .reportBox .tableBoxs .thHead{
+    width:2.65rem!important;
+  }
+  .reportBox .tableBoxs .thHead .checkBox{
+    height:100%!important;
+  }
 </style>

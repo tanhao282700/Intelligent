@@ -60,7 +60,8 @@ rowClick(row){
             :prop="v.prop"
             :show-overflow-tooltip="true"
             :label="v.label"
-            :width="v.wid">
+            :width="v.wid"
+             :min-width="v.minWid">
             <!-- 自定义 -->
             <template slot-scope="scope">
                 <my-render v-if="v.operate" :row="scope.row" :render="v.render"></my-render>
@@ -71,7 +72,7 @@ rowClick(row){
         </el-table-column>
 
         </el-table>
-       <!--  <div class="pageBoxs" v-if = "table.!=undefined">
+         <div class="pageBoxs" v-if = "table.showPagination!=undefined">
             <el-pagination
                 @current-change="handleCurrentChange"
                 :current-page.sync="table.page"
@@ -80,7 +81,7 @@ rowClick(row){
                 layout="total, prev, pager, next, jumper"
                 :total="table.len">
             </el-pagination>
-        </div> -->
+        </div>
     </div>
 </template>
 
