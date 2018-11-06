@@ -15,6 +15,10 @@
     	props:['data'],
         data(){
         	return {
+        		rtChartLabel:[],
+        		rtArr1:[],
+        		rtArr2:[],
+        		rtArr3:[],
         		areaEnergyRzl:[],
         		areaEnergyKf:[],
         	}
@@ -42,6 +46,22 @@
 	        	this.$http.post('/hotel_energy/analysis',param)
 	        	.then(res=>{
 	        		//区域图
+	        		// console.log(res);
+	        		// let barData = res.data.data.area_energy_use.column_data;
+	        		// let lastThisData = barData.last_this_time;//同期
+	        		// let thisData = barData.this_time;//本期
+	        		// let lastData = barData.last_time;//上期
+	        		// let chineseData = res.data.data.area_energy_use.floor_map;
+
+        			// console.log(barData);
+        			// console.log(chineseData);
+        			// $.each(chineseData,(n0,k0)=>{
+        			// 	$.each(thisData,(n1,k1)=>{
+        			// 		if(k0.area_id == k1.area_id){
+        			// 			this.
+        			// 		}
+        			// 	});
+        			// });
 	        		let trendData = res.data.data.area_energy_use.trend_data;
 	        		let newRzl = [];
 	        		let newKf = [];
@@ -64,6 +84,7 @@
         		let chart2 = this.$echarts.init(document.getElementById('pies'));
         		let chart3 = this.$echarts.init(document.getElementById('bars'));
         		let legendData = data.legendData;
+        		console.log(legendData);
 		        let bgColorList = [{color1:"#FD99AC",color2:'#FA6074'},{color1:'#FFD12D',color2:"#FFA414"},{color1:'#6DBEFD',color2:'#3B89F9'}];
 		        let axisLabel = data.axisLabel;
 		        let arrData = [data.arrData1,data.arrData2,data.arrData3];
@@ -79,8 +100,8 @@
 	                            color: new echarts.graphic.LinearGradient(
 	                                0, 0, 0, 1,
 	                                [
-	                                    {offset: 0, color: bgColorList[i].color1},
-	                                    {offset: 1, color: bgColorList[i].color2}
+	                                    {offset: 0, color: "#FD99AC"}, //bgColorList[i].color1
+	                                    {offset: 1, color: '#FA6074'}  //bgColorList[i].color2
 	                                ]
 	                            )
 	                        },

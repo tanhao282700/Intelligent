@@ -1,26 +1,24 @@
 <template>
   <!-- 用能分析模块 -->
-  <div class="energyAnalysis" v-loading="viewsLoading"
-       element-loading-spinner="el-icon-loading"
-       element-loading-background="rgba(0, 0, 0, 0.3)">
+  <div class="energyAnalysis">
   	<Crumbs :data ='crumbs' class="breads"/>
   	<div class="boxs chartTables">
   		<div class="chartTit">
   			<div class="chartLeftTit">
   				<div class="tit1">区域能耗 | </div>
                 <div class="analysisBoxs analysisBoxs1">
-                    <SelectBox
-                        :options = 'analysis'
-                        :value = "vanalysis"
+                    <SelectBox 
+                        :options = 'analysis' 
+                        :value = "vanalysis" 
                         :icon="'el-icon-d-caret'"
                         placeholder="月"
                         @change = 'change1'
                     />
                 </div>
                 <div class="analysisBoxs">
-                    <SelectBox
-                        :options = 'analysis'
-                        :value = "vanalysis"
+                    <SelectBox 
+                        :options = 'analysis' 
+                        :value = "vanalysis" 
                         :icon="'el-icon-d-caret'"
                         placeholder="2018-08-01"
                         @change = 'change1'
@@ -28,9 +26,9 @@
                 </div>
                 <div class="hrline">-</div>
                 <div class="analysisBoxs">
-                    <SelectBox
-                        :options = 'analysis'
-                        :value = "vanalysis"
+                    <SelectBox 
+                        :options = 'analysis' 
+                        :value = "vanalysis" 
                         :icon="'el-icon-d-caret'"
                         placeholder="2018-09-26"
                         @change = 'change1'
@@ -39,7 +37,7 @@
                 <div class="searchBoxs">
                     <i class="el-icon-search"></i>
                     <span>查询</span>
-                </div>
+                </div>   
   			</div>
   			<div class="chartRightTit">
 			  <el-button type="default" :class="{currData:iscur==index}" :key="index" v-for="(item,index) in tabs" @click="loadBarData(index)">{{item.name}}</el-button>
@@ -52,18 +50,18 @@
   			<div class="chartLeftTit">
   				<div class="tit1">设备能耗 | </div>
   				<div class="analysisBoxs analysisBoxs1">
-                    <SelectBox
-                        :options = 'analysis'
-                        :value = "vanalysis"
+                    <SelectBox 
+                        :options = 'analysis' 
+                        :value = "vanalysis" 
                         :icon="'el-icon-d-caret'"
                         placeholder="月"
                         @change = 'change1'
                     />
                 </div>
                 <div class="analysisBoxs">
-                    <SelectBox
-                        :options = 'analysis'
-                        :value = "vanalysis"
+                    <SelectBox 
+                        :options = 'analysis' 
+                        :value = "vanalysis" 
                         :icon="'el-icon-d-caret'"
                         placeholder="2018-08-01"
                         @change = 'change1'
@@ -71,9 +69,9 @@
                 </div>
                 <div class="hrline">-</div>
                 <div class="analysisBoxs">
-                    <SelectBox
-                        :options = 'analysis'
-                        :value = "vanalysis"
+                    <SelectBox 
+                        :options = 'analysis' 
+                        :value = "vanalysis" 
                         :icon="'el-icon-d-caret'"
                         placeholder="2018-09-26"
                         @change = 'change1'
@@ -82,7 +80,7 @@
                 <div class="searchBoxs">
                     <i class="el-icon-search"></i>
                     <span>查询</span>
-                </div>
+                </div> 
   			</div>
   			<div class="chartContent">
   				<div class="charts2Left" id="deviceLeft">
@@ -108,7 +106,6 @@
         },
         data(){
         	return {
-            viewsLoading:false,
         		crumbs:['能源管理系统','用能分析'],
         		iscur:0,
         		tabs: [{name: "电"}, {name: "水"} ,{name: "气"}],
@@ -121,7 +118,17 @@
         			arrData3:[],
         			arr1Label:[],
         			arr1:[],
-        			arr1x:[]
+        			arr1x:[],
+        			leftTopChart:{
+        				rzl:[],
+        				floorVal:{
+        					rooms0:[],
+        					rooms1:[],
+        					rooms2:[],
+        					rooms3:[],
+        					rooms4:[],
+        				}
+        			},
         		},
         		vanalysis:'',
         		analysis:[]
@@ -139,7 +146,7 @@
 				    	name:arr2Label[i],
 				        data: pieData,
 				        type: 'line',
-				        symbol: "circle",
+				        symbol: "circle", 
 				        symbolSize:0,
 				        smooth: true,
 			            lineStyle: {
@@ -235,7 +242,6 @@
 
 	        },
 	        getDatas(){
-        	  let that = this;
 	        	let param = {
 	        		project_id:1,
 	        		sys_menu_id:1,
@@ -245,10 +251,10 @@
 	        		device_query_date_type:'',
 	        		device_date:''
 	        	}
-	        	this.viewsLoading = true;
 	        	this.$http.post('/hotel_energy/analysis',param)
 	        	.then(res=>{
 	        		//区域图
+	        		var that = this;
 	        		let barData = res.data.data.area_energy_use.column_data;
 	        		let lastThisData = barData.last_this_time;//同期
 	        		let thisData = barData.this_time;//本期
@@ -256,40 +262,9 @@
 	        		let chineseData = res.data.data.area_energy_use.floor_map;
 	        		let pieData = res.data.data.area_energy_use.pie_data;
 	        		let trendData = res.data.data.area_energy_use.trend_data;
-	        		$.each(chineseData,(n,k)=>{
-	        			$.each(pieData,(n1,k1)=>{
-	        				if(k.area_id==k1.area_id){
-	        					this.data.topPie.push({'value':k1.data,'name':k.title})
-	        				}
-	        			})
-	        			if(k.area_id == thisData.area_id){
-	        				this.data.axisLabel.push(k.title);
-	        				$.each(thisData.data,(n2,k2)=>{
-	        					this.data.legendData.push(k2.date);
-	        					this.data.arrData1.push(k2.value);
-	        				})
-	        			}
-	        			if(k.area_id == lastData.area_id){
-	        				$.each(lastData.data,(n2,k2)=>{
-	        					this.data.arrData2.push(k2.value);
-	        				})
-	        			}
-	        			if(k.area_id == lastThisData.area_id){
-	        				$.each(lastThisData.data,(n2,k2)=>{
-	        					this.data.arrData3.push(k2.value);
-	        				})
-	        			}
-	        			$.each(trendData,(n1,k1)=>{
-	        				this.data.arr1Label.push(k.title);
-	        				if(k1.device_id==k.device_id){
-	        					$.each(k1.data,(n2,k2)=>{
-	        						this.data.arr1x.push(k2.date);
-	        						this.data.arr1.push(k2.value);
-	        					})
+	        		console.log(trendData);
 
-	        				}
-	        			});
-	        		})
+					console.log(that.data.arrData1);
 	        		//设备图
 	        		console.log(res.data.data.area_energy_use);
 	        		let pieData2 = res.data.data.device_energy_use.pie_data;
@@ -310,12 +285,85 @@
 	        						arr2x.push(k2.date);
 	        						arr2.push(k2.value);
 	        					})
-
+	        					
 	        				}
 	        			});
 	        		})
 	        		this.getBottomEcharts(arr,arr2,arr2x,arr2Label);
-	        		that.viewsLoading = false;
+
+	        		$.each(chineseData,(n,k)=>{
+	        			$.each(pieData,(n1,k1)=>{
+	        				if(k.area_id==k1.area_id){
+	        					that.data.topPie.push({'value':k1.data,'name':k.title})
+	        				}
+	        			})
+	        			$.each(thisData,(o,w)=>{
+	        				if(k.area_id == w.area_id){
+	        					that.data.axisLabel.push(k.title);
+	        					that.data.legendData.push(w.data[0].date);
+	        					that.data.arrData1.push(w.data[0].value);
+	        				}
+	        			});
+	        			// if(k.area_id == thisData.area_id){
+	        			// 	that.data.axisLabel.push(k.title);
+	        			// 	$.each(thisData.data,(n2,k2)=>{
+	        			// 		console.log(k2);
+	        			// 		that.data.legendData.push(k2.date);
+	        			// 		that.data.arrData1.push(k2.value);
+	        			// 	})
+	        			// }
+	        			$.each(lastData,(o1,w1)=>{
+	        				if(k.area_id == w1.area_id){
+	        					that.data.legendData.push(w1.data[0].date);
+	        					that.data.arrData2.push(w1.data[0].value);
+	        				}
+	        			});
+	        			// if(k.area_id == lastData.area_id){
+	        			// 	$.each(lastData.data,(n2,k2)=>{
+	        			// 		that.data.arrData2.push(k2.value);
+	        			// 	})
+	        			// }
+	        			$.each(lastThisData,(o2,w2)=>{
+	        				if(k.area_id == w2.area_id){
+	        					that.data.arrData3.push(w2.value);
+	        				}
+	        			});
+	        			// if(k.area_id == lastThisData.area_id){
+	        			// 	$.each(lastThisData.data,(n2,k2)=>{
+	        			// 		that.data.arrData3.push(k2.value);
+	        			// 	})
+	        			// }
+	        			// $.each(trendData,(n1,k1)=>{
+	        			// 	that.data.arr1Label.push(k.title);
+	        			// 	if(k1.device_id==k.device_id){
+	        			// 		$.each(k1.data,(n2,k2)=>{
+	        			// 			that.data.arr1x.push(k2.date);
+	        			// 			that.data.arr1.push(k2.value);
+	        			// 		})
+	        					
+	        			// 	}
+	        			// });
+	        		})
+        			$.each(trendData.check_in_hotel_rate,(n,k)=>{
+        				that.data.leftTopChart.rzl.push([k.date,k.value]);
+        			});
+
+					$.each(trendData.floor_value,(n,k)=>{
+						// that.data.floorVal.rooms0
+						// console.log(that.data.floorVal);
+						// if(n == 0){
+						// 	that.data.leftTopChart.floorVal.rooms0.push([k.data.date,k.data.value]);
+						// }else if (n == 1){
+						// 	that.data.leftTopChart.floorVal.rooms1.push([k.data.date,k.data.value]);
+						// }else if(n == 2){
+						// 	that.data.leftTopChart.floorVal.rooms2.push([k.data.date,k.data.value]);
+						// }else if(n == 3){
+						// 	that.data.leftTopChart.floorVal.rooms3.push([k.data.date,k.data.value]);
+						// }else if(n == 4){
+						// 	that.data.leftTopChart.floorVal.rooms4.push([k.data.date,k.data.value]);
+						// }
+        			});
+
 	        	})
 	        }
 
