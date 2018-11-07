@@ -13,6 +13,7 @@
 
 <script>
     export default {
+        props:["onVideoId"],
 		data() {
 	        return {
 	        	deviceInfos:[]
@@ -25,7 +26,7 @@
             getData(){
                 var that = this;
                 this.$http.post('/video_monitoring/video_maintenance',{
-                    device_id:16,
+                    device_id:that.onVideoId,
                 }).then(function(data){
                     //响应成功回调
                     console.log(data.data.data);

@@ -103,6 +103,7 @@
                     s = "";
                     e = "";
                 }
+                    console.log(this.$store.state.sysList[14].sys_menu_id);
                 this.$http.post('/entrance/record',{
                     sys_menu_id:this.$store.state.sysList[14].sys_menu_id,
                     project_id:this.$store.state.projectId,

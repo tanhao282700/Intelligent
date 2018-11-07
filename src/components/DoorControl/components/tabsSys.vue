@@ -175,20 +175,7 @@
             changeDoorStatus(obj){
                 let status = '';
                 console.log(obj);
-                // if(Number(this.doorClose) <= 0){
 
-                // }else{
-                //     this.doorClose = Number(this.doorClose) - 1; 
-                //     this.doorOpenN = Number(this.doorOpenN) + 1; 
-                // }
-                // this.infoSta = obj.infoSta;
-                // if(this.infoSta == "关闭"){
-                //     status = "0";
-                // }else if(this.infoSta == "开启"){
-                //     status = "1";
-                // }else if(this.infoSta == "异常"){
-                //     status = "2";
-                // }
                 this.iList[obj.itemIndex].device_state=status;
             },
             doorInfoPanel(id,name,item){
@@ -198,10 +185,11 @@
                 this.$http.post('/entrance/record',{
                     sys_menu_id:this.$store.state.sysList[14].sys_menu_id,
                     project_id:this.$store.state.projectId,
-                    floor_id:1,
+                    floor_id:that.floorIds,
                     device_id:id
                 }).then(function(response){
                     // 响应成功回调
+                    console.log(response.data.data);
                     that.doorInfomation = response.data.data.entrance_guard_record;
                 }, function(response){
                     // 响应错误回调

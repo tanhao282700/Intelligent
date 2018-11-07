@@ -45,9 +45,9 @@
         		</li>
         	</ul>
 	        <div class="bottomShadow">
-	            <div class="floorImgBox">
+	            <div class="floorImgBox" id="floorImgBox">
 	                <img src="../../assets/img/doorControl/bg_lc.png">
-	                <span v-for="item in iList" :style="{left:(item.position_x*1.74+'px'),top:(item.position_y*1.74+'px')}" @click="viewLiveVideo(item.device_id)"><label>{{item.device_id}}</label></span>
+	                <span v-for="item in iList" :style="{left:(item.position_x*coefficientX+'px'),top:(item.position_y*coefficientY+'px')}" @click="viewLiveVideo(item.device_id)"><label>{{item.device_id}}</label></span>
 	            </div>
 	        </div>
         </div>
@@ -71,7 +71,7 @@
 				            <span><a :class="isActive1==true?'on':''" @click="toggleTabs(first)">设备信息</a></span>
 				            <span><a :class="isActive2==true?'on':''" @click="toggleTabs(second)">维保历史</a></span>
 				        </nav>
-				        <tabs :is="currentView" keep-alive></tabs>
+				        <tabs :is="currentView" :onVideoId="onVideoId" keep-alive></tabs>
         			</div>
         		</div>
         	</div>
@@ -98,6 +98,8 @@
 	        	selectedValue2:'1楼',
 	        	isDeviceInfoPopShow:false,
 	        	isVideoShowBoxShow:false,
+                coefficientX:1.74, //定位系数
+                coefficientY:1.74, //定位系数
 	        	onVideoId:'',//当前设备ID
 	        	videoPanelBox:'',
                 todaySpan:'',
@@ -120,7 +122,7 @@
 	        };
 	    },
         mounted(){
-            this.getData();
+            this.getData("115");
             this.getbuildData();
             this.getDateSet();
         },
@@ -136,6 +138,7 @@
                 this.selectedValue1 = '';
                 this.selectedValue2 = '';
                 this.buildDatas1 = arrL;
+                this.getData(selVal);
             },
             chooseBuild1(selVal){
                 var arrLs=[];
@@ -146,13 +149,15 @@
                 });
                 this.selectedValue2 = '';
                 this.buildDatas2 = arrLs;
+                this.getData(selVal);
             },
-            getData(){
-                console.log(this.$store.state.sysList[4].sys_menu_id);
+            getData(flId){
+                this.coefficientX = document.getElementById("floorImgBox").offsetWidth / 518;
+                this.coefficientY = document.getElementById("floorImgBox").offsetHeight / 247;
                 var that = this;
                 this.$http.post('/video_monitoring/video_index_view',{
                     sys_menu_id:this.$store.state.sysList[4].sys_menu_id,
-                    floor_id:115,
+                    floor_id:flId,
                 }).then(function(data){
                     //响应成功回调
                     that.iList = data.data.data.floor_device;
@@ -162,9 +167,10 @@
                 });
             },
             getbuildData(){
+                console.log(this.$store.state);
                 var that = this;
                 this.$http.post('/video_monitoring/video_floorinfo',{
-                    sys_menu_id:13
+                    sys_menu_id:this.$store.state.sysList[5].sys_menu_id
                 }).then(function(data){
                     //响应成功回调
                     console.log(data.data.data)
