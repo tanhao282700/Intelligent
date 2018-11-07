@@ -286,7 +286,6 @@ export default {
     rowClick(row){
       this.rowData = row;
       console.log(row)
-      return
       this.$refs.tableInfos2.show();
       this.rowData.operate='check';
       this.$http.post('/pc_ims/staff/inspectiondata_info',{ins_id:row.id}).then(res=>{
@@ -326,6 +325,7 @@ export default {
     },
     tableInfos2Show(item){
       console.log(item)
+      return
       this.infoItem = item;
       this.infoItem.data = {
           datas:[{date:'2018/10/12',time:'15:29'},{date:'2018/10/12',time:'17:29'}],
