@@ -101,7 +101,7 @@
                 var that = this;
                 this.$http.post('/hotel/hotel_state',{
                     // sys_menu_id:15,
-                    project_id:1,
+                    project_id:this.$store.state.projectId,
                     // floor_id:104,
                 }).then(function(data){
                     // 响应成功回调
