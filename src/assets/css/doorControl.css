@@ -219,7 +219,7 @@ nav.tabNav span a.on{color:#008aff;}
 .roomListDatePicker{display: inline-block;width:240px;margin-right:10px;}
 .roomListDatePickerDef{width:120px;}
 .roomListDatePicker>.el-date-editor{height:30px!important;}
-.roomListDatePicker .el-date-editor .el-range-input{background: none;font-size: 12px!important;color:#fff;}
+.roomListDatePicker .el-date-editor .el-range-input{background: none;font-size: 0.12rem!important;color:#fff;}
 .roomListDatePicker .el-date-editor .el-range-separator{line-height: 22px;padding:0;color:#d8d8d8;font-size: 12px;}
 
 .el-dropdown{float: right;margin-right:10px;width:72px;cursor:pointer;}
@@ -325,7 +325,7 @@ nav.tabNav span a.on{color:#008aff;}
 
 /* 能源管理-用能报表 e*/
 
-input::-webkit-input-placeholder {font-size: 12px!important;}
-input::-moz-placeholder {font-size: 12px!important;}
-input::-ms-input-placeholder {font-size: 12px!important;}
+input::-webkit-input-placeholder {font-size: 0.12rem!important;}
+input::-moz-placeholder {font-size: 0.12rem!important;}
+input::-ms-input-placeholder {font-size: 0.12rem!important;}
 
