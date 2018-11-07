@@ -56,6 +56,7 @@ export default {
     this.value0 = this.value;
   },
   mounted() {
+    this.value0 = this.value;
   },
 }
 </script>

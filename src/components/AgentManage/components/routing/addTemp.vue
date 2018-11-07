@@ -194,7 +194,16 @@
             formvals1:{},
             formval:{
               starttime:'',
-              device:''
+              device:'',
+              exam:'',
+              area:'',
+              addr:'',
+              system:'',
+              desc:'',
+              data:[],
+              period:'',
+              department:'',
+              time_limit:''
             }
         }
       },
@@ -272,9 +281,18 @@
             }
           },
           deep:true
+        },
+        data:{
+          handler(val){
+            if(val){
+              this.formval = val;
+            }
+          },
+          deep:true
         }
       },
       mounted() {
+        this.formval = this.data;
         this.formvals1 = this.formvals;
       }
   }

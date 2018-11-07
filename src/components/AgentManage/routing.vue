@@ -415,11 +415,29 @@ export default {
       this.rowData = rowData;
       this.tempTitle = '修改';
       this.$refs.add.show();
-      this.$http.post('/admin/get_one_temp',{ins_id:rowData.id})
+      this.$http.post('/pc_ims/admin/get_one_temp',{ins_id:rowData.id})
       .then(res=>{
          console.log(res)
          if(res.data.code==0){
-            
+            let list = JSON.parse(res.data.data.point_info);
+            let arr = [];
+            console.log(res.data.data);
+            $.each(list,(n,k)=>{
+              arr.push(JSON.parse(k).point_id.cate_id);
+            })
+            this.rowData = {
+              exam:res.data.data.user_id,
+              data:arr,
+              department:res.data.data.department_id,
+              time_limit:res.data.data.time_limit,
+              system:res.data.data.sys_id,
+              area:res.data.data.floor_id,
+              device:res.data.data.device_id,
+              starttime:res.data.data.addtime,
+              period:res.data.data.cycle,
+              addr:res.data.data.ins_place,
+              desc:res.data.data.remarks
+            }
           }else{
             this.$message({
               type:'error',

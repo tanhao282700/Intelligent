@@ -61,7 +61,7 @@ export default {
   },
   mounted() {
       this.state = this.btnss.item.now_state;
-      console.log(this.btnss)
+      //console.log(this.btnss)
       if(this.btnss.item.now_state=='1'){
         this.radio.radio3 = '启动'
         this.changeStatus(this.btnss.item.now_state)

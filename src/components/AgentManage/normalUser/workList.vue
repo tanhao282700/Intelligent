@@ -341,7 +341,12 @@ export default {
             ]
         },
         infoItem:{},  //某个工单的详情
-        dealWorkParam:{}
+        dealWorkParam:{
+          item:{
+            id:'',
+            user_id:''
+          }
+        }
     }
   },
   methods:{
@@ -473,12 +478,15 @@ export default {
         if(!this.dealWorkParam.pic2 || this.dealWorkParam.pic2.length==0){
           this.dealWorkParam.pic2 = [];
         }
+        if(!this.dealWorkParam.end_time){
+          this.dealWorkParam.end_time = ''
+        }
         this.$http.post('/pc_ims/write_job',{
           id:this.dealWorkParam.item.id,
           type:this.dealWorkParam.type,
           pic1:this.dealWorkParam.pic1,
           pic2:this.dealWorkParam.pic2,
-          end_time:'',
+          end_time:this.dealWorkParam.end_time,
           user_id:this.dealWorkParam.item.user_id,
           new_user_id:'',
           info:this.dealWorkParam.info,
@@ -502,9 +510,21 @@ export default {
         });
       },
       backWork(item,type){
-        console.log(item)
+        console.log(item.id)
+        this.dealWorkParam = {
+          item :{
+            id:item.id,
+            user_id:item.user_id
+          },
+          type:type,
+          info:item.complete_info,
+          end_time:item.end_time,
+          pic1:item.pic1,
+          pic2:item.pic2
+        }
+        this.dealWorkParam.type = type;
         if(type==0){
-          this.$res.tableInfos2.hide();
+          this.$refs.tableInfos2.hide();
         }else{
           this.dealWork();
         }
