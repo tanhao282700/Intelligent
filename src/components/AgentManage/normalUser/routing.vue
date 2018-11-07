@@ -151,21 +151,12 @@ export default {
             len:0, //总条数
             data:[],
             th:[
-              {prop:'index',label:'编号'},
+              {prop:'index',label:'编号',minWid:'20%'},
               {prop:'title',label:'类别'},
               {prop:'floorname',label:'地点',wid:180},
               {prop:'addtime',label:'派发时间'},
-              {prop:'name',label:'点位'},
-              {prop:'now_state',label:'状态',operate: true,
-                  render: (h, param)=> {
-                      const btnss = {
-                          fills:param.row.dealed,
-                      };
-                      return h(State,{
-                        props: { state:btnss},
-                        on:{}
-                      });
-                  } },
+              {prop:'dianwei',label:'点位'},
+              {prop:'stateChi',label:'状态'},
               {prop:'dealed',label:'操作',
                 operate: true,
                   render: (h, param)=> {
@@ -386,6 +377,33 @@ export default {
              this.table.len = res.data.count;
               this.table.data.map((item,index)=>{
                   item.index = index+1
+                  let dwList = JSON.parse(item.form).list //点位数据
+                  if(dwList.length!=0){
+                      let name = ''
+                    for(let i=0;i<dwList.length;i++){
+                          if(i==0){
+                              name = dwList[i].name
+                          }else{
+                            name = name + '、' + dwList[i].name
+                          }
+                    }
+                    item.dianwei = name
+                  }
+                  if(item.now_state==0){
+                      item.stateChi = '未接单'
+                  }
+                if(item.now_state==1){
+                  item.stateChi = '处理中'
+                }
+                if(item.now_state==2){
+                  item.stateChi = '完成'
+                }
+                if(item.now_state==3){
+                  item.stateChi = '申请退单'
+                }
+                if(item.now_state==4){
+                  item.stateChi = '退单完成'
+                }
               })
            }else{
               this.$message({
