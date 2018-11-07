@@ -22,7 +22,8 @@ export default {
     return {
       radio:{
         radio3:'启动',
-        color:'#4AE283'
+        color:'#4AE283',
+        state:''
       }
         
     }
@@ -53,20 +54,22 @@ export default {
     btnss:{
       handler(val){
         if(val){
-          //console.log(this.btnss)
         }
       },
       deep:true
     }
   },
   mounted() {
-    //console.log(this.btnss.item.now_state)
+      this.state = this.btnss.item.now_state;
+      console.log(this.btnss)
       if(this.btnss.item.now_state=='1'){
-        this.btnss.item.now_state='启动';
+        this.radio.radio3 = '启动'
+        this.changeStatus(this.btnss.item.now_state)
       }else if(this.btnss.item.now_state==2){
-        this.btnss.item.now_state='停用';
+        this.radio.radio3='停用';
+        this.changeStatus(this.btnss.item.now_state)
       }
-      this.changeStatus(this.btnss.item.now_state)
+      
   },
 }
 </script>

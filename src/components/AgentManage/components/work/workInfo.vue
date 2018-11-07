@@ -99,7 +99,7 @@ export default {
     }, 
     getUserList(){
         if(this.tableData.data){
-            this.$emit('getUserList',{type:this.query.type,date:this.value7})
+            this.$emit('getUserList',{type:this.query.type,time:this.value7})
         }
     },
     deletes(){

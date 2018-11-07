@@ -121,7 +121,7 @@
                           </div>
                           <div class="labelBox">
                             <label for="">联系电话：</label>
-                            <span v-text="dia.tel1"></span>
+                            <span v-text="dia.old_phone"></span>
                           </div>
                           <div class="labelBox">
                             <label for="">班次：</label>
@@ -136,7 +136,7 @@
                           </div>
                           <div class="labelBox">
                             <label for="">联系电话：</label>
-                            <span v-text="dia.tel1"></span>
+                            <span v-text="dia.new_phone"></span>
                           </div>
                           <div class="labelBox">
                             <label for="">班次：</label>
@@ -182,7 +182,7 @@
                           </div>
                           <div class="labelBox">
                             <label for="">联系电话：</label>
-                            <span v-text="dia.tel1"></span>
+                            <span v-text="dia.old_phone"></span>
                           </div>
                           <div class="labelBox">
                             <label for="">班次：</label>
@@ -197,7 +197,7 @@
                           </div>
                           <div class="labelBox">
                             <label for="">联系电话：</label>
-                            <span v-text="dia.tel1"></span>
+                            <span v-text="dia.new_phone"></span>
                           </div>
                           <div class="labelBox">
                             <label for="">班次：</label>
@@ -247,7 +247,7 @@
                           </div>
                           <div class="labelBox">
                             <label for="">联系电话：</label>
-                            <span v-text="dia.tel1"></span>
+                            <span v-text="dia.old_phone"></span>
                           </div>
                           <div class="labelBox">
                             <label for="">班次：</label>
@@ -262,7 +262,7 @@
                           </div>
                           <div class="labelBox">
                             <label for="">联系电话：</label>
-                            <span v-text="dia.tel1"></span>
+                            <span v-text="dia.new_phone"></span>
                           </div>
                           <div class="labelBox">
                             <label for="">班次：</label>

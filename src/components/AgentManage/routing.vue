@@ -491,8 +491,8 @@ export default {
       if(row.user_id){
         this.infoItem.user_id = row.user_id;
       }
-      if(!row.date || row.date.split('-')[0].length>2){
-        row.date = utils.time(new Date()/1000,5);
+      if(!row.time || row.time.split('-')[0].length>2){
+        row.time = utils.time(new Date()/1000,5);
       }
       this.$refs.dialog.show();
       this.$http.post('/pc_ims/admin/inspectiondata_all',{

@@ -123,6 +123,11 @@
                     </div>
                   </div>
                 </div>
+                <div class="btnsgroups">
+                  <span class="infoBusy" v-text="'退单'"></span>
+                  <span class="infoSend" v-text="'取消'"></span>
+                  <span class="infoSubmit" v-text="'提交'"></span>
+                </div>
               </div>
               <div v-show="tabPosition=='延期处理'" class="tabLists">
                 <ul>
@@ -157,10 +162,8 @@
                   <div class="yujiDate">
                     <el-date-picker
                       v-model="value2"
-                      align="right"
                       type="date"
-                      placeholder="选择日期"
-                      :picker-options="pickerOptions1">
+                      placeholder="选择日期">
                     </el-date-picker>
                   </div>
                   <div class="yujitime"> 
@@ -258,31 +261,6 @@ export default {
               {id:3,name:'巡检',route:'/AgentManage/normalUser/routing'},
               {id:4,name:'完成情况',route:'/AgentManage/normalUser/report'},
           ]
-        },
-        pickerOptions1: {
-          disabledDate(time) {
-            return time.getTime() > Date.now();
-          },
-          shortcuts: [{
-            text: '今天',
-            onClick(picker) {
-              picker.$emit('pick', new Date());
-            }
-          }, {
-            text: '昨天',
-            onClick(picker) {
-              const date = new Date();
-              date.setTime(date.getTime() - 3600 * 1000 * 24);
-              picker.$emit('pick', date);
-            }
-          }, {
-            text: '一周前',
-            onClick(picker) {
-              const date = new Date();
-              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit('pick', date);
-            }
-          }]
         },
         tabPosition:'正常处理',
         crumbs:['代维系统','工单'],

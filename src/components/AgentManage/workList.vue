@@ -349,8 +349,8 @@ export default {
         if(!row.type){
           row.type = ''
         }
-        if(!row.date || row.date.split('-')[0].length>2){
-          row.date = utils.time(new Date()/1000,5)
+        if(!row.time || row.time.split('-')[0].length>2){
+          row.time = utils.time(new Date()/1000,5)
         }
         this.$http.post('/pc_ims/admin/user_jobs',{
           sys_name:row.type,
