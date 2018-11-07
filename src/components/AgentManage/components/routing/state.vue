@@ -13,42 +13,52 @@ export default {
   props:['states'],
   data () {
     return {
-        txt:{txt:'',color:''}
+        txt:{}
     }
   },
   methods:{
-     txts(){
-          switch(this.states.fills){
+     txts(val){
+      let txt = {txt:'',color:''}
+          switch(val){
               case "0":
-                this.txt.txt = '未接单';
-                this.txt.color = '#fff';
+                txt.txt = '未接单';
+                txt.color = '#fff';
                 break;
               case "1":
-                this.txt.txt = '处理中';
-                this.txt.color = '#FFA414';
+                txt={
+                  txt: '处理中',
+                  color:'#FFA414'
+                };
                 break;
               case '2':
-                this.txt.txt = '已完成';
-                this.txt.color ='#4AE283';
+                txt.txt = '已完成';
+                txt.color ='#4AE283';
                 break;
               case '3':
-                this.txt.txt = '申请退单';
-                this.txt.color ='#3B89F9';
+                txt.txt = '申请退单';
+                txt.color ='#3B89F9';
                 break;
               case '4':
-                this.txt.txt = '退单完成';
-                this.txt.color = '#4AE283';
+                txt.txt = '退单完成';
+                txt.color = '#4AE283';
                 break;
           }
-          this.txt = this.txt;
-          //console.log(this.txt);
+          this.txt = txt;
           return this.txt
       }
   },
-  created() {
+  watch:{
+    states:{
+      handler(val){
+        if(val){
+          this.txts(val.fills)
+        }
+      },
+      deep:true
+    }
   },
   mounted() {
-       this.txts();
+       this.txts(this.states.fills);
   },
 }
 </script>

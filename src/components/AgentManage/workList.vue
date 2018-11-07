@@ -246,7 +246,13 @@ export default {
               },
             ]
         },
-        detalrowdata:{},
+        detalrowdata:{
+          infos:{
+            info:{
+              new_user_id:''
+            }
+          }
+        },
         infoItem:{
           info:{},
           desc:[],
@@ -273,6 +279,7 @@ export default {
     }, 
     changeNew(val){
       this.vName = val;
+      this.detalrowdata.infos.info = {};
       this.detalrowdata.infos.info.new_user_id = val;
     },
     deletes(){
@@ -350,7 +357,7 @@ export default {
           row.type = ''
         }
         if(!row.time || row.time.split('-')[0].length>2){
-          row.time = utils.time(new Date()/1000,5)
+          row.time = this.value7;
         }
         this.$http.post('/pc_ims/admin/user_jobs',{
           sys_name:row.type,
@@ -586,7 +593,11 @@ export default {
               type:'success',
               message:res.data.msg
             })
-            this.rowClick({})
+            this.rowClick({
+              sys_name:'',
+              date:this.value7,
+              user_id:this.infoItem.user_id
+            })
           }else{
             this.$message({
               type:'error',

@@ -459,7 +459,7 @@ export default {
                 message:res.data.msg,
                 duration:2000
               })
-              this.getApplyStatus(0);
+              this.getTableList();
            }else{
               this.$message({
                 type:'error',

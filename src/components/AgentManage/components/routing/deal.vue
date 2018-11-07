@@ -30,8 +30,8 @@ export default {
   },
   methods:{
     changeStatus(val){
+       this.getStatus(val)
       this.$emit('changeStatus',this.radio.radio3,this.btnss.item)
-      //return this.radio3;
     },
     getStatus(val){
       switch(val){
@@ -56,12 +56,21 @@ export default {
     btnss:{
       handler(val){
         if(val){
+          this.state = val.item.now_state;
+          if(val.item.now_state=='1'){
+            this.radio.radio3 = '启动'
+            this.getStatus(this.radio.radio3)
+          }else if(val.item.now_state==2){
+            this.radio.radio3='停用';
+            this.getStatus(this.radio.radio3)
+          }
         }
       },
       deep:true
     }
   },
   mounted() {
+     // console.log(this.btnss.item.now_state);
       this.state = this.btnss.item.now_state;
       if(this.btnss.item.now_state=='1'){
         this.radio.radio3 = '启动'

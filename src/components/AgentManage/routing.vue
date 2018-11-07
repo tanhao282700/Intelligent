@@ -100,8 +100,9 @@ import TimePickerT from './components/work/timePickerTit2';
 import Percentage from './components/work/Percentage';
 import WorkInfo from './components/work/workInfo';
 import State from './components/routing/state';
-import deal from './components/routing/deal';
-import deal2 from './components/work/deal';
+import deal from './normalUser/deal';
+
+import deal2 from './components/routing/deal';
 import RoutingTakModdel from './components/routing/routingTakModdel';
 import RoutingTask from './components/routing/routingTask';
 import RoutingInfo from './components/routing/routingInfo';
@@ -185,7 +186,7 @@ export default {
                       fills:param.row.now_state,  
                   };
                   return h(State,{
-                    props: { states:btnss}
+                    props: {states:btnss}
                   });
               }},
             {prop:'fill',label:'操作',wid:200,
@@ -194,7 +195,7 @@ export default {
                   const btnss = {
                       item:param.row, 
                   };
-                  return h(deal,{
+                  return h(deal2,{
                     props: { btnss:btnss},
                     on:{update:this.updateDetail,deletes:this.deleted,changeStatus:this.changeStatus}
                   });
@@ -237,7 +238,7 @@ export default {
                     const btnss = {
                         item:param.row, 
                     };
-                    return h(deal2,{
+                    return h(deal,{
                     props: { btnss:btnss},
                     on:{agree:this.agree,refult:this.refult}
                     });
@@ -322,6 +323,33 @@ export default {
             message:res.data.msg
           })
         }
+      })
+    },
+    dealWork(item,type){
+      item = item.item;
+      if(!item.info){
+        item.info = '';
+      }
+      if(!item.newuser_id){
+        item.newuser_id = ''
+      }
+      this.$http.post('/pc_ims/admin/write_inspectionlist',{
+        id:item.id,
+        type:type,
+        info:item.info,
+        user_id:item.user_id,
+        newuser_id:item.newuser_id,
+        form:JSON.parse(item.form).list
+      }).then(res=>{
+        if(res.data.code==0){
+          console.log(res.data.data);
+        }else{
+          this.$message({
+            type:'error',
+            message:'退单失败。'
+          })
+        }
+
       })
     },
     getDeviceVal(val){
@@ -483,9 +511,9 @@ export default {
     },
     changeStatus(state,item){
       if(state=='启动'){//改变启动为停用
-        state=2;
-      }else{//改变停用为启动
         state=1;
+      }else{//改变停用为启动
+        state=2;
       }
       this.dealroutState(item.id,state);
     },
@@ -519,7 +547,7 @@ export default {
         this.infoItem.user_id = row.user_id;
       }
       if(!row.time || row.time.split('-')[0].length>2){
-        row.time = utils.time(new Date()/1000,5);
+        row.time = this.value7;
       }
       this.$refs.dialog.show();
       this.$http.post('/pc_ims/admin/inspectiondata_all',{
@@ -541,17 +569,17 @@ export default {
           }
       })
     },
-    agree(item){ //同意
-        console.log(item)
+    agree(item,type){ //同意
+        this.dealWork(item,type);
     },
-    refult(item){//拒绝
-       console.log(item)
+    refult(item,type){//拒绝
+        this.dealWork(item,type);
     },
     tableInfos2Show(item){
       this.$http.post('/pc_ims/admin/inspectionlist_info',{ins_id:item.id})
       .then(res=>{
         if(res.data.code==0){
-            console.log(res.data);
+            //console.log(res.data);
             this.infoItem = res.data.data.info;
             this.infoItem.desc = [
               {label:'巡检人员',value:this.infoItem.user_name},

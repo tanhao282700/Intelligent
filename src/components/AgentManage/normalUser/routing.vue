@@ -37,54 +37,52 @@
             :table = "table"
             @rowClick = "rowClick"
           />
-          <!--<el-table
-            :cell-class-name="setColor"
-            :data="table"
-            style="width: 100%;"
-            height="500"
-            class=" tableHeadBlue">
-            <el-table-column
-              type="index"
-              prop="index"
-              label="编号"
-              min-width="5%">
-            </el-table-column>
-            <el-table-column
-              prop="title"
-              label="工种"
-              min-width="11%">
-            </el-table-column>
-            <el-table-column
-              prop="type"
-              label="类别"
-              min-width="8%">
-            </el-table-column>
-            <el-table-column
-              prop="addtime"
-              label="派发时间"
-              min-width="15%">
-            </el-table-column>
-            <el-table-column
-              prop="description"
-              label="详情"
-              min-width="16%">
-            </el-table-column>
-            <el-table-column
-              prop="now_state"
-              label="完成情况"
-              min-width="10%">
-            </el-table-column>
-          </el-table>-->
+          
         </div>
       </div>
       <Dialog wid="910" hei="600" ref="tableInfos2">
           <div class="tableInfos">
               <div class="infoHead">
-                <span class="infoName" v-text="infoItem.user_name"></span>
-                <span class="infoState" v-text="infoTit(infoItem.now_value)"></span>
+                <span class="infoName" v-text="newData.user_name"></span>
+                <span class="infoState" v-text="infoTit(newData.now_value)"></span>
               </div>
               <div class="infoBoxs">
-                <RoutingInfo :data="infoItem" @dealWork = "dealWork"/>
+                <div class="routingTask">    
+                  <ul v-if="newData.desc && newData.desc.length>0">
+                    <li class="job_det" v-for="(item,index) in newData.desc" :key="index">
+                      <div class="taskDtl">
+                          <div class="taskLabel" v-if="item">{{item.label}}</div>
+                          <div class="taskCont">{{item.value}}</div>
+                      </div>
+                    </li>
+                  </ul>  
+                   
+                  <div>
+                    <div class="contLabel" v-text="'现场处理情况'"></div>
+                    <el-input
+                      type="textarea"
+                      :rows="2"
+                      class="controlCont controlCont2"
+                      placeholder="请输入内容"
+                      v-model="newData.complete_info">
+                    </el-input>
+                  </div>
+                  <div class="contLabel" v-text="'巡检表格'"></div>
+                  <div class="boxs" style="width:95.6%;margin:0.2rem auto 0">
+                    <Table 
+                      :table = "newData.tableData"
+                    />
+                  </div>
+                  
+                  <!-- <div class="rightHead" v-if="newData && newData.now_state=='5'">
+                    <span class="infoBusy" v-text="'拒绝退单'" @click="dealWork(8)"></span>
+                    <span class="infoSend" v-text="'允许退单'" @click="dealWork(6)"></span>
+                  </div>
+                  <div class="rightHead" v-else-if="newData && newData.now_state=='2'">
+                    <span class="infoBusy" v-text="'拒绝延期'" @click="dealWork(7)"></span>
+                    <span class="infoSend" v-text="'允许延期'" @click="dealWork(3)"></span>
+                  </div> -->
+                </div>
               </div>
           </div>
       </Dialog>
@@ -141,6 +139,16 @@ export default {
           {label:'白居易',value:4},
           {label:'狗蛋儿',value:5},
         ],
+        newData:{
+          desc:[],
+          localDesc2:{},
+          tableData:{
+            len:1,
+            data:[{time:''}],
+            th:[{props:'serial',label:'序号'},
+            {props:'time',label:'日期'}]
+          }
+        },
         vName:-1,
         //日期选择
         value7:'8-24',
@@ -184,6 +192,7 @@ export default {
         infoItem:{
           desc:[],
           tableData:{
+            len:0,
             data:[],
             th:[]
           }
@@ -276,27 +285,32 @@ export default {
     },
     rowClick(row){
       this.rowData = row;
-      console.log(row)
       this.$refs.tableInfos2.show();
       this.rowData.operate='check';
       this.$http.post('/pc_ims/staff/inspectiondata_info',{ins_id:row.id}).then(res=>{
-        console.log(res.data)
           if(res.data.code==0){
-            this.infoItem.desc = [
-              {label:'类别',value:this.infoItem.user_name},
-              {label:'设备名称',value:this.infoItem.user_phone},
-              {label:'设备地点',value:this.infoItem.title},
-              {label:'检查人员',value:this.infoItem.floorname},
-              {label:'电话',value:this.infoItem.devicename},
+            let data = res.data.data.info;
+            this.newData.desc = [
+              {label:'类别',value:data.title},
+              {label:'设备名称',value:data.devicename},
+              {label:'设备地点',value:data.floorname},
+              {label:'检查人员',value:data.user_name},
+              {label:'电话',value:data.user_phone},
             ]
-            this.infoItem.localDesc = {label:'现场处理情况',value:this.infoItem.complete_info};
-            this.infoItem.tableData = res.data.data.zhanshi;
-            this.infoItem.tableData.data = this.infoItem.tableData.list;
-            let arr = [];
-            let arrData = [];
-            $.each(this.infoItem.tableData.data,(n,k)=>{
-              arr.push({prop:'now_value'+n,label:k.name,wid:30})
-              arrData['now_value'+n]=k.now_value;
+            let data1 = res.data.data.zhanshi;
+            let timearr = [];
+            let _this = this;
+            
+            $.each(data1,(n,k)=>{
+                //this.newData.tableData.data[n].time = k.time;
+                $.each(data1[n].from.list,(n1,k1)=>{
+                    // if(k1.name!=k2.label){
+                    //     this.newData.tableData.th.push({props:'value'+n1,label:k1.name});
+                    //   }
+                    console.log(this.newData.tableData.th)
+                     this.newData.tableData.data[n1] = k1;
+                     k1['value1'] = data1[n].from.list[n1].now_value;
+                })
             })
             this.infoItem.tableData.data = arrData;
             this.infoItem.tableData.th = arr;
@@ -308,11 +322,38 @@ export default {
           }
       })
     },
-    agree(item){ //同意
-        console.log(item)
+    agree(item,type){ //同意
+        this.dealWork(item,type)
     },
-    refult(item){//拒绝
-       console.log(item)
+    refult(item,type){//拒绝
+       this.dealWork(item,type)
+    },
+    dealWork(item,type){
+      item = item.item;
+      if(!item.info){
+        item.info = '';
+      }
+      if(!item.newuser_id){
+        item.newuser_id = ''
+      }
+      this.$http.post('/pc_ims/admin/write_inspectionlist',{
+        id:item.id,
+        type:type,
+        info:item.info,
+        user_id:item.user_id,
+        newuser_id:item.newuser_id,
+        form:JSON.parse(item.form).list
+      }).then(res=>{
+        if(res.data.code==0){
+          console.log(res.data.data);
+        }else{
+          this.$message({
+            type:'error',
+            message:'退单失败。'
+          })
+        }
+
+      })
     },
     tableInfos2Show(item){
       console.log(item)
@@ -648,5 +689,81 @@ export default {
     }
 
   }
+  .routingTask{
+  width:100%;
+  height:100%;
+  .taskDtl{
+    width:100%;
+    margin-top:0.11rem;
+    overflow:hidden;
+    padding:0 1.464vw;
+    .taskLabel{
+      float:left;
+      padding:0 0.1rem;
+      color:#4F648B;
+    }
+    .taskCont{
+      float:left;
+      padding:0 0.1rem;
+      color:#B5D7FF;
+    }
+  }
+  .job_det{
+    float:left;
+  }
+  .contLabel{
+      line-height:0.54rem;
+      padding:0 1.464vw;
+      color:#4F648B;
+  }
+  .controlCont{
+      padding:0 1.464vw;
+  }
+  .controlCont1{
+    .vh(50);
+    box-shadow:0px 0px 1px 0px rgba(87,113,176,0.15),0px 1px 2px 0px rgba(0,0,0,0.5);
+    border-radius:1px;
+  }
+  .controlCont2{
+    height:0.7rem;
+    box-shadow:0px 0px 1px 0px rgba(87,113,176,0.15),0px 1px 2px 0px rgba(0,0,0,0.5);
+    border-radius:1px;
+  }
+  .rightHead{
+    width:2.34rem;
+    bottom:0;
+    right:0;
+    position: absolute;
+    line-height:0.52rem;
+    color:#fff;
+    .infoBusy{
+      margin-top:0.09rem;
+      display:inline-block;
+      line-height:0.32rem;
+      width:0.96rem;
+      background:#164488;
+      font-size:12px;
+      border-radius:2px;
+      text-align:center;
+      margin-right:0.12rem;
+      &:hover{
+        cursor:pointer;
+      }
+    }
+    .infoSend{
+      margin-top:0.09rem;
+      display:inline-block;
+      line-height:0.32rem;
+      width:0.96rem;
+      background:#1989FA;
+      border-radius:2px;
+      font-size:12px;
+      text-align:center;
+      &:hover{
+        cursor:pointer;
+      }
+    }
+  }
+}
 }
 </style>

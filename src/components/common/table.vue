@@ -45,7 +45,7 @@ rowClick(row){
 -->
 
 <template>
-  <div class="tableBox" :class="{'padding0':table.len!=undefined}">
+  <div class="tableBox" :class="{'padding0':tableData.len!=undefined}">
         <el-table
         :size="table.small"
         :height="table.hei"
@@ -157,6 +157,7 @@ export default {
   },
   mounted(){
     this.tableData = this.table;
+    //this.tableData.len = this.table.data.length;
   }
 }
 </script>

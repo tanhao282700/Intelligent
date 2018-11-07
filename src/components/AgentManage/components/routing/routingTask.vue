@@ -80,7 +80,7 @@
         }
       },
       mounted() {
-        console.log(this.data);
+        //console.log(this.data);
          this.newData = this.data;
          if(this.newData.now_state==0){
           this.isZero = true;

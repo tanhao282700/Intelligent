@@ -123,10 +123,13 @@
                     </div>
                   </div>
                 </div>
-                <div class="btnsgroups">
+                <div class="btnsgroups" v-show="dtlObj.now_state==0">
                   <span class="infoBusy" v-text="'退单'" @click="backWork(dtlObj,5)"></span>
                   <span class="infoSend" v-text="'取消'" @click="backWork(dtlObj,0)"></span>
                   <span class="infoSubmit" v-text="'提交'" @click="backWork(dtlObj,4)"></span>
+                </div>
+                <div class="btnsgroups" v-show="dtlObj.now_state==2 || dtlObj.now_state==3">
+                  <span class="infoBusy" v-text="'退单'" @click="backWork(dtlObj,5)"></span>
                 </div>
               </div>
               <div v-show="tabPosition=='延期处理'" class="tabLists">
@@ -183,10 +186,13 @@
                     v-model="dtlObj.complete_info">
                   </el-input>
                 </div>
-                <div class="btnsgroups">
+                <div class="btnsgroups" v-show="dtlObj.now_state==0">
                   <span class="infoBusy" v-text="'退单'" @click="backWork(dtlObj,5)"></span>
                   <span class="infoSend" v-text="'取消'" @click="backWork(dtlObj,0)"></span>
                   <span class="infoSubmit" v-text="'提交'" @click="backWork(dtlObj,4)"></span>
+                </div>
+                <div class="btnsgroups" v-show="dtlObj.now_state==2 || dtlObj.now_state==3">
+                  <span class="infoBusy" v-text="'退单'" @click="backWork(dtlObj,5)"></span>
                 </div>
               </div>
             </div>
@@ -597,6 +603,7 @@ export default {
                 res.data.data[n].serial = (1 - 1) * 20 + 1 + n;
 
              })
+             this.table.len = res.data.count;
              this.table.data = res.data.data;
 
            }else{
