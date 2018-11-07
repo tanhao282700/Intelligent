@@ -46,7 +46,6 @@
     				</li>
             <li>
               <el-select @change="chooseChange(item,index)" v-model="item.time_type" placeholder="时段类型">
-                <el-option label="无" value=""></el-option>
                 <el-option label="谷时" value="谷时"></el-option>
                 <el-option label="峰时" value="峰时"></el-option>
                 <el-option label="平时" value="平时"></el-option>
