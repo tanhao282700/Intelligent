@@ -5,8 +5,8 @@
 -->
 <template>
   <div>
-    <div class="tabsDomBox0">
-      <div class="navCrumbs">首页 > 消防系统 > <span>火警监测</span></div>
+    <div class="tabsDomBox0 h-paddingTop">
+      <div class="navCrumbs"><p @click="toHome">首页</p> > 消防系统 > <span>火警监测</span></div>
     </div>
     <div :style="fireState!=0?{boxShadow:'none'}:null" class="fireMonitor">
       <div v-if="fireState==0" class="noHaveFire">
@@ -356,7 +356,7 @@
 
         let that = this;
         let config = {
-          sys_menu_id:'22'
+          sys_menu_id:this.$store.state.sysList[16].sys_menu_id
         }
         let headers = {
           //'Content-Type': 'multipart/form-data'
@@ -410,7 +410,7 @@
 
       getMonitorControl(key, value){
         let obj = {
-          sys_menu_id:'22',
+          sys_menu_id:this.$store.state.sysList[16].sys_menu_id,
           key:key,
           value:value
         };
@@ -514,6 +514,9 @@
         this.getMonitorControl(id,type);
 
         this.$refs.dialog.hide();
+      },
+      toHome(){
+        this.$router.replace({ path: '/home', params: { isLogin: true} });
       }
     },
     created() {
@@ -814,6 +817,7 @@
                 font-family:PingFangSC-Regular;
                 font-weight:400;
                 color:rgba(255,255,255,1);
+                padding: 0;
                 .icon_play{
                   display: inline-block;
                   width: 0.16rem;

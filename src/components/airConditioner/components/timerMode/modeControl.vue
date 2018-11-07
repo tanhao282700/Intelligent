@@ -7,7 +7,7 @@
       </div>
     </div>
     <div class="body">
-      <div class="tableBox">
+      <div class="h-tableBox">
         <div class="title">
           <div :style="{width:v.wid}" class="th" v-for="(v,i) in tableThLists" v-text="v.label" :key="i"></div>
         </div>
@@ -429,7 +429,7 @@
     }
 
     .body{
-      .tableBox{
+      .h-tableBox{
         border: solid 1px rgba(181, 215, 255, 0.25);
         .title{
           width: 13.06rem;

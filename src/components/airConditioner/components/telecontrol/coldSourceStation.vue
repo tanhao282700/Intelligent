@@ -20,17 +20,15 @@
     <div class="deviceDetailBox" id="deviceDetailBox">
       <div class="deviceSet">
         <self-popover2 :info="[
-          {id:1,tit:'设备名称',content:'设备名称'},
-          {id:1,tit:'设备类型',content:'空调机房主机'},
-          {id:1,tit:'设备品牌',content:'格力'},
-          {id:1,tit:'设备型号',content:'xxxxxxxx'},
-          {id:1,tit:'厂商',content:'xxxxxxxx'},
-          {id:1,tit:'启用时间',content:'xxxxxxxx'},
-          {id:1,tit:'维保名称',content:'xxxxxxxx'},
-          {id:1,tit:'维保电话',content:'xxxxxxxx'},
-        ]" />
+          
+        ]" :tuliCodes="codes" />
 
-        <div class="btnBox">
+        <el-scrollbar style="height:100%">
+          <div class="controlBtnBox">
+
+          </div>
+        </el-scrollbar>
+        <!--<div class="btnBox">
           <div class="title">冷冻水供水温度设置</div>
           <div class="inputBox">
             <div class="showState">
@@ -44,9 +42,10 @@
           <div class="switchBox">
             <self-switch :togglee="parentToggle" />
           </div>
-        </div>
+        </div>-->
       </div>
       <div class="deviceEchart">
+        <i class="el-icon-circle-close colseBoxs" style="position: absolute;right: 0;top: 0" @click="hide"></i>
         <div class="selfTabBox">
           <ul class="self-tab-head">
             <li @click="tabToggle(i)" :class="['part',{active:i==tabActive}]" v-for="(v,i) in tabData" v-text="v.unit.length!=0?(v.title+'('+v.unit[0]+')'):v.title" :key="i"></li>
@@ -71,7 +70,7 @@
           </el-cascader>
         </div>
         <div class="btnClickBox">
-          <button type="button" @click="oneKeySwitch">一键关闭</button>
+          <button :disabled="!(yijianNowVal == 0 || yijianNowVal ==1)" type="button" @click="oneKeySwitch" v-text="yijianNowVal == 0 ? '一键关闭' : yijianNowVal == 1 ? '一键开启' : '未知错误'"></button>
         </div>
       </div>
 
@@ -81,15 +80,15 @@
         frameborder="0"
         width="100%"
         height="100%"
-        src="../../../../../static/bim3d/device3D.html">
+        :src="modelUrl">
 
       </iframe>
 
 
-      <button style="position: absolute;top: 100px;" type="button" @click="changeDeviceState('product-16f7b54a-1d6d-4450-a883-c034787d3203-body',1)">改变设备状态1</button>
+      <!--<button style="position: absolute;top: 100px;" type="button" @click="changeDeviceState('product-16f7b54a-1d6d-4450-a883-c034787d3203-body',1)">改变设备状态1</button>
       <button style="position: absolute;top: 130px;" type="button" @click="changeDeviceState('product-16f7b54a-1d6d-4450-a883-c034787d32ea-body', 2)">改变设备状态2</button>
       <button style="position: absolute;top: 160px;" type="button" @click="changeDeviceState('product-5af82546-e39b-4e8a-95cb-31997ebf1bc7-body', 0)">改变设备状态3</button>
-      <button style="position: absolute;top: 190px;" type="button" @click="changeDeviceState('product-16f7b54a-1d6d-4450-a883-c034787d46aa-body', 3)">改变设备状态4</button>
+      <button style="position: absolute;top: 190px;" type="button" @click="changeDeviceState('product-16f7b54a-1d6d-4450-a883-c034787d46aa-body', 3)">改变设备状态4</button>-->
 
 
 
@@ -105,7 +104,7 @@
     </Dialog>
     <Dialog wid = "3.64rem" hei = "2.16rem" ref = "dialog2">
       <div class="dialog-in">
-        <p class="p-text">是否确认一键启停？</p>
+        <p class="p-text">是否确认{{yijianNowVal == 0 ? '一键关闭' : yijianNowVal == 1 ? '一键开启' : '未知错误'}}？</p>
         <div class="btnWrap">
           <button @click="sureControl2" type="button">确定</button>
           <button @click="()=>{this.$refs.dialog2.hide();this.$message('取消操作！');}" type="button">取消</button>
@@ -134,6 +133,7 @@
       props:['sysId'],
       data() {
         return {
+          codes:'',
           lists1:[
             /*{
               id:1,
@@ -158,20 +158,20 @@
             },*/
           ],
           options: [
-            {
-              value: '1',
-              label: '一号机房',
-              children: [
-                {
-                  value: '3',
-                  label: '一号机房的子',
-                },
-              ]
-            },
-            {
-              value: '2',
-              label: '二号机房',
-            }
+            // {
+            //   value: '1',
+            //   label: '一号机房',
+            //   children: [
+            //     {
+            //       value: '3',
+            //       label: '一号机房的子',
+            //     },
+            //   ]
+            // },
+            // {
+            //   value: '2',
+            //   label: '二号机房',
+            // }
           ],
           selectedOptions2: [],
           btnActive:false,
@@ -294,7 +294,7 @@
 
           iframeWin:{},
           deviceStates:[
-            {
+            /*{
               tit:'状态',
               val:'开启',
             },
@@ -317,17 +317,38 @@
             {
               tit:'冷凝压力',
               val:'10.22MPA',
-            }
+            }*/
           ],
 
           showSingleDevice:false,
+          modelUrl:'',
+          object_device:[],
+          yijianNowVal:undefined,
+          yijianPointId:undefined,
+          tempObjName:''
 
         }
       },
       methods: {
+        hide(){
+          if (this.showSingleDevice) {
+            Velocity($('#threeDBox'), {
+              height: '63.05vh'
+            }, {
+              duration: 300
+            });
+            Velocity($('#deviceDetailBox'), {
+              height: 0,
+              marginTop: 0,
+            }, {
+              duration: 300
+            });
+          }
+          this.showSingleDevice = false;
+        },
         /**** 外部vue向iframe内部传数据 ****/
         //先通知模型有哪些部分需响应
-        postInitJson(){
+        postInitJson(){   //这部分目前用不着，先留着
           // 外部vue向iframe内部传数据
           //alert('我发了哦')
           this.iframeWin.postMessage({
@@ -352,32 +373,7 @@
                   "errname": null
                 }
               },
-              messageobj : {
-                "device_Waterpump1": {
-                  "coordinate": {"x": 1.34, "y": 0.8, "z": 4.195},
-                  "canvas": null,
-                  "textureCanvas": null,
-                  "textinfo": {"测试数据1": {"fillStyle": "#f0f0f0", "font": 100}, "1#循环水泵": {"fillStyle": "#ffa414", "font": 50}}
-                },
-                "device_Waterpump2": {
-                  "coordinate": {"x": 3.16, "y": 0.8, "z": 4.195},
-                  "canvas": null,
-                  "textureCanvas": null,
-                  "textinfo": {"测试数据2": {"fillStyle": "#ff0", "font": 100}, "2#循环水泵": {"fillStyle": "#ffa414", "font": 50}}
-                },
-                "device_Waterhost1": {
-                  "coordinate": {"x": 1.93, "y": 1.4, "z": 9.187},
-                  "canvas": null,
-                  "textureCanvas": null,
-                  "textinfo": {"测试数据3": {"fillStyle": "#0f0", "font": 100}, "1#空调主机": {"fillStyle": "#ffa414", "font": 50}}
-                },
-                "device_Waterhost2": {
-                  "coordinate": {"x": 5.89, "y": 1.4, "z": 9.187},
-                  "canvas": null,
-                  "textureCanvas": null,
-                  "textinfo": {"测试数据4": {"fillStyle": "#f00", "font": 100}, "2#空调主机": {"fillStyle": "#ffa414", "font": 50}}
-                }
-              }
+              messageobj : null
 
             }
           }, '*')
@@ -408,16 +404,19 @@
           const data = event.data;
           switch (data.cmd) {
             case 'reFoundObjName':
-              //这里请求后台获得设备具体数据，又发回去
-              //假设已请求到数据
-            function randomsort(a, b) {
-              return Math.random()>.5 ? -1 : 1;
-              //用Math.random()函数生成0~1之间的随机数与0.5比较，返回-1或1
-            }
-              this.postDeviceData(this.deviceStates.sort(randomsort));
+              let objName = data.params.objName;
+              if (this.tempObjName != objName) {
+                this.tempObjName = objName;
+                this.requestOneDeviceInfo(objName);
+              }else {
+                //alert('你废了哦？')
+              }
+                //这里请求后台获得设备具体数据，又发回去
+              this.postDeviceData(this.deviceStates);
               break;
             case 'reDeviceClick':
-              console.log(data.params.clickObjName);
+              //console.log(data.params.clickObjName);
+              this.getEchartsData(data.params.clickObjName);
               if (!this.showSingleDevice) {
                 Velocity($('#deviceDetailBox'), {
                   height: '24.72vh',
@@ -434,20 +433,8 @@
               this.showSingleDevice = true;
               break;
             case 'cancelDevice':
-              if (this.showSingleDevice && data.params.cancelDevice) {
-                Velocity($('#deviceDetailBox'), {
-                  height: 0,
-                  marginTop: 0,
-                }, {
-                  duration: 300
-                });
-                Velocity($('#threeDBox'), {
-                  height: '63.05vh'
-                }, {
-                  duration: 300
-                });
-              }
-              this.showSingleDevice = false;
+              console.log(data.params.cancelObject_id)
+
               break;
           }
         },
@@ -467,6 +454,11 @@
             if (data.code == 0) {
               let arr = [];
               let data2 = data.data.data;
+
+              let yijian = data.data.yijian;
+              this.yijianNowVal = yijian.nowvalue;
+              this.yijianPointId = yijian.point_id;
+
               data2.map((item, i) => {
                 let obj = {};
                 obj.id = item.self_id;
@@ -476,17 +468,18 @@
                 obj.off = item.guan;
                 arr.push(obj);
               });
-
               this.lists1 = arr;
 
             } else {
 
               this.$message(data.message);
             }
+          }).catch(err=>{
+            this.$message(err);
           })
         },
-        //获取首页三个设备echarts数据
-        getEchartsData(object_id=3){
+        //获取单个设备echarts数据
+        getEchartsData(object_id){
           let that = this;
           let config = {
             object_id:object_id
@@ -498,6 +491,7 @@
             let data = res.data;
             console.log('获取echarts数据', config, res);
             if (data.code == 0) {
+              //报表
               let commtable = data.data.commtable;
               let tempArr1 = [];
               commtable.map((item,i)=>{
@@ -518,51 +512,22 @@
                 obj1.datas.list.push(obj2);
                 tempArr1.push(obj1);
               })
-
               this.tabData = tempArr1;
+              //设备
+              let control = data.data.control;
+              let device_info = data.data.device_info;
+              let device_pic = data.data.device_pic;
+
+              this.codes = device_pic[device_info.now_state].codes;
+              console.log('gfrdgfd设备数据',control,device_info,device_pic)
 
             } else {
 
               this.$message(data.message);
             }
-          })
-          /*let obj = {
-            object_id:object_id
-          };
-          utils.post('airConditioner/index/device',obj).then(res=>{
-            console.log('获取echarts数据',obj,res);
-            if (res.code==0){
-              let commtable = res.data.commtable;
-              let tempArr1 = [];
-              commtable.map((item,i)=>{
-                let obj1 = {};
-                obj1.id = item.point_id;
-                obj1.title = item.title;
-                obj1.unit = [];
-                obj1.unit.push(item.unit);
-                obj1.datas = {};
-                obj1.datas.id = 'selfEchart'+item.point_id;
-                obj1.datas.style = {width:'6.43rem',height:146*100/728+'vh'};
-                obj1.datas.showMarkL = true;
-                obj1.datas.markLineVal = item.standard;
-                obj1.datas.list = [];
-                let obj2 = {};
-                obj2.name = item.title;
-                obj2.data = item.data;
-                obj1.datas.list.push(obj2);
-                tempArr1.push(obj1);
-              })
-
-              this.tabData = tempArr1;
-
-
-            } else {
-
-              this.$message(res.message);
-            }
           }).catch(err=>{
             this.$message(err);
-          })*/
+          })
         },
         //获取机房3d模型
         get3DFloor(sysID=this.$store.state.sysList[1].son_list[0].sys_menu_id){
@@ -580,28 +545,118 @@
               let floor_id = data.data[0].floor_id;
               this.$store.state.airFloorId = floor_id;
               this.getThreeDevice(sysID,floor_id);
+
+              //机房列表
+              let floorList = data.data;
+              let tempArr = [];
+              floorList.map((item,i)=>{
+                let obj = {};
+                obj.value = item.floor_id;
+                obj.label = item.title;
+                if (item.son.length !== 0) {
+                  obj.children = [];
+                  item.son.map((item2,i2)=>{
+                    let obj2 = {};
+                    obj2.value = item2.floor_id;
+                    obj2.label = item2.title;
+                    if (item2.son.length !== 0){
+                      obj2.children = [];
+                      item2.son.map((item3,i3)=>{
+                        let obj3 = {};
+                        obj3.value = item3.floor_id;
+                        obj3.label = item3.title;
+                        obj2.children.push(obj3)
+                      })
+                    }
+                    obj.children.push(obj2)
+                  })
+                }
+                tempArr.push(obj)
+              })
+              this.options = tempArr;
+              this.selectedOptions2 = [floor_id];
+              //3d地址和设备状态
+              this.modelUrl = data.data[0].object_3d;
+              let object_device = data.data[0].object_device;
+              this.object_device = object_device;
+              setTimeout(()=>{   //没有监测到模型是否加载完毕，只能用延时了
+                object_device.map((item,i)=>{
+                  this.changeDeviceState(item.object_id,item.state)
+                })
+              },1000)
+
+
             } else {
 
               this.$message(data.message);
             }
+          }).catch(err=>{
+            this.$message(err);
           })
-          /*let obj = {
-            sys_menu_id:sysID,
-          };
-          utils.post('airConditioner/floor',obj).then(res=>{
-            console.log('获取机房3d模型',obj,res);
-            if (res.code==0){
+        },
+        //一键启停的开关
+        requestOneKeyControl(point_id,nowVal){
+          let that = this;
+          let config = {
+            point_id:point_id,
+            now_value:nowVal
+          }
+          let headers = {
+            //'Content-Type': 'multipart/form-data'
+          }
+          this.$http.get('/realtime_pc/pc/control', config, headers).then(res => {
+            let data = res.data;
+            console.log('点位设备控制', config, res);
+            if (data.code == 0) {
+              this.$message(data.message);
 
+              this.yijianNowVal = nowVal;
             } else {
-
-              this.$message(res.message);
+              this.$message(data.message);
             }
           }).catch(err=>{
             this.$message(err);
-          })*/
+          })
+        },
+        //获取模型中单个设备信息
+        requestOneDeviceInfo(object_id){
+          let that = this;
+          let config = {
+            object_id:object_id
+          }
+          let headers = {
+            //'Content-Type': 'multipart/form-data'
+          }
+          if (object_id != 'product-50a37d21-4ee5-4d74-a2cb-3c99354bb804-body_1_0') { //排除这个无用设备，听说后端绑机房用
+            this.$http.get('/hvac_pc/pc/index/device/point', config, headers).then(res => {
+              let data = res.data;
+              console.log('模型中单设备信息', config, res);
+              if (data.code == 0) {
+                let dataArr = data.data;
+                let tempArr = [];
+                dataArr.map((item,i)=>{
+                  let obj = {};
+                  obj.tit = item.title;
+                  if (item.params !== ''){
+                    let paramsObj = eval('('+item.params+')');
+                    obj.val = paramsObj.showvalue[parseInt(item.nowvalue)]
+                  } else {
+                    obj.val = item.nowvalue+item.unit;
+                  }
+                  tempArr.push(obj)
+                })
+                this.deviceStates = tempArr;
+              } else {
+                this.$message(data.message);
+                this.deviceStates = [];
+              }
+            })
+          }
         },
         handleChange(value) {
           console.log(value);
+          //console.log(this.selectedOptions2)
+          this.getThreeDevice(this.$store.state.sysList[1].son_list[0].sys_menu_id,value[0]);
         },
         tempHandleChange() {
           this.$refs.dialog.show();
@@ -620,6 +675,7 @@
           this.$refs.dialog.hide();
         },
         sureControl2() {
+          this.requestOneKeyControl(this.yijianPointId,this.yijianNowVal == 0?1:0);
           this.$refs.dialog2.hide();
         },
         oneKeySwitch(){
@@ -633,36 +689,23 @@
 
       },
       created() {
-        this.$parent.$parent.$parent.$parent.$parent.msg = '一号机房当前模式：自动控制模式,预计在9:00开启，23:20关闭';
-        this.getEchartsData();
+
 
         this.get3DFloor();
-        /*setTimeout(()=>{
-          alert(this.sysId)
-        },2000)*/
-        /*var i = setInterval(()=>{
-          if (this.sysId != 'undefined'){
-            alert(this.sysId);
-            clearInterval(i);
-          } else {
-            console.log(this.sysId)
-          }
-        },500)*/
 
-        //console.log('系统列表',this.$store.state.sysList)
 
-        let tempObj = this.$store.state.sysList[1];
-        console.log(tempObj)
-        /*for (var i in tempObj) {
-          console.log(i,":",tempObj[i]);
-        }*/
+        // //console.log('系统列表',this.$store.state.sysList)
+        //
+        // let tempObj = this.$store.state.sysList[1];
+        // console.log(tempObj)
+        // /*for (var i in tempObj) {
+        //   console.log(i,":",tempObj[i]);
+        // }*/
 
 
 
       },
       mounted() {
-
-        //this.$parent.$parent.$parent.$parent.$parent.isIf=true;
 
         // 在外部vue的window上添加postMessage的监听，并且绑定处理函数handleMessage
         window.addEventListener('message', this.handleMessage)
@@ -672,8 +715,9 @@
 
 
         setTimeout(()=>{
-          this.postInitJson()
-        },2000)
+          //this.postInitJson()
+          //this.get3DFloor();
+        },10000)
 
         /*// 这里就拿到了iframe的对象
         console.log(this.$refs.iframe)
@@ -771,7 +815,7 @@
         inset 0px -1px 1px 0px
         #4a90e2;
         border-radius: 4px;
-        .btnBox{
+        /*.btnBox{
           height: 100%;
           .title{
             .vhMT(20);
@@ -858,9 +902,10 @@
               }
             }
           }
-        }
+        }*/
       }
       .deviceEchart{
+        position: relative;
         width: 6.43rem;
         .vh(180);
         background-color: transparent;

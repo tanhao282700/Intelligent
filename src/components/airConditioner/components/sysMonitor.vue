@@ -5,8 +5,8 @@
 -->
 <template>
   <div>
-    <div class="tabsDomBox0">
-      <div class="navCrumbs">首页 > 空调系统 > <span>系统监测</span></div>
+    <div class="tabsDomBox0 h-paddingTop">
+      <div class="navCrumbs"><p @click="toHome">首页</p> > 空调系统 > <span>系统监测</span></div>
     </div>
     <div class="sysMonitor">
       <el-tabs class="tabBoxs" v-model="activeName" @tab-click="handleClick">
@@ -58,6 +58,9 @@
         console.log(tab.index);
 
       },
+      toHome(){
+        this.$router.replace({ path: '/home', params: { isLogin: true} });
+      }
     },
     created() {
     },

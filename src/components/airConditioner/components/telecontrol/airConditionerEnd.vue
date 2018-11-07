@@ -186,6 +186,7 @@
         },
         newNum:1,
         table:{
+          showPagination:true,
           hei:540, //table高度  设置后有滚动条
           len:0, //总条数
           pageSize:20, //每页的条数 。默认为20
@@ -252,7 +253,7 @@
             title:'送风/回风温度',
             unit:['℃'],
             datas:{
-              id:'selfEchart4',
+              id:'hselfEchart4',
               style:{width:'6.43rem',height:171*100/728+'vh'},
               showLegends:true,
               list:[
@@ -299,7 +300,7 @@
             title:'送风/回风湿度',
             unit:['%'],
             datas:{
-              id:'selfEchart5',
+              id:'hselfEchart5',
               style:{width:'6.43rem',height:171*100/728+'vh'},
               showLegends:true,
               list:[
@@ -346,7 +347,7 @@
             title:'滤网压差',
             unit:['pa'],
             datas:{
-              id:'selfEchart6',
+              id:'hselfEchart6',
               style:{width:'6.43rem',height:171*100/728+'vh'},
               showLegends:true,
               list:[
@@ -1105,6 +1106,9 @@
       }
     }
     .dialog2-in{
+      .tableBox .el-table__header{
+        background-color: transparent !important;
+      }
       width: 100%;
       height: 100%;
       .title{

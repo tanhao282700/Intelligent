@@ -194,7 +194,7 @@
         routerData: {
           id: 0,
           lists: [
-            {id: 0, name: '告警管理', route: '/fireAlarm'},
+            {id: 0, name: '告警管理', route: '/alarm'},
           ]
         },
         options: [

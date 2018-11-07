@@ -50,7 +50,7 @@
         <span @click="changeType(0)" v-text="conditionData[0].name" :class="{'active':types==0}"></span>
         <span @click="changeType(1)" v-if="conditionData[1]" :class="{'active':types==1}" v-text="conditionData[1].name"></span>
       </div>
-      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -62,20 +62,20 @@
       }
     },
     data(){
-        return{
-          revenueCharts1:{},
-          animate1:false,
-          animate2:false,
-          loading:false,
-          isSystemHover:false,
-          isEquipmentHover:false,
-          broadOneList:[],
-          broadTwoList:[],
-          conditionInterval:null,
-          conditionData:[{name:''},{name:""}],
-          types:0,  // 初始化显示第一个按钮
-          patternData:[]  //系统模式数据
-        }
+      return{
+        revenueCharts1:{},
+        animate1:false,
+        animate2:false,
+        loading:false,
+        isSystemHover:false,
+        isEquipmentHover:false,
+        broadOneList:[],
+        broadTwoList:[],
+        conditionInterval:null,
+        conditionData:[{name:''},{name:""}],
+        types:0,  // 初始化显示第一个按钮
+        patternData:[]  //系统模式数据
+      }
     },
     components:{
 
@@ -99,7 +99,7 @@
         this.types = types;
         clearInterval(this.conditionInterval);
         if(types == 0){
-            this.broadOneList = this.conditionData[0].data3
+          this.broadOneList = this.conditionData[0].data3
           this.broadTwoList = this.conditionData[0].data4
           this.patternData = this.conditionData[0].data2
 
@@ -133,116 +133,116 @@
       },
       initData(){
         this.$http.get('/index_pc/pc/model',{self_id:1})
-            .then((response)=>{
-              response.data.data[0].data4.map((item,index)=>{
-                item.param = JSON.parse(item.param)
-              })
-              this.broadOneList = response.data.data[0].data3
-              this.broadTwoList = response.data.data[0].data4
-              this.patternData = response.data.data[0].data2
-              this.patternData[0].param = JSON.parse(this.patternData[0].param)
-              if(this.patternData[1].param){
-                this.patternData[1].param = JSON.parse(this.patternData[1].param)
-              }
-              this.conditionData = response.data.data
-              /*this.conditionData[1] =  {
-                "data1": [
-                  {
-                    "name": "系统COP",
-                    "value": "0"
-                  },{
-                    "name": "测试COP",
-                    "value": "0"
-                  }
-                ],
-                "data2":
-                  [{
-                    name: "主机模式",
-                    param: {'value': ['1','2'],showvalue: ['制冷','制热'],'type':0},
-                    value:"0"
-                }],
-                "data3": [
-                  {
-                    "name": "啊实打实的",
-                    "unit": "",
-                    "value": "0"
-                  },
-                  {
-                    "name": "阿瑟的",
-                    "unit": "",
-                    "value": "0"
-                  },
-                  {
-                    "name": "阿文档发玩",
-                    "unit": "",
-                    "value": "0"
-                  },
-                  {
-                    "name": "阿瑟的",
-                    "unit": "",
-                    "value": "0"
-                  },
-                  {
-                    "name": "下的车撒旦法",
-                    "unit": "",
-                    "value": "0"
-                  },
-                  {
-                    "name": "还让他",
-                    "unit": "",
-                    "value": "0"
-                  },
-                  {
-                    "name": "冷却水总管回水温度",
-                    "unit": "",
-                    "value": "0"
-                  },
-                  {
-                    "name": "1#冷冻水泵运行频率",
-                    "unit": "",
-                    "value": "0"
-                  },
-                  {
-                    "name": "2#冷冻水泵运行频率",
-                    "unit": "",
-                    "value": "0"
-                  },
-                  {
-                    "name": "1#冷却泵运行频率",
-                    "unit": "",
-                    "value": "0"
-                  },
-                  {
-                    "name": "2#冷却泵运行频率",
-                    "unit": "",
-                    "value": "0"
-                  }
-                ],
-                "data4": [
-                  {
-                    "name": "草泥马",
-                    "param": "",
-                    "value": "0"
-                  },
-                  {
-                    "name": "哈哈哈",
-                    "param": "",
-                    "value": "0"
-                  }
-                ],
-                "name": "测试"
-              }*/
+          .then((response)=>{
+        response.data.data[0].data4.map((item,index)=>{
+          item.param = JSON.parse(item.param)
+      })
+        this.broadOneList = response.data.data[0].data3
+        this.broadTwoList = response.data.data[0].data4
+        this.patternData = response.data.data[0].data2
+        this.patternData[0].param = JSON.parse(this.patternData[0].param)
+        if(this.patternData[1].param){
+          this.patternData[1].param = JSON.parse(this.patternData[1].param)
+        }
+        this.conditionData = response.data.data
+        /*this.conditionData[1] =  {
+         "data1": [
+         {
+         "name": "系统COP",
+         "value": "0"
+         },{
+         "name": "测试COP",
+         "value": "0"
+         }
+         ],
+         "data2":
+         [{
+         name: "主机模式",
+         param: {'value': ['1','2'],showvalue: ['制冷','制热'],'type':0},
+         value:"0"
+         }],
+         "data3": [
+         {
+         "name": "啊实打实的",
+         "unit": "",
+         "value": "0"
+         },
+         {
+         "name": "阿瑟的",
+         "unit": "",
+         "value": "0"
+         },
+         {
+         "name": "阿文档发玩",
+         "unit": "",
+         "value": "0"
+         },
+         {
+         "name": "阿瑟的",
+         "unit": "",
+         "value": "0"
+         },
+         {
+         "name": "下的车撒旦法",
+         "unit": "",
+         "value": "0"
+         },
+         {
+         "name": "还让他",
+         "unit": "",
+         "value": "0"
+         },
+         {
+         "name": "冷却水总管回水温度",
+         "unit": "",
+         "value": "0"
+         },
+         {
+         "name": "1#冷冻水泵运行频率",
+         "unit": "",
+         "value": "0"
+         },
+         {
+         "name": "2#冷冻水泵运行频率",
+         "unit": "",
+         "value": "0"
+         },
+         {
+         "name": "1#冷却泵运行频率",
+         "unit": "",
+         "value": "0"
+         },
+         {
+         "name": "2#冷却泵运行频率",
+         "unit": "",
+         "value": "0"
+         }
+         ],
+         "data4": [
+         {
+         "name": "草泥马",
+         "param": "",
+         "value": "0"
+         },
+         {
+         "name": "哈哈哈",
+         "param": "",
+         "value": "0"
+         }
+         ],
+         "name": "测试"
+         }*/
 
-              this.conditionInterval = setInterval(this.scroll,5000);
-              if(this.conditionData[0].data1.length == 1){
-                this.drawEchart1(this.conditionData[0].data1)
-              }
-              if(this.conditionData[0].data1.length == 2){
-                this.drawEchart1(this.conditionData[0].data1)
-                this.drawEchart2(this.conditionData[0].data1)
-              }
-            })
-            .catch()
+        this.conditionInterval = setInterval(this.scroll,5000);
+        if(this.conditionData[0].data1.length == 1){
+          this.drawEchart1(this.conditionData[0].data1)
+        }
+        if(this.conditionData[0].data1.length == 2){
+          this.drawEchart1(this.conditionData[0].data1)
+          this.drawEchart2(this.conditionData[0].data1)
+        }
+      })
+      .catch()
       },
       scroll(){
         if(!this.isSystemHover){
@@ -263,11 +263,11 @@
         }
       },
       enter(type){
-          if(type == 1){
-            this.isSystemHover = true
-          }else{
-            this.isEquipmentHover = true
-          }
+        if(type == 1){
+          this.isSystemHover = true
+        }else{
+          this.isEquipmentHover = true
+        }
       },
       mouseleave(type){
         if(type == 1){
@@ -392,152 +392,152 @@
         font-size:.12rem;
       }
     }
-  .con{
-    flex:1;
-    display:flex;
-    flex-direction: column;
-    padding:2.597% 6% 0 6%;
-    .con-top{
-      margin-top:1.623%;
-      background:rgba(0,0,0,0.15);
-      opacity:.8;
-      height: .74rem;
+    .con{
       flex:1;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-around;
-      #conditionEcharts1{
+      display:flex;
+      flex-direction: column;
+      padding:2.597% 6% 0 6%;
+      .con-top{
+        margin-top:1.623%;
+        background:rgba(0,0,0,0.15);
+        opacity:.8;
+        height: .74rem;
         flex:1;
-        height:100%;
         display: flex;
+        flex-direction: row;
         align-items: center;
-        flex-direction: row;
-        justify-content: center;
-        /*width:45%;*/
-      }
-      #conditionEcharts2{
-        flex:1;
-        height:100%;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        /*width:45%;*/
-      }
-    }
-    .conditionEcharts3{
-      height:14.123%;
-      background:rgba(0,0,0,0.15);
-      margin-top:1.623%;
-      display: flex;
-      padding:0 2.272%;
-      .type{
-        width:50%;
-        /*flex:1;*/
-        display: flex;
-        flex-direction: column;
-        font-size:12px;
-        color:white;
-        .name{
-          height:39%;
+        justify-content: space-around;
+        #conditionEcharts1{
+          flex:1;
+          height:100%;
           display: flex;
           align-items: center;
-          justify-content: center;
-        }
-        .typs{
-          background:rgba(0,12,39,0.4);
-          height:52.87%;
-          width:98%;
           flex-direction: row;
-          align-items: center;
           justify-content: center;
-          padding:1% 4% 1% 4%;
+          /*width:45%;*/
+        }
+        #conditionEcharts2{
+          flex:1;
+          height:100%;
           display: flex;
-          span{
-            flex:1;
-            text-align: center;
-          }
-        }
-        .system .active{
-          background:#0089fd;
-        }
-        .host .active{
-          background:#f56e6a;
+          flex-direction: row;
+          justify-content: center;
+          /*width:45%;*/
         }
       }
-    }
-    .conditionEcharts4{
-      height:60px;
-      margin-top:1.623%;
-      display: flex;
-      flex-direction: row;
-      .broadL{
-        background:rgba(0,0,0,0.3);
-        width:12.64%;
-        color:white;
-        font-size: 12px;
+      .conditionEcharts3{
+        height:14.123%;
+        background:rgba(0,0,0,0.15);
+        margin-top:1.623%;
         display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-right:1%;
-      }
-      .broadR{
-        flex:1;
-        background:rgba(0,0,0,0.3);
-        opacity: .8;
-        overflow:hidden;
-        padding:0 4.6%;
-        .item{
-          height:20px;
-          color:white;
+        padding:0 2.272%;
+        .type{
+          width:50%;
+          /*flex:1;*/
+          display: flex;
+          flex-direction: column;
           font-size:12px;
+          color:white;
+          .name{
+            height:39%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .typs{
+            background:rgba(0,12,39,0.4);
+            height:52.87%;
+            width:98%;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            padding:1% 4% 1% 4%;
+            display: flex;
+            span{
+              flex:1;
+              text-align: center;
+            }
+          }
+          .system .active{
+            background:#0089fd;
+          }
+          .host .active{
+            background:#f56e6a;
+          }
+        }
+      }
+      .conditionEcharts4{
+        height:60px;
+        margin-top:1.623%;
+        display: flex;
+        flex-direction: row;
+        .broadL{
+          background:rgba(0,0,0,0.3);
+          width:12.64%;
+          color:white;
+          font-size: 12px;
           display: flex;
-          flex-direction: row;
-          justify-content: space-between;
+          justify-content: center;
           align-items: center;
-          span:first-child{
-            display: inline-block;
-            max-width: 70%;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
+          margin-right:1%;
+        }
+        .broadR{
+          flex:1;
+          background:rgba(0,0,0,0.3);
+          opacity: .8;
+          overflow:hidden;
+          padding:0 4.6%;
+          .item{
+            height:20px;
+            color:white;
+            font-size:12px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            span:first-child{
+              display: inline-block;
+              max-width: 70%;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+            }
+            span:last-child{
+              color:#61b2b6;
+            }
           }
-          span:last-child{
-            color:#61b2b6;
+          .anim{
+            transition:all 0.5s;
+            margin-top:-20px;
           }
         }
-        .anim{
-          transition:all 0.5s;
-          margin-top:-20px;
+      }
+      .conditionEcharts5{
+        height:10.55%;
+        margin-top:1.623%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        span{
+          &:hover{
+            cursor: pointer;
+          }
+          display: inline-block;
+          padding:2px 12px;
+          color:#b1c6e1;
+          font-size:14px;
+          background:#162951;
+          border-radius:4px;
+          &:first-child{
+            margin-right:16px;
+          }
+        }
+        .active{
+          background:#73a4f0;
+          color:white;
         }
       }
     }
-    .conditionEcharts5{
-      height:10.55%;
-      margin-top:1.623%;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: center;
-      span{
-        &:hover{
-          cursor: pointer;
-        }
-        display: inline-block;
-        padding:2px 12px;
-        color:#b1c6e1;
-        font-size:14px;
-        background:#162951;
-        border-radius:4px;
-        &:first-child{
-          margin-right:16px;
-        }
-      }
-      .active{
-        background:#73a4f0;
-        color:white;
-      }
-    }
-  }
   }
 </style>

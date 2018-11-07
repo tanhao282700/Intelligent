@@ -46,6 +46,17 @@
 <style lang="less" type="text/less">
 
   .fireAlarm{
+    .h-paddingTop{
+      padding-top: 70px!important;
+      .navCrumbs{
+        p{
+          display: inline;
+          padding: 0;
+          margin: 0;
+          cursor: pointer;
+        }
+      }
+    }
     position: relative;
     width:100%;
     height:100%;

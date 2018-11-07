@@ -27,7 +27,6 @@
               expand-trigger="hover"
               :options="options"
               v-model="selectedOptions2"
-              @focus="showFloor()"
               @change="handleChange">
             </el-cascader>
           </div>
@@ -245,9 +244,6 @@
       }
     },
     methods:{
-      showFloor(){
-        this.getTitData()
-      },
       //获取cop报表
       getCOPData(sysID=this.$store.state.sysList[1].son_list[0].sys_menu_id,floor_id=this.$store.state.airFloorId){
         this.loading = true;
@@ -332,19 +328,19 @@
             if (data2.length === 0) {
               this.$message(data.message);
             } else {
-              tempArr = [
-                {value:1,label:'全部'}
-              ];
-              this.selectedOptions2.push(1);
               data2.map((item,i)=>{
                 let obj = {};
                 obj.value = item.id;
                 obj.label = item.title;
                 tempArr.push(obj);
+
               })
+              this.selectedOptions2 = [data2[0].id];
             }
             this.options = tempArr;
 
+            this.getEnergy1(data2[0].id);
+            this.getEnergy2(data2[0].id);
           } else {
 
             this.$message(data.message);
@@ -355,7 +351,7 @@
 
       },
       //获取能耗报表1
-      getEnergy1(floor_id=1){
+      getEnergy1(floor_id){
         this.loading = true;
         let that = this;
         let config = {
@@ -409,7 +405,7 @@
 
       },
       //获取能耗报表2
-      getEnergy2(floor_id=1){
+      getEnergy2(floor_id){
         this.loading = true;
         let that = this;
         let config = {
@@ -484,9 +480,7 @@
     },
     created(){
       this.getCOPData();
-      //this.getTitData();
-      this.getEnergy1();
-      this.getEnergy2();
+      this.getTitData();
     }
   }
 </script>

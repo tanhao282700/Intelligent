@@ -53,7 +53,7 @@
         <el-button @click="search()" type="primary" icon="el-icon-search">查询</el-button>
       </div>
     </div>
-    <div class="tableBox">
+    <div class="h-tableBox">
       <Table @changePage="changePage" :table = "table"/>
     </div>
   </div>
@@ -137,6 +137,7 @@
         value3: '-1',
         //表格
         table:{
+          showPagination:true,
           hei:450, //table高度  设置后有滚动条
           len:0, //总条数
           pageSize:20, //每页的条数 。默认为20
@@ -486,7 +487,7 @@
       }
 
     }
-    .tableBox{
+    .h-tableBox{
       padding: 0 0.08rem;
     }
   }

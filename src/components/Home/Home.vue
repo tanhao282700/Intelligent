@@ -565,34 +565,50 @@
     .partOne{
       position:absolute;
       background:rgba(1,21,48,0.6);
-      width: 2.5rem;
-      height: 3.18rem;
-      left: .15rem;
-      top:.68rem;
+      /*width: 2.5rem;*/
+      /*height: 3.18rem;*/
+      /*left: .15rem;*/
+      /*top:.68rem;*/
+      width:18.301%;
+      height:44%;
+      top:8.789%;
+      left:1.098%;
     }
     .partTwo{
       position:absolute;
       background:rgba(1,21,48,.6);
-      width: 2.5rem;
+      /*width: 2.5rem;
       height: 3.18rem;
       right: .15rem;
-      top:.68rem;
+      top:.68rem;*/
+      width:18.301%;
+      height:44%;
+      top:8.789%;
+      right:1.098%;
     }
     .partThree{
       position:absolute;
       background:rgba(1,21,48,.6);
-      width: 2.5rem;
+      /*width: 2.5rem;
       height: 3.18rem;
       left: .15rem;
-      bottom:.16rem;
+      bottom:.16rem;*/
+      width:18.301%;
+      height:44%;
+      top:54.036%;
+      left:1.098%;
     }
     .partFour{
       position:absolute;
       background:rgba(1,21,48,.6);
-      width: 2.5rem;
+      /*width: 2.5rem;
       height: 3.18rem;
       right: .15rem;
-      bottom:.16rem;
+      bottom:.16rem;*/
+      width:18.301%;
+      height:44%;
+      top:54.036%;
+      right:1.098%;
     }
     .smallMonitoring{
       position:absolute;
@@ -995,12 +1011,12 @@
   }
 
   #conditionEcharts1 canvas{
-    height:100%;
+    height:85%;
     margin-top:4%;
 
   }
   #conditionEcharts2 canvas{
-    height:100%;
-    margin-top:4%;
+    height:85%;
+    margin-top:10%;
   }
 </style>

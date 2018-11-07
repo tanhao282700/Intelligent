@@ -5,8 +5,8 @@
 -->
 <template>
   <div>
-    <div class="tabsDomBox0">
-      <div class="navCrumbs">首页 > 消防系统 > <span>历史记录</span></div>
+    <div class="tabsDomBox0 h-paddingTop">
+      <div class="navCrumbs"><p @click="toHome">首页</p> > 消防系统 > <span>历史记录</span></div>
     </div>
     <div
       class="fireHistory"
@@ -154,6 +154,7 @@
 
         //表格
         table:{
+          showPagination:true,
           hei:490, //table高度  设置后有滚动条
           len:0, //总条数
           pageSize:20, //每页的条数 。默认为20
@@ -196,7 +197,7 @@
         this.loading = true;
         let that = this;
         let config = {
-          sys_menu_id:'22',
+          sys_menu_id:this.$store.state.sysList[16].sys_menu_id,
           pagesize:20,
           pagenumber:num,
           date:date,
@@ -315,40 +316,9 @@
         this.getHistory(1,this.dateVal==''?'':utils.time(this.dateVal/1000),'',this.value,this.posInput)
       },
 
-      /*exportExcel(){
-        this.getHisExcel(this.pagenum,this.dateVal==''?'':utils.time(this.dateVal/1000),this.value,this.posInput)
-      },
-
-
-      getHisExcel(num=1,date='',state='',cont=''){
-        let obj = {
-          sys_menu_id:'22',
-          pagesize:20,
-          pagenumber:num,
-          date:date,
-          state:state,
-          cont:cont
-        };
-        utils.post('fireAlarm/record',obj).then(res=>{
-          console.log('消防历史记录Excel表打出',obj,res);
-          if (res.code==0){
-            this.$message({
-              type: 'success',
-              message: res.message
-            });
-
-            this.$notify.info({
-              title: '消息',
-              message: '所导出的excel表文件位置：'+res.data
-            });
-          } else {
-
-            this.$message(res.message);
-          }
-        }).catch(err=>{
-          this.$message(err);
-        })
-      },*/
+      toHome(){
+        this.$router.replace({ path: '/home', params: { isLogin: true} });
+      }
 
 
 

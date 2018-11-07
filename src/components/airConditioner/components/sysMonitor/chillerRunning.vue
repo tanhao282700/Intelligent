@@ -22,12 +22,16 @@
       <div class="searchBtn">
         <el-button @click="search()" type="primary" icon="el-icon-search">查询</el-button>
       </div>
-      <button @click="exportExcel()" type="button" class="self-button">
-        <span class="icon-export"></span>
-        <span>导出</span>
-      </button>
+      <div class="exportBox">
+        <a
+          :href="'https://tesing.china-tillage.com/hvac_pc/pc/water/device/excel?device_id='+btnActiveId+'&project_id='+$store.state.projectId+(dateVal.length !==0 ?('&time_start='+dateVal[0]+' 00:00:00'+'&time_end='+dateVal[1]+' 23:59:59'):'')"
+          type="button" class="self-button">
+          <span class="icon-export"></span>
+          <span>导出</span>
+        </a>
+      </div>
     </div>
-    <div class="tableBox">
+    <div class="h-tableBox">
       <el-table
         :height="tableHei"
         :cell-style="changeCellColor"
@@ -158,10 +162,6 @@
       }
     },
     methods:{
-      //导出报表
-      exportExcel(){
-        alert('暂无接口')
-      },
       //冷水机组的title数据
       getChillerTitle(sysID=this.$store.state.sysList[1].son_list[0].sys_menu_id,floor_id=this.$store.state.airFloorId){
         let that = this;
@@ -521,6 +521,42 @@
           border-radius: 0!important;
         }
       }
+      .exportBox{
+        position: absolute;
+        //.vhTop(20);
+        top:0;
+        right: 0;
+        display: inline-block;
+        width: 0.88rem;
+        height: 100%;
+        .self-button{
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          width: 0.88rem;
+          height: 0.32rem;
+          background-color: #3a84ed;
+          color: #fff;
+          border: 0;
+          outline: none;
+          border-radius: 2px;
+          padding: 0;
+          font-size: 0.14rem;
+          font-weight: normal;
+          font-stretch: normal;
+          line-height: 1;
+          letter-spacing: 0px;
+          .icon-export{
+            display: inline-block;
+            width: 0.14rem;
+            height: 0.14rem;
+            background: url("../../../../assets/img/fireAlarm/icon_export.png") no-repeat center;
+            background-size: 100% 100%;
+            margin-right: 0.08rem;
+          }
+        }
+      }
       .self-button{
         position: absolute;
         .vhTop(20);
@@ -553,7 +589,7 @@
       }
 
     }
-    .tableBox{
+    .h-tableBox{
       .el-table th.is-leaf{
         border-bottom-color: rgba(181, 215, 255, 0.25)!important;
       }

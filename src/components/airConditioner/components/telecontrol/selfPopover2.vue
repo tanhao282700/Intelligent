@@ -7,8 +7,8 @@
     width="281"
     trigger="hover">
     <div class="popover-btn isPointer no-select" slot="reference">
-      <div class="imgBox">
-        <img src="../../../../assets/img/airConditioner/device1.png" alt="">
+      <div class="imgBox" v-html="tuliCodes">
+        <!--<img src="../../../../assets/img/airConditioner/device1.png" alt="">-->
       </div>
     </div>
 
@@ -24,11 +24,9 @@
 <script>
   export default {
     components:{
-
-
     },
     name: "selfPopover2",
-    props: ['info'],
+    props: ['info','tuliCodes'],
     data () {
       return {
       }
@@ -77,13 +75,7 @@
   .self-popover2 {
     .imgBox{
       width: 2.83rem;
-      height: 2.4rem;
-      /*transform: scale(1.5,1.5);*/
-      img{
-        display: block;
-        width: 100%;
-        height: 100%;
-      }
+      .vh(180);
     }
 
     .popover-btn{
