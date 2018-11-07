@@ -1,27 +1,11 @@
 <!--
     步骤条下的详细信息
 -->
-<template>
+<template id="child">
     <div class="addTemp">    
       <div class="addtitle">{{title}}</div>
       <div class="addCont">
         <el-row>
-          <el-col :span="8">
-            <el-row>
-              <el-col :span="6" class="addContLabel">
-                巡检人员
-              </el-col>
-              <el-col :span="18" class="addContInput" v-if="formvals1.examine">
-                <SelectBox 
-                  :options = 'formvals1.examine' 
-                  :value = "formval.exam" 
-                  :icon="'el-icon-d-caret'"
-                  placeholder="巡检人员"
-                  @change = "change1"
-                />
-              </el-col>
-            </el-row>
-          </el-col>
           <el-col :span="8">
             <el-row>
               <el-col :span="6" class="addContLabel">
@@ -38,6 +22,23 @@
               </el-col>
             </el-row>
           </el-col>
+          <el-col :span="8">
+            <el-row>
+              <el-col :span="6" class="addContLabel">
+                巡检人员
+              </el-col>
+              <el-col :span="18" class="addContInput" v-if="formvals1.examine">
+                <SelectBox 
+                  :options = 'formvals1.examine' 
+                  :value = "formval.exam" 
+                  :icon="'el-icon-d-caret'"
+                  placeholder="巡检人员"
+                  @change = "change1"
+                />
+              </el-col>
+            </el-row>
+          </el-col>
+          
           <el-col :span="8">
             <el-row>
               <el-col :span="6" class="addContLabel">
@@ -286,6 +287,15 @@
           handler(val){
             if(val){
               this.formval = val;
+              if(this.formval.system && this.formval.device){
+                 this.$parent.getSystemList(this.formval.device);
+              }
+              if(this.formval.system && this.formval.area){
+                this.$parent.getAreaList(this.formval.device);
+              }
+              if(this.formval.area && this.formval.device){
+                this.$parent.getDeviceList(this.formval.area);
+              }
             }
           },
           deep:true

@@ -411,7 +411,7 @@ export default {
       this.tempTitle = '查看';
       this.$refs.add.show();
     },
-    updateDetail(rowData){//待定
+    updateDetail(rowData){//修改巡检模板
       this.rowData = rowData;
       this.tempTitle = '修改';
       this.$refs.add.show();
@@ -438,6 +438,7 @@ export default {
               addr:res.data.data.ins_place,
               desc:res.data.data.remarks
             }
+
           }else{
             this.$message({
               type:'error',

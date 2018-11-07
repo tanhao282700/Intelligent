@@ -55,8 +55,14 @@ export default {
   created() {
     this.value0 = this.value;
   },
+  watch:{
+     value(val) {
+        if(val){
+          this.value0 = val;
+        }
+    }
+  },
   mounted() {
-    this.value0 = this.value;
   },
 }
 </script>
