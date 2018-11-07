@@ -93,9 +93,9 @@
         },
 	    data() {
 	        return {
-                selectedValue:'',
-                selectedValue1:'',
-	        	selectedValue2:'',
+                selectedValue:'1栋',
+                selectedValue1:'1单元',
+	        	selectedValue2:'1楼',
 	        	isDeviceInfoPopShow:false,
 	        	isVideoShowBoxShow:false,
 	        	onVideoId:'',//当前设备ID

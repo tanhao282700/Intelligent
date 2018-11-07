@@ -45,7 +45,7 @@
                 }).then(function(res){
                     // 响应成功回调
                     console.log(res.message);
-                    
+                    that.$message('控制已发送');
                 }, function(response){
                     // 响应错误回调
                 });
