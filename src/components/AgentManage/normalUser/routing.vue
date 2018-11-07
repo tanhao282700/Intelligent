@@ -18,9 +18,9 @@
       <div class="tableBoxs boxs">
         <div class="tabHead">
           <div class="jobBoxs">
-            <SelectBox 
-              :options = 'jobs' 
-              :value = "vJob" 
+            <SelectBox
+              :options = 'jobs'
+              :value = "vJob"
               :icon="'el-icon-d-caret'"
               placeholder="类别"
               @change = "change1"
@@ -32,11 +32,49 @@
           </div>
         </div>
         <div class="tableIn">
-          <Table 
-            style="width:100%" 
+          <Table
+            style="width:100%"
             :table = "table"
             @rowClick = "rowClick"
           />
+          <!--<el-table
+            :cell-class-name="setColor"
+            :data="table"
+            style="width: 100%;"
+            height="500"
+            class=" tableHeadBlue">
+            <el-table-column
+              type="index"
+              prop="index"
+              label="编号"
+              min-width="5%">
+            </el-table-column>
+            <el-table-column
+              prop="title"
+              label="工种"
+              min-width="11%">
+            </el-table-column>
+            <el-table-column
+              prop="type"
+              label="类别"
+              min-width="8%">
+            </el-table-column>
+            <el-table-column
+              prop="addtime"
+              label="派发时间"
+              min-width="15%">
+            </el-table-column>
+            <el-table-column
+              prop="description"
+              label="详情"
+              min-width="16%">
+            </el-table-column>
+            <el-table-column
+              prop="now_state"
+              label="完成情况"
+              min-width="10%">
+            </el-table-column>
+          </el-table>-->
         </div>
       </div>
       <Dialog wid="910" hei="600" ref="tableInfos2">
@@ -95,7 +133,7 @@ export default {
           {label:'照明',value:4},
           {label:'暖通',value:5},
         ],
-        vJob:-1,
+        vJob:'',
         names:[
           {label:'李白',value:1},
           {label:'杜甫',value:2},
@@ -113,15 +151,15 @@ export default {
             len:0, //总条数
             data:[],
             th:[
-              {prop:'id',label:'编号'},
+              {prop:'index',label:'编号'},
               {prop:'title',label:'类别'},
               {prop:'floorname',label:'地点',wid:180},
               {prop:'addtime',label:'派发时间'},
               {prop:'name',label:'点位'},
-              {prop:'now_state',label:'状态',operate: true, 
+              {prop:'now_state',label:'状态',operate: true,
                   render: (h, param)=> {
                       const btnss = {
-                          fills:param.row.dealed,  
+                          fills:param.row.dealed,
                       };
                       return h(State,{
                         props: { state:btnss},
@@ -129,16 +167,16 @@ export default {
                       });
                   } },
               {prop:'dealed',label:'操作',
-                operate: true, 
+                operate: true,
                   render: (h, param)=> {
                       const btnss = {
-                          item:param.row,  
+                          item:param.row,
                       };
                       return h(deal,{
                         props: { btnss:btnss},
                         on:{agree:this.agree,refult:this.refult}
                       });
-                  } 
+                  }
               },
             ]
         },
@@ -170,7 +208,7 @@ export default {
     },
     changes(val){
         this.value7 = val;
-    }, 
+    },
     deletes(){
       let attrs = this.value7.split('-');
       // console.log(attrs)
@@ -189,11 +227,11 @@ export default {
             attrs[0] = Number(attrs[0])-1;
         }else{
             attrs[1] = Number(attrs[1])-1;
-        }            
+        }
       }else{
           attrs[2] = Number(attrs[2])-1;
       }
-      this.value7 = attrs.join('-'); 
+      this.value7 = attrs.join('-');
     },
     adds(){
       if(this.cant){
@@ -202,7 +240,7 @@ export default {
       let attrs = this.value7.split('-');
 
       if(((attrs[1]==1 ||attrs[1]==3 || attrs[1]==5 ||attrs[1]==7 ||attrs[1]==8 ||attrs[1]==10 ||attrs[1]==12) && attrs[2]==31)
-          ||((attrs[1]==2 ||attrs[1]==6 || attrs[1]==9 ||attrs[1]==11) && attrs[2]==30) 
+          ||((attrs[1]==2 ||attrs[1]==6 || attrs[1]==9 ||attrs[1]==11) && attrs[2]==30)
           ||((attrs[1]==2 && Number(attrs[0])%4==0) && attrs[2]==29)
           ||((attrs[1]==2 && Number(attrs[0])%4!=0) && attrs[2]==28)
       ){
@@ -212,12 +250,12 @@ export default {
               attrs[0] = Number(attrs[0])+1;
           }else{
               attrs[1] = Number(attrs[1])+1;
-          }   
+          }
       }else{
           attrs[2] = Number(attrs[2])+1;
       }
-      this.value7 = attrs.join('-');    
-    }, 
+      this.value7 = attrs.join('-');
+    },
     checkDetail(rowData){
       this.rowData = rowData;
       this.tempTitle = '查看';
@@ -247,7 +285,9 @@ export default {
     },
     rowClick(row){
       this.rowData = row;
-      this.$ref.tableInfos2.show();
+      console.log(row)
+      return
+      this.$refs.tableInfos2.show();
       this.rowData.operate='check';
       this.$http.post('/pc_ims/staff/inspectiondata_info',{ins_id:row.id}).then(res=>{
         console.log(res.data)
@@ -344,6 +384,9 @@ export default {
            if(res.data.code==0){
              this.table.data = res.data.data;
              this.table.len = res.data.count;
+              this.table.data.map((item,index)=>{
+                  item.index = index+1
+              })
            }else{
               this.$message({
                 type:'error',
@@ -358,10 +401,11 @@ export default {
            if(res.data.code==0){
               let data= res.data.data;
               $.each(data,(n,k)=>{
-                data[n].id = data[n].title;
+                data[n].label = data[n].title;
                 data[n].value = data[n].title;
               })
               this.jobs = data;
+              this.jobs.unshift({label:'类别',id:''})
            }else{
               this.$message({
                 type:'error',
@@ -387,6 +431,7 @@ export default {
     }
   },
   mounted() {
+      this.getSystemsOptions()
     this.getTopData();
     this.getTableData();
   }
@@ -416,7 +461,7 @@ export default {
     display: flex;
     .numBox{
       flex:1;
-      display: flex;      
+      display: flex;
       .numBoxIn{
         display: flex;
         align-items: center;
@@ -477,8 +522,8 @@ export default {
         font-size: 0.14rem;
         text-align: center;
         cursor: pointer;
-        background-image: linear-gradient(0deg, 
-        #2772e3 0%, 
+        background-image: linear-gradient(0deg,
+        #2772e3 0%,
         #4b94f9 100%);
         border-radius: 0.02rem;
         i{
@@ -514,11 +559,11 @@ export default {
       height: 0.6rem;
       border-radius: 50%;
       background-color: rgba(51, 51, 51, 0.2);
-      box-shadow: 0px 4px 10px 0px 
-        rgba(74, 144, 226, 0.4), 
-        inset 1px 1px 2px 0px 
-        rgba(248, 253, 255, 0.15), 
-        inset 0px -1px 1px 0px 
+      box-shadow: 0px 4px 10px 0px
+        rgba(74, 144, 226, 0.4),
+        inset 1px 1px 2px 0px
+        rgba(248, 253, 255, 0.15),
+        inset 0px -1px 1px 0px
         #4a90e2;
         display: flex;
         align-items: center;
