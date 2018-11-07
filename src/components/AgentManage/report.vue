@@ -152,7 +152,7 @@ export default {
             len:0, //总条数
             data:[],
             th:[
-              {prop:'id',label:'编号'},
+              {prop:'index',label:'编号'},
               {prop:'name',label:'名称'},
               {prop:'phone',label:'联系电话',wid:150},
               {prop:'department',label:'专业岗位'},
@@ -289,6 +289,9 @@ export default {
          if(res.data.code==0){
             this.table.len = res.data.count;
             this.table.data = res.data.data;
+            this.table.data.map((item,index)=>{
+                item.index = index+1
+            })
           }else{
             this.$message({
               type:'error',

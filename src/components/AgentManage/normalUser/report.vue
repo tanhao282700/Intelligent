@@ -19,9 +19,9 @@
               <el-select placeholder="工种" v-model="formData.sys_id" class="querySelectItem">
                 <el-option
                   v-for="item in query.sys_id"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
+                  :key="item.id"
+                  :label="item.title"
+                  :value="item.id">
                 </el-option>
               </el-select>
             </div>
@@ -176,7 +176,7 @@ export default {
           systems:[],
           types:[{label:'类别',value:''},{label:'巡检',value:0},{label:'工单',value:1}],
           times:[],
-          sys_id:[{label:'工种',value:1}]
+          sys_id:[]
         },
         crumbs:['代维系统','完成情况'],
         activeName:'first',
@@ -191,7 +191,7 @@ export default {
         formData:{
           pagenumber:1,
           pagesize:20,
-          sys_id:1,
+          sys_id:'',
           type:'',
           time:'',
           now_state:'',
@@ -225,6 +225,15 @@ export default {
     }
   },
   methods:{
+    getTypes(){
+      this.$http.post('/pc_ims/get_sysmenu').then((res)=>{
+        if(res.data.code==0){
+            this.query.sys_id = res.data.data
+            this.query.sys_id.unshift({id:'',title:'工种'})
+        console.log(this.query.sys_id)
+      }
+      })
+    },
     currentPageChange(aa){
       this.formData.pagenumber = aa
       this.getTableData()
@@ -290,6 +299,7 @@ export default {
     }
   },
   mounted() {
+      this.getTypes()
     this.getTableData();
   },
 }
