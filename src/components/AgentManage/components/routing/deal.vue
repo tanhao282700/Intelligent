@@ -30,6 +30,10 @@ export default {
   },
   methods:{
     changeStatus(val){
+      this.$emit('changeStatus',this.radio.radio3,this.btnss.item)
+      //return this.radio3;
+    },
+    getStatus(val){
       switch(val){
         case '启动':
           this.radio.radio3 = '启动';
@@ -40,8 +44,6 @@ export default {
           this.radio.color = '#f56c6c';
           break;
       }
-      this.$emit('changeStatus',this.radio.radio3,this.btnss.item)
-      //return this.radio3;
     },
     update(){
        this.$emit('update',this.btnss.item);
@@ -61,13 +63,12 @@ export default {
   },
   mounted() {
       this.state = this.btnss.item.now_state;
-      //console.log(this.btnss)
       if(this.btnss.item.now_state=='1'){
         this.radio.radio3 = '启动'
-        this.changeStatus(this.btnss.item.now_state)
+        this.getStatus(this.radio.radio3)
       }else if(this.btnss.item.now_state==2){
         this.radio.radio3='停用';
-        this.changeStatus(this.btnss.item.now_state)
+        this.getStatus(this.radio.radio3)
       }
       
   },

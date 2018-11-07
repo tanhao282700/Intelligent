@@ -143,8 +143,11 @@ export default {
         queryModel:{//巡检任务模板的查询条件
           id:0,
           systems:[],
+          systemss:[],
           areas:[],
+          areass:[],
           examine:[],
+          examines:[],
           taskStatus:[{value:1,label:'启用'},{value:2,label:'停用'}],
           system:'',
           area:'',
@@ -168,7 +171,7 @@ export default {
           len:0, //总条数
           data:[],
           th:[
-            {prop:'id',label:'序号'},
+            {prop:'serial',label:'序号'},
             {prop:'sys_name',label:'系统'},
             {prop:'floor',label:'区域'},
             {prop:'start_date',label:'开始时间'},
@@ -211,7 +214,7 @@ export default {
           },
           data:[],
           th:[
-            {prop:'id',label:'序号',wid:50},
+            {prop:'serial',label:'序号',wid:50},
             {prop:'user_name',label:'名称'},
             {prop:'title',label:'类别'},
             {prop:'floorname',label:'地点'}, 
@@ -246,7 +249,7 @@ export default {
             hei:328, //table高度  设置后有滚动条
             data:[],
             th:[
-              {prop:'id',label:'序号'},
+              {prop:'serial',label:'序号'},
               {prop:'name',label:'名称'},
               {prop:'phone',label:'电话',wid:180},
               {prop:'department',label:'专业岗位'},
@@ -462,9 +465,14 @@ export default {
           if(res.data.code==0){
             this.$message({
               type:'success',
-              message:'巡检任务模板新增成功'
+              message:'操作成功！'
             })
-            this.getModelList();
+            this.getModelList({
+              sys_id:'',
+              floor_id:'',
+              user_id:'',
+              now_state:''
+            });
           }else{
             this.$message({
               type:'error',
@@ -622,7 +630,11 @@ export default {
       })
       .then(res => {
         if(res.data.code==0){
+          $.each(res.data.data,(n,k)=>{
+            res.data.data[n].serial = n+1;
+          })
           this.table.data = res.data.data;
+
         }else{
           this.$message({
             type:'error',
@@ -640,7 +652,9 @@ export default {
       })
       .then(res => {
         if(res.data.code==0){
-          this.table2.len = res.data.count;
+          $.each(res.data.data,(n,k)=>{
+            res.data.data[n].serial = n+1;
+          })
           this.table2.data = res.data.data;
         }else{
           this.$message({
@@ -660,6 +674,7 @@ export default {
             })
             this.names = data;
             this.queryModel.examine = data;
+            this.queryModel.examines = data;
           }else{
             this.$message({
               type:'error',
@@ -714,14 +729,24 @@ export default {
               data[n].id = data[n].title;
             })
             this.query2.types= data;
-            console.log(this.query2.types)
+          }else{
+            this.$message({
+              type:'error',
+              message:res.data.msg
+            })
+          }
+        });
+      },
+      getSystemIdList(){
+        this.$http.post('/pc_ims/get_sysmenu').then(res=>{
+          if(res.data.code==0){
             let data2 = res.data.data;
             $.each(data2,(n,k)=>{
               data2[n].value = data2[n].id;
               data2[n].label = data2[n].title;
             })
             this.queryModel.systems = data2;
-            
+            this.queryModel.systemss = data2;
           }else{
             this.$message({
               type:'error',
@@ -731,21 +756,16 @@ export default {
         });
       },
       getAreaList(id){//区域
-        if(!this.queryModel.system){
-          this.$message({
-            type:'error',
-            message:'请先选择巡检系统'
-          })
-        }
         this.$http.post('/pc_ims/get_floor',{sys_id:id}).then(res=>{
           if(res.data.code==0){
             let data = res.data.data;
-            console.log(data)
+            //console.log(data)
             $.each(data,(n,k)=>{
               data[n].value = data[n].floor_id;
               data[n].label = data[n].floor_name;
             })
             this.queryModel.areas = data;
+            this.queryModel.areass = data;
           }else{
             this.$message({
               type:'error',
@@ -755,12 +775,6 @@ export default {
         });
       },
       getDeviceList(id){//设备
-        if(!this.queryModel.system){
-          this.$message({
-            type:'error',
-            message:'请先选择巡检区域'
-          })
-        }
         this.$http.post('/pc_ims/get_device',{floor_name:id}).then(res=>{
           //console.log(res);
           if(res.data.code==0){
@@ -800,6 +814,7 @@ export default {
       this.getModelList(this.queryModel);
       this.getNameList();
       this.getSystemList();
+      this.getSystemIdList();
       this.getDepartList();
   },
 }

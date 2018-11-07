@@ -205,7 +205,8 @@
               period:'',
               department:'',
               time_limit:''
-            }
+            },
+            floor_name:''
         }
       },
       methods:{
@@ -226,8 +227,7 @@
             let res = '';
             $.each(this.formvals1.areas,(n,k)=>{
               if(k.value==val){
-                res = k.label;
-                this.$emit('getFloorVal',res)
+                this.$emit('getFloorVal',val)
               }
             })
             this.formval.area = val;
@@ -287,15 +287,16 @@
           handler(val){
             if(val){
               this.formval = val;
-              if(this.formval.system && this.formval.device){
-                 this.$parent.getSystemList(this.formval.device);
-              }
-              if(this.formval.system && this.formval.area){
-                this.$parent.getAreaList(this.formval.device);
-              }
-              if(this.formval.area && this.formval.device){
-                this.$parent.getDeviceList(this.formval.area);
-              }
+              //console.log(this.formval);
+              // if(this.formval.system && this.formval.device){
+              //    this.$emit('getSystemval',this.formval.device);
+              // }
+              // if(this.formval.system && this.formval.area){
+              //   this.$emit('getFloorVal',this.formval.system)
+              // }
+              // if(this.formval.area && this.formval.device){
+              //   this.$emit('getDeviceVal',this.formval.area)
+              // }
             }
           },
           deep:true

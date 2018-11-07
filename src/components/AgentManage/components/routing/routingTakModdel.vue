@@ -7,8 +7,8 @@
         <div class="tabHead">
           <div class="jobBoxs">
             <SelectBox 
-              :options = 'query.systems' 
-              :value = "query.system" 
+              :options = 'query.systemss' 
+              :value = "queryCon.system" 
               :icon="'el-icon-d-caret'"
               placeholder="系统"
               @change = "change1"
@@ -16,8 +16,8 @@
           </div>
           <div class="nameBoxs">
             <SelectBox 
-              :options = 'query.areas' 
-              :value = "query.area" 
+              :options = 'query.areass' 
+              :value = "queryCon.area" 
               :icon="'el-icon-d-caret'"
               placeholder="区域" 
               @change = "change2"
@@ -25,8 +25,8 @@
           </div>
           <div class="nameBoxs">
             <SelectBox 
-              :options = 'query.examine' 
-              :value = "query.exam" 
+              :options = 'query.examines' 
+              :value = "queryCon.exam" 
               :icon="'el-icon-d-caret'"
               placeholder="巡检人" 
               @change = "change4"
@@ -35,7 +35,7 @@
           <div class="nameBoxs">
             <SelectBox 
               :options = 'query.taskStatus' 
-              :value = "query.taskStatu" 
+              :value = "queryCon.taskStatu" 
               :icon="'el-icon-d-caret'"
               placeholder="任务状态" 
               @change = "change3"
@@ -72,21 +72,27 @@
       },
       data () {
         return {
+          queryCon:{
+            system:'',
+            area:'',
+            exam:'',
+            taskStatu:''
+          }
         }
       },
       methods:{
           change1(val){ //选择
-            this.query.system = val;
+            this.queryCon.system = val;
             this.$emit('getSys',val);
           },
           change2(val){ //选择
-            this.query.area = val;
+            this.queryCon.area = val;
           },
           change4(val){ //选择
-            this.query.exam = val;
+            this.queryCon.exam = val;
           },
           change3(val){ //选择
-            this.query.taskStatu = val;
+            this.queryCon.taskStatu = val;
           },
           rowClick(rowData){
             this.$emit('checkDetail',rowData);
@@ -101,7 +107,7 @@
             this.$emit('addDetail',0);
           },
           searchXJ(){
-            this.$emit('searchXJ',this.query)
+            this.$emit('searchXJ',this.queryCon)
           }
       },
       created() {
