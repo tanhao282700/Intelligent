@@ -148,9 +148,10 @@
                 this.buildDatas2 = arrLs;
             },
             getData(){
+                console.log(this.$store.state.sysList[4].sys_menu_id);
                 var that = this;
                 this.$http.post('/video_monitoring/video_index_view',{
-                    sys_menu_id:13,
+                    sys_menu_id:this.$store.state.sysList[4].sys_menu_id,
                     floor_id:115,
                 }).then(function(data){
                     //响应成功回调

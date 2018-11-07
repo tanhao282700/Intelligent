@@ -104,8 +104,8 @@
                     e = "";
                 }
                 this.$http.post('/entrance/record',{
-                    sys_menu_id:15,
-                    project_id:1,
+                    sys_menu_id:this.$store.state.sysList[14].sys_menu_id,
+                    project_id:this.$store.state.projectId,
                     floor_id:1,
                     page_index:that.currentPage,
                     one_page_num:that.pagesize,
@@ -126,8 +126,8 @@
             exportTable(){
                 var that = this;
                 this.$http.post('/entrance/record',{
-                    sys_menu_id:15,
-                    project_id:1,
+                    sys_menu_id:this.$store.state.sysList[14].sys_menu_id,
+                    project_id:this.$store.state.projectId,
                     floor_id:1,
                     export:1,
                 }).then(function(response){

@@ -196,8 +196,8 @@
                 this.doorInfoShow = true;
                 var that = this;
                 this.$http.post('/entrance/record',{
-                    sys_menu_id:15,
-                    project_id:1,
+                    sys_menu_id:this.$store.state.sysList[14].sys_menu_id,
+                    project_id:this.$store.state.projectId,
                     floor_id:1,
                     device_id:id
                 }).then(function(response){
@@ -213,12 +213,14 @@
             },
             //获取页面数据
             getDoorData(){
+                console.log(this.$store.state.sysList[14].sys_menu_id);
+                console.log(this.$store.state);
                 this.coefficientX = document.getElementById("floorImgBox").offsetWidth / 518;
                 this.coefficientY = document.getElementById("floorImgBox").offsetHeight / 247;
                 let that = this;
                 this.$http.post('/entrance/all_info',{
-                    sys_menu_id:15,
-                    project_id:1,
+                    sys_menu_id:this.$store.state.sysList[14].sys_menu_id,
+                    project_id:this.$store.state.projectId,
                     floor_id:that.floorIds,
                 }).then(function(data){
                     console.log(data.data.data);
