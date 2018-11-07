@@ -498,7 +498,7 @@ export default {
       this.$http.post('/pc_ims/admin/inspectiondata_all',{
         sys_name:row.type,
         user_id:this.infoItem.user_id,
-        date:row.date
+        date:row.time
       }).then(res=>{
           if(res.data.code==0){
             this.table3.len = res.data.count;

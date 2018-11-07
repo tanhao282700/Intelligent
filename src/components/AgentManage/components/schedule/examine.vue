@@ -53,17 +53,17 @@ export default {
   },
   methods:{
     showInfo(i,v){
-        this.$emit('showInfo',v);
+        this.$emit('showInfo',v,i);
     },
      search(val){
          this.$emit('search',val)
         //  console.log(val);
      },
     isNo(i,v){
-         this.$emit('isNo',v)
+         this.$emit('isNo',v,i)
     },
     isOk(i,v){
-         this.$emit('isOk',v)
+         this.$emit('isOk',v,i)
     }
   },
   created() {

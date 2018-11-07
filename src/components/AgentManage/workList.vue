@@ -354,7 +354,7 @@ export default {
         }
         this.$http.post('/pc_ims/admin/user_jobs',{
           sys_name:row.type,
-          date:row.date,
+          date:row.time,
           user_id:this.infoItem.user_id
         }).then(res=>{
           //console.log(res);
@@ -712,7 +712,7 @@ export default {
             {id:1,tit:'今日在岗人数',val:data.zaiban,color:'#b5d7ff'},
             {id:2,tit:'今日工单总数',val:data.count,color:'#f38a00'},
             {id:3,tit:'已完成数量',val:data.complete,color:'#4ae283'},
-            {id:4,tit:'今日工单完成率',val:data.percent,color:'#4ae283'}];
+            {id:4,tit:'今日工单完成率',val:data.percent+'%',color:'#4ae283'}];
             
           }else{
             this.$message({

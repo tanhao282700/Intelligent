@@ -15,7 +15,7 @@ export default {
   },
   methods:{
       drawLine(data){
-        console.log(data);
+        //console.log(data);
         var totleNum = data.total;
         let _this = this;
         let myChart = this.$echarts.init(document.getElementById(data.id));
@@ -100,7 +100,7 @@ export default {
                         color:'#fff'
                     },
                     formatter:function(params){
-                        console.log(params);
+                       // console.log(params);
                         return (params.value / totleNum).toFixed(3)*100  + "% " + params.value; 
 
                     }//'{c}'

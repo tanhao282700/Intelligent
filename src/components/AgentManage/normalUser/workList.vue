@@ -124,9 +124,9 @@
                   </div>
                 </div>
                 <div class="btnsgroups">
-                  <span class="infoBusy" v-text="'退单'"></span>
-                  <span class="infoSend" v-text="'取消'"></span>
-                  <span class="infoSubmit" v-text="'提交'"></span>
+                  <span class="infoBusy" v-text="'退单'" @click="backWork(dtlObj,5)"></span>
+                  <span class="infoSend" v-text="'取消'" @click="backWork(dtlObj,0)"></span>
+                  <span class="infoSubmit" v-text="'提交'" @click="backWork(dtlObj,4)"></span>
                 </div>
               </div>
               <div v-show="tabPosition=='延期处理'" class="tabLists">
@@ -184,9 +184,9 @@
                   </el-input>
                 </div>
                 <div class="btnsgroups">
-                  <span class="infoBusy" v-text="'退单'"></span>
-                  <span class="infoSend" v-text="'取消'"></span>
-                  <span class="infoSubmit" v-text="'提交'"></span>
+                  <span class="infoBusy" v-text="'退单'" @click="backWork(dtlObj,5)"></span>
+                  <span class="infoSend" v-text="'取消'" @click="backWork(dtlObj,0)"></span>
+                  <span class="infoSubmit" v-text="'提交'" @click="backWork(dtlObj,4)"></span>
                 </div>
               </div>
             </div>
@@ -203,7 +203,7 @@
       <Dialog wid="564" hei="286" ref="isRefult2"><!-- 同意退单 -->
           <div class="isRefTit">退单原因</div>
           <div class="isRefDesc">
-            <span>语雀是一款优雅高效的在线文档编辑与协同工具， 让每个企业轻松拥有文档中心阿里巴巴集团内部使用多年，众多中小企业首选。</span>
+            <el-input type="textarea" v-model="dealWorkParam.info" placeholder="请输入退单原因"></el-input>
           </div>
           <div class="isRbtnBoxs2">
               <span @click="submitBack">提交</span>
@@ -230,7 +230,14 @@
           <div class="sendWork2Boxs btnBai1" @click="sendWork2">
               <span>确定</span>
           </div>
-      </Dialog>    
+      </Dialog>  
+      <Dialog wid="364" hei="216" ref="isRefult"><!-- 同意退单 -->
+          <div v-text="dialogBoxs.txt" class="isRefTxt"></div>
+          <div class="isRbtnBoxs">
+              <span @click="submitOk">确定</span>
+              <span @click="submitNo">取消</span>
+          </div>
+      </Dialog>   
   </div>
 </template>
 
@@ -334,6 +341,7 @@ export default {
             ]
         },
         infoItem:{},  //某个工单的详情
+        dealWorkParam:{}
     }
   },
   methods:{
@@ -437,10 +445,12 @@ export default {
            }
         })
       },
-      agree(item){ //同意
-        alert('接单')
+      agree(item,type){ //同意
+        this.dealWorkParam = item;
+        this.dealWorkParam.type = type;
+        this.dealWork()
       },
-      refult(item){//拒绝
+      refult(item,type){//退单
         let state = item.dealed;
         if(state==0 || state==1 || state==2){ //退单
             this.dialogBoxs2 = {
@@ -450,17 +460,61 @@ export default {
             };
         }
         this.$refs.isRefult.show();
+        this.dealWorkParam = item;
+        this.dealWorkParam.type = type;
+      },
+      dealWork(){
+        if(!this.dealWorkParam.info){
+          this.dealWorkParam.info = '';
+        }
+        if(!this.dealWorkParam.pic1 || this.dealWorkParam.pic1.length==0){
+          this.dealWorkParam.pic1 = [];
+        }
+        if(!this.dealWorkParam.pic2 || this.dealWorkParam.pic2.length==0){
+          this.dealWorkParam.pic2 = [];
+        }
+        this.$http.post('/pc_ims/write_job',{
+          id:this.dealWorkParam.item.id,
+          type:this.dealWorkParam.type,
+          pic1:this.dealWorkParam.pic1,
+          pic2:this.dealWorkParam.pic2,
+          end_time:'',
+          user_id:this.dealWorkParam.item.user_id,
+          new_user_id:'',
+          info:this.dealWorkParam.info,
+          dispatch_user_id:this.$store.state.userInfoTotal.userinfo.id
+        })
+        .then(res=>{
+            if(res.data.code==0){
+              this.$message({
+                type:'success',
+                message:res.data.msg,
+                duration:2000
+              })
+              this.getTableList();
+            }else{
+              this.$message({
+                type:'error',
+                message:res.data.msg,
+                duration:2000
+              })
+            }
+        });
+      },
+      backWork(item,type){
+        console.log(item)
+        if(type==0){
+          this.$res.tableInfos2.hide();
+        }else{
+          this.dealWork();
+        }
       },
       submitOk(){ //确认
         this.$refs.isRefult.hide();
         this.$refs.isRefult2.show();
-        // this.dialogBoxs2 = {
-        //         item:item,
-        //         state0:0,
-        //         txt:'反正就是一大堆文字咯'
-        //     };
       },
       submitBack(){
+        this.dealWork();
         this.$refs.isRefult2.hide();
       },
       submitNo(){ //取消
@@ -943,7 +997,7 @@ export default {
     border: 0.01rem solid #4a90e2;
     background:#3B85EF;
     border-radius: 0.02rem;
-    margin:1.08rem auto 0;
+    margin:0.2rem auto 0;
     span{
         flex: 1;
         text-align: center;

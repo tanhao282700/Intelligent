@@ -4,12 +4,12 @@
 -->
 <template>
     <div class="dealBox">    
-        <div  class="dealBtn" v-if="btnss.item.dealed==0">
+        <div  class="dealBtn" v-if="btnss.item.now_state==0">
             <span @click.stop="agree" style="color:#3B89F9;text-decoration: underline;">接单</span>
             <span @click.stop="refult">退单</span>
         </div>
-        <span v-else-if="btnss.item.dealed==1">审核中，无法退单</span>
-        <div  class="dealBtn" v-else-if="btnss.item.dealed==2 || btnss.item.dealed==3">
+        <span v-else-if="btnss.item.now_state==1">审核中，无法退单</span>
+        <div  class="dealBtn" v-else-if="btnss.item.now_state==2 || btnss.item.now_state==3">
             <span @click.stop="refult">退单</span>
         </div>
         <span v-else>-</span>
@@ -29,16 +29,16 @@ export default {
   },
   methods:{
     agree(){ //赞同
-        this.$emit('agree',this.btnss);
+        this.$emit('agree',this.btnss,1);
     },
     refult(){ //拒绝
-        this.$emit('refult',this.btnss);
+        this.$emit('refult',this.btnss,5);
     }
   },
   created() {
   },
   mounted() {
-      //console.log(this.btnss.item.dealed)
+      console.log(this.btnss.item)
   },
 }
 </script>

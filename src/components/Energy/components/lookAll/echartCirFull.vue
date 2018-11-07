@@ -18,7 +18,7 @@ export default {
        echartCirData3:{//工单的数据
             id:'echart3',
             color:[
-              '#f56c6c','#008aff'
+              '#008aff','#f56c6c'
             ],
             size:[0,'72.89%'],
             total:0,
@@ -91,13 +91,13 @@ export default {
                let xunjianwan = res.data.data.xunjianwan;
                //工单
                _this.echartCirData3.data  = [
-                  {value:res.data.data.gongdan.wan,name:Math.floor(gongdanwan/(gongdanwan+gongdanwei)*100)+'%',tit:'已完成数'},
-                  {value:res.data.data.gongdan.wei,name:Math.floor(gongdanwei/(gongdanwan+gongdanwei)*100)+'%',tit:'未完成数'}];
+                  {value:res.data.data.gongdan.wan,name:res.data.data.gongdan.wanlv+'%',tit:'已完成数'},
+                  {value:res.data.data.gongdan.wei,name:res.data.data.gongdan.weilv+'%',tit:'未完成数'}];
                   //巡检
               // _this.echartCirData4.total = res.data.data.xunjian.xunjian_count;
               _this.echartCirData4.data = [
-                {value:res.data.data.xunjian.wan,name:Math.floor(xunjianwan/(xunjianwan+xunjianwei)*100)+'%',tit:'已完成数'},
-                {value:res.data.data.xunjian.wei,name:Math.floor(xunjianwei/(xunjianwei+xunjianwan)*100)+'%',tit:'未完成数'}];
+                {value:res.data.data.xunjian.wan,name:res.data.data.xunjian.wanlv+'%',tit:'已完成数'},
+                {value:res.data.data.xunjian.wei,name:res.data.data.xunjian.weilv+'%',tit:'未完成数'}];
                 //工单来源
               // _this.barData.data = [res.data.data.sys,res.data.data.people,res.data.data.complain]
               //console.log(res.data.data.now)
@@ -116,7 +116,7 @@ export default {
       },
       drawLine(data){
         let echartCirData = this.echartCirData;
-        console.log(this.echartCirData);
+        //console.log(this.echartCirData);
         // 基于准备好的dom，初始化echarts实例
         let myChart = this.$echarts.init(document.getElementById(this.echartCirData.id));
         let size = [0, '66%'];
@@ -124,7 +124,7 @@ export default {
             size = echartCirData.size;
         }
         let option = {
-            // color :data.color,
+            color :data.color,
             cursor:'auto',
             series: [
                 {
@@ -136,7 +136,9 @@ export default {
                     label: {
                         normal: {
                             position: 'inner',
-                            formatter: '{c}  {d}%  ',
+                            formatter: function(params){
+                              return params.percent+'%'
+                            }
                         }
                     },
                     labelLine: {
@@ -148,7 +150,7 @@ export default {
                         normal: {              
                             // 定制显示（按顺序）
                             color: function(params) { 
-                                var colorList = ['#f56c6c','#008aff']; 
+                                let colorList = data.color
                                 return colorList[params.dataIndex] 
                             }
                         },

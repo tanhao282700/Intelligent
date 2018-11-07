@@ -96,8 +96,8 @@
             <img class="rightBotm" v-show="dia.state==1" src="../../assets/img/generation/isok.png" alt="">
           </div>
           <div class="diaBtns" v-show="dia.state==-1">
-            <div class="diabtn diabtn22" @click="isNo(dia)">驳回</div>
-            <div class="diabtn"  @click="isOk(dia)">同意</div>
+            <div class="diabtn diabtn22" @click="isNo(dia,dia.index)">驳回</div>
+            <div class="diabtn"  @click="isOk(dia,dia.index)">同意</div>
           </div>
         </Dialog>
   </div>
@@ -147,26 +147,27 @@ export default {
         }
         console.log(val,type)
       },
-      isNo(item){//*****************待调
+      isNo(item,index){//*****************待调
         item.state = 0;
         this.$refs.dialog.hide();
-        this.dealSchedule(11,item.id);
+        this.dealSchedule(11,item.id,index);
       },
-      isOk(item){//****************待调
+      isOk(item,index){//****************待调
         item.state = 1;
         this.$refs.dialog.hide();
-        this.dealSchedule(2,item.id);
+        this.dealSchedule(2,item.id,index,);
       },
-      dealSchedule(type,id){//*******************待调
+      dealSchedule(type,id,index){//*******************待调
         this.$http.post('/pc_ims/admin/dispose_work',{type:type,id:id})
         .then(res=>{
+            this.examData1.splice(index,1);
             this.getNoData();
             this.getYesData();
         })
       },
-      showInfo(item){
-        console.log(item);
+      showInfo(item,i){
         this.dia = item;
+        this.dia.index = i;
         this.$refs.dialog.show();
       },
       showInfoed(item){
