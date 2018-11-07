@@ -9,14 +9,12 @@
     </el-breadcrumb>
 
   	<!--<Crumbs :data ='crumbs' class="breads"/>-->
-  	<div class="boxs chartTables" v-loading="loading"
-         element-loading-background="rgba(0, 0, 0, 0.5)"
-         element-loading-spinner="el-icon-loading">
+  	<div class="boxs chartTables" >
   		<div class="chartTit">
   			<div class="chartLeftTit">
   				<div class="tit1">区域能耗 | </div>
                 <div class="analysisBoxs analysisBoxs1">
-                  <el-select v-model="areaDateType" @change="areaDateTypeChange">
+                  <el-select v-model="data.config.area_query_date_type" @change="areaDateTypeChange">
                     <el-option
                       v-for="item in areaDateTypes"
                       :key="item.value"
@@ -27,24 +25,24 @@
                 </div>
                 <div class="analysisBoxs">
                   <el-date-picker
-                    v-if=" areaDateType=='year' "
-                    v-model="areaDate"
+                    v-if=" data.config.area_query_date_type =='year' "
+                    v-model="data.config.area_date "
                     value-format="yyyy"
                     type="year"
                     placeholder="请选择">
                   </el-date-picker>
 
                   <el-date-picker
-                    v-if=" areaDateType=='month' "
-                    v-model="areaDate"
+                    v-if=" data.config.area_query_date_type=='month' "
+                    v-model="data.config.area_date "
                     type="month"
                     value-format="yyyyMM"
                     placeholder="请选择">
                   </el-date-picker>
 
                   <el-date-picker
-                    v-if=" areaDateType=='day' "
-                    v-model="areaDate"
+                    v-if=" data.config.area_query_date_type=='day' "
+                    v-model="data.config.area_date "
                     type="date"
                     value-format="yyyyMMdd"
                     placeholder="请选择">
@@ -69,7 +67,7 @@
   			<div class="chartLeftTit">
   				<div class="tit1">设备能耗 | </div>
   				<div class="analysisBoxs analysisBoxs1">
-                  <el-select v-model="deviceDateType" @change="deviceDateTypeChange">
+                  <el-select v-model="data.config.device_query_date_type" @change="deviceDateTypeChange">
                     <el-option
                       v-for="item in deviceDateTypes"
                       :key="item.value"
@@ -80,24 +78,24 @@
                 </div>
                 <div class="analysisBoxs">
                   <el-date-picker
-                    v-if=" deviceDateType=='year' "
-                    v-model="deviceDate"
+                    v-if=" data.config.device_query_date_type=='year' "
+                    v-model="data.config.device_date"
                     type="year"
                     value-format="yyyy"
                     placeholder="请选择">
                   </el-date-picker>
 
                   <el-date-picker
-                    v-if=" deviceDateType=='month' "
-                    v-model="deviceDate"
+                    v-if=" data.config.device_query_date_type=='month' "
+                    v-model="data.config.device_date"
                     type="month"
                     value-format="yyyyMM"
                     placeholder="请选择">
                   </el-date-picker>
 
                   <el-date-picker
-                    v-if=" deviceDateType=='day' "
-                    v-model="deviceDate"
+                    v-if=" data.config.device_query_date_type=='day' "
+                    v-model="data.config.device_date"
                     type="date"
                     value-format="yyyyMMdd"
                     placeholder="请选择">
@@ -188,14 +186,15 @@
         				}
         			},
               config:{
-                sys_menu_id: this.sys_menu_id,
-                project_id: this.project_id,
-                area_query_date_type:this.areaDateType,
-                area_date: this.areaDate,
-                energy_type: this.energy_type,
-                device_query_date_type: this.deviceDateType,
-                device_date: this.deviceDate
-              }
+                sys_menu_id: "",
+                project_id: "",
+                area_query_date_type: "month",
+                area_date: "",
+                energy_type: "0",
+                device_query_date_type: "month",
+                device_date: ""
+              },
+              trendLegendLabel:[]
         		},
         		vanalysis:'',
         		analysis:[]
@@ -204,9 +203,11 @@
         methods:{
           deviceDateTypeChange(val){
             this.deviceDate = "";
+            this.data.config.device_date = ""
           },
           areaDateTypeChange(val){
             this.areaDate = "";
+            this.data.config.area_date = "";
           },
         	getBottomEcharts(pieData2,pieData,arr2x,arr2Label){
         		let data = this.data;
@@ -310,13 +311,13 @@
 	        },
 	        loadBarData(i){
         	  let that = this;
-            that.energy_type = that.iscur = i;
+            that.data.config.energy_type = that.iscur = i;
             let config = {
-              sys_menu_id: that.sys_menu_id,
-              project_id: that.project_id,
-              area_query_date_type:that.areaDateType,
-              area_date: that.areaDate,
-              energy_type: that.energy_type,
+              sys_menu_id: that.data.config.sys_menu_id,
+              project_id: that.data.config.project_id,
+              area_query_date_type: that.data.config.area_query_date_type,
+              area_date: that.data.config.area_date,
+              energy_type: that.data.config.energy_type,
             }
             that.$http.post('/hotel_energy/analysis',config).then(res=>{
               //区域图
@@ -326,24 +327,25 @@
           areaQueryData(){
             let that = this;
             let config = {
-              sys_menu_id: that.sys_menu_id,
-              project_id: that.project_id,
-              area_query_date_type:that.areaDateType,
-              area_date: that.areaDate,
-              energy_type: that.energy_type,
+              sys_menu_id: that.data.config.sys_menu_id,
+              project_id: that.data.config.project_id,
+              area_query_date_type: that.data.config.area_query_date_type,
+              area_date: that.data.config.area_date,
+              energy_type: that.data.config.energy_type,
             }
             that.$http.post('/hotel_energy/analysis',config).then(res=>{
                 //区域图
+                console.log(res);
                 that.calcAreaData(res);
               })
           },
           deviceQueryData(){
         	  let that = this;
         	  let config = {
-              sys_menu_id: that.sys_menu_id,
-              project_id: that.project_id,
-              device_query_date_type: that.deviceDateType,
-              device_date: that.deviceDate
+              sys_menu_id: that.data.config.sys_menu_id,
+              project_id: that.data.config.project_id,
+              device_query_date_type: that.data.config.device_query_date_type,
+              device_date: that.data.config.device_date,
             }
             that.$http.post('/hotel_energy/analysis',config).then(res=>{
               console.log(res);
@@ -365,6 +367,10 @@
             let tempArray2 = [];
             let tempArray3 = [];
             let tempArray4 = [];
+            let tempArray5 = [];
+            let tempArray6 = [];
+            let tempArray7 = [];
+            let tempArray8 = [];
 
             $.each(chineseData,(n,k)=>{
               $.each(pieData,(n1,k1)=>{
@@ -381,70 +387,38 @@
                 }
               });
 
-              that.data.topPie = tempArray4;
-              that.data.axisLabel = tempArray1;
-              that.data.legendData = tempArray2;
-              that.data.arrData1 = tempArray3;
-
-              // if(k.area_id == thisData.area_id){
-              // 	that.data.axisLabel.push(k.title);
-              // 	$.each(thisData.data,(n2,k2)=>{
-              // 		console.log(k2);
-              // 		that.data.legendData.push(k2.date);
-              // 		that.data.arrData1.push(k2.value);
-              // 	})
-              // }
-
               $.each(lastData,(o1,w1)=>{
                 if(k.area_id == w1.area_id){
-                  that.data.legendData.push(w1.data[0].date);
-                  that.data.arrData2.push(w1.data[0].value);
+                  tempArray2.push(w1.data[0].date);
+                  tempArray5.push(w1.data[0].value);
                 }
               });
-              // if(k.area_id == lastData.area_id){
-              // 	$.each(lastData.data,(n2,k2)=>{
-              // 		that.data.arrData2.push(k2.value);
-              // 	})
-              // }
+
               $.each(lastThisData,(o2,w2)=>{
                 if(k.area_id == w2.area_id){
-                  that.data.arrData3.push(w2.value);
+                  tempArray2.push(w2.data[0].date);
+                  tempArray6.push(w2.data[0].value);
                 }
               });
-              // if(k.area_id == lastThisData.area_id){
-              // 	$.each(lastThisData.data,(n2,k2)=>{
-              // 		that.data.arrData3.push(k2.value);
-              // 	})
-              // }
-              // $.each(trendData,(n1,k1)=>{
-              // 	that.data.arr1Label.push(k.title);
-              // 	if(k1.device_id==k.device_id){
-              // 		$.each(k1.data,(n2,k2)=>{
-              // 			that.data.arr1x.push(k2.date);
-              // 			that.data.arr1.push(k2.value);
-              // 		})
 
-              // 	}
-              // });
             })
+
+            that.data.topPie = tempArray4;
+            tempArray8 = that.data.axisLabel = tempArray1;
+            tempArray8.push('入住率');
+            that.data.trendLegendLabel = tempArray8;
+
+            that.data.arrData1 = tempArray3;
+            that.data.legendData = tempArray2;
+            that.data.arrData2 = tempArray5;
+            that.data.arrData3 = tempArray6;
+
             $.each(trendData.check_in_hotel_rate,(n,k)=>{
-              that.data.leftTopChart.rzl.push([k.date,k.value]);
+              tempArray7.push([k.date,k.value]);
             });
-            $.each(trendData.floor_value,(n,k)=>{
-              // that.data.floorVal.rooms0
-              // console.log(that.data.floorVal);
-              // if(n == 0){
-              // 	that.data.leftTopChart.floorVal.rooms0.push([k.data.date,k.data.value]);
-              // }else if (n == 1){
-              // 	that.data.leftTopChart.floorVal.rooms1.push([k.data.date,k.data.value]);
-              // }else if(n == 2){
-              // 	that.data.leftTopChart.floorVal.rooms2.push([k.data.date,k.data.value]);
-              // }else if(n == 3){
-              // 	that.data.leftTopChart.floorVal.rooms3.push([k.data.date,k.data.value]);
-              // }else if(n == 4){
-              // 	that.data.leftTopChart.floorVal.rooms4.push([k.data.date,k.data.value]);
-              // }
-            });
+
+            that.data.leftTopChart.rzl = tempArray7;
+
           },
           calcDeviceData(res){
         	  let that = this;
@@ -477,16 +451,12 @@
             let that = this;
             that.loading = true;
 	        	let param = {
-              sys_menu_id: this.sys_menu_id,
-              project_id: this.project_id,
-             /* area_query_date_type:this.areaDateType,
-              area_date: this.areaDate,
-              energy_type: this.energy_type,
-              device_query_date_type: this.deviceDateType,
-              device_date: this.deviceDate*/
+              sys_menu_id: that.data.config.sys_menu_id,
+              project_id: that.data.config.project_id
 	        	}
             that.$http.post('/hotel_energy/analysis',param)
 	        	.then(res=>{
+	        	  console.log(res);
 	        		//区域图
               that.calcDeviceData(res);
               that.calcAreaData(res);

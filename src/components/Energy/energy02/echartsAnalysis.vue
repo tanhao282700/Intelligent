@@ -1,7 +1,9 @@
 
 <template>
   <!-- 用能分析图表 -->
-  <div class="echartsAnalysis">
+  <div class="echartsAnalysis" v-loading="viewsLoading"
+       element-loading-spinner="el-icon-loading"
+       element-loading-background="rgba(0, 0, 0, 0.3)">
   	<div class="lineEcharts" id="lines"></div>
   	<div class="pieEcharts" id="pies"></div>
   	<div class="barEcharts" id="bars"></div>
@@ -15,6 +17,7 @@
     	props:['data'],
         data(){
         	return {
+            viewsLoading:false,
         	  isReset:false,
         		rtChartLabel:[],
         		rtArr1:[],
@@ -22,7 +25,9 @@
         		rtArr3:[],
         		areaEnergyRzl:[],
         		areaEnergyKf:[],
-
+            trendData:[],
+            trendValueData:[],
+            seviceAllDatas:{}
         	}
         },
         watch:{
@@ -30,7 +35,7 @@
           data: {
             handler: function (items) {
               let that = this;
-              that.drawLine(items);
+              that.getChartLineData();
             },
             deep: true
           }
@@ -38,19 +43,20 @@
         methods:{
         	getChartLineData(){
         	  let that = this;
-        	  let datas = this.data;
+        	  that.viewsLoading = true;
+        	  let datas = that.data;
 
         		let param = {
 	        		project_id: datas.config.project_id,
 	        		sys_menu_id: datas.config.sys_menu_id,
 	        		area_query_date_type: datas.config.area_query_date_type,
 	        		area_date: datas.config.area_date,
-	        		device_query_date_type: datas.config.device_query_date_type,
-	        		device_date: datas.config.device_date,
               energy_type: datas.config.energy_type
 	        	}
-	        	this.$http.post('/hotel_energy/analysis',param)
+            that.$http.post('/hotel_energy/analysis',param)
 	        	.then(res=>{
+	        	  console.log(res);
+
 	        		//区域图
 	        		// console.log(res);
 	        		// let barData = res.data.data.area_energy_use.column_data;
@@ -69,18 +75,33 @@
         			// 	});
         			// });
 
-	        		let trendData = res.data.data.area_energy_use.trend_data;
-	        		let newRzl = [];
-	        		let newKf = [];
-	        		$.each(trendData.check_in_hotel_rate,function(i,k){
-	        			newRzl.push([k.date,k.value]);
-	        		});
+              that.trendData = res.data.data.area_energy_use.trend_data;
+
+              let trendData = res.data.data.area_energy_use.trend_data;
+              let newRzl = [];
+              let newKf = [];
+              $.each(trendData.check_in_hotel_rate,function(i,k){
+                newRzl.push([k.date,k.value]);
+              });
               that.areaEnergyRzl = newRzl;
 
-	        		$.each(trendData.floor_value[0].data,function(i,k){
-	        			newKf.push([k.date,k.value]);
-	        		});
+              let tempArray = [];
+              trendData.floor_value.map((item,index)=>{
+                let temp = [];
+                item.data.map((items,indexs)=>{
+                  temp.push([items.date,items.value]);
+                })
+                tempArray[index] = temp;
+              })
+              tempArray.push(that.areaEnergyRzl);
+              that.trendValueData = tempArray;
+
+              $.each(trendData.floor_value[0].data,function(i,k){
+                newKf.push([k.date,k.value]);
+              });
               that.areaEnergyKf = newKf;
+
+
               that.drawLine(that.data);
 
 	        	})
@@ -88,19 +109,24 @@
         	},
         	drawLine(data){
         	  let that = this;
+
         		let chart = that.$echarts.init(document.getElementById('lines'));
         		let chart2 = that.$echarts.init(document.getElementById('pies'));
         		let chart3 = that.$echarts.init(document.getElementById('bars'));
+        		let trendValueData = that.trendValueData;
+
         		let legendData = data.legendData;
 
             legendData = legendData.filter(function(element,index,self){
                 return self.indexOf(element) === index;
             });
 
+            let legendLen = legendData.length;
 		        let axisLabel = data.axisLabel;
 		        let arrData = [data.arrData1,data.arrData2,data.arrData3];
 		        let seriesValue = [];
-		        for (var i = 0; i < legendData.length; i++) {
+		        let trendValueArray = [];
+		        for (var i = 0; i < legendLen; i++) {
 		            var seriesDataVal = null;
 		            seriesDataVal = {
 		                barWidth: 8,//柱状条宽度
@@ -112,16 +138,41 @@
 		            seriesValue.push(seriesDataVal);
 		        }
 
+            let trendLegendLabel = data.trendLegendLabel;
+		        console.log(trendLegendLabel);
+
+		        for(var j=0;j<trendValueData.length;j++){
+              var trendItem;
+              trendItem = {
+                name: trendLegendLabel[j],
+                data: trendValueData[j],//data.custom,
+                type: 'line',
+                symbol: "circle",
+                symbolSize:0,
+                smooth: true,
+                lineStyle: {
+                  normal: {
+                    width: 2,
+                    shadowColor: 'rgba(48, 241, 225, .4)',
+                    shadowBlur: 5,
+                    shadowOffsetY: 5
+                  }
+                },
+              }
+              trendValueArray.push(trendItem);
+            }
+
 		        let option = {
-				    tooltip : {
-				        trigger: 'axis',
-				        axisPointer: {
-				            type: 'cross',
-				            label: {
-				                backgroundColor: '#6a7985'
-				            }
-				        }
-				    },
+                color:["#FD97AA","#008AFF","#F35E5E","#EEB66E","#EBF191","#C382EF","#95EDC5",'#b5d7ff'],
+                tooltip : {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'cross',
+                        label: {
+                            backgroundColor: '#6a7985'
+                        }
+                    }
+                },
 		            grid:{
 		          	    left:0,
 		          	    top:35,
@@ -133,158 +184,40 @@
 			          	textStyle: {color: '#B5D7FF',},
 			          	top:5,
 			          	itemWidth: 20,
-	        			itemHeight: 10,
-			            data:['客房','宴会厅','餐厅厨房','公共区域','餐厅','空调','1-5号主机','入住率'],
+	        			  itemHeight: 10,
+			            data: axisLabel,
+                 /* data: ['客房','宴会厅','餐厅厨房','公共区域','餐厅','空调','1-5号主机','入住率'],*/
 		            },
 		            calculable : true,
 		            xAxis: {
-				        type: 'time',
-				        // boundaryGap: true,
-				        axisLine: {show:false},
-				        axisTick: {show:false},
-				        splitLine: {show:false},
-				        axisLabel: {textStyle: {
-						    color: '#708FBE',
-		                	showMinLabel:false,
-		                	showMaxLabel:false,
-						}},
-						// data:['1','2','3','4','5','6','7']
+				          type: 'time',
+                  axisLine: {show:false},
+                  axisTick: {show:false},
+                  splitLine: {show:false},
+                  axisLabel: {
+                    textStyle: {
+                      color: '#708FBE',
+                      showMinLabel:false,
+                      showMaxLabel:false,
+                    }
+                  },
+                  nameTextStyle:{
+				            fontSize:4
+                  },
+                  nameGap:5
 			        },
-			    	yAxis: {
-				        axisLine: {show:false},
-				        axisTick: {show:false},
-				        splitLine: {show:false},
-				        axisLabel: {show:false},
-				        splitArea: {
-				        	show:true,
-				        	areaStyle: {color:['rgba(142,187,255,.1)','rgba(142,187,255,.05)']},
-				        },
-				        type: 'value'
-			    	},
-				    series: [{
-				    	name:'客房',
-				        data: this.areaEnergyKf,//data.custom,
-				        type: 'line',
-				        symbol: "circle",
-				        symbolSize:0,
-				        smooth: true,
-			            lineStyle: {
-			                normal: {
-			                    width: 2,
-			                    shadowColor: 'rgba(48, 241, 225, .4)',
-			                    shadowBlur: 5,
-			                    shadowOffsetY: 5
-			                }
-			            },
-				    },{
-				    	name:'宴会厅',
-				        data:data.party,
-				        type: 'line',
-				        symbol: "circle",
-				        symbolSize:0,
-				        smooth: true,
-			            lineStyle: {
-			                normal: {
-			                    width: 2,
-			                    shadowColor: 'rgba(48, 241, 225, .4)',
-			                    shadowBlur: 5,
-			                    shadowOffsetY: 5
-			                }
-			            },
-				    },
-				    {
-				    	name:'餐厅厨房',
-				        data: data.dinneroom,
-				        type: 'line',
-				        symbol: "circle",
-				        symbolSize:0,
-				        smooth: true,
-			            lineStyle: {
-			                normal: {
-			                    width: 2,
-			                    shadowColor: 'rgba(253, 153, 27, .4)',
-			                    shadowBlur: 5,
-			                    shadowOffsetY: 5
-			                }
-			            },
-				    },
-				    {
-				    	name:'公共区域',
-				        data: data.publicarea,
-				        type: 'line',
-				        symbol: "circle",
-				        symbolSize:0,
-				        smooth: true,
-			            lineStyle: {
-			                normal: {
-			                    width: 2,
-			                    shadowColor: 'rgba(253, 153, 27, .4)',
-			                    shadowBlur: 5,
-			                    shadowOffsetY: 5
-			                }
-			            },
-				    },{
-				    	name:'餐厅',
-				        data: data.dinner,
-				        type: 'line',
-				        symbol: "circle",
-				        symbolSize:0,
-				        smooth: true,
-			            lineStyle: {
-			                normal: {
-			                    width: 2,
-			                    shadowColor: 'rgba(27, 127, 253, .4)',
-			                    shadowBlur: 5,
-			                    shadowOffsetY: 5
-			                }
-			            },
-				    },{
-				    	name:'空调',
-				        data: data.airconditioner,
-				        type: 'line',
-				        symbol: "circle",
-				        symbolSize:0,
-				        smooth: true,
-			            lineStyle: {
-			                normal: {
-			                    width: 2,
-			                    shadowColor: 'rgba(27, 127, 253, .4)',
-			                    shadowBlur: 5,
-			                    shadowOffsetY: 5
-			                }
-			            },
-				    },{
-				    	name:'1-5号主机',
-				        data: data.mainframe,
-				        type: 'line',
-				        symbol: "circle",
-				        symbolSize:0,
-				        smooth: true,
-			            lineStyle: {
-			                normal: {
-			                    width: 2,
-			                    shadowColor: 'rgba(238, 76, 76, .4)',
-			                    shadowBlur: 5,
-			                    shadowOffsetY: 5
-			                }
-			            }
-			        },{
-				    	name:'入住率',
-				        data: this.areaEnergyRzl,  //data.occupancy,
-				        type: 'line',
-				        symbol: "circle",
-				        symbolSize:0,
-				        smooth: true,
-			            lineStyle: {
-			                normal: {
-			                    width: 2,
-			                    shadowColor: 'rgba(238, 76, 76, .4)',
-			                    shadowBlur: 5,
-			                    shadowOffsetY: 5
-			                }
-			            }
-				    }],
-			        color:["#FD97AA","#008AFF","#F35E5E","#EEB66E","#EBF191","#C382EF","#95EDC5",'#b5d7ff']
+                yAxis: {
+                    axisLine: {show:false},
+                    axisTick: {show:false},
+                    splitLine: {show:false},
+                    axisLabel: {show:false},
+                    splitArea: {
+                      show:true,
+                      areaStyle: {color:['rgba(142,187,255,.1)','rgba(142,187,255,.05)']},
+                    },
+                    type: 'value'
+                },
+                series: trendValueArray
 		        };
 		        let option2 = {
 				    tooltip : {
@@ -369,6 +302,7 @@
 		        chart2.setOption(option2);
 		        chart3.setOption(option3);
 
+            that.viewsLoading = false;
         	}
         },
         mounted(){
