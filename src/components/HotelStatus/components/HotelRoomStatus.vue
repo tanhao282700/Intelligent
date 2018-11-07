@@ -23,12 +23,27 @@
     			<div class="roomListHeadBox">
     				<span>酒店房态表 <i></i></span>
     				<span v-for="item in roomListsStaTit" :class="item.sta"> <i></i>{{item.labName}}</span>
-		            <el-select v-model="floorNumber" placeholder="楼号" @change="getData">
-		                <el-option label="1楼" value="1"></el-option>
-                        <el-option label="2楼" value="2"></el-option>
-                        <el-option label="3楼" value="3"></el-option>
-		                <el-option label="全部" value="4"></el-option>
-		            </el-select>
+
+
+                    <el-dropdown trigger="click">
+                        <span class="el-dropdown-link">{{onItemFloor}}</span>
+                        <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item  v-for="(item,index) in hotelFloors" divided>
+                                <div @click="changeItemId(item.id,item.title)"><b :class="index==activeIndex ? 'bottom' : 'left'" @click.stop="toggleHdOn(index)"></b>{{item.title}} <input :value="item.id"/></div>
+                                <div v-show="activeIndex===index" class="itemChild" v-for="sItem in item.child" @click="changeItemId(sItem.id,sItem.title)">{{sItem.title}} <input :value="sItem.id"/></div>
+                            </el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
+
+
+		           <!--  <el-select v-model="floorNumber" placeholder="楼号" @change="getData">
+                        <el-option  v-for="item in hotelFloors"
+                          :key="item.id"
+                          :label="item.title"
+                          :value="item.id">
+                        </el-option>
+                        <el-option label="全部" value="-1" key="-1"></el-option>
+		            </el-select> -->
     			</div>
     			<div class="roomsTypeStaBox">
     				<ul v-for="item in roomsType">
@@ -63,6 +78,10 @@
         },
 	    data() {
 	        return {
+                activeIndex:-1,
+                thisClassOn:'left',
+                onItemFloor:'全部',
+                hotelFloors:[],
 	        	floorNumber:'全部',
 	        	separate_room:[],
 	        	standard_room:[],
@@ -91,14 +110,96 @@
 	        		{labName:"闲置率",labVal:"35%"},
 	        		{labName:"用餐人数",labVal:8888},
 	        	],
+                dataObjseparate_room:[],
+                dataObjstandard_room:[],
+                dataObjsuite:[],
+                thisCheckFloor:'',
 	        };
 	    },
         mounted(){
             this.getData("");
         },
 	    methods: {
+            toggleHdOn(index){
+                this.activeIndex = index;
+            },
+            changeItemId(id,title){
+                this.onItemFloor = title;
+                console.log(id);
+                this.getData(id);
+            },
+            getFloorsFn(){
+                var that = this;
+                this.$http.post('/hotel/get_floor',{
+
+                }).then(function(data){
+                    // 响应成功回调
+                    console.log(data);
+                    // that.tableData = response.data.data.entrance_guard_record;
+                    that.hotelFloors = data.data.data;
+                    
+                    var newArrDj1 = [];
+                    var newArrDj2 = [];
+                    var newArrDj3 = [];
+                    var newArrBj1 = [];
+                    var newArrBj2 = [];
+                    var newArrBj3 = [];
+                    var newArrTf1 = [];
+                    var newArrTf2 = [];
+                    var newArrTf3 = [];
+                    $.each(that.dataObjseparate_room,function(i,key){
+                        // console.log(key);
+                        if(key[0].slice(0,1) == "1"){
+                            newArrDj1.push(key);
+                        }else if(key[0].slice(0,1) == "2"){
+                            newArrDj2.push(key);
+                        }else if(key[0].slice(0,1) == "3"){
+                            newArrDj3.push(key);
+                        }
+                    });
+                    $.each(that.dataObjstandard_room,function(i,key){
+                        if(key[0].slice(0,1) == "1"){
+                            newArrBj1.push(key);
+                        }else if(key[0].slice(0,1) == "2"){
+                            newArrBj2.push(key);
+                        }else if(key[0].slice(0,1) == "3"){
+                            newArrBj3.push(key);
+                        }
+                    }); 
+                    $.each(that.dataObjsuite,function(i,key){
+                        if(key[0].slice(0,1) == "1"){
+                            newArrTf1.push(key);
+                        }else if(key[0].slice(0,1) == "2"){
+                            newArrTf2.push(key);
+                        }else if(key[0].slice(0,1) == "3"){
+                            newArrTf3.push(key);
+                        }
+                    });
+                    // console.log(selVal);
+                    if(that.thisCheckFloor == 103){
+                        that.roomsType[0].roomsLst = newArrDj1;
+                        that.roomsType[1].roomsLst = newArrBj1;
+                        that.roomsType[2].roomsLst = newArrTf1;
+                    }else if(that.thisCheckFloor == 104){
+                        that.roomsType[0].roomsLst = newArrDj2;
+                        that.roomsType[1].roomsLst = newArrBj2;
+                        that.roomsType[2].roomsLst = newArrTf2;
+                    }else if(that.thisCheckFloor == 105){
+                        that.roomsType[0].roomsLst = newArrDj3;
+                        that.roomsType[1].roomsLst = newArrBj3;
+                        that.roomsType[2].roomsLst = newArrTf3;
+                    }else{
+                        that.roomsType[0].roomsLst = that.dataObjseparate_room;
+                        that.roomsType[1].roomsLst = that.dataObjstandard_room;
+                        that.roomsType[2].roomsLst = that.dataObjsuite;                    
+                    }
+                }, function(data){
+                    // 响应错误回调
+                });
+            },
  			getData(selVal){
                 var that = this;
+                that.thisCheckFloor = selVal;
                 this.$http.post('/hotel/hotel_state',{
                     // sys_menu_id:15,
                     project_id:this.$store.state.projectId,
@@ -115,66 +216,19 @@
                     that.hotelMainInfo[5].labVal = data.data.data.vacancy_rate + '%';
                     that.hotelMainInfo[6].labVal = data.data.data.diners;
 
-                    var newArrDj1 = [];
-                    var newArrDj2 = [];
-                    var newArrDj3 = [];
-                    var newArrBj1 = [];
-                    var newArrBj2 = [];
-                    var newArrBj3 = [];
-                    var newArrTf1 = [];
-                    var newArrTf2 = [];
-                    var newArrTf3 = [];
-                    $.each(data.data.data.separate_room,function(i,key){
-                        // console.log(key);
-                        if(key[0].slice(0,1) == "1"){
-                            newArrDj1.push(key);
-                        }else if(key[0].slice(0,1) == "2"){
-                            newArrDj2.push(key);
-                        }else if(key[0].slice(0,1) == "3"){
-                            newArrDj3.push(key);
-                        }
-                    });
-                    $.each(data.data.data.standard_room,function(i,key){
-                        if(key[0].slice(0,1) == "1"){
-                            newArrBj1.push(key);
-                        }else if(key[0].slice(0,1) == "2"){
-                            newArrBj2.push(key);
-                        }else if(key[0].slice(0,1) == "3"){
-                            newArrBj3.push(key);
-                        }
-                    }); 
-                    $.each(data.data.data.suite,function(i,key){
-                        if(key[0].slice(0,1) == "1"){
-                            newArrTf1.push(key);
-                        }else if(key[0].slice(0,1) == "2"){
-                            newArrTf2.push(key);
-                        }else if(key[0].slice(0,1) == "3"){
-                            newArrTf3.push(key);
-                        }
-                    });
-                    // console.log(selVal);
-                    if(selVal == 1){
-                        that.roomsType[0].roomsLst = newArrDj1;
-                        that.roomsType[1].roomsLst = newArrBj1;
-                        that.roomsType[2].roomsLst = newArrTf1;
-                    }else if(selVal == 2){
-                        that.roomsType[0].roomsLst = newArrDj2;
-                        that.roomsType[1].roomsLst = newArrBj2;
-                        that.roomsType[2].roomsLst = newArrTf2;
-                    }else if(selVal == 3){
-                        that.roomsType[0].roomsLst = newArrDj3;
-                        that.roomsType[1].roomsLst = newArrBj3;
-                        that.roomsType[2].roomsLst = newArrTf3;
-                    }else{
-                        that.roomsType[0].roomsLst = data.data.data.separate_room;
-                        that.roomsType[1].roomsLst = data.data.data.standard_room;
-                        that.roomsType[2].roomsLst = data.data.data.suite;                    
-                    }
+                    that.dataObjseparate_room = data.data.data.separate_room;
+                    that.dataObjstandard_room = data.data.data.standard_room;
+                    that.dataObjsuite = data.data.data.suite;
+                    console.log(that.dataObjseparate_room)
+                    console.log(that.dataObjstandard_room)
+                    console.log(that.dataObjsuite)
 
+                    that.getFloorsFn();
     
                 }, function(data){
                     // 响应错误回调
                 });
+
  			}
 	    }
     }
