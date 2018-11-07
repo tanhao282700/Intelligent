@@ -92,6 +92,7 @@
                   <Table
                     style="width:100%"
                     :table = "table"
+                    @changePage="changePage1"
                   />
                 </div>
             </div>
@@ -105,6 +106,7 @@
                   <Table
                     style="width:100%"
                     :table = "table2"
+                    @changePage="changePage2"
                     @rowEnter="mouseOverLi"
                     @rowLeave = "mouseOutLi"
                   />
@@ -130,7 +132,9 @@ export default {
   },
   data () {
     return {
-        dateUnit:'year',
+        currentNum1:1,
+      currentNum2:1,
+      dateUnit:'year',
       dateOptions:[{id:'year',title:"年"},{id:'month',title:"月"},{id:'day',title:"日"}],
       dateRangeValue:"",
         year:'',
@@ -148,6 +152,8 @@ export default {
         vJob:-1,
         table:{
             // small:'small',
+            showPagination:true,
+            page:1,
             hei:328, //table高度  设置后有滚动条
             len:0, //总条数
             data:[],
@@ -176,6 +182,8 @@ export default {
             ]
         },
         table2:{
+            showPagination:true,
+            page:1,
             hei:328, //table高度  设置后有滚动条
             len:0, //总条数
             data:[],
@@ -198,6 +206,12 @@ export default {
     }
   },
   methods:{
+    changePage1(){
+      this.getReportData()
+    },
+    changePage2(){
+      this.getRepeatRate()
+    },
     dateTypeChange(){
       this.dateRangeValue = "";
       $(".el-date-editor.el-range-editor").css({border:'none!important'});
@@ -282,7 +296,7 @@ export default {
         year:year,
         month:month,
         day:day,
-        pagenumber:1,
+        pagenumber:this.table.page,
         pagesize:20
       }).then(res=> {
         console.log(res);
@@ -302,12 +316,13 @@ export default {
     },
     getRepeatRate(){
       this.$http.post('/pc_ims/admin/count_device',{
-        pagenumber:1,
+        pagenumber:this.table2.page,
         pagesize:20
       }).then(res=>{
         console.log(res)
         if(res.data.code==0){
             //序号
+            this.table2.len = res.data.count
             this.table2.data = res.data.data;
             this.table2.data.map((item,index)=>{
                 item.index = index+1
@@ -473,6 +488,9 @@ export default {
   }
   .myAgenTab2 .tableBox .el-table{
     height:100%!important;
+  }
+  #pane-second .myAgenTab2 .tableBox .el-table{
+    height:92%!important;
   }
   .thJobBoxs{
     display: flex;
