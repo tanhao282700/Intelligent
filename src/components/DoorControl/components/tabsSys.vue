@@ -51,14 +51,14 @@
         </div>
         <div class="bottomShadow">
             <div class="floorImgBox" id="floorImgBox">
-                <img src="../../../assets/img/doorControl/bg_lc.png">
+                <img :src="floorBgImg">
                 <!-- {{item.device_name.slice(0,1)}} -->
                 <i :class="['doorSta'+item.device_state,'door'+(index+1)]" 
                    v-for="(item,index) in iList" 
                    @mouseenter = "popToggle(index,item.x,item.y,item.device_name,item.device_state,item.point_list)" 
                    @mouseout = "popHide" 
                    @click.stop="doorInfoPanel(item.device_id,item.device_name,item)"
-                   :style="{left:item.position_x*coefficientX + 'px',top:item.position_y*coefficientY + 'px'}"
+                   :style="{left:item.position_x + 'px',top:item.position_y + 'px'}"
                 ><span v-html = "item.all_state_pic[item.device_state]" ></span>
                     <pops v-on:doorInfoHide="doorInfoHide" :doorControlMsg = "doorControlMsg"  :info = "onMouseDoor" :infoSta = "infoSta" :controlDoorFun = "controlDoorFun" :itemIndex="index" @changeDoorStatus="changeDoorStatus"></pops>
                 </i>
@@ -76,6 +76,7 @@
     export default {
         data () {
         	return {
+                floorBgImg:'../../../assets/img/doorControl/bg_lc.png', //楼层背景图
                 levelNum:[],//楼层
                 levels:[],  //楼层
                 areaLevel:[], //栋号
@@ -123,12 +124,13 @@
                 this.floorNumber = "";
                 this.floorNum = "";
                 this.levels = arrL;
+                // this.getDoorData(selVal);
 
             },
             chooseLevelNum(selVal){
                 this.floorIds = selVal;
                 console.log(selVal);
-                this.getDoorData();
+                // this.getDoorData();
                 var arrLs=[];
                 $.each(this.levels,function(item,key){
                     if(key.id == selVal){
@@ -138,11 +140,12 @@
                 });
                 this.floorNum = "";
                 this.levelNum = arrLs;
+                this.getDoorData(selVal);
                 console.log(this.levelNum);
             },
             getFloorIdData(selVal){
                 this.floorIds = selVal;
-                this.getDoorData();
+                this.getDoorData(selVal);
                 console.log(this.floorIds);
             },
             popToggle(i,x,y,id,sta,handle){
@@ -200,7 +203,7 @@
                 this.doorInfoShow = doorInfoHide;
             },
             //获取页面数据
-            getDoorData(){
+            getDoorData(slevel){
                 console.log(this.$store.state.sysList[14].sys_menu_id);
                 console.log(this.$store.state);
                 this.coefficientX = document.getElementById("floorImgBox").offsetWidth / 518;
@@ -218,6 +221,7 @@
                     that.doorWarning = data.data.data.entrance_guard_info.entrance_guard_anomaly_num;
                     that.doorOpenN = data.data.data.entrance_guard_info.entrance_guard_open_num;
                     // console.log(data.data.data.entrance_guard_info.entrance_guard_open_num);
+                    that.floorBgImg = data.data.data.entrance_guard_info.floor_background;
                     //获取联动数据
                     that.areaLevel = data.data.data.area_level;
                     console.log(that.areaLevel);
