@@ -9,7 +9,9 @@
     </el-breadcrumb>
 
   	<!--<Crumbs :data ='crumbs' class="breads"/>-->
-  	<div class="boxs chartTables" >
+  	<div class="boxs chartTables" v-loading="loading1"
+         element-loading-spinner="el-icon-loading"
+         element-loading-background="rgba(0, 0, 0, 0.3)">
   		<div class="chartTit">
   			<div class="chartLeftTit">
   				<div class="tit1">区域能耗 | </div>
@@ -60,7 +62,7 @@
   		</div>
   		<EchartsAnalysis :data="data"/>
   	</div>
-  	<div class="boxs chartTables2" v-loading="loading"
+  	<div class="boxs chartTables2" v-loading="loading2"
          element-loading-background="rgba(0, 0, 0, 0.5)"
          element-loading-spinner="el-icon-loading">
   		<div class="chartTit">
@@ -132,7 +134,8 @@
         },
         data(){
         	return {
-            loading:false,
+            loading1:false,
+            loading2:false,
             sys_menu_id:"",
             project_id:"",
             deviceDateTypes:[
@@ -311,6 +314,7 @@
 	        },
 	        loadBarData(i){
         	  let that = this;
+            that.loading1 = true;
             that.data.config.energy_type = that.iscur = i;
             let config = {
               sys_menu_id: that.data.config.sys_menu_id,
@@ -322,10 +326,14 @@
             that.$http.post('/hotel_energy/analysis',config).then(res=>{
               //区域图
               that.calcAreaData(res);
+              setTimeout(function () {
+                that.loading1 = false;
+              },500)
             })
 	        },
           areaQueryData(){
             let that = this;
+            that.loading1 = true;
             let config = {
               sys_menu_id: that.data.config.sys_menu_id,
               project_id: that.data.config.project_id,
@@ -335,12 +343,17 @@
             }
             that.$http.post('/hotel_energy/analysis',config).then(res=>{
                 //区域图
-                console.log(res);
+              if(res.data.code==0){
                 that.calcAreaData(res);
-              })
+                setTimeout(function () {
+                  that.loading1 = false;
+                },500)
+              }
+            })
           },
           deviceQueryData(){
         	  let that = this;
+
         	  let config = {
               sys_menu_id: that.data.config.sys_menu_id,
               project_id: that.data.config.project_id,
@@ -349,9 +362,9 @@
             }
             that.$http.post('/hotel_energy/analysis',config).then(res=>{
               console.log(res);
-              if(res.data.code==0){
-                that.calcDeviceData(res);
-              }
+              that.calcDeviceData(res);
+              that.calcAreaData(res);
+
             })
           },
           calcAreaData(res){
@@ -449,7 +462,7 @@
           },
 	        getDatas(){
             let that = this;
-            that.loading = true;
+            that.loading1 = that.loading2 = true;
 	        	let param = {
               sys_menu_id: that.data.config.sys_menu_id,
               project_id: that.data.config.project_id
@@ -461,7 +474,7 @@
               that.calcDeviceData(res);
               that.calcAreaData(res);
               setTimeout(function () {
-                that.loading = false;
+                that.loading1 = that.loading2 = false;
               },200)
 	        	})
 	        },

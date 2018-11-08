@@ -711,15 +711,16 @@
     }
 
     .deviceDetailBox{
-      .vhMT(2);
+      margin-top: .1rem;
       display: flex;
+      padding-top: .5rem;
       justify-content: space-between;
       .deviceSet{
         display: flex;
         justify-content: flex-start;
         align-items: center;
         width: 6.43rem;
-        .vh(205);
+        height: 3rem;
         background-color: transparent;
         box-shadow: 0px 4px 10px 0px
         rgba(74, 144, 226, 0.22),
@@ -933,7 +934,7 @@
       }
       .deviceEchart{
         width: 6.43rem;
-        .vh(205);
+        height: 3rem;
         background-color: transparent;
         box-shadow: 0px 4px 10px 0px
         rgba(74, 144, 226, 0.22),
@@ -1019,9 +1020,9 @@
       }
     }
     .threeDBox{
-      .vhMT(20);
+      margin-top: .2rem;
       width: 100%;
-      min-height: 354px;
+      min-height: 2.4rem;
       /*.vh(459);*/
       max-height: 577px;
       background-color: transparent;

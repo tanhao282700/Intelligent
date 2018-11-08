@@ -1,9 +1,7 @@
 
 <template>
   <!-- 用能分析图表 -->
-  <div class="echartsAnalysis" v-loading="viewsLoading"
-       element-loading-spinner="el-icon-loading"
-       element-loading-background="rgba(0, 0, 0, 0.3)">
+  <div class="echartsAnalysis">
   	<div class="lineEcharts" id="lines"></div>
   	<div class="pieEcharts" id="pies"></div>
   	<div class="barEcharts" id="bars"></div>

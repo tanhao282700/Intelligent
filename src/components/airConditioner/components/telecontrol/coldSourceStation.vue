@@ -20,7 +20,7 @@
     <div class="deviceDetailBox" id="deviceDetailBox">
       <div class="deviceSet">
         <self-popover2 :info="[
-          
+
         ]" :tuliCodes="codes" />
 
         <el-scrollbar style="height:100%">
@@ -960,7 +960,7 @@
     .threeDBox{
       .vhMT(20);
       width: 100%;
-      .vh(459);
+      height: 4.3rem;
       background-color: transparent;
       box-shadow: 0px 4px 10px 0px
       rgba(74, 144, 226, 0.22),

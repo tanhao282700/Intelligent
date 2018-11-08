@@ -352,7 +352,7 @@
     margin: 0 auto;
     margin-top: 0.16rem;
     width: 13.06rem;
-    .vh(610);
+    height: 6.5rem;
     /*background-color: #000000;*/
     box-shadow: 0px 4px 10px 0px
     rgba(73, 143, 226, 0.22),
