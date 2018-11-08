@@ -1,14 +1,14 @@
 <template>
   <div id="home">
-    <div class="buildModel">
-      <iframe
+    <div class="buildModel" >
+      <!--<iframe
         ref="iframe"
         name="myFrame"
         frameborder="0"
         width="100%"
         height="100%"
         :src="url3d">
-      </iframe>
+      </iframe>-->
     </div>
     <div class="systemName">
       <div class="systemCon">泰立汇云智慧酒店管理系统</div>
@@ -266,7 +266,6 @@
       }
     },
     created(){
-      this.url3d=this.$store.state.userInfoTotal.projectInfo[0].bim_page
         console.log(this.$store.state)
       this.routerInfo = this.$store.state.sysList
 
@@ -284,7 +283,9 @@
       this.initModelId()
       this.initAlarm()
       this.initRouterInfo()
-
+      this.$nextTick(()=>{
+        this.url3d=this.$store.state.userInfoTotal.projectInfo[0].bim_page
+      })
     },
     methods:{
         dateInfoInit(){   //日期信息初始化

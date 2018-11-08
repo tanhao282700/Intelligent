@@ -56,8 +56,8 @@
       return{
         loading:true,
         label:{
-          text:'电（KW/h）',
-          type:'总用电量'
+          text:'总用电量',
+          type:'电（KW/h）'
         },
         columnw:0,
         energyType:'气',

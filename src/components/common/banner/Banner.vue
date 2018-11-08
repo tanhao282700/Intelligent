@@ -168,7 +168,7 @@
 <style lang="less" rel="stylesheet/less">
   .baner{
     width:250px;
-    height: 53.3vw;
+    height: 56.3vw;
     min-height: 728px;
     position:fixed;
     z-index:99999;

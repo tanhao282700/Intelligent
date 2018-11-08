@@ -167,7 +167,7 @@
     z-index:999;
     width: 320px;
     /*height: 100%;*/
-    height: 53.3vw;
+    height: 56.3vw;
     min-height: 728px;
     position: fixed;
     right: -320px;
@@ -186,14 +186,14 @@
       display: flex;
       flex-direction: row;
       align-items: center;
-      font-size:16px;
+      font-size:0.16rem;
       color:#008aff;
       span:first-child{
         margin-top:2px;
         margin-right:12px;
         display: inline-block;
-        width:3px;
-        height:16px;
+        width:0.03rem;
+        height:0.16rem;
         background:#008aff;
       }
     }
