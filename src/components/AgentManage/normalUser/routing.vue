@@ -37,7 +37,7 @@
             :table = "table"
             @rowClick = "rowClick"
           />
-          
+
         </div>
       </div>
       <Dialog wid="910" hei="600" ref="tableInfos2">
@@ -47,7 +47,7 @@
                 <span class="infoState" v-text="infoTit(newData.now_value)"></span>
               </div>
               <div class="infoBoxs">
-                <div class="routingTask">    
+                <div class="routingTask">
                   <ul v-if="newData.desc && newData.desc.length>0">
                     <li class="job_det" v-for="(item,index) in newData.desc" :key="index">
                       <div class="taskDtl">
@@ -55,8 +55,8 @@
                           <div class="taskCont">{{item.value}}</div>
                       </div>
                     </li>
-                  </ul>  
-                   
+                  </ul>
+
                   <div>
                     <div class="contLabel" v-text="'现场处理情况'"></div>
                     <el-input
@@ -69,11 +69,11 @@
                   </div>
                   <div class="contLabel" v-text="'巡检表格'"></div>
                   <div class="boxs" style="width:95.6%;margin:0.2rem auto 0">
-                    <Table 
+                    <Table
                       :table = "newData.tableData"
                     />
                   </div>
-                  
+
                   <!-- <div class="rightHead" v-if="newData && newData.now_state=='5'">
                     <span class="infoBusy" v-text="'拒绝退单'" @click="dealWork(8)"></span>
                     <span class="infoSend" v-text="'允许退单'" @click="dealWork(6)"></span>
@@ -285,6 +285,7 @@ export default {
     },
     rowClick(row){
       this.rowData = row;
+      return
       this.$refs.tableInfos2.show();
       this.rowData.operate='check';
       this.$http.post('/pc_ims/staff/inspectiondata_info',{ins_id:row.id}).then(res=>{
@@ -300,7 +301,7 @@ export default {
             let data1 = res.data.data.zhanshi;
             let timearr = [];
             let _this = this;
-            
+
             $.each(data1,(n,k)=>{
                 //this.newData.tableData.data[n].time = k.time;
                 $.each(data1[n].from.list,(n1,k1)=>{
