@@ -153,7 +153,7 @@ export default {
       barData:{
           id:'barData',
           data:[],
-          total:0,
+          total:1,
           xData:['系统派发','人工派发']
       },
       fillBoxs:[

@@ -40,13 +40,15 @@
                     </el-select>
                 </li>
         		<li class="floatRt">
-        			<span>当前监控总数</span>
-        			<span class="totleVideosNum">14</span>
+                    <div class="vieCtBgBox">
+                        <span>当前监控总数</span>
+                        <span class="totleVideosNum">14</span>
+                    </div>
         		</li>
         	</ul>
 	        <div class="bottomShadow">
 	            <div class="floorImgBox" id="floorImgBox">
-	                <img src="../../assets/img/doorControl/bg_lc.png">
+	                <img :src="floorBgImg">
 	                <span v-for="item in iList" :style="{left:(item.position_x*coefficientX+'px'),top:(item.position_y*coefficientY+'px')}" @click="viewLiveVideo(item.device_id)"><label>{{item.device_id}}</label></span>
 	            </div>
 	        </div>
@@ -93,6 +95,7 @@
         },
 	    data() {
 	        return {
+                floorBgImg:'../../../assets/img/doorControl/bg_lc.png', //楼层背景图
                 selectedValue:'1栋',
                 selectedValue1:'1单元',
 	        	selectedValue2:'1楼',
@@ -161,7 +164,7 @@
                 }).then(function(data){
                     //响应成功回调
                     that.iList = data.data.data.floor_device;
-
+                    console.log(data);
                 }, function(data){
                     // 响应错误回调
                 });
@@ -193,8 +196,8 @@
                     //响应成功回调
                     // console.log(data.data.data);
                     that.videoPanelBox = data.data.data.device_state_pic;
-                    $()
-
+                  
+                    // that.floorBgImg = data.data.data.entrance_guard_info.floor_background;
                 }, function(data){
                     // 响应错误回调
                 });

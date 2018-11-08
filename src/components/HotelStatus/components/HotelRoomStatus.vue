@@ -37,22 +37,24 @@
 
     			</div>
     			<div class="roomsTypeStaBox">
-    				<ul v-for="item in roomsType">
-    					<li>{{item.roomType}}</li>
-    					<li v-for="(sItem,index) in item.roomsLst" class="roomLstLi">
-    						<div :class="'roomSta'+sItem[1]">
-    							<span class="roomNumber">{{sItem[0]}}</span>
-    							<!-- <label class="labName">{{sItem[1]}}</label> -->
-    							<label class="labName" v-if="sItem[1]=='OD'">住脏</label>
-    							<label class="labName" v-else-if="sItem[1]== 'OC'">住净</label>
-    							<label class="labName" v-else-if="sItem[1]== 'VD'">空脏</label>
-    							<label class="labName" v-else-if="sItem[1]== 'VC'">空净</label>
-    							<label class="labName" v-else-if="sItem[1]== 'OO'">维修</label>
-    							<label class="labName" v-else="sItem[1]== 'OS'">锁房</label>
-    						</div>
-    					</li>
-    					<li style="clear:both;height:6px;"></li>
-    				</ul>
+                    <el-scrollbar style="height:100%;">
+        				<ul v-for="item in roomsType">
+        					<li>{{item.roomType}}</li>
+        					<li v-for="(sItem,index) in item.roomsLst" class="roomLstLi">
+        						<div :class="'roomSta'+sItem[1]">
+        							<span class="roomNumber">{{sItem[0]}}</span>
+        							<!-- <label class="labName">{{sItem[1]}}</label> -->
+        							<label class="labName" v-if="sItem[1]=='OD'">住脏</label>
+        							<label class="labName" v-else-if="sItem[1]== 'OC'">住净</label>
+        							<label class="labName" v-else-if="sItem[1]== 'VD'">空脏</label>
+        							<label class="labName" v-else-if="sItem[1]== 'VC'">空净</label>
+        							<label class="labName" v-else-if="sItem[1]== 'OO'">维修</label>
+        							<label class="labName" v-else="sItem[1]== 'OS'">锁房</label>
+        						</div>
+        					</li>
+        					<li style="clear:both;height:6px;"></li>
+        				</ul>
+                    </el-scrollbar>
     			</div>
     		</div>
     	</div>
@@ -120,17 +122,20 @@
                 console.log(id);
                 this.getData(id);
             },
-            getFloorsFn(id){
+            getFloorsFn(){
                 var that = this;
                 this.$http.post('/hotel/get_floor',{
-                    floor_id:id,
+                    // floor_id:id,
                 }).then(function(data){
                     // 响应成功回调
                     that.hotelFloors = data.data.data;
+                    console.log(data.data.data);
 
                     that.roomsType[0].roomsLst = that.dataObjseparate_room;
                     that.roomsType[1].roomsLst = that.dataObjstandard_room;
-                    that.roomsType[2].roomsLst = that.dataObjsuite;                    
+                    that.roomsType[2].roomsLst = that.dataObjsuite;
+
+
 
                 }, function(data){
                     // 响应错误回调
@@ -148,8 +153,10 @@
                     that.dataObjseparate_room = data.data.data.separate_room;
                     that.dataObjstandard_room = data.data.data.standard_room;
                     that.dataObjsuite = data.data.data.suite;
-                    that.getFloorsFn(selVal);
-    
+                    that.getFloorsFn();
+                    
+                    console.log(that.roomsType);
+
                 }, function(data){
                     // 响应错误回调
                 });
@@ -165,13 +172,13 @@
                     // 响应成功回调
                     console.log(data.data.data);
                     // that.tableData = response.data.data.entrance_guard_record;
-                    that.hotelMainInfo[0].labVal = data.data.data.rooms;
-                    that.hotelMainInfo[1].labVal = data.data.data.room_reservation;
-                    that.hotelMainInfo[2].labVal = data.data.data.vacancy;
-                    that.hotelMainInfo[3].labVal = data.data.data.check_in_num;
-                    that.hotelMainInfo[4].labVal = data.data.data.occupancy_rate + '%';
-                    that.hotelMainInfo[5].labVal = data.data.data.vacancy_rate + '%';
-                    that.hotelMainInfo[6].labVal = data.data.data.diners;
+                    that.hotelMainInfo[0].labVal = Number(data.data.data.rooms).toFixed(0);
+                    that.hotelMainInfo[1].labVal = Number(data.data.data.room_reservation).toFixed(0);
+                    that.hotelMainInfo[2].labVal = Number(data.data.data.vacancy).toFixed(0);
+                    that.hotelMainInfo[3].labVal = Number(data.data.data.check_in_num).toFixed(0);
+                    that.hotelMainInfo[4].labVal = Number(data.data.data.occupancy_rate).toFixed(1) + '%';
+                    that.hotelMainInfo[5].labVal = Number(data.data.data.vacancy_rate).toFixed(1) + '%';
+                    that.hotelMainInfo[6].labVal = Number(data.data.data.diners).toFixed(0);
     
                 }, function(data){
                     // 响应错误回调

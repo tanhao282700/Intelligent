@@ -58,7 +58,7 @@
                    @mouseenter = "popToggle(index,item.x,item.y,item.device_name,item.device_state,item.point_list)" 
                    @mouseout = "popHide" 
                    @click.stop="doorInfoPanel(item.device_id,item.device_name,item)"
-                   :style="{left:item.position_x + 'px',top:item.position_y + 'px'}"
+                   :style="{left:item.position_x*coefficientX + 'px',top:item.position_y*coefficientY + 'px'}"
                 ><span v-html = "item.all_state_pic[item.device_state]" ></span>
                     <pops v-on:doorInfoHide="doorInfoHide" :doorControlMsg = "doorControlMsg"  :info = "onMouseDoor" :infoSta = "infoSta" :controlDoorFun = "controlDoorFun" :itemIndex="index" @changeDoorStatus="changeDoorStatus"></pops>
                 </i>
@@ -81,8 +81,8 @@
                 levels:[],  //楼层
                 areaLevel:[], //栋号
                 infoSta:'',
-                coefficientX:1.74, //定位系数
-                coefficientY:1.74, //定位系数
+                coefficientX:1, //定位系数
+                coefficientY:1, //定位系数
                 controlDoorFun:'',
                 onDoorName:'', //当前门禁名字
                 totleDoors:'', //当前门禁数量
@@ -206,8 +206,10 @@
             getDoorData(slevel){
                 console.log(this.$store.state.sysList[14].sys_menu_id);
                 console.log(this.$store.state);
-                this.coefficientX = document.getElementById("floorImgBox").offsetWidth / 518;
-                this.coefficientY = document.getElementById("floorImgBox").offsetHeight / 247;
+                // this.coefficientX = document.getElementById("floorImgBox").offsetWidth / 518;
+                // this.coefficientY = document.getElementById("floorImgBox").offsetHeight / 247;
+                this.coefficientX = (document.body.clientWidth - 40) / 1326;
+                this.coefficientY = (document.body.clientHeight - 190) / 579;
                 let that = this;
                 this.$http.post('/entrance/all_info',{
                     sys_menu_id:this.$store.state.sysList[14].sys_menu_id,

@@ -42,9 +42,9 @@ nav.tabNav span a.on{color:#008aff;}
 /*.floorImgBox i .pop:hover{display: none;}*/
 .el-table td, .el-table th{padding:2px 0;}
 .el-table .cell{font-size: 12px;text-align: center;}
-.el-table th>.cell{text-align: center;font-size: 12px!important;padding: 0!important;}
-.el-table .el-table__body td{padding:0;font-size: 12px;color:#f4f4f4;}
-.el-table .el-table__body td .cell{font-size: 12px;color:#f4f4f4;text-align: center;}
+.el-table th>.cell{text-align: center;font-size: 14px!important;padding: 0!important;}
+.el-table .el-table__body td{padding:0;font-size: 14px;color:#f4f4f4;}
+.el-table .el-table__body td .cell{font-size: 14px;color:#f4f4f4;text-align: center;}
 .doorInfoBgBox .tableBox .el-table__header{background:rgba(0,0,0,0);}
 .doorInfo{position: absolute;left:0;top:0;width:100%;height:100%;padding:70px 0 22px 0;z-index: 1111;}
 .doorInfoBgBox{position:relative;width:100%;height:100%;background:#02132a;-webkit-box-shadow:0 0 2px rgba(39, 141, 255, 0.3);-moz-box-shadow:0 0 2px rgba(39, 141, 255, 0.3);box-shadow:0 0 2px rgba(39, 141, 255, 0.3);}
@@ -54,14 +54,14 @@ nav.tabNav span a.on{color:#008aff;}
 .pop{position:absolute;left:95%;top:0;width:162px;height:110px;padding-left: 19px;display: none;z-index: 10;}
 .popBgBox{width:100%;height:100%;background:#04152c;-webkit-box-shadow:0 0 2px rgba(60, 150, 255, 0.35);-moz-box-shadow:0 0 2px rgba(60, 150, 255, 0.35);box-shadow:0 0 2px rgba(60, 150, 255, 0.35);}
 .popBgBox .popHeadBox{width:100%;height:40px;line-height:40px;background: rgba(0,103,255,.3);text-align: left;padding-left:20px;font-size: 14px;color:#fff;}
-.popBgBox .popDoorStatus,.popBgBox .popDoorControl{width:100%;height:28px;line-height: 30px;color:#4f648b;padding-left: 15px;font-size: 12px;}
-.popBgBox .popDoorStatus span:nth-child(2){color:#1989fa;margin-left: 10px;font-size: 12px;cursor: pointer;}
-.popBgBox .popDoorControl span:nth-child(2){color:#36fceb;text-decoration: underline;margin-left: 10px;font-size: 12px;cursor: pointer;}
+.popBgBox .popDoorStatus,.popBgBox .popDoorControl{width:100%;height:28px;line-height: 30px;color:#4f648b;padding-left: 15px;font-size: 14px;}
+.popBgBox .popDoorStatus span:nth-child(2){color:#1989fa;margin-left: 10px;font-size: 14px;cursor: pointer;}
+.popBgBox .popDoorControl span:nth-child(2){color:#36fceb;text-decoration: underline;margin-left: 10px;font-size: 14px;cursor: pointer;}
 .arrowLeft{position:absolute;left:5px;top:3px;display:block;width: 0;height: 0;border-top: 10px solid transparent;border-right: 15px solid #022d6b;border-bottom: 10px solid transparent;}
 .popBgBox .popDoorStatus span,.popBgBox .popDoorControl span{float: left;}
 .topShadow{position: absolute;top:90px;-webkit-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);-moz-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);box-shadow:0 0 10px rgba(74, 144, 226, 0.22);display: block;width: 100%;height:60px;}
 .bottomShadow{position:relative;width:100%;height:100%;-webkit-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);-moz-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);box-shadow:0 0 10px rgba(74, 144, 226, 0.22);}
-.bottomShadow .floorImgBox{position:absolute;left:50%;top:50%;display:block;width:68%;margin-left: -34%;margin-top:-240px;}
+.bottomShadow .floorImgBox{position:absolute;display:block;left:0;top:0;}
 .bottomShadow .floorImgBox img{display: block;width:100%;height:100%;}
 .bottomShadow .floorImgBox i{position:absolute;display: block;width:auto;height:auto;cursor: pointer;font-size: 12px;line-height: 24px;text-align: center;}
 /*.bottomShadow .floorImgBox i.doorSta0{background:url(../../assets/img/doorControl/door1.png) no-repeat;background-size: 100% 100%;}
@@ -81,13 +81,13 @@ nav.tabNav span a.on{color:#008aff;}
 .bottomShadow .floorImgBox i.door12{left:822px;top:350px;}*/
 
 .doorStatusBox{position: absolute;right:0;top:22px;height:16px;}
-.doorStatusBox li{float: left;padding:0 20px;border-right:2px solid #4a90e2;height:16px;line-height: 16px;font-size: 12px;}
+.doorStatusBox li{float: left;padding:0 20px;border-right:2px solid #4a90e2;height:16px;line-height: 16px;font-size: 16px;}
 .doorStatusBox li:last-child{border:0px;}
 .doorStatusBox li span:first-child{padding-right:20px;}
-.doorAllN{color: #f38a00;}
-.doorCloseN{color: #759ee5;}
-.doorWarningN{color: #f38a00;}
-.doorClose,.doorWarning,.doorOpen{display: inline-block;width:8px;height:8px;border-radius:5px;margin-right: 5px;}
+.doorAllN{color: #f38a00;font-size: 18px;}
+.doorCloseN{color: #759ee5;font-size: 18px;}
+.doorWarningN{color: #f38a00;font-size: 18px;}
+.doorClose,.doorWarning,.doorOpen{display: inline-block;width:16px;height:16px;border-radius:8px;margin-right: 8px;margin-bottom: -3px;}
 .doorClose{border:1px solid #1989fa;background:#1989fa;}
 .doorWarning{border:1px solid #e04f4f;background:#FF5D3B;}
 .doorOpen{border:1px solid #fff;background:#fff;}
@@ -98,13 +98,15 @@ nav.tabNav span a.on{color:#008aff;}
 /* 视频监控  s*/
 .VideoSurveillance{padding-top: 85px;}
 .VideoSurveillance .navCrumbs{padding-left: 20px;}
-.VideoSurveillance .mainContentBox{width:100%;height:100%;border-radius: 4px;-webkit-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);-moz-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);box-shadow:0 0 10px rgba(74, 144, 226, 0.22);position: relative;padding-top: 40px;}
-.videoConditionsBox{position:absolute;top:0;left:0;height:40px;width:100%;background:rgba(0,0,0,.25);border-radius: 4px 4px 0 0;padding-top: 4px;}
+.VideoSurveillance .mainContentBox{width:100%;height:100%;border-radius: 4px;-webkit-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);-moz-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);box-shadow:0 0 10px rgba(74, 144, 226, 0.22);position: relative;padding-top: 50px;}
+.videoConditionsBox{position:absolute;top:0;left:0;height:50px;width:100%;background:rgba(0,0,0,.25);border-radius: 4px 4px 0 0;padding-top:8px;}
 .videoConditionsBox li{float: left;width:120px;height:32px;text-align: right;padding-right:20px;line-height: 32px;font-size: 12px;}
-.videoConditionsBox li:first-child{width:100px;}
-.videoConditionsBox li .el-input__inner{height:32px;font-size: 12px!important;}
-.videoConditionsBox li.floatRt{width:140px;}
-.videoConditionsBox li span.totleVideosNum{color:#f38a00;padding-left: 10px;}
+.videoConditionsBox li:first-child{width:100px;font-size: 14px;}
+.videoConditionsBox li .el-input__inner{height:32px;font-size: 14px!important;}
+.videoConditionsBox li.floatRt{width:170px;}
+.videoConditionsBox li .vieCtBgBox{text-align: left;width: 151px;height: 32px;background: rgba(74,144,226,0.1);border-radius: 2px;padding-left: 10px;}
+.videoConditionsBox li .vieCtBgBox span{font-size: 16px;}
+.videoConditionsBox li span.totleVideosNum{color:#f38a00;padding-left: 10px;font-size: 18px;}
 .VideoSurveillance .bottomShadow .floorImgBox span{position: absolute;left:100px;top:100px;z-index: 10;display: block;cursor:pointer;width:30px;height:20px;background:url(../../assets/img/Video/monitor1.png) no-repeat;background-size: 100% 100%;}
 .VideoSurveillance .bottomShadow .floorImgBox span label{position: absolute;top:-4px;right:-18px;display: block;width:16px;height:16px;border-radius: 8px;text-align: center;line-height: 16px;font-size: 12px;background:#7ea5e7;}
 
@@ -150,17 +152,17 @@ nav.tabNav span a.on{color:#008aff;}
 .hotelStatus{width:100%;height:100%;padding-top: 86px;position:relative;}
 .hotelMainContent{width:100%;height:100%;position: relative;padding-left:240px;}
 .hotelMainInfo{position:absolute;top:0px;left:0;width:220px;height:100%;box-shadow:0px 2px 5px 0px rgba(74,144,226,0.22),1px 1px 1px 0px rgba(248,253,255,0.15),0px 0px 1px 0px rgba(74,144,226,1);border-radius:4px;}
-.hotelMainInfo li{width:100%;height:30px;padding-left: 10px;position:relative;background:rgba(30,69,155,0.35);}
+.hotelMainInfo li{width:100%;height:40px;padding-left: 10px;position:relative;background:rgba(30,69,155,0.35);}
 .hotelMainInfo li:first-child{margin-bottom: 15px;background:rgba(0,0,0,.2);border-radius:4px 4px 0 0;}
 .hotelMainInfo li:nth-child(2),.hotelMainInfo li:nth-child(3){margin-bottom: 1px;}
-.hotelMainInfo li span{height:30px;line-height: 30px;color:#b5d7ff;font-size: 12px;}
-.hotelMainInfo li a{height:30px;line-height: 30px;color:#fff;font-size: 12px;float:right;padding-right:10px;}
+.hotelMainInfo li span{height:40px;line-height: 40px;color:#b5d7ff;font-size: 16px;}
+.hotelMainInfo li a{height:40px;line-height: 40px;color:#fff;font-size: 16px;float:right;padding-right:10px;}
 .hotelMainInfo li:first-child span{color:#008aff;padding-right:10px;}
-.hotelMainInfo li:first-child i{display: inline-block;width:0px;border-left: 1px solid #008aff;height:12px;position:absolute;left:66px;top:9px;}
+.hotelMainInfo li:first-child i{position:absolute;left:90px;top:12px;display: block;width:2px;height:16px;background:#008aff;border-radius: 2px;}
 .roomsStaListPanel{width:100%;height:100%;position: relative;padding-top:40px;box-shadow:0px 2px 5px 0px rgba(74,144,226,0.22),1px 1px 1px 0px rgba(248,253,255,0.15),0px 0px 1px 0px rgba(74,144,226,1);border-radius:4px;}
-.roomListHeadBox{position: absolute;left:0;top:0;display: block;width:100%;height:30px;background:rgba(0,0,0,.2);border-radius:4px 4px 0 0;}
-.roomListHeadBox span{height:30px;line-height: 30px;font-size: 12px;padding-left:30px;position:relative;display: inline-block;}
-.roomListHeadBox span i{position:absolute;left:10px;top:10px;display: block;width:10px;height:10px;border-radius:10px;}
+.roomListHeadBox{position: absolute;left:0;top:0;display: block;width:100%;height:40px;background:rgba(0,0,0,.2);border-radius:4px 4px 0 0;}
+.roomListHeadBox span{height:40px;line-height: 40px;font-size: 16px;padding-left:30px;position:relative;display: inline-block;}
+.roomListHeadBox span i{position:absolute;left:14px;top:14px;display: block;width:12px;height:12px;border-radius:10px;}
 .roomListHeadBox span.emptyDirty{color:#FF85C0;}
 .roomListHeadBox span.emptyClean{color:#91D5FF;}
 .roomListHeadBox span.fullDurty{color:#B7EB8F;}
@@ -176,12 +178,12 @@ nav.tabNav span a.on{color:#008aff;}
 .roomListHeadBox span.roomRepair i{background:#FF4D4F;}
 
 .roomListHeadBox span:first-child{color:#008aff;padding-right:20px;padding-left: 10px;}
-.roomListHeadBox span:first-child i{position:absolute;left:84px;top:9px;display: block;width:0px;height:12px;border-right:1px solid #008aff;border-radius: 0;}
+.roomListHeadBox span:first-child i{position:absolute;left:106px;top:12px;display: block;width:2px;height:16px;background:#008aff;border-radius: 2px;}
 .roomListHeadBox .el-select{float:right;margin-right:10px;width:72px;}
 .roomListHeadBox .el-select .el-input__inner{height:30px!important;width:54px!important;padding:0!important;border:0px!important;}
 
 .roomsTypeStaBox{width:100%;height:100%;padding-left:10px; }
-.roomsTypeStaBox ul li:first-child{height:30px;line-height: 30px;}
+.roomsTypeStaBox ul li:first-child{height:40px;line-height: 40px;font-size: 16px;}
 .roomsTypeStaBox ul li.roomLstLi{width:11.1%;float: left;padding-right:5px;height:60px;padding-bottom: 5px;}
 .roomsTypeStaBox ul li.roomLstLi>div{width:100%;height:100%;position: relative;}
 .roomsTypeStaBox ul li.roomLstLi>div.roomStaVD{background:url(../img/HotelManage/air-dirty@3x.png) no-repeat;background-size: 100% 100%;}
@@ -190,23 +192,23 @@ nav.tabNav span a.on{color:#008aff;}
 .roomsTypeStaBox ul li.roomLstLi>div.roomStaOC{background:url(../img/HotelManage/room-clean@3x.png) no-repeat;background-size: 100% 100%;}
 .roomsTypeStaBox ul li.roomLstLi>div.roomStaOS{background:url(../img/HotelManage/lock@3x.png) no-repeat;background-size: 100% 100%;}
 .roomsTypeStaBox ul li.roomLstLi>div.roomStaOO{background:url(../img/HotelManage/repair@3x.png) no-repeat;background-size: 100% 100%;}
-.roomsTypeStaBox ul li.roomLstLi>div .roomNumber{color:#021C4B;font-size: 14px;font-weight:600;position: absolute;left:6px;top:6px;}
-.roomsTypeStaBox ul li.roomLstLi>div .labName{position: absolute;right:8px;bottom:8px;font-size: 12px;font-weight: 500;color:#021C4B;}
+.roomsTypeStaBox ul li.roomLstLi>div .roomNumber{color:#021C4B;font-size: 16px;font-weight:600;position: absolute;left:6px;top:6px;}
+.roomsTypeStaBox ul li.roomLstLi>div .labName{position: absolute;right:8px;bottom:8px;font-size: 14px;font-weight: 500;color:#021C4B;}
 
 .reportHt50{height:50%;padding-bottom: 20px}
-.reportChartbox{position: relative;width:100%;height:100%;box-shadow:0px 2px 5px 0px rgba(74,144,226,0.22),1px 1px 1px 0px rgba(248,253,255,0.15),0px 0px 1px 0px rgba(74,144,226,1);border-radius:4px;padding-top:30px;}
+.reportChartbox{position: relative;width:100%;height:100%;box-shadow:0px 2px 5px 0px rgba(74,144,226,0.22),1px 1px 1px 0px rgba(248,253,255,0.15),0px 0px 1px 0px rgba(74,144,226,1);border-radius:4px;padding-top:40px;}
 .reportChartbox .chartDom{width:100%;height:100%;}
-.reportChartHeadBox{position:absolute;top:0;left:0;display:block;width:100%;height:30px;background:rgba(0,0,0,.2);border-radius:4px 4px 0 0;}
+.reportChartHeadBox{position:absolute;top:0;left:0;display:block;width:100%;height:40px;background:rgba(0,0,0,.2);border-radius:4px 4px 0 0;}
 .reportChartHeadBox .el-select{float:right;margin-right:20px;}
 .reportChartHeadBox .el-select .el-input__inner{height:30px!important;width:64px!important;padding:0!important;border:0px!important;}
-.reportChartHeadBox>span{display: inline-block;padding-left:15px;height:30px;line-height: 30px;color:#008AFF;font-size:14px;position:relative;width:120px;}
-.reportChartHeadBox>span i{position:absolute;top:9px;left:106px;display: block;width:0px;border-right: 1px solid #008AFF;height: 14px;}
+.reportChartHeadBox>span{display: inline-block;padding-left:15px;height:40px;line-height: 40px;color:#008AFF;font-size:16px;position:relative;width:120px;}
+.reportChartHeadBox>span i{position:absolute;top:12px;left:120px;display: block;width:2px;background:#008AFF;height: 16px;border-radius: 2px;}
 
 .roomLists .navCrumbs{left:3px;}
 .roomLists .roomListsTabBox{width: 100%;height:100%;padding-top:38px;position: relative;}
 .roomLists .roomListsTabBox .tabNav{position: absolute;top:0;left:0;display: block;height:20px;line-height: 20px;}
 .roomLists .roomListsTabBox nav.tabNav span:first-child a{margin-left:0;}
-.roomLists .roomListsTabBox nav.tabNav span a{padding-left: 3px;margin-left:20px;padding-bottom: 8px;}
+.roomLists .roomListsTabBox nav.tabNav span a{padding-left: 3px;margin-left:20px;padding-bottom: 8px;font-size: 16px;}
 .roomLists .roomListsTabBox nav.tabNav span a.on {border-bottom: 2px solid #008aff}
 
 .roomListsTabDomBox{width: 100%;height:100%;position: relative;box-shadow:0px 2px 5px 0px rgba(74,144,226,0.22),1px 1px 1px 0px rgba(248,253,255,0.15),0px 0px 1px 0px rgba(74,144,226,1);border-radius:4px;position: relative;padding-top:50px;}
@@ -222,7 +224,7 @@ nav.tabNav span a.on{color:#008aff;}
 .roomListDatePicker .el-date-editor .el-range-input{background: none;font-size: 0.12rem!important;color:#fff;}
 .roomListDatePicker .el-date-editor .el-range-separator{line-height: 22px;padding:0;color:#d8d8d8;font-size: 12px;}
 
-.roomListHeadBox .el-dropdown{float: right;margin-right:10px;width:72px;cursor:pointer;}
+.roomListHeadBox .el-dropdown{float: right;margin-right:10px;width:86px;cursor:pointer;}
 .roomListHeadBox  .el-dropdown>span{color:#fff;padding:0;cursor:pointer;}
 .hotelStaDropDown .el-dropdown-menu__item{padding-left:26px;}
 .roomListHeadBox  .el-dropdown>span i{color:#fff;border:0px;}

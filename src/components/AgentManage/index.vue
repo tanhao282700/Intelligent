@@ -191,8 +191,8 @@ export default {
       barData:{//工单&巡检完成率的数据
           id:'barData',
           style:{width:'94%',height:'2.1rem','marginLeft':'3%','marginTop':'3%'},
-          data:[100,230,490],
-          total:0,
+          data:[0,0,0],
+          total:1,
           xData:['系统派发','人工派发','外报维修']
       },
       fillBoxs:[
