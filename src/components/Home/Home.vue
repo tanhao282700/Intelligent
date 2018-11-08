@@ -1,14 +1,14 @@
 <template>
   <div id="home">
     <div class="buildModel">
-      <!--<iframe
+      <iframe
         ref="iframe"
         name="myFrame"
         frameborder="0"
         width="100%"
         height="100%"
         :src="url3d">
-      </iframe>-->
+      </iframe>
     </div>
     <div class="systemName">
       <div class="systemCon">泰立汇云智慧酒店管理系统</div>
