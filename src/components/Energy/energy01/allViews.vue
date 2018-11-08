@@ -1143,6 +1143,7 @@
     margin-left: .2rem;
   }
   .exhaustItem:last-child{margin-left: .3rem;}
+  .exhaustItem span{font-size: .13rem;}
   .exhaustItem .color1{color: #3B89F9}
   .exhaustItem .color2{color: #4AE283;margin-left: 4px;}
   .viewItemContent{
@@ -1289,7 +1290,7 @@
     transform: scale(.5);
   }
   .totalEnergyItemFoot .totalVal{
-    font-size: .2rem;
+    font-size: .17rem;
     line-height: .24rem;
     margin-top: -0.06rem;
   }
