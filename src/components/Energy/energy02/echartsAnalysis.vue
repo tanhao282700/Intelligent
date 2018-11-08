@@ -74,6 +74,7 @@
         			// });
 
               that.trendData = res.data.data.area_energy_use.trend_data;
+              console.log(that.trendData);
 
               let trendData = res.data.data.area_energy_use.trend_data;
               let newRzl = [];
@@ -93,6 +94,7 @@
               })
               tempArray.push(that.areaEnergyRzl);
               that.trendValueData = tempArray;
+              console.log(that.trendValueData)
 
               $.each(trendData.floor_value[0].data,function(i,k){
                 newKf.push([k.date,k.value]);
@@ -124,6 +126,14 @@
 		        let arrData = [data.arrData1,data.arrData2,data.arrData3];
 		        let seriesValue = [];
 		        let trendValueArray = [];
+		        let trendXdata = [];
+		        for(var x=0;x<trendValueData[0].length;x++){
+		          let xtemp = trendValueData[0][x][0];
+		          trendXdata.push(xtemp);
+
+		        }
+		        console.log(trendXdata);
+
 		        for (var i = 0; i < legendLen; i++) {
 		            var seriesDataVal = null;
 		            seriesDataVal = {
@@ -159,6 +169,7 @@
               }
               trendValueArray.push(trendItem);
             }
+            console.log(trendValueArray);
 
 		        let option = {
                 color:["#FD97AA","#008AFF","#F35E5E","#EEB66E","#EBF191","#C382EF","#95EDC5",'#b5d7ff'],
@@ -183,7 +194,7 @@
 			          	top:5,
 			          	itemWidth: 20,
 	        			  itemHeight: 10,
-			            data: axisLabel,
+			            data: trendLegendLabel,
                  /* data: ['客房','宴会厅','餐厅厨房','公共区域','餐厅','空调','1-5号主机','入住率'],*/
 		            },
 		            calculable : true,
@@ -202,7 +213,8 @@
                   nameTextStyle:{
 				            fontSize:4
                   },
-                  nameGap:5
+                  nameGap:5,
+                  data:trendXdata
 			        },
                 yAxis: {
                     axisLine: {show:false},

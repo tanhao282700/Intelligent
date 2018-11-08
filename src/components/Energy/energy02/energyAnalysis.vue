@@ -16,7 +16,7 @@
   			<div class="chartLeftTit">
   				<div class="tit1">区域能耗 | </div>
                 <div class="analysisBoxs analysisBoxs1">
-                  <el-select v-model="data.config.area_query_date_type" @change="areaDateTypeChange">
+                  <el-select v-model="areaDateType" @change="areaDateTypeChange">
                     <el-option
                       v-for="item in areaDateTypes"
                       :key="item.value"
@@ -28,7 +28,7 @@
                 <div class="analysisBoxs">
                   <el-date-picker
                     v-if=" data.config.area_query_date_type =='year' "
-                    v-model="data.config.area_date "
+                    v-model="areaDate "
                     value-format="yyyy"
                     type="year"
                     placeholder="请选择">
@@ -36,7 +36,7 @@
 
                   <el-date-picker
                     v-if=" data.config.area_query_date_type=='month' "
-                    v-model="data.config.area_date "
+                    v-model="areaDate"
                     type="month"
                     value-format="yyyyMM"
                     placeholder="请选择">
@@ -44,7 +44,7 @@
 
                   <el-date-picker
                     v-if=" data.config.area_query_date_type=='day' "
-                    v-model="data.config.area_date "
+                    v-model="areaDate"
                     type="date"
                     value-format="yyyyMMdd"
                     placeholder="请选择">
@@ -334,11 +334,15 @@
           areaQueryData(){
             let that = this;
             that.loading1 = true;
+
+
             let config = {
               sys_menu_id: that.data.config.sys_menu_id,
               project_id: that.data.config.project_id,
-              area_query_date_type: that.data.config.area_query_date_type,
-              area_date: that.data.config.area_date,
+              //area_query_date_type: that.data.config.area_query_date_type,
+              area_query_date_type: that.areaDateType,
+              //area_date: that.data.config.area_date,
+              area_date: that.areaDate,
               energy_type: that.data.config.energy_type,
             }
             that.$http.post('/hotel_energy/analysis',config).then(res=>{
@@ -395,6 +399,7 @@
               $.each(thisData,(o,w)=>{
                 if(k.area_id == w.area_id){
                   tempArray1.push(k.title);
+                  tempArray8.push(k.title);
                   tempArray2.push(w.data[0].date);
                   tempArray3.push(w.data[0].value);
                 }
@@ -417,9 +422,12 @@
             })
 
             that.data.topPie = tempArray4;
-            tempArray8 = that.data.axisLabel = tempArray1;
+            that.data.axisLabel = tempArray1;
             tempArray8.push('入住率');
             that.data.trendLegendLabel = tempArray8;
+
+            that.data.config.area_query_date_type = that.areaDateType;
+            that.data.config.area_date = that.areaDate;
 
             that.data.arrData1 = tempArray3;
             that.data.legendData = tempArray2;

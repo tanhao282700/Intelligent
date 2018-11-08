@@ -1,9 +1,9 @@
 <!--
     工单列表
-    2018-8-24 
+    2018-8-24
 -->
 <template>
-    <div class="dealBox" v-text="txt.txt" :style="{'color':txt.color}">    
+    <div class="dealBox" v-text="txt.txt" :style="{'color':txt.color}">
         任务状态
     </div>
 </template>
@@ -26,12 +26,12 @@ export default {
                 break;
               case "1":
                 txt={
-                  txt: '处理中',
+                  txt: '启用',
                   color:'#FFA414'
                 };
                 break;
               case '2':
-                txt.txt = '已完成';
+                txt.txt = '停用';
                 txt.color ='#4AE283';
                 break;
               case '3':
@@ -64,7 +64,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="less" scoped="" type="text/less"> 
+<style lang="less" scoped="" type="text/less">
 @import '../../../../assets/css/comon.less';
 
 
