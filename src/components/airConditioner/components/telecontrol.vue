@@ -12,11 +12,11 @@
       <el-tabs class="tabBoxs" v-model="activeName" @tab-click="handleClick">
         <el-tab-pane name="first">
           <span slot="label" class="tabItems">{{first}}</span>
-          <cold-source-station/>
+          <cold-source-station ref="first" />
         </el-tab-pane>
         <el-tab-pane name="second">
           <span slot="label" class="tabItems">{{second}}</span>
-          <air-conditioner-end/>
+          <air-conditioner-end ref="second" />
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -65,7 +65,6 @@
             this.secondId = data.data[1].id;
 
           } else {
-
             this.$message(data.message);
           }
         })
@@ -91,7 +90,11 @@
 //tab选项卡切换
       handleClick(tab, event) {
         console.log(tab.index);
-
+        if (tab.index == 0){
+          this.$refs.second.removeMessageEvent();
+        } else if (tab.index == 1) {
+          this.$refs.first.removeMessageEvent();
+        }
       },
       toHome(){
         this.$router.replace({ path: '/home', params: { isLogin: true} });

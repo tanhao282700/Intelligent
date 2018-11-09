@@ -5,6 +5,7 @@
     placement="right-start"
     :disabled="false"
     width="281"
+    @show="getInfo"
     trigger="click">
     <div class="popover-btn isPointer no-select" slot="reference">
       <button type="button">设备信息</button>
@@ -26,13 +27,53 @@
 
     },
     name: "selfPopover3",
-    props: ['info'],
+    props: ['device_id'],
     data () {
       return {
+        info:[],
       }
     },
     methods:{
+  //获取图例设备信息
+    requestTuLiDeviceInfo(device_id){
+      let that = this;
+      let config = {
+        device_id:device_id
+      }
+      let headers = {
+        //'Content-Type': 'multipart/form-data'
+      }
+      this.$http.get('/currency/device/info', config, headers).then(res => {
+        let data = res.data;
+        console.log('获取图例设备信息', config, res);
 
+        if (data.code == 0) {
+          let tempArr = [];
+          //let content = '[{"设备名称":"卧式离心水泵"},{"品牌":"凯泉"},{"编号":"DB466225S"}]';
+          if (data.data.length !== 0) {
+            let content = data.data[0].content;
+            //console.log('转',eval('('+content+')'))
+            let dataArr = eval(content);
+            dataArr.map((item, i) => {
+              for (var i2 in item) {
+                let obj = {};
+                obj.tit = i2;
+                obj.content = item[i2]
+                tempArr.push(obj)
+              }
+            })
+          }
+          this.info = tempArr;
+        } else {
+          this.$message(data.message);
+        }
+      }).catch(err=>{
+        this.$message(err);
+      })
+    },
+    getInfo(){
+      this.requestTuLiDeviceInfo(this.device_id);
+    }
     },
     created() {
 

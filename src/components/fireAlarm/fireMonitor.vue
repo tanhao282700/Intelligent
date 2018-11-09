@@ -722,7 +722,7 @@
     margin: 0 auto;
     margin-top: 0.16rem;
     width: 13.06rem;
-    height: 6.6rem;
+    .vh(610);
     /*height: 6.10rem;*/
     //background-color: #000000;
     box-shadow: 0px 4px 10px 0px
@@ -935,7 +935,7 @@
       }
       .buildingBox{
         width: 9.74rem;
-        height: 6.6rem;
+        .vh(610);
         box-shadow: 0px 4px 10px 0px
         rgba(73, 143, 226, 0.22),
         inset 1px 1px 2px 0px
@@ -996,10 +996,8 @@
         }
         .floors{
           width: 6.04rem;
-          height: 100%;
+          .vh(583);
           position: relative;
-          display: flex;
-          align-items: center;
 
           .img_red{
             position: absolute;

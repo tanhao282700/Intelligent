@@ -5,25 +5,16 @@
       <button @click="showControlMost" type="button">批量控制</button>
     </div>
 
-    <div class="deviceDetailBox">
+    <div class="deviceDetailBox" id="deviceDetailBox2">
       <div class="deviceSet">
-        <div class="imgBox">
-          <img src="../../../../assets/img/airConditioner/device1.png" alt="">
+        <div class="imgBox" v-html="codes">
+          <!--<img src="../../../../assets/img/airConditioner/device1.png" alt="">-->
         </div>
 
         <div class="btnBox">
           <div class="head">
-            <div class="left">1号楼1F男厕所</div>
-            <self-popover3 :info="[
-              {id:1,tit:'设备名称',content:'设备名称'},
-              {id:1,tit:'设备类型',content:'空调机房主机'},
-              {id:1,tit:'设备品牌',content:'格力'},
-              {id:1,tit:'设备型号',content:'xxxxxxxx'},
-              {id:1,tit:'厂商',content:'xxxxxxxx'},
-              {id:1,tit:'启用时间',content:'xxxxxxxx'},
-              {id:1,tit:'维保名称',content:'xxxxxxxx'},
-              {id:1,tit:'维保电话',content:'xxxxxxxx'},
-            ]"/>
+            <div class="left" v-text="tuliTit"></div>
+            <self-popover3 :device_id="tuliDeviceId"/>
           </div>
           <div class="title">温度</div>
           <Lines type="h" :wid="93" :left="145"/>
@@ -45,24 +36,24 @@
         </div>
       </div>
       <div class="deviceEchart">
+        <i class="el-icon-circle-close colseBoxs" style="position: absolute;right: 0;top: 0;z-index: 100" @click="hide"></i>
         <div class="selfTabBox">
           <ul class="self-tab-head">
             <li @click="tabToggle(i)" :class="['part',{active:i==tabActive}]" v-for="(v,i) in tabData" v-text="v.unit.length!=0?(v.title+'('+v.unit[0]+')'):v.title" :key="i"></li>
             <li class="extra">
-              <div class="stateMsg">
+              <!--<div class="stateMsg">
                 <span class="switch">阀门状态：<span class="text">正常</span></span>
                 <span class="mode">夏</span>
-              </div>
+              </div>-->
             </li>
           </ul>
           <div class="self-tab-body">
             <line-echarts4 v-for="(v,i) in tabData" :key="i" v-show="i==tabActive" :datas="v.datas" />
-
           </div>
         </div>
       </div>
     </div>
-    <div class="threeDBox">
+    <div class="threeDBox" id="threeDBox2">
       <div class="btnBox">
         <div class="cascaderBox">
           <el-cascader
@@ -73,6 +64,15 @@
           </el-cascader>
         </div>
       </div>
+      <iframe
+        ref="iframe2"
+        name="myFrame2"
+        frameborder="0"
+        width="100%"
+        height="100%"
+        :src="modelUrl2">
+
+      </iframe>
     </div>
     <Dialog wid = "3.64rem" hei = "2.16rem" ref = "dialog">
       <div class="dialog-in">
@@ -156,6 +156,9 @@
     name: "airConditionerEnd",
     data() {
       return {
+        tuliTit:'5楼风机',
+        tuliDeviceId:'',
+        codes:'',
         showDevice:{
           one:{
             show:false,
@@ -218,22 +221,7 @@
 
           ]
         },
-        options: [
-          {
-            value: 'zhinan',
-            label: '机房1',
-            children: [{
-              value: 'shejiyuanze',
-              label: '机房11',
-              children: [{
-                value: 'yizhi',
-                label: '机房111'
-              }, {
-                value: 'fankui',
-                label: '机房112'
-              }]
-            }],
-          }],
+        options: [],
         selectedOptions2: [],
         parentToggle:false,
         tempVal:1,
@@ -376,12 +364,337 @@
         loopRenderData:[],
         showLoopRender:false,
 
+        //新增？
+        iframeWin2:{},
+        deviceStates:[
+          /*{
+            tit:'状态',
+            val:'开启',
+          },
+          {
+            tit:'实时cop',
+            val:3.6,
+          },
+          {
+            tit:'负载率',
+            val:'77%',
+          },
+          {
+            tit:'电流',
+            val:'40A',
+          },
+          {
+            tit:'电压',
+            val:'220V',
+          },
+          {
+            tit:'冷凝压力',
+            val:'10.22MPA',
+          }*/
+        ],
+
+        showSingleDevice:false,
+        modelUrl2:'',
+        object_device:[],
+        yijianNowVal:undefined,
+        yijianPointId:undefined,
+        tempObjName:''
+
       }
     },
     methods: {
+      removeMessageEvent(){
+        window.removeEventListener('message',this.handleMessage);
+      },
+      hide(){
+        if (this.showSingleDevice) {
+          Velocity($('#threeDBox2'), {
+            height: '79.25vh'
+          }, {
+            duration: 300
+          });
+          Velocity($('#deviceDetailBox2'), {
+            height: 0,
+            marginTop: 0,
+          }, {
+            duration: 300
+          });
+        }
+        this.showSingleDevice = false;
+      },
+      /**** 外部vue向iframe内部传数据 ****/
+      //先通知模型有哪些部分需响应
+      postInitJson(){
+        //这部分目前用不着，先留着
+        // 外部vue向iframe内部传数据
+        //alert('我发了哦')
+        this.iframeWin2.postMessage({
+          cmd: 'initJsonObj',
+          params: {
+
+            jsonObj:{
+              "product-16f7b54a-1d6d-4450-a883-c034787d3203-body": {//2#主机
+                "errname": null,
+                "objs": "deviceWaterhost1",
+                "runname": null
+              },
+              "product-16f7b54a-1d6d-4450-a883-c034787d32ea-body": {//1#主机,
+                "errname": null,
+                "objs": "deviceWaterhost2",
+                "runname": null
+              },
+              "product-5af82546-e39b-4e8a-95cb-31997ebf1bc7-body": {//1#冷却泵
+                "errname": null,
+              },
+              "product-16f7b54a-1d6d-4450-a883-c034787d46aa-body": {//2#冷却泵
+                "errname": null
+              }
+            },
+            messageobj : null
+
+          }
+        }, '*')
+      },
+      //将请求到的设备详细信息传给模型
+      //参数，请求到的数据@data,格式data:[{tit:'状态',val:'开启',}]
+      postDeviceData(json){
+        this.iframeWin2.postMessage({
+          cmd: 'sendDeviceInfoJson',
+          params: {
+            deviceInfoJson:json
+          }
+        }, '*')
+      },
+      //改变模型中的设备状态(暂定为单个设备状态改变）
+      //参数，请求到的数据@name:objName,@state:0为停止，1为运行，2为故障，3为告警
+      changeDeviceState(name,state){
+        this.iframeWin2.postMessage({
+          cmd: 'changeDeviceState',
+          params: {
+            name:name,
+            state:state
+          }
+        }, '*')
+      },
+      /**** 根据上面制定的结构来解析iframe内部发回来的数据 ****/
+      handleMessage (event) {
+        const data = event.data;
+        switch (data.cmd) {
+          case 'reFoundObjName':
+            let objName = data.params.objName;
+            if (this.tempObjName != objName) {
+              this.tempObjName = objName;
+              this.requestOneDeviceInfo(objName);
+            }else {
+              //alert('你废了哦？')
+            }
+            //这里请求后台获得设备具体数据，又发回去
+            this.postDeviceData(this.deviceStates);
+            break;
+          case 'reDeviceClick':
+            //console.log(data.params.clickObjName);
+            this.getEchartsData(data.params.clickObjName);
+            this.object_device.some((item,i)=>{
+              if (item.object_id === data.params.clickObjName) {
+                this.tuliDeviceId = item.device_id;
+              }
+            })
+            if (!this.showSingleDevice) {
+              Velocity($('#deviceDetailBox2'), {
+                height: '28.15vh',
+                marginTop: '0.27vh',
+              }, {
+                duration: 300
+              });
+              Velocity($('#threeDBox2'), {
+                height: '48.62vh',
+                marginTop: '2.74vh',
+              }, {
+                duration: 300
+              });
+            }
+            this.showSingleDevice = true;
+            break;
+          case 'cancelDevice':
+            console.log(data.params.cancelObject_id)
+
+            break;
+        }
+      },
+
+
+
+      //获取机房3d模型2
+      get3DFloor(sysID=this.$store.state.sysList[1].sys_menu_id){
+        let that = this;
+        let config = {
+          sys_menu_id:sysID,
+        }
+        let headers = {
+          //'Content-Type': 'multipart/form-data'
+        }
+        this.$http.get('/hvac_pc/pc/floor', config, headers).then(res => {
+          let data = res.data;
+          console.log('获取机房3d模型2', config, res);
+          if (data.code == 0) {
+            if (this.options.length === 0) {
+              let floor_id = data.data[0].floor_id;
+              this.$store.state.airFloorId2 = floor_id;
+
+              //机房列表
+              let floorList = data.data;
+              let tempArr = [];
+              floorList.map((item, i) => {
+                let obj = {};
+                obj.value = item.floor_id;
+                obj.label = item.title;
+                if (item.son.length !== 0) {
+                  obj.children = [];
+                  item.son.map((item2, i2) => {
+                    let obj2 = {};
+                    obj2.value = item2.floor_id;
+                    obj2.label = item2.title;
+                    if (item2.son.length !== 0) {
+                      obj2.children = [];
+                      item2.son.map((item3, i3) => {
+                        let obj3 = {};
+                        obj3.value = item3.floor_id;
+                        obj3.label = item3.title;
+                        obj2.children.push(obj3)
+                      })
+                    }
+                    obj.children.push(obj2)
+                  })
+                }
+                tempArr.push(obj)
+              })
+              this.options = tempArr;
+              this.selectedOptions2 = [floor_id];
+              //3d地址和设备状态
+              this.modelUrl2 = data.data[0].object_3d;
+              let object_device = data.data[0].object_device;
+              this.object_device = object_device;
+              setTimeout(() => {   //没有监测到模型是否加载完毕，只能用延时了
+                object_device.map((item, i) => {
+                  this.changeDeviceState(item.object_id, item.state)
+                })
+              }, 1000)
+            }else {
+
+              this.options.some((item11,i11)=>{
+                if (this.$store.state.airFloorId2 === item11.value){
+
+                  //3d地址和设备状态
+                  this.modelUrl2 = data.data[i11].object_3d;
+                  let object_device = data.data[i11].object_device;
+                  this.object_device = object_device;
+                  setTimeout(() => {   //没有监测到模型是否加载完毕，只能用延时了
+                    object_device.map((item, i) => {
+                      this.changeDeviceState(item.object_id, item.state)
+                    })
+                  }, 1000)
+                }
+              })
+            }
+
+
+          } else {
+
+            this.$message(data.message);
+          }
+        }).catch(err=>{
+          this.$message(err);
+        })
+      },
+      //获取模型中单个设备信息
+      requestOneDeviceInfo(object_id){
+        let that = this;
+        let config = {
+          object_id:object_id
+        }
+        let headers = {
+          //'Content-Type': 'multipart/form-data'
+        }
+        if (object_id != 'product-50a37d21-4ee5-4d74-a2cb-3c99354bb804-body_1_0') { //排除这个无用设备，听说后端绑机房用,这里失效
+          this.$http.get('/hvac_pc/pc/index/device/point', config, headers).then(res => {
+            let data = res.data;
+            console.log('模型中单设备信息2', config, res);
+            if (data.code == 0) {
+              let dataArr = data.data;
+              let tempArr = [];
+              dataArr.map((item,i)=>{
+                let obj = {};
+                obj.tit = item.title;
+                if (item.params !== ''){
+                  let paramsObj = eval('('+item.params+')');
+                  obj.val = paramsObj.showvalue[parseInt(item.nowvalue)]
+                } else {
+                  obj.val = item.nowvalue+item.unit;
+                }
+                tempArr.push(obj)
+              })
+              this.deviceStates = tempArr;
+            } else {
+              this.$message(data.message);
+              this.deviceStates = [];
+            }
+          })
+        }
+      },
+      //获取单个设备echarts数据
+      getEchartsData(object_id){
+        let that = this;
+        let config = {
+          object_id:object_id
+        }
+        let headers = {
+          //'Content-Type': 'multipart/form-data'
+        }
+        this.$http.get('/hvac_pc/pc/index/device', config, headers).then(res => {
+          let data = res.data;
+          console.log('获取echarts数据', config, res);
+          if (data.code == 0) {
+            //报表
+            let commtable = data.data.commtable;
+            let tempArr1 = [];
+            commtable.map((item,i)=>{
+              let obj1 = {};
+              obj1.id = item.point_id;
+              obj1.title = item.title;
+              obj1.unit = [];
+              obj1.unit.push(item.unit);
+              obj1.datas = {};
+              obj1.datas.id = 'selfEchart'+item.point_id;
+              obj1.datas.style = {width:'6.43rem',height:146*100/728+'vh'};
+              obj1.datas.showMarkL = true;
+              obj1.datas.markLineVal = item.standard;
+              obj1.datas.list = [];
+              let obj2 = {};
+              obj2.name = item.title;
+              obj2.data = item.data;
+              obj1.datas.list.push(obj2);
+              tempArr1.push(obj1);
+            })
+            this.tabData = tempArr1;
+            //设备
+            let control = data.data.control;
+            let device_info = data.data.device_info;
+            let device_pic = data.data.device_pic;
+
+            this.codes = device_pic[0].codes;
+
+          } else {
+
+            this.$message(data.message);
+          }
+        }).catch(err=>{
+          this.$message(err);
+        })
+      },
       getCheckedArr(a,b,c,d){
-        // console.log(a,b,c,d)
+        //console.log(a,b,c,d)
         let tempArr = this.$refs.hTree.getCheckedKeys();
+        console.log(tempArr)
         tempArr.map((item,i)=>{
           if (item == undefined) {
              tempArr.splice(i,1);
@@ -396,7 +709,7 @@
         }
       },
       //获取控制失败列表
-      getControlFail(sysID=this.$store.state.sysList[1].son_list[0].sys_menu_id,pagenumber=1,pagesize=20){
+      getControlFail(sysID=this.$store.state.sysList[1].sys_menu_id,pagenumber=1,pagesize=20){
         let that = this;
         let config = {
           sys_menu_id:sysID,
@@ -438,7 +751,7 @@
 
       },
       //获取批量控制信息
-      requestMostControl(self_id=1101,sysID=this.$store.state.sysList[1].son_list[0].sys_menu_id){
+      requestMostControl(self_id=1101,sysID=this.$store.state.sysList[1].sys_menu_id){
         let that = this;
         let config = {
           self_id:self_id,
@@ -504,7 +817,8 @@
             this.showLoopRender = true;*/
             floor.map((item,i)=>{
               let obj = {};
-              //obj.id = item.floor_id;
+              obj.id = item.floor_id;//又是floor_id又是id的，我头晕
+
               obj.label = item.title;
               obj.children = [];
               this.deviceChecked = [];//清空数组
@@ -588,6 +902,13 @@
       },
       handleChange(value) {
         console.log(value);
+        this.hide();
+        this.$store.state.airFloorId2 = value[0];
+        setTimeout(()=>{
+
+          this.get3DFloor();
+        },200)
+
       },
       tempHandleChange(val) {
         console.log(val)
@@ -635,18 +956,17 @@
 
     },
     created() {
-      this.$parent.$parent.$parent.$parent.$parent.msg = '一号机房当前模式：自动控制模式,预计在9:00开启，23:20关闭'
+
+      this.get3DFloor();
 
       this.getControlFail();
       this.requestMostControl();
 
     },
     mounted() {
-      //this.$parent.$parent.$parent.$parent.$parent.isIf=true;
-      //console.log($)
-
-      let str = "{\"value\": [\"0\", \"1\"], \"showvalue\": [\"\\u5f00\\u542f\", \"\\u5173\\u95ed\"], \"type\": 0}";
-      console.log('啦啦啦',eval('('+str+')'));
+// 在外部vue的window上添加postMessage的监听，并且绑定处理函数handleMessage
+      window.addEventListener('message', this.handleMessage)
+      this.iframeWin2 = this.$refs.iframe2.contentWindow
     },
   }
 </script>
@@ -711,16 +1031,18 @@
     }
 
     .deviceDetailBox{
-      margin-top: .1rem;
+      /*.vhMT(2);*/
+      .vhMT(0);
+      .vh(0);
       display: flex;
-      padding-top: .5rem;
       justify-content: space-between;
+      overflow: hidden;
       .deviceSet{
         display: flex;
         justify-content: flex-start;
         align-items: center;
         width: 6.43rem;
-        height: 3rem;
+        .vh(205);
         background-color: transparent;
         box-shadow: 0px 4px 10px 0px
         rgba(74, 144, 226, 0.22),
@@ -736,12 +1058,15 @@
           background-color: rgba(0, 0, 0, 0.1);
           border-radius: 1px;
           border: solid 1px rgba(45, 148, 240, 0.2);
+          display: flex;
+          justify-content: center;
+          align-items: center;
           /*transform: scale(1.5,1.5);*/
-          img{
+          /*img{
             display: block;
             width: 100%;
             height: 100%;
-          }
+          }*/
         }
         .btnBox{
           margin-left: 0.1rem;
@@ -934,7 +1259,7 @@
       }
       .deviceEchart{
         width: 6.43rem;
-        height: 3rem;
+        .vh(205);
         background-color: transparent;
         box-shadow: 0px 4px 10px 0px
         rgba(74, 144, 226, 0.22),
@@ -943,6 +1268,7 @@
         inset 0px -1px 1px 0px
         #4a90e2;
         border-radius: 4px;
+        position: relative;
         .selfTabBox{
           width: 100%;
           height: 100%;
@@ -1020,11 +1346,10 @@
       }
     }
     .threeDBox{
-      margin-top: .2rem;
+      /*.vhMT(20);*/
+      .vhMT(2);
       width: 100%;
-      min-height: 2.4rem;
-      /*.vh(459);*/
-      max-height: 577px;
+      .vh(577);
       background-color: transparent;
       box-shadow: 0px 4px 10px 0px
       rgba(74, 144, 226, 0.22),

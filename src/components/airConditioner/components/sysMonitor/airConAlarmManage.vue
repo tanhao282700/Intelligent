@@ -29,7 +29,7 @@
           :default-time="['00:00:00', '23:59:59']">
         </el-date-picker>
       </div>
-      <div class="oneLevelBox">
+      <!--<div class="oneLevelBox">
         <el-select v-model="value2" placeholder="选择类型">
           <el-option
             v-for="item in options2"
@@ -38,7 +38,7 @@
             :value="item.value">
           </el-option>
         </el-select>
-      </div>
+      </div>-->
       <div class="oneLevelBox">
         <el-select v-model="value3" placeholder="选择类型">
           <el-option

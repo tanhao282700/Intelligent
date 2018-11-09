@@ -690,9 +690,3 @@ background-color: #65a3fa!important;
   border-bottom: 1px solid #1989fa;
 }
 
-.fireAlarm .self-table {
-  height: calc(100% - .75rem) !important;
-}
-.fireAlarm .self-table .el-table{
-  height: 100% !important;
-}

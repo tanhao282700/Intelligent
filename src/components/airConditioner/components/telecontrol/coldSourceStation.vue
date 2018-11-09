@@ -3,8 +3,8 @@
 
     <div class="deviceLists">
       <div class="part" v-for="(item,i) in lists1" :key="i">
-        <div class="img">
-          <img src="../../../../assets/img/airConditioner/device1.png" alt="图片图片">
+        <div class="img" v-html="item.self_id==1102?imgArr[0]:item.self_id==1103?imgArr[1]:item.self_id==1108?imgArr[2]:''">
+
         </div>
         <div class="progressBox">
           <self-progress2 tit="总" per="100%" :val="item.all" />
@@ -19,13 +19,16 @@
     </div>
     <div class="deviceDetailBox" id="deviceDetailBox">
       <div class="deviceSet">
-        <self-popover2 :info="[
-
-        ]" :tuliCodes="codes" />
+        <self-popover2 :device_id="tuliDeviceId" :tuliCodes="codes" />
 
         <el-scrollbar style="height:100%">
           <div class="controlBtnBox">
-
+            <div class="btnItem" v-for="(v,i) in tuliBtnList" :key="i">
+              <span class="tit">{{v.title}}</span>
+              <div class="selBtnList">
+                <button @click="tuliBtnClick(v.point_id,v2.id,i,i2)" :class="{active:v2.id==v.now_value}" type="button" v-for="(v2,i2) in v.btnList" v-text="v2.tit" :key="i2"></button>
+              </div>
+            </div>
           </div>
         </el-scrollbar>
         <!--<div class="btnBox">
@@ -133,6 +136,27 @@
       props:['sysId'],
       data() {
         return {
+          imgArr:['<img src="/static/img/zhuji.png" alt="主机">','<img src="/static/img/shuibeng.png" alt="水泵">','<img src="/static/img/lengque.png" alt="冷却塔">'],
+          tuliBtnList:[
+            /*{
+              "now_value": "0",
+              "params": "{\"value\": [\"0\", \"1\"], \"showvalue\": [\"开启\", \"关闭\"], \"type\": 0}",
+              "point_id": 566,
+              "title": "主机启停",
+              "unit": "",
+              btnList:[
+                {
+                  id:0,
+                  tit:'开启'
+                },
+                {
+                  id:1,
+                  tit:'关闭'
+                }
+              ]
+            }*/
+          ],
+          tuliDeviceId:'',
           codes:'',
           lists1:[
             /*{
@@ -330,6 +354,13 @@
         }
       },
       methods: {
+        removeMessageEvent(){
+          window.removeEventListener('message',this.handleMessage);
+        },
+        tuliBtnClick(point_id,id,i1,i2){
+          this.requestOneKeyControl(point_id,id);
+          this.tuliBtnList[i1].now_value = id;
+        },
         hide(){
           if (this.showSingleDevice) {
             Velocity($('#threeDBox'), {
@@ -348,7 +379,8 @@
         },
         /**** 外部vue向iframe内部传数据 ****/
         //先通知模型有哪些部分需响应
-        postInitJson(){   //这部分目前用不着，先留着
+        postInitJson(){
+          //这部分目前用不着，先留着
           // 外部vue向iframe内部传数据
           //alert('我发了哦')
           this.iframeWin.postMessage({
@@ -417,6 +449,11 @@
             case 'reDeviceClick':
               //console.log(data.params.clickObjName);
               this.getEchartsData(data.params.clickObjName);
+              this.object_device.some((item,i)=>{
+                if (item.object_id === data.params.clickObjName) {
+                  this.tuliDeviceId = item.device_id;
+                }
+              })
               if (!this.showSingleDevice) {
                 Velocity($('#deviceDetailBox'), {
                   height: '24.72vh',
@@ -466,6 +503,7 @@
                 obj.on = item.kai;
                 obj.break = item.gu;
                 obj.off = item.guan;
+                obj.self_id = item.self_id;
                 arr.push(obj);
               });
               this.lists1 = arr;
@@ -515,11 +553,32 @@
               this.tabData = tempArr1;
               //设备
               let control = data.data.control;
+              //console.log('通知设备',control)
+
+              let tempArr2 = [];
+              control.map((item2,i2)=>{
+                let obj22 = {};
+                obj22.now_value = item2.now_value;
+                obj22.title = item2.title;
+                obj22.unit = item2.unit;
+                obj22.point_id = item2.point_id;
+                let params = item2.params;
+                let paramsObj = eval('('+params+')');
+                obj22.btnList = [];
+                paramsObj.showvalue.map((item3,i3)=>{
+                  let obj23 = {};
+                  obj23.id = paramsObj.value[i3];
+                  obj23.tit = item3;
+                  obj22.btnList.push(obj23);
+                })
+                tempArr2.push(obj22);
+                console.log('hahaha',eval('('+params+')'))
+              })
+              this.tuliBtnList = tempArr2;
               let device_info = data.data.device_info;
               let device_pic = data.data.device_pic;
 
               this.codes = device_pic[device_info.now_state].codes;
-              console.log('gfrdgfd设备数据',control,device_info,device_pic)
 
             } else {
 
@@ -542,48 +601,66 @@
             let data = res.data;
             console.log('获取机房3d模型', config, res);
             if (data.code == 0) {
-              let floor_id = data.data[0].floor_id;
-              this.$store.state.airFloorId = floor_id;
-              this.getThreeDevice(sysID,floor_id);
-
-              //机房列表
-              let floorList = data.data;
-              let tempArr = [];
-              floorList.map((item,i)=>{
-                let obj = {};
-                obj.value = item.floor_id;
-                obj.label = item.title;
-                if (item.son.length !== 0) {
-                  obj.children = [];
-                  item.son.map((item2,i2)=>{
-                    let obj2 = {};
-                    obj2.value = item2.floor_id;
-                    obj2.label = item2.title;
-                    if (item2.son.length !== 0){
-                      obj2.children = [];
-                      item2.son.map((item3,i3)=>{
-                        let obj3 = {};
-                        obj3.value = item3.floor_id;
-                        obj3.label = item3.title;
-                        obj2.children.push(obj3)
-                      })
-                    }
-                    obj.children.push(obj2)
-                  })
-                }
-                tempArr.push(obj)
-              })
-              this.options = tempArr;
-              this.selectedOptions2 = [floor_id];
-              //3d地址和设备状态
-              this.modelUrl = data.data[0].object_3d;
-              let object_device = data.data[0].object_device;
-              this.object_device = object_device;
-              setTimeout(()=>{   //没有监测到模型是否加载完毕，只能用延时了
-                object_device.map((item,i)=>{
-                  this.changeDeviceState(item.object_id,item.state)
+              if (this.options.length ===0) {
+                let floor_id = data.data[0].floor_id;
+                this.$store.state.airFloorId = floor_id;
+                this.getThreeDevice(sysID, floor_id);
+                //机房列表
+                let floorList = data.data;
+                let tempArr = [];
+                floorList.map((item, i) => {
+                  let obj = {};
+                  obj.value = item.floor_id;
+                  obj.label = item.title;
+                  if (item.son.length !== 0) {
+                    obj.children = [];
+                    item.son.map((item2, i2) => {
+                      let obj2 = {};
+                      obj2.value = item2.floor_id;
+                      obj2.label = item2.title;
+                      if (item2.son.length !== 0) {
+                        obj2.children = [];
+                        item2.son.map((item3, i3) => {
+                          let obj3 = {};
+                          obj3.value = item3.floor_id;
+                          obj3.label = item3.title;
+                          obj2.children.push(obj3)
+                        })
+                      }
+                      obj.children.push(obj2)
+                    })
+                  }
+                  tempArr.push(obj)
                 })
-              },1000)
+                this.options = tempArr;
+                this.selectedOptions2 = [floor_id];
+                //3d地址和设备状态
+                this.modelUrl = data.data[0].object_3d;
+                let object_device = data.data[0].object_device;
+                this.object_device = object_device;
+                setTimeout(() => {   //没有监测到模型是否加载完毕，只能用延时了
+                  object_device.map((item, i) => {
+                    this.changeDeviceState(item.object_id, item.state)
+                  })
+                }, 1000)
+              }else {
+
+                this.options.some((item11,i11)=>{
+                  if (this.$store.state.airFloorId === item11.value){
+                    this.getThreeDevice(sysID, this.$store.state.airFloorId);
+
+                    //3d地址和设备状态
+                    this.modelUrl = data.data[i11].object_3d;
+                    let object_device = data.data[i11].object_device;
+                    this.object_device = object_device;
+                    setTimeout(() => {   //没有监测到模型是否加载完毕，只能用延时了
+                      object_device.map((item, i) => {
+                        this.changeDeviceState(item.object_id, item.state)
+                      })
+                    }, 1000)
+                  }
+                })
+              }
 
 
             } else {
@@ -610,7 +687,7 @@
             if (data.code == 0) {
               this.$message(data.message);
 
-              this.yijianNowVal = nowVal;
+
             } else {
               this.$message(data.message);
             }
@@ -618,7 +695,7 @@
             this.$message(err);
           })
         },
-        //获取模型中单个设备信息
+        //获取模型中单个设备状态信息
         requestOneDeviceInfo(object_id){
           let that = this;
           let config = {
@@ -630,7 +707,7 @@
           if (object_id != 'product-50a37d21-4ee5-4d74-a2cb-3c99354bb804-body_1_0') { //排除这个无用设备，听说后端绑机房用
             this.$http.get('/hvac_pc/pc/index/device/point', config, headers).then(res => {
               let data = res.data;
-              console.log('模型中单设备信息', config, res);
+              console.log('模型中单设备状态信息', config, res);
               if (data.code == 0) {
                 let dataArr = data.data;
                 let tempArr = [];
@@ -657,6 +734,7 @@
           console.log(value);
           //console.log(this.selectedOptions2)
           this.getThreeDevice(this.$store.state.sysList[1].son_list[0].sys_menu_id,value[0]);
+          this.$store.state.airFloorId = value[0];
         },
         tempHandleChange() {
           this.$refs.dialog.show();
@@ -676,6 +754,7 @@
         },
         sureControl2() {
           this.requestOneKeyControl(this.yijianPointId,this.yijianNowVal == 0?1:0);
+          this.yijianNowVal = this.yijianNowVal == 0?1:0;
           this.$refs.dialog2.hide();
         },
         oneKeySwitch(){
@@ -704,6 +783,7 @@
 
 
 
+
       },
       mounted() {
 
@@ -714,10 +794,8 @@
 
 
 
-        setTimeout(()=>{
-          //this.postInitJson()
-          //this.get3DFloor();
-        },10000)
+        let str = "{\"value\": [\"0\",\"1\"],\"showvalue\": [\"手动\",\"自动\"],\"type\":0}";
+        console.log('啦啦啦',eval('('+str+')'))
 
         /*// 这里就拿到了iframe的对象
         console.log(this.$refs.iframe)
@@ -777,13 +855,16 @@
         flex: 1;
         .img{
           width: 1.61rem;
-          height:1.35rem;
+          height:1rem;
+          display: flex;
+          justify-content: center;
+          align-items: center;
           /*box-shadow: 0px 2px 0.3rem 0px*/
           /*rgba(0, 0, 0, 0.66);*/
           img{
             display: block;
-            width: 100%;
-            height: auto;
+            width: 1.05rem;
+            height: 0.8rem;
           }
         }
         .progressBox{
@@ -815,6 +896,34 @@
         inset 0px -1px 1px 0px
         #4a90e2;
         border-radius: 4px;
+        .controlBtnBox{
+          .btnItem{
+            .vhMT(10);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            .selBtnList{
+              margin-left: 0.15rem;
+              button{
+                width: 0.5rem;
+                height: 0.32rem;
+                background-color: rgba(59, 137, 249, 0.2);
+                outline: none;
+                border: 0;
+                border-radius: 4px;
+                color: #fff;
+                margin-left: 0.1rem;
+                cursor: pointer;
+                &.active{
+                  background-color: #3a89f9;
+                }
+                &:first-of-type{
+                  margin-left: 0;
+                }
+              }
+            }
+          }
+        }
         /*.btnBox{
           height: 100%;
           .title{
@@ -960,7 +1069,7 @@
     .threeDBox{
       .vhMT(20);
       width: 100%;
-      height: 4.3rem;
+      .vh(459);
       background-color: transparent;
       box-shadow: 0px 4px 10px 0px
       rgba(74, 144, 226, 0.22),
