@@ -443,8 +443,8 @@ export default {
         this.getDealResult(this.detalrowdata);
       },
       submitOk(){ //处理工单 同意/拒绝退单/延期
-          if(this.getStatus==2){
-             this.$refs.isRefult.hide();
+          this.$refs.isRefult.hide();
+          if(this.getStatus==5){
               this.$refs.sendWork2.show();
           }else{
             this.getDealResult(this.detalrowdata);
