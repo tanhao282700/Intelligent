@@ -26,7 +26,7 @@
         <img v-if="wetherInfo.code" class="wetherIcon" :src="wetherInfo.code" ></img>
         <el-row class="block-col-2">
           <el-col :span="12">
-            <el-dropdown trigger="click" @command="handleCommand" >
+            <el-dropdown trigger="hover" @command="handleCommand" >
               <span class="el-dropdown-link">
                 <span @click="showPersonInfo" class="userIcon"></span>
               </span>
