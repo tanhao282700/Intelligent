@@ -103,9 +103,9 @@
                     s = "";
                     e = "";
                 }
-                    console.log(this.$store.state.sysList[14].sys_menu_id);
+                    console.log(this.$store.state.sysList['14'].sys_menu_id);
                 this.$http.post('/entrance/record',{
-                    sys_menu_id:this.$store.state.sysList[14].sys_menu_id,
+                    sys_menu_id:this.$store.state.sysList['14'].sys_menu_id,
                     project_id:this.$store.state.projectId,
                     floor_id:1,
                     page_index:that.currentPage,
@@ -127,7 +127,7 @@
             exportTable(){
                 var that = this;
                 this.$http.post('/entrance/record',{
-                    sys_menu_id:this.$store.state.sysList[14].sys_menu_id,
+                    sys_menu_id:this.$store.state.sysList['14'].sys_menu_id,
                     project_id:this.$store.state.projectId,
                     floor_id:1,
                     export:1,

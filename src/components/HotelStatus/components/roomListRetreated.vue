@@ -25,7 +25,7 @@
         </div>
         <div class="tableBox">
             <el-table :data="tableData"  style="width: 100%;" height="100%">
-                <el-table-column type="index" label="序号" align="cneter"></el-table-column>
+                <el-table-column prop="indexs" label="序号" align="cneter"></el-table-column>
                 <el-table-column prop="room_state" label="房间状态" align="cneter" :formatter = "stateFormat"></el-table-column>
                 <el-table-column prop="room_id" label="房间号"  align="cneter"></el-table-column>
                 <el-table-column prop="stay_name" label="入住人"  align="cneter"></el-table-column>
@@ -133,6 +133,7 @@
                     var  seleRoom_id = [];
                     $.each(that.tableData,function(i,k){
                         seleRoom_id.push({num:k.room_id});
+                        that.tableData[i].indexs = (that.currentPage-1)*that.pagesize+1+i
                     });
                     that.unique(seleRoom_id);
                     that.roomListAllNumbers = seleRoom_id;

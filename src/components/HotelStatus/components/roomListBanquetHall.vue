@@ -11,7 +11,7 @@
 		</div>
         <div class="tableBox">
             <el-table :data="tableData" style="width: 100%;" height="100%">
-                <el-table-column type="index" label="序号" align="cneter"></el-table-column>
+                <el-table-column prop="indexs" label="序号" align="cneter"></el-table-column>
                 <el-table-column prop="descript" label="预定大厅" align="cneter"></el-table-column>
                 <el-table-column prop="biz_date" label="预定日期"  align="cneter"></el-table-column>
                 <el-table-column prop="res_name" label="预定人"  align="cneter"></el-table-column>
@@ -97,6 +97,7 @@
                     var roomsDescript = [];
                     $.each(data.data.data,function(i,k){
                         roomsDescript.push({num:k.descript});
+                        that.tableData[i].indexs = (that.currentPage-1)*that.pagesize+1+i
                     }); 
                     that.unique(roomsDescript);
                     that.roomListAllNumbers = roomsDescript;
