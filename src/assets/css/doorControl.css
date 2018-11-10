@@ -1,7 +1,7 @@
 /*  门禁模块样式  s*/
 .doorControl{position: relative;width: 100%;height:100%;color:#fff;background:url('../../assets/img/fullBg.png') no-repeat center;background-size: 100% 100%;padding: 0 20px 20px 20px;box-sizing:border-box;}
 .doorHead{width:100%;height:50px;position: absolute;left:0;top:0;z-index: 10;display: block;background: #002d68;}
-.companyLogo{float: left;width:200px;height:50px;line-height: 50px;}
+.companyLogo{float: left;width:2rem;height:50px;line-height: 50px;}
 .companyLogo>i{display: inline-block;width:30px;height:30px;}
 .companyLogo>span{display: inline-block;height:50px;line-height: 50px;font-size: 0.16rem;}
 .searchBox{position: relative;}
@@ -14,18 +14,18 @@ nav.tabNav span a.on{color:#008aff;}
 .cursor{cursor: pointer;}
 .floatRt{float:right!important;}
 .borderShadow{width:100%;height:100%;position: relative;padding-top: 50px;padding-bottom: 10px;-webkit-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);-moz-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);box-shadow:0 0 10px rgba(74, 144, 226, 0.22);}
-.tabsDomBox{padding-top: 80px;position: relative;width:100%;height:100%;}
+.tabsDomBox{padding-top: 0.9rem;position: relative;width:100%;height:100%;}
 .tableBox{width:100%;height:100%;position:relative;box-sizing:border-box;padding-bottom:50px;}
 .navCrumbs{position: absolute;top:50px;left:0;display: block;height:30px;line-height: 30px;color:#4d5d76;font-size: 0.12rem;}
 .navCrumbs>span{color:#008aff;}
 .tabsDomBox .searchConditionBox{position: absolute;left:0;top:0px;height:50px;display: block;width:100%;padding-top:9px;padding-left:15px;}
 .searchConditionBox .dateBox{height:32px;padding-right:20px;float: left;}
 .dateBox .el-input__inner,.dateBox .el-input{height:100%!important;}
-.btn{padding:0 15px;color:#fff;border-radius:2px;background: #3a84ee;border:1px solid #1989fa;height:32px;line-height:32px;cursor: pointer;width:88px;font-size: 0.14rem!important;}
+.btn{padding:0 15px;color:#fff;border-radius:2px;background: #3a84ee;border:1px solid #1989fa;height:32px;line-height:32px;cursor: pointer;width:0.88rem;font-size: 0.14rem!important;}
 .btnExport{margin-right:15px;}
 .tableBox .el-table__header{background:rgba(0,0,0,.25);}
 .el-pagination__sizes{display:none!important;}
-.tableBox .el-pagination.is-background .btn-next,.tableBox .el-pagination.is-background .btn-prev,.tableBox .el-pagination.is-background .el-pager li{width:24px!important;height:24px!important;min-width: 20px;margin-right:10px!important;margin-left: 0!important;line-height: 24px;color:#008aff;}
+.tableBox .el-pagination.is-background .btn-next,.tableBox .el-pagination.is-background .btn-prev,.tableBox .el-pagination.is-background .el-pager li{width:0.24px!important;height:24px!important;min-width: 20px;margin-right:10px!important;margin-left: 0!important;line-height: 24px;color:#008aff;}
 /*.tableBox .el-pagination__editor.el-input{width:30px!important;height:24px!important;}*/
 .el-pagination__editor.el-input{padding-top:2px;}
 .tableBox .el-pagination{padding-top:10px;margin-top:-8px;}
@@ -34,7 +34,7 @@ nav.tabNav span a.on{color:#008aff;}
 .tableBox .el-pagination__jump{margin-right:10px;}
 .tableBox .el-table thead th.is-leaf{padding:0!important;border:0!important;}
 .tabsDomBox0{padding-top: 170px;position: relative;height: 100%;}
-.tabsDomBox0 .el-select .el-input__inner{height:32px;width:98px;font-size: 0.12rem!important;}
+.tabsDomBox0 .el-select .el-input__inner{height:32px;width:0.98rem;font-size: 0.12rem!important;}
 .el-select:hover .el-input__inner,.el-input__inner:hover{border:1px solid #1989fa;}
 .tabsDomBox0 .el-select{margin-top:14px;margin-left: 20px;}
 .tabsDomBox0 .el-select:nth-child(2){margin-left: 10px;}
@@ -50,8 +50,8 @@ nav.tabNav span a.on{color:#008aff;}
 .doorInfoBgBox{position:relative;width:100%;height:100%;background:#02132a;-webkit-box-shadow:0 0 2px rgba(39, 141, 255, 0.3);-moz-box-shadow:0 0 2px rgba(39, 141, 255, 0.3);box-shadow:0 0 2px rgba(39, 141, 255, 0.3);}
 .doorExportPanel{position: absolute;top: 30px;left:0;z-index:10;display: block;width: 100%;height:40px;line-height: 40px;padding:0 20px;background:#010e1f; }
 .doorExportPanel button{margin-top:4px; }
-.closeDoorInfo{display: block;position:absolute;right:-8px;top:-10px;width:16px;height:16px;text-align: center;line-height: 16px;font-size: 0.16rem;background:#00275b;color:#3b89f9;border-radius: 8px;cursor: pointer;}
-.pop{position:absolute;left:95%;top:0;width:162px;height:110px;padding-left: 19px;display: none;z-index: 10;}
+.closeDoorInfo{display: block;position:absolute;right:-8px;top:-10px;width:0.16rem;height:0.16rem;text-align: center;line-height: 16px;font-size: 0.16rem;background:#00275b;color:#3b89f9;border-radius: 8px;cursor: pointer;}
+.pop{position:absolute;left:95%;top:0;width:1.62rem;height:1.10rem;padding-left: 19px;display: none;z-index: 10;}
 .popBgBox{width:100%;height:100%;background:#04152c;-webkit-box-shadow:0 0 2px rgba(60, 150, 255, 0.35);-moz-box-shadow:0 0 2px rgba(60, 150, 255, 0.35);box-shadow:0 0 2px rgba(60, 150, 255, 0.35);}
 .popBgBox .popHeadBox{width:100%;height:40px;line-height:40px;background: rgba(0,103,255,.3);text-align: left;padding-left:20px;font-size: 0.14rem;color:#fff;}
 .popBgBox .popDoorStatus,.popBgBox .popDoorControl{width:100%;height:28px;line-height: 30px;color:#4f648b;padding-left: 15px;font-size: 0.14rem;}
@@ -87,7 +87,7 @@ nav.tabNav span a.on{color:#008aff;}
 .doorAllN{color: #f38a00;font-size: 0.18rem;}
 .doorCloseN{color: #759ee5;font-size: 0.18rem;}
 .doorWarningN{color: #f38a00;font-size: 0.18rem;}
-.doorClose,.doorWarning,.doorOpen{display: inline-block;width:16px;height:16px;border-radius:8px;margin-right: 8px;margin-bottom: -3px;}
+.doorClose,.doorWarning,.doorOpen{display: inline-block;width:0.16rem;height:0.16rem;border-radius:50%;margin-right: 8px;margin-bottom: -3px;}
 .doorClose{border:1px solid #1989fa;background:#1989fa;}
 .doorWarning{border:1px solid #e04f4f;background:#FF5D3B;}
 .doorOpen{border:1px solid #fff;background:#fff;}
@@ -98,15 +98,15 @@ nav.tabNav span a.on{color:#008aff;}
 /* 视频监控  s*/
 video{object-fit:fill;}
 .videoFrame{width:100%;height:100%;border:0px;}
-.VideoSurveillance{padding-top: 85px;}
+.VideoSurveillance{padding-top: 0.9rem;}
 .VideoSurveillance .navCrumbs{padding-left: 20px;}
 .VideoSurveillance .mainContentBox{width:100%;height:100%;border-radius: 4px;-webkit-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);-moz-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);box-shadow:0 0 10px rgba(74, 144, 226, 0.22);position: relative;padding-top: 50px;}
 .videoConditionsBox{position:absolute;top:0;left:0;height:50px;width:100%;background:rgba(0,0,0,.25);border-radius: 4px 4px 0 0;padding-top:8px;}
-.videoConditionsBox li{float: left;width:120px;height:32px;text-align: right;padding-right:20px;line-height: 32px;font-size: 0.12rem;}
-.videoConditionsBox li:first-child{width:100px;font-size: 0.14rem;}
+.videoConditionsBox li{float: left;width:1.2rem;height:32px;text-align: right;padding-right:20px;line-height: 32px;font-size: 0.12rem;}
+.videoConditionsBox li:first-child{width:1rem;font-size: 0.14rem;}
 .videoConditionsBox li .el-input__inner{height:32px;font-size: 0.14rem!important;}
-.videoConditionsBox li.floatRt{width:170px;}
-.videoConditionsBox li .vieCtBgBox{text-align: left;width: 151px;height: 32px;background: rgba(74,144,226,0.1);border-radius: 2px;padding-left: 10px;}
+.videoConditionsBox li.floatRt{width:1.7rem;}
+.videoConditionsBox li .vieCtBgBox{text-align: left;width: 1.51rem;height: 32px;background: rgba(74,144,226,0.1);border-radius: 2px;padding-left: 10px;}
 .videoConditionsBox li .vieCtBgBox span{font-size: 0.16rem;}
 .videoConditionsBox li span.totleVideosNum{color:#f38a00;padding-left: 10px;font-size: 0.18rem;}
 .VideoSurveillance .bottomShadow .floorImgBox span{position: absolute;left:100px;top:100px;z-index: 10;display: block;cursor:pointer;width:30px;height:20px;background:url(../../assets/img/Video/monitor1.png) no-repeat;background-size: 100% 100%;}
@@ -116,13 +116,13 @@ video{object-fit:fill;}
 .videoPopBg>i{position: absolute;right:-13px;top:-9px;cursor:pointer;font-size: 0.18rem;line-height: 20px;text-align: center;display: block;width:20px;height:20px;border-radius:10px;background:#00275b;color:#3b89f9;}
 .videoPopBg{width:100%;height:100%;background:#02132a;position:relative;-webkit-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);-moz-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);box-shadow:0 0 10px rgba(74, 144, 226, 0.22);padding-top:40px;}
 .videoDeviceTitle{display:block;height:40px;width:100%;line-height: 40px;background: rgba(0,0,0,.25);position:absolute;left:0;top:0;padding:0 20px;}
-.videoDeviceTitle span.dateBox{height:40px;line-height: 40px;width:140px;position: absolute;top:0;left:50%;margin-left: -70px;text-align: center;font-size: 0.18rem;}
+.videoDeviceTitle span.dateBox{height:40px;line-height: 40px;width:1.4rem;position: absolute;top:0;left:50%;margin-left: -0.70rem;text-align: center;font-size: 0.18rem;}
 .videoDeviceTitle span.deviceaAcription{font-size: 0.16rem;display: inline-block;height:40px;line-height: 40px;}
 .videoPanelBox{width:100%;height:100%;}
 .videoDeviceInfo{height:30px;line-height: 30px;padding:0 20px;background: #00275b;color:#fff;font-size: 0.14rem;border-radius: 4px;border:0px;outline:none;margin-top:5px;cursor:pointer;}
 
 .deviceInfoPop{position:absolute;top:0;left:0;display:block;width:100%;height:100%;background:rgba(0,0,0,.1);}
-.deviceInfoPop .deviceInfoBgBox{position: absolute;top:50%;left:50%;width:700px;height:440px;margin-left:-350px;margin-top:-240px;background:#02132a;border-radius: 8px;-webkit-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);-moz-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);box-shadow:0 0 10px rgba(74, 144, 226, 0.22);padding:60px 0 20px 0;}
+.deviceInfoPop .deviceInfoBgBox{position: absolute;top:50%;left:50%;width:7rem;height:4.4rem;margin-left:-3.5rem;margin-top:-2.4rem;background:#02132a;border-radius: 8px;-webkit-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);-moz-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);box-shadow:0 0 10px rgba(74, 144, 226, 0.22);padding:60px 0 20px 0;}
 .deviceInfoPop .deviceInfoBgBox>span{position: absolute;left:0;top:0;display:block;width:100%;height:40px;background:rgba(0,0,0,.25);border-radius:8px 8px 0 0;padding-left:20px;line-height: 40px;font-size: 0.12rem;}
 .deviceInfoPop .deviceInfoBgBox>i{position: absolute;right:-13px;top:-9px;cursor:pointer;font-size: 0.18rem;line-height: 20px;text-align: center;display: block;width:20px;height:20px;border-radius:10px;background:#00275b;color:#3b89f9;}
 
@@ -138,8 +138,8 @@ video{object-fit:fill;}
 .deviceInfoDom>ul{width:100%;height:100%;padding:0;}
 .deviceInfoDom>ul>li{width:50%;height:34px;line-height: 34px;float: left;}
 .deviceInfoDom>ul>li span{color:#fff;font-size: 0.12rem;display: inline-block;float: left;height: 34px;line-height: 34px;}
-.deviceInfoDom>ul>li:nth-child(even) span{display: inline-block;width:86px;}
-.deviceInfoDom>ul>li span.devNameSpan{color:#4f648b;padding-right:10px;display: inline-block;width: 86px;text-overflow: ellipsis;white-space: nowrap;overflow:hidden;}
+.deviceInfoDom>ul>li:nth-child(even) span{display: inline-block;width:0.86rem;}
+.deviceInfoDom>ul>li span.devNameSpan{color:#4f648b;padding-right:10px;display: inline-block;width: 0.86rem;text-overflow: ellipsis;white-space: nowrap;overflow:hidden;}
 
 .maintenanceRecord{width:100%;height:100%;padding:10px 20px 0 16px;}
 .maintenanceRecord ul.devHistryList{width:100%;height:auto;padding:0;padding-left: 4px;}
@@ -151,9 +151,9 @@ video{object-fit:fill;}
 .maintenanceRecord ul.devHistryList>li span.dateHistryBox a i{position:absolute;left: 0;top:0;display: block;width:1px;height:12px;background:linear-gradient(180deg,rgba(0,193,255,1) 0%,rgba(0,142,254,1) 100%); }
 .maintenanceRecord ul.devHistryList>li span.maintenanceContent{color:#fff;font-size: 0.12rem;display: block;width:100%;height:28px;background:#011f51;line-height: 28px;padding-left: 6px;margin-top:4px;box-shadow:0px 0px 1px 0px rgba(87,113,176,0.15),0px 0px 2px 0px rgba(0,0,0,0.33);}
 
-.hotelStatus{width:100%;height:100%;padding-top: 86px;position:relative;}
+.hotelStatus{width:100%;height:100%;padding-top: 0.9rem;position:relative;}
 .hotelMainContent{width:100%;height:100%;position: relative;padding-left:240px;}
-.hotelMainInfo{position:absolute;top:0px;left:0;width:220px;height:100%;box-shadow:0px 2px 5px 0px rgba(74,144,226,0.22),1px 1px 1px 0px rgba(248,253,255,0.15),0px 0px 1px 0px rgba(74,144,226,1);border-radius:4px;}
+.hotelMainInfo{position:absolute;top:0px;left:0;width:2.2rem;height:100%;box-shadow:0px 2px 5px 0px rgba(74,144,226,0.22),1px 1px 1px 0px rgba(248,253,255,0.15),0px 0px 1px 0px rgba(74,144,226,1);border-radius:4px;}
 .hotelMainInfo li{width:100%;height:40px;padding-left: 10px;position:relative;background:rgba(30,69,155,0.35);}
 .hotelMainInfo li:first-child{margin-bottom: 15px;background:rgba(0,0,0,.2);border-radius:4px 4px 0 0;}
 .hotelMainInfo li:nth-child(2),.hotelMainInfo li:nth-child(3){margin-bottom: 1px;}
@@ -181,8 +181,8 @@ video{object-fit:fill;}
 
 .roomListHeadBox span:first-child{color:#008aff;padding-right:20px;padding-left: 10px;}
 .roomListHeadBox span:first-child i{position:absolute;left:106px;top:12px;display: block;width:2px;height:16px;background:#008aff;border-radius: 2px;}
-.roomListHeadBox .el-select{float:right;margin-right:10px;width:72px;}
-.roomListHeadBox .el-select .el-input__inner{height:30px!important;width:54px!important;padding:0!important;border:0px!important;}
+.roomListHeadBox .el-select{float:right;margin-right:10px;width:0.72rem;}
+.roomListHeadBox .el-select .el-input__inner{height:30px!important;width:0.54rem!important;padding:0!important;border:0px!important;}
 
 .roomsTypeStaBox{width:100%;height:100%;padding-left:10px; }
 .roomsTypeStaBox ul li:first-child{height:40px;line-height: 40px;font-size: 0.16rem;}
@@ -202,8 +202,8 @@ video{object-fit:fill;}
 .reportChartbox .chartDom{width:100%;height:100%;}
 .reportChartHeadBox{position:absolute;top:0;left:0;display:block;width:100%;height:40px;background:rgba(0,0,0,.2);border-radius:4px 4px 0 0;}
 .reportChartHeadBox .el-select{float:right;margin-right:20px;}
-.reportChartHeadBox .el-select .el-input__inner{height:30px!important;width:64px!important;padding:0!important;border:0px!important;}
-.reportChartHeadBox>span{display: inline-block;padding-left:15px;height:40px;line-height: 40px;color:#008AFF;font-size: 0.16rem;position:relative;width:120px;}
+.reportChartHeadBox .el-select .el-input__inner{height:30px!important;width:0.64rem!important;padding:0!important;border:0px!important;}
+.reportChartHeadBox>span{display: inline-block;padding-left:15px;height:40px;line-height: 40px;color:#008AFF;font-size: 0.16rem;position:relative;width:1.2rem;}
 .reportChartHeadBox>span i{position:absolute;top:12px;left:120px;display: block;width:2px;background:#008AFF;height: 16px;border-radius: 2px;}
 
 .roomLists .navCrumbs{left:3px;}
@@ -217,16 +217,16 @@ video{object-fit:fill;}
 
 .roomListSearchPanel{padding-left:20px;height:50px;position: absolute;left:0;top:0;display: block;width:100%;}
 .roomListSearchPanel .el-select{margin-top:10px;margin-right:10px;}
-.roomListSearchPanel .el-input__inner{height:30px;width:100px;}
-.roomListSearchPanel .roomListDatePickerDef .el-input__inner{height:30px;width:120px;}
+.roomListSearchPanel .el-input__inner{height:30px;width:1rem;}
+.roomListSearchPanel .roomListDatePickerDef .el-input__inner{height:30px;width:1.2rem;}
 
-.roomListDatePicker{display: inline-block;width:240px;margin-right:10px;}
-.roomListDatePickerDef{width:120px;}
+.roomListDatePicker{display: inline-block;width:2.4rem;margin-right:10px;}
+.roomListDatePickerDef{width:1.2rem;}
 .roomListDatePicker>.el-date-editor{height:30px!important;}
 .roomListDatePicker .el-date-editor .el-range-input{background: none;font-size: 0.12rem!important;color:#fff;}
 .roomListDatePicker .el-date-editor .el-range-separator{line-height: 22px;padding:0;color:#d8d8d8;font-size: 0.12rem;}
 
-.roomListHeadBox .el-dropdown{float: right;margin-right:10px;width:86px;cursor:pointer;}
+.roomListHeadBox .el-dropdown{float: right;margin-right:10px;width:0.86rem;cursor:pointer;}
 .roomListHeadBox  .el-dropdown>span{color:#fff;padding:0;cursor:pointer;}
 .hotelStaDropDown .el-dropdown-menu__item{padding-left:26px;}
 .roomListHeadBox  .el-dropdown>span i{color:#fff;border:0px;}
@@ -282,7 +282,7 @@ video{object-fit:fill;}
 
 
 /* 能源管理-用能报表 s*/
-.unitPriceBtn{display:inline-block;width:100px;text-align:center;line-height:28px;height:28px;background:rgba(51,51,51,0.2);box-shadow:0px 2px 5px 0px rgba(74,144,226,0.4),1px 1px 1px 0px rgba(248,253,255,0.15),0px 0px 1px 0px rgba(74,144,226,1);border-radius:2px;position: absolute;right:20px;top:10px;color:#fff;font-size: 0.12rem;cursor:pointer;}
+.unitPriceBtn{display:inline-block;width:1rem;text-align:center;line-height:28px;height:28px;background:rgba(51,51,51,0.2);box-shadow:0px 2px 5px 0px rgba(74,144,226,0.4),1px 1px 1px 0px rgba(248,253,255,0.15),0px 0px 1px 0px rgba(74,144,226,1);border-radius:2px;position: absolute;right:20px;top:10px;color:#fff;font-size: 0.12rem;cursor:pointer;}
 .energyReport{width:100%;height:100%;position: relative;padding-top:30px;}	
 .energyReport .navCrumbs{left:20px;top:5px;}
 .reportTabBox{width:100%;height:100%;position: relative;padding:50px 20px 20px 20px;}
@@ -292,9 +292,9 @@ video{object-fit:fill;}
 .reportTabBox>nav.tabNav span a.on{border-bottom: 1px solid #008aff;}
 .reportTabBoxs{position:relative;display:block;width:100%;height:100%;box-shadow:0px 2px 5px 0px rgba(74,144,226,0.22),1px 1px 1px 0px rgba(248,253,255,0.15),0px 0px 1px 0px rgba(74,144,226,1);border-radius:4px;position: relative;padding-top:50px;}
 .reportTabBoxsHead{height:50px;position:absolute;left:0;top:0;display:block;width:100%;padding-left: 10px;padding-top:10px;}
-.reportTabBoxsHead .el-select input.el-input__inner{width:70px;height:32px;}
+.reportTabBoxsHead .el-select input.el-input__inner{width:0.7rem;height:32px;}
 .reportTabBoxsHead .dateBox{display: inline-block;margin-left: 5px;margin-right:10px;}
-.reportTabBoxsHead .dateBox .el-input__inner{width:70px!important;height:32px!important;padding-left: 15px;text-align: left!important;}
+.reportTabBoxsHead .dateBox .el-input__inner{width:0.7rem!important;height:32px!important;padding-left: 15px;text-align: left!important;}
 .reportTabBoxsHead .el-input__suffix{display: none!important;}
 .reportTabBoxsHead .el-input__prefix{left:44px;}
 .energyReport .el-table thead.is-group th{background: rgba(0,0,0,0)!important;}
@@ -315,14 +315,14 @@ video{object-fit:fill;}
 .unitHeadBox{width:100%;height:40px;background:rgba(0,0,0,.2);padding-left: 20px;font-size: 0.14rem;border-radius:4px 4px 0 0;line-height: 40px;color:#fff;}
 .unitPrice .el-form{margin-top: 30px;}
 .el-form ul{position: relative;padding:0;padding-left: 40px;border-top:1px solid rgba(181, 215, 255, 0.25);height:30px;}
-.el-form ul li:first-child{position:absolute;left:0;top:0;display: block;width:40px;}
+.el-form ul li:first-child{position:absolute;left:0;top:0;display: block;width:0.4rem;}
 .el-form ul li{float: left;width:20%;text-align: center;color:#fff;font-size: 0.12rem;border-left:1px solid rgba(181, 215, 255, 0.25);border-bottom:1px solid rgba(181, 215, 255, 0.25);height:30px;line-height: 30px;}
 .el-form ul li .el-input__inner{height:30px;border:0!important;color:#008AFF!important;}
 .el-form ul.itemsBox li:first-child{cursor: pointer;}
 .addMode{width:100%;height:30px;line-height: 30px;text-align: center;border:1px solid #1989fa;background:rgba(58,132,238,0.2);}
 .addMode span{cursor:pointer;color:#fff;}
 .addMode span .el-icon-circle-plus{display: inline-block;font-size: 0.14rem;color:#3A84EE;cursor: pointer;padding-right:10px;}
-.el-form ul.itemsBox li:first-child .liCloseBox{position:absolute;left:0;top:0;width:40px;height:30px;display: none;text-align: center;line-height: 30px;color:#e4393c;background:rgba(58,132,238,1);font-size: 0.16rem;}
+.el-form ul.itemsBox li:first-child .liCloseBox{position:absolute;left:0;top:0;width:0.4rem;height:30px;display: none;text-align: center;line-height: 30px;color:#e4393c;background:rgba(58,132,238,1);font-size: 0.16rem;}
 .el-form ul.itemsBox li:first-child:hover .liCloseBox{display: block;}
 .el-form ul.itemsBox li .el-range-editor .el-range-input{background:none;color:#FFA414;}
 .el-form ul.itemsBox li .el-date-editor .el-range-separator{padding:0;line-height: 22px;}
