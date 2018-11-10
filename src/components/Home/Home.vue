@@ -21,12 +21,12 @@
       <div class="info">
         <span v-text="dateInfo.numbers"></span>
         <span v-text="dateInfo.chinese"></span>
-        <span>多云</span>
-        <span>34℃</span>
-        <img class="wetherIcon" src="../../assets/img/home/wethericon.png" ></img>
+        <span v-text="wetherInfo.weather"></span>
+        <span v-text="wetherInfo.temperature"></span>
+        <img v-if="wetherInfo.code" class="wetherIcon" :src="wetherInfo.code" ></img>
         <el-row class="block-col-2">
           <el-col :span="12">
-            <el-dropdown trigger="hover" @command="handleCommand" >
+            <el-dropdown trigger="click" @command="handleCommand" >
               <span class="el-dropdown-link">
                 <span @click="showPersonInfo" class="userIcon"></span>
               </span>
@@ -262,14 +262,21 @@
         bubbleTip:'', //提示信息
         routerInfo:{},  //权限信息
         dateInfo:{},   //日期信息
-        url3d:''
+        url3d:'',
+        coordinate:[],
+        wetherInfo:{
+          weather:'',
+          temperature:'',
+          code:'',
+        }
       }
     },
     created(){
         console.log(this.$store.state)
       this.routerInfo = this.$store.state.sysList
-
+      this.coordinate = this.$store.state.userInfoTotal.projectInfo[0].coordinate.split(',')
       this.dateInfoInit()
+      this.getWeather()
     },
     mounted(){
         $(".companyName").click(()=>{
@@ -288,6 +295,46 @@
       })
     },
     methods:{
+        getWeather(){
+            let that = this
+          $.ajax({
+            url: 'https://free-api.heweather.com/s6/weather/now',
+            data: {
+              location:that.$store.state.userInfoTotal.projectInfo[0].coordinate,
+              key:'a3af62d7db2d4698851b6432b0572ea3'
+            },
+            success: function(res){
+              that.wetherInfo.temperature = res.HeWeather6[0].now.tmp+'℃'
+              that.wetherInfo.weather = res.HeWeather6[0].now.cond_txt
+              let code = parseInt(res.HeWeather6[0].now.cond_code)
+              if(code==100){
+                  //晴
+                that.wetherInfo.code = '../../static/img/qing.png'
+              }
+              if(code>100&&code<213){
+                  //阴
+                that.wetherInfo.code = '../../static/img/yin.png'
+              }
+              if(code>299&&code<319){
+                //雨
+                that.wetherInfo.code = '../../static/img/yu.png'
+              }
+              if(code>398&&code<500){
+                //雪
+                that.wetherInfo.code = '../../static/img/xue.png'
+              }
+              if((code>499&&code<502)||code==513||code==515){
+                //雾
+                that.wetherInfo.code = '../../static/img/wu.png'
+              }
+              if(code>501&&code<514){
+                //霾
+                that.wetherInfo.code = '../../static/img/mai.png'
+              }
+            },
+            dataType: 'json'
+          });
+        },
         dateInfoInit(){   //日期信息初始化
           let date = new Date()
           let day = date.getDate()
@@ -548,7 +595,7 @@
         }
         .wetherIcon{
           width:26px;
-          height:22px;
+          height:26px;
         }
         .userIcon{
           margin-top: 22px;
@@ -987,6 +1034,7 @@
   .homeDropDown .homeDropdownItem{
     height:0.3rem!important;
     font-size:0.14rem;
+    line-height:0.3rem!important;
   }
   .homeDropDown .homeDropdownItem:hover{
     background:#093365;
