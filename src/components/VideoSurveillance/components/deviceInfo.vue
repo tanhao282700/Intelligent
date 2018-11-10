@@ -25,24 +25,24 @@
         },
 	    methods: {
             getData(){
-                var that = this;
-                console.log(that.onVideoId);
-                this.$http.post('/video_monitoring/video_device_info',{
-                    device_id:that.onVideoId,
-                }).then(function(data){
-                    //响应成功回调
+                // var that = this;
+                // console.log(that.onVideoId);
+                // this.$http.post('/video_monitoring/video_device_info',{
+                //     // device_id:that.onVideoId,
+                // }).then(function(data){
+                //     //响应成功回调
 
-                     $.each(JSON.parse(data.data.data[0].content),function(index,item){
-                    	$.each(item,function(key,value){
-                    		//that.dInfo.push(key);
+                //      $.each(JSON.parse(data.data.data[0].content),function(index,item){
+                //     	$.each(item,function(key,value){
+                //     		//that.dInfo.push(key);
 
-                    		that.deviceInfos.push({'label':key,'val':value});
-                    	});
-                    });
-                     console.log(that.deviceInfos)
-                }, function(data){
-                    // 响应错误回调
-                });
+                //     		that.deviceInfos.push({'label':key,'val':value});
+                //     	});
+                //     });
+                //      console.log(that.deviceInfos)
+                // }, function(data){
+                //     // 响应错误回调
+                // });
             },
         }
     }

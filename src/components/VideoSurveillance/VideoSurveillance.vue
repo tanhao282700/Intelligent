@@ -11,7 +11,7 @@
         </div>
         <div class="mainContentBox">
         	<ul class="videoConditionsBox">
-        		<li>区域选择</li>
+        		<li @click="viewLiveVideoFn('')">区域选择</li>
         		<li>
 		            <el-select v-model="selectedValue" @change="chooseBuild">
 		                <el-option v-for="(item,index) in buildDatas"
@@ -30,7 +30,7 @@
                         </el-option>
                     </el-select>
                 </li>
-                <li>
+           <!--      <li>
                     <el-select v-model="selectedValue2">
                         <el-option v-for="(item,index) in buildDatas2"
                             :key="item.value"
@@ -38,18 +38,19 @@
                             :value="item.floor_id">
                         </el-option>
                     </el-select>
-                </li>
+                </li> -->
         		<li class="floatRt">
                     <div class="vieCtBgBox">
                         <span>当前监控总数</span>
-                        <span class="totleVideosNum">14</span>
+                        <span class="totleVideosNum">{{totalVdeoNum}}</span>
                     </div>
         		</li>
         	</ul>
 	        <div class="bottomShadow">
 	            <div class="floorImgBox" id="floorImgBox">
-	                <img :src="floorBgImg">
-	                <span v-for="item in iList" :style="{left:(item.position_x*coefficientX+'px'),top:(item.position_y*coefficientY+'px')}" @click="viewLiveVideo(item.device_id)"><label>{{item.device_id}}</label></span>
+                    <iframe :src="iframeSrc" class="videoFrame" ref="iframe" name="myFrame"></iframe>
+	                <!-- <img :src="floorBgImg"> -->
+	              <!--   <span v-for="item in iList" :style="{left:(item.position_x*coefficientX+'px'),top:(item.position_y*coefficientY+'px')}"><label>{{item.device_id}}</label></span> -->
 	            </div>
 	        </div>
         </div>
@@ -62,11 +63,13 @@
 	        		<span class="dateBox">{{todaySpan}}</span>
 	        		<button class="videoDeviceInfo floatRt" @click="deviceInfoGet(onVideoId)">设备信息</button>
 	        	</div>
-	        	<div class="videoPanelBox"></div>
+	        	<div class="videoPanelBox">
+                    <div id="videoElement"></div>      
+                </div>
         	</div>
         	<div class="deviceInfoPop" v-show="isDeviceInfoPopShow">
         		<div class="deviceInfoBgBox">
-        			<i clase="closeDeviceInfoIcon" @click="isDeviceInfoPopShow = false">×</i>
+        			<i clase="closeDeviceInfoIcon" @click="clearIframeStale">×</i>
         			<span>{{onVideoId}}号视频设备</span>
         			<div class="deviceTabBox">
 				        <nav class="tabNav">
@@ -113,6 +116,11 @@
                 isActive1:true,
                 isActive2:false,
 
+                onFloorId:'166',
+                iframeSrc:'',
+                totalVdeoNum:0,
+                floorObjs:{},
+
                 buildDatas:[],
                 buildDatas1:[],
 	        	buildDatas2:[],
@@ -128,20 +136,54 @@
             this.getData("115");
             this.getbuildData();
             this.getDateSet();
+            this.getVideoCount(this.onFloorId);
+            window.addEventListener('message', this.handleMessage)
+            this.iframeWin = this.$refs.iframe.contentWindow
         },
 	    methods: {
+            removeMessageEvent(){
+              window.removeEventListener('message',this.handleMessage);
+            },
+            /**** 根据上面制定的结构来解析iframe内部发回来的数据 ****/
+            handleMessage (event) {
+                const data = event.data;
+                console.log(data);
+                console.log(data.params.clickObjName);   
+
+                switch (data.cmd) {
+                    case 'reFoundObjName':
+                    break;
+                    case 'reDeviceClick':
+                        console.log(data.params.clickObjName);
+                        this.viewLiveVideoFn(data.params.clickObjName); 
+                    break;
+                    case 'cancelDevice':
+                        console.log(data.params.cancelObject_id)
+                    break;
+                }
+            },
             chooseBuild(selVal){
                 var arrL=[];
                 $.each(this.buildDatas,function(item,key){
-                    console.log(key);
+                    // console.log(key);
                     if(key.floor_id == selVal){
-                        arrL = key.child;
+                        arrL = key.son;
                     }
                 });
+                var srccc = '';
+                $.each(this.floorObjs,function(i,k){
+                    if(k.floor_id == selVal){
+                         srccc = k.object_3d;
+                    }
+                })
+                this.iframeSrc = srccc;
+                console.log(this.iframeSrc);
                 this.selectedValue1 = '';
-                this.selectedValue2 = '';
+                // this.selectedValue2 = '';
                 this.buildDatas1 = arrL;
+                this.onFloorId = selVal;
                 this.getData(selVal);
+                this.getVideoCount(selVal);
             },
             chooseBuild1(selVal){
                 var arrLs=[];
@@ -151,62 +193,88 @@
                     }
                 });
                 this.selectedValue2 = '';
-                this.buildDatas2 = arrLs;
+                // this.buildDatas2 = arrLs;
                 this.getData(selVal);
+                this.getVideoCount(selVal);
             },
             getData(flId){
+                console.log(this.$store.state);
                 this.coefficientX = document.getElementById("floorImgBox").offsetWidth / 518;
                 this.coefficientY = document.getElementById("floorImgBox").offsetHeight / 247;
                 var that = this;
-                this.$http.post('/video_monitoring/video_index_view',{
-                    sys_menu_id:this.$store.state.sysList[4].sys_menu_id,
+                this.$http.get('/hvac_pc/pc/floor',{
+                    sys_menu_id:this.$store.state.sysList['5'].sys_menu_id,
                     floor_id:flId,
                 }).then(function(data){
                     //响应成功回调
-                    that.iList = data.data.data.floor_device;
+                    that.iList = data.data.data.object_device;
+                    // that.iframeSrc = data.data.data.object_3d
                     console.log(data);
                 }, function(data){
                     // 响应错误回调
                 });
             },
+            viewLiveVideoFn(deviceId){
+
+                this.isVideoShowBoxShow = true 
+                console.log(deviceId); 
+                console.log(this.floorObjs);
+                $.each(this.floorObjs,function(i,k){
+                    $.each(k.object_device,function(i1,k1){
+                         if(k1.object_id == deviceId) {
+                             console.log(k1.device_id)
+                             console.log(k1.object_id)
+                             console.log(k1.state)
+                         }
+                    });
+                });
+
+            },
             getbuildData(){
                 console.log(this.$store.state);
                 var that = this;
-                this.$http.post('/video_monitoring/video_floorinfo',{
-                    sys_menu_id:this.$store.state.sysList[5].sys_menu_id
+                this.$http.get('/hvac_pc/pc/floor',{
+                    sys_menu_id: this.$store.state.sysList['5'].sys_menu_id
                 }).then(function(data){
                     //响应成功回调
-                    console.log(data.data.data)
-                    that.buildDatas = data.data.data;
-                   
+                    console.log(data)
+                    that.floorObjs = data.data.data;
+                   $.each(data.data.data,function(i,k){
+                       that.buildDatas.push({value:i,title:k.title,floor_id:k.floor_id});
+                   })
 
                 }, function(data){
                     // 响应错误回调
                 });
             },
-	    	viewLiveVideo(id){
-	    		this.isVideoShowBoxShow = true;
-	    		this.onVideoId = id;
+	    	// viewLiveVideo(id){
+	    	// 	this.isVideoShowBoxShow = true;
+	    	// 	this.onVideoId = id;
 
 
-                var that = this;
-                this.$http.post('/video_monitoring/video_view_details',{
-                    device_id:id,
-                }).then(function(data){
-                    //响应成功回调
-                    // console.log(data.data.data);
-                    that.videoPanelBox = data.data.data.device_state_pic;
+      //           var that = this;
+      //           this.$http.post('/video_monitoring/video_view_details',{
+      //               device_id:id,
+      //           }).then(function(data){
+      //               //响应成功回调
+      //               // console.log(data.data.data);
+      //               that.videoPanelBox = data.data.data.device_state_pic;
                   
-                    // that.floorBgImg = data.data.data.entrance_guard_info.floor_background;
-                }, function(data){
-                    // 响应错误回调
-                });
+      //               // that.floorBgImg = data.data.data.entrance_guard_info.floor_background;
+      //           }, function(data){
+      //               // 响应错误回调
+      //           });
 
-	    	},
+
+	    	// },
 	    	deviceInfoGet(id){
 	    		this.isDeviceInfoPopShow = true;
 	    		
 	    	},
+            clearIframeStale(){
+                this.isDeviceInfoPopShow = false;
+                this.removeMessageEvent();
+            },
             getDateSet(){
                 var sDate = new Date()
                 var yyyy = sDate.getFullYear();
@@ -225,6 +293,23 @@
                     this.isActive1 = false;
                 }
                 this.currentView = tabText;
+            },
+            getVideoCount(flId){
+
+                var that = this;
+                this.$http.post('/video_monitoring/video_device_count',{
+                    sys_menu_id:this.$store.state.sysList['5'].sys_menu_id,
+                    floor_id:flId,
+                }).then(function(data){
+                    //响应成功回调
+                    console.log(data.data.data);
+                    that.totalVdeoNum = data.data.data[0].device_total;
+                  
+                    // that.floorBgImg = data.data.data.entrance_guard_info.floor_background;
+                }, function(data){
+                    // 响应错误回调
+                });
+
             }
 	    }
     }
