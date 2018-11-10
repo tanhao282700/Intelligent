@@ -380,7 +380,7 @@ export default {
         })
       },
       agree(item){ //同意
-        console.log(item);
+        //console.log(item);
         this.detalrowdata = {
             infos:{
                 id:item.id,
@@ -388,7 +388,7 @@ export default {
                 pic2:[],
                 user_id:item.user_id,
                 localDesc:{
-                  info:''
+                  info:item.description
                 }
             },
             type:6,
@@ -397,7 +397,7 @@ export default {
             dispatch_user_id:this.$store.state.userInfoTotal.userinfo.id
           }
         let state = item.now_state;
-        if(state==6){ //退单
+        if(state==5){ //退单
             this.dialogBoxs = {
                 item:item,
                 state0:1,
@@ -413,6 +413,7 @@ export default {
         this.$refs.isRefult.show();
       },
       refult(item){//拒绝
+        //console.log(item);
         this.detalrowdata = {
           infos:{
               id:item.id,
@@ -420,21 +421,21 @@ export default {
               pic2:[],
               user_id:item.user_id,
               localDesc:{
-                info:''
+                info:item.description
               }
           },
           end_time:'',
-          type:item.now_state,
+          type:8,
           user_name:this.$store.state.userInfoTotal.userinfo.name,
           dispatch_user_id:this.$store.state.userInfoTotal.userinfo.id
         }
         this.infoItem = item;
         let state = item.now_state;
-        if(state==2){
-          this.infoItem.now_state = 6;
-        }else if(state==5){
-          this.infoItem.now_state = 7;
-        }
+        // if(state==2){
+        //   this.infoItem.now_state = 6;
+        // }else if(state==5){
+        //   this.infoItem.now_state = 7;
+        // }
         this.getDealResult(this.detalrowdata);
       },
       submitOk(){ //处理工单 同意/拒绝退单/延期
@@ -444,7 +445,7 @@ export default {
       submitNo(){ //取消
         this.$refs.isRefult.hide();
       },
-      sendWork2(){ //重新派发工单
+      sendWork2(){ //重新选择工单处理人员
         this.$refs.sendWork2.hide();
         this.getDealResult(this.detalrowdata);
       },
@@ -575,8 +576,8 @@ export default {
       },
       getDealResult(param){
         let info ='';
-        if(param.infos.localDesc2 && param.infos.localDesc2.value){
-          info = param.infos.localDesc2.value
+        if(param.infos.localDesc2 && param.infos.localDesc2.info){
+          info = param.infos.localDesc2.info
         }
         this.$http.post('/pc_ims/write_job',{
           id:param.infos.id,
