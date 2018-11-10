@@ -1,6 +1,6 @@
 <template>
 <div class="lineBoxs0" :class="{'lineBoxs0h':type=='h','lineBoxs0z':type=='z'}">
-  <div class="lineBoxs" v-if="type=='z'" :style="{'height':hei*100/728+'vh','margin-top':top*100/728+'vh'}">
+  <div class="lineBoxs" v-if="type=='z'" :style="{'height':hei/100+'rem','margin-top':top/100+'rem'}">
       <div class="lineBoxs1"></div>
       <div class="lineBoxs2"></div>
     </div>

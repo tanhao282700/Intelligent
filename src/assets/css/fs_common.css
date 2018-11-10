@@ -239,4 +239,6 @@
 .noicon.el-select::after{
   width:0 !important;
 }
-
+.routingDtl .el-textarea__inner{
+  color:#fff;
+}

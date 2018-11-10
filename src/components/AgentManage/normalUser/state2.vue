@@ -20,43 +20,44 @@ export default {
      txts(){
           let res = {txt:'',color:'#fff'};
           switch(this.state.fills){
-              case 5:
-                res.txt = '申请退单';
-                res.color = '#f56c6c';
-                break;
               case 0:
                 res.txt = '未接单';
                 res.colot="#fff"
               break;
               case 1:
-                res.txt  = '已接单';
-                res.color ='#4ae283'
+                res.txt  = '处理中';
+                res.color ='#f56c6c'
               break;
               case 2:
-                res.txt  = '延期申请';
-                res.color="#f56c6c"
-              break;
-              case 3:
-                res.txt  = '延期申请通过';
+                res.txt  = '已完成';
                 res.color="#4ae283"
               break;
-              case 4:
-                res.txt  = '已完成'
-                res.color='#4ae283'
+              case 3:
+                res.txt  = '申请退单';
+                res.color="#f56c6c"
               break;
-              case 6:
-                res.txt = '完成退单'
-                res.color ='#4ae283';
+              case 4:
+                res.txt  = '退单完成'
+                res.color='#4ae283'
               break;
           }
           this.txt = res;
       }
   },
+  watch:{
+    state:{
+      handler(val){
+        //
+      }
+    },
+    deep:true
+  },
   created() {
   },
   mounted() {
-       this.txts();
+       
        //console.log(this.state)
+       this.txts();
   },
 }
 </script>

@@ -47,7 +47,7 @@
               </ul>
             </div>
           </div>
-          <Lines :top="20" :hei="213"/>
+          <Lines :top="0" :hei="200"/>
           <div class="msgsIn">
             <div class="msgsInTit" v-text="`本${msgsInTit}巡检任务数`"></div>
             <div class="msgsInBoxs">

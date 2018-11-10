@@ -44,11 +44,15 @@
           <div class="tableInfos">
               <div class="infoHead">
                 <span class="infoName" v-text="'巡检详情'"></span>
-                <span class="infoState" v-if="newData.now_value==2">已完成</span>
-                <span class="infoState" v-else>
-                  未完成
+                <span class="infoState" v-if="newData.item.now_value==0">未接单
                   <span class="infoBack" v-text="'退单'" @click="dealWork(newData,3,'d')"></span>
                 </span>
+                <span class="infoState" v-else-if="newData.item.now_value==1">
+                  处理中
+                </span>
+                <span class="infoState" v-else-if="newData.item.now_value==2">已完成</span>
+                <span class="infoState" v-else-if="newData.item.now_value==3">申请退单</span>
+                <span class="infoState" v-else-if="newData.item.now_value==4">退单完成</span>
               </div>
               <div class="infoBoxs">
                 <div class="routingTask">
@@ -61,14 +65,15 @@
                     </li>
                   </ul>
                   <div style="clear:both"></div>
-                  <div>
+                  <div class="routingDtl">
                     <div class="contLabel" v-text="'现场处理情况'"></div>
                     <el-input
                       type="textarea"
                       :rows="2"
+                      :style="{color:'#fff'}"
                       class="controlCont controlCont2"
                       placeholder="请输入内容"
-                      v-model="newData.complete_info">
+                      v-model="newData.item.complete_info">
                     </el-input>
                   </div>
                   <div class="contLabel" v-text="'巡检表格'"></div>
@@ -104,8 +109,11 @@
                       </el-table-column>
                     </el-table>
                   </div>
-                  <div v-if="newData.now_state!=2" class="rightHead">
+                  <div v-if="newData.item.now_value==1" class="rightHead">
                     <span class="infoBusy" v-text="'提交'" @click="dealWork(newData,2,'d')"></span>
+                  </div>
+                  <div v-else-if="newData.item.now_value==0" class="rightHead">
+                    <span class="infoBusy" v-text="'接单'" @click="agree(newData,1)"></span>
                   </div>
                 </div>
               </div>
@@ -122,8 +130,8 @@ import SelectBox from '@/components/form/selectBox';
 import TimePickerT from '../components/work/timePickerTit2';
 import Percentage from '../components/work/Percentage';
 import WorkInfo from '../components/work/workInfo';
-import State from './state';
-import deal from './deal';
+import State from './state2';
+import deal from './deal3';
 import RoutingTakModdel from '../components/routing/routingTakModdel';
 import RoutingTask from '../components/routing/routingTask';
 import RoutingInfo from '../components/routing/routingInfo';
@@ -154,6 +162,7 @@ export default {
         names:[],
         newData:{
           desc:[],
+          item:{},
           localDesc2:{},
           tableData:{
             len:1,
@@ -178,7 +187,15 @@ export default {
               {prop:'floorname',label:'地点',wid:180},
               {prop:'addtime',label:'派发时间'},
               {prop:'dianwei',label:'点位'},
-              {prop:'stateChi',label:'状态'},
+              {prop:'now_state',label:'状态',operate:true,
+                render:(h,param)=>{
+                  const btnss = {
+                    fills:param.row.now_state
+                  }
+                  return h(State,{
+                    props:{state:btnss}
+                  })
+                }},
               {prop:'dealed',label:'操作',
                 operate: true,
                   render: (h, param)=> {
@@ -290,6 +307,9 @@ export default {
             let data = res.data.data.info;
             let zhanshi = res.data.data.zhanshi;
             this.newData.item = data;
+            this.newData.item.info = data.complete_info;
+            this.newData.item.now_value = row.now_state;
+            this.newData.item.user_id = row.user_id;
             this.newData.tableData.th = [
               {prop:'serial',label:'序号'},
               {prop:'time',label:'日期'}];
@@ -315,9 +335,12 @@ export default {
               })
             })
             this.newData.tableData.data = values;
-            this.newData.tableData.data.push({});
-            this.newData.tableData.data[this.newData.tableData.data.length-1].serial = this.newData.tableData.data.length;
-            this.newData.tableData.data[this.newData.tableData.data.length-1].time =utils.time(new Date()/1000,1);
+            if(this.newData.item.now_value==1){//只有接单时才显示要提交的form行
+              this.newData.tableData.data.push({});
+              this.newData.tableData.data[this.newData.tableData.data.length-1].serial = this.newData.tableData.data.length;
+              this.newData.tableData.data[this.newData.tableData.data.length-1].time =utils.time(new Date()/1000,1);
+            }
+            
           }else{
             this.$message({
               type:'error',
@@ -327,6 +350,7 @@ export default {
       })
     },
     agree(item,type){ //同意
+      //console.log(item.item)
         this.dealWork(item,1)
     },
     refult(item,type){//拒绝
@@ -341,6 +365,7 @@ export default {
         if(item.item.newuser_id){
           item.newuser_id = '';
         }
+        console.log(item.item.complete_info)
         if(!item.item.complete_info){
           this.$message({
             type:'error',
@@ -357,25 +382,30 @@ export default {
         let zhanshi = {
           list:[]
         };
+        let ress = false;
         if(type==2){
-
-        }
-        $.each(th,(n,k)=>{
+          $.each(th,(n,k)=>{
           if(k.point_id!=undefined){
-             if(!data[0][k.prop]){
+           // console.log(data[0]);
+             if(!data[data.length-1][k.prop]){
                 this.$message({
                   type:'error',
                   message:'请输入'+k.label,
                   duration:2000
                 })
-                return;
+                ress = true;
              }else{
                 zhanshi.list.push({name:k.label,now_value:data[0][k.prop],point_id:k.point_id,type:k.type,select:k.select});
              }
              
           }
         })
+        }
         
+        
+        if(ress){
+          return;
+        }
         item.form = zhanshi.list;
       }else{
         item = item.item;
@@ -389,7 +419,6 @@ export default {
           item.form = {};
         }
       }
-      
       this.$http.post('/pc_ims/admin/write_inspectionlist',{
         id:item.id,
         type:type,
@@ -399,11 +428,18 @@ export default {
         form:{list:JSON.stringify(item.form)}
       }).then(res=>{
         if(res.data.code==0){
-          console.log(res.data.data);
+          this.$message({
+            type:'success',
+            message:res.data.msg,
+            duration:2000
+          })
+          this.$refs.tableInfos2.hide();
+          this.getTableData();
         }else{
           this.$message({
             type:'error',
-            message:'退单失败。'
+            message:res.data.msg,
+            duration:2000
           })
         }
 
