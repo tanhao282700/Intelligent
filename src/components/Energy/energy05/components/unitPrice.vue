@@ -38,6 +38,7 @@
                           show-checkbox
                           node-key="id"
                           ref="tree"
+                          :check-on-click-node="aa2"
                           :default-checked-keys="item.area"
                           :props="defaultProps">
                         </el-tree>
@@ -89,6 +90,7 @@
       },
         data(){
         	return{
+            aa2:true,
             bubbleTip:'',
             treeVal:'',
             data2: [{}],
@@ -118,6 +120,7 @@
               if(!filter.test(item.price)){
                 this.bubbleTipShow("价格输入不合法");
                 this.list[index].price = ''
+              }else{
                 this.chooseChange(item,index)
               }
           },

@@ -93,8 +93,10 @@
       }
     },
     mounted(){
+        console.log(this.$store.state)
       let day = new Date()
       this.formData.query_date = String(day.getFullYear())+(day.getMonth()+1)
+      this.formData.project_id = this.$store.state.projectId;
       this.formData.sys_menu_id = this.$store.state.sysList[2].sys_menu_id;
       this.setWidth();
       this.getData();
@@ -111,7 +113,7 @@
           date = String(time.getFullYear())+(time.getMonth()+1)
         }
         let data = {
-          project_id:1,
+          project_id:this.formData.project_id,
           choice_page:1,
           query_date:date,
           sys_menu_id:this.formData.sys_menu_id,
@@ -144,6 +146,7 @@
       getData(){
         this.$http.post('/hotel_energy/statement',this.formData).then((res)=>{
           if(res.data.code==0){
+              this.tableData3 = []
             let data = res.data.data.result_data
             this.areaList = res.data.data.result_data[0].data
 

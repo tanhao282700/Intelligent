@@ -116,8 +116,9 @@
     </div>
 
     <Dialog wid = "578px" hei = "536px" style="display: flex;flex-direction: column" ref = "dialog" tit = "记录详情">
-      <div class="showBox2" style="height:486px;">
-        <div class="parts" v-for="item in realtimeData">
+      <div class="showBox2" style="height:486px;" >
+        <div class="itemlist" style="height:486px;overflow-y:auto;" v-for="list in realtimeData">
+          <div class="parts" v-for="item in list">
           <div class="content">
             <div class="pic" :class="{'realtime0':realtimeType==0,'realtime1':realtimeType==1,'realtime2':realtimeType==2}">
               <div class="numbers">
@@ -157,6 +158,7 @@
           <div class="leixin">
             {{item.device}}
           </div>
+        </div>
         </div>
       </div>
     </Dialog>
@@ -297,6 +299,7 @@
         let len = data.length;
         that.realTimeTypeMap = data[len-1];
         data.splice(len-1,1);
+        console.log(data)
         data.map((item,index)=>{
           var obj = {
             1:[],
@@ -309,18 +312,30 @@
           item.data.map((ite,i)=>{
             var type = ite.type;
             if(type == 1){
-              var tempLen = ite.data.toString().length;
+              /*var tempLen = ite.data.toString().length;
               for(var j=0;j< 10-tempLen; j++){
                 ite.data += '0';
+              }*/
+              let str = ''
+              let len = ite.data.toString().length
+              for(let i=0;i<10-len;i++){
+                  str += '0'
               }
+              ite.data = str+ite.data
             }
             obj[type].push(ite);
           })
           tempArray.push(obj);
         })
-        that.realtimeData = tempArray;
+        let result = []
+        for(let i=0;i<tempArray.length;i+=3){
+          result.push(tempArray.slice(i,i+3));
+        }
+        that.realtimeData = result;
+        console.log(result)
       },
       showRealTime(type){    //实时能耗详情
+        this.realtimeData = []
         let that = this;
         that.realtimeType = type
         that.$http.post('/hotel_energy/floor_device_real_time',{
@@ -796,10 +811,13 @@
       }
     }
     .showBox2{
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      .parts:not(:last-child){
+      overflow-y:auto;
+      .itemlist{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+      }
+      .parts{
         margin-left:.3rem;
       }
       .parts{

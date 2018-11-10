@@ -205,7 +205,8 @@
         mounted(){
             let day = new Date()
             this.formData.query_date = String(day.getFullYear())
-            this.formData.sys_menu_id = this.$store.state.sysList[2].sys_menu_id;
+          this.formData.project_id = this.$store.state.projectId;
+          this.formData.sys_menu_id = this.$store.state.sysList[2].sys_menu_id;
             this.setWidth();
             this.getData();
             this.getDateSet();
@@ -221,7 +222,7 @@
                   date = time.getFullYear()
               }
               let data = {
-                project_id:1,
+                project_id:this.formData.project_id,
                 choice_page:0,
                 query_date:date,
                 export:true,
@@ -234,7 +235,6 @@
           },
           query(){
               this.loading = true
-            $(".mytab td").not(".noRemove").remove()
             if(this.formData.energy_type==0){
               this.label.type = '电（KW/h）'
               this.label.text = '总用电量'
@@ -255,6 +255,8 @@
         	getData(){
                 this.$http.post('/hotel_energy/statement',this.formData).then((res)=>{
                   if(res.data.code==0){
+                    $(".firstTab").height('50vh')
+                    $(".el-table__footer tbody tr").remove()
                     let data = res.data.data.result_data
                     this.tableData3.map((item,index)=>{   //写入总用电量、总费用数据
                       if(data[1].data[index].value[0]==0){
@@ -288,7 +290,7 @@
 
 
                     //写入区域合计
-                    this.tableData1[0].elecMount = data[1].data[12].value[0]
+                    /*this.tableData1[0].elecMount = data[1].data[12].value[0]
                     this.tableData1[0].totalcaost = data[1].data[12].value[1]
 
                     this.areaList.map((item,index)=> {
@@ -300,10 +302,10 @@
                           }
                         }
                       }
-                    })
+                    })*/
 
                     //写入用量平均
-                    this.tableData4[0].elecMount = data[1].data[13].value[0]
+                    /*this.tableData4[0].elecMount = data[1].data[13].value[0]
                     this.tableData4[0].totalcaost = data[1].data[13].value[1]
                     this.areaList.map((item,index)=> {
                       for (let i = 0; i < item.child_data.length; i++) {
@@ -314,12 +316,12 @@
                           }
                         }
                       }
-                    })
+                    })*/
 
 
                     setTimeout(()=>{
 
-                      $(".firstTab").height($(".con").height())
+
 
 
                       $(".el-table__footer td").remove()
@@ -331,17 +333,21 @@
                         $(".el-table__body").css("padding-right","7px")
                       }
                       $(".el-table__footer").width($(".con").width())
+                      console.log($(".el-table__footer tbody tr"))
+                      $(".el-table__footer tbody").append("<tr><td style='border-top:none!important;'>13</td><td style='color:#439AFF!important;border-top:none!important;font-size:0.12rem!important;'>区域合计</td><td style='color:#439AFF!important;border-top:none!important;font-size:0.12rem!important;'>"+data[1].data[12].value[0]+"</td><td style='color:#FFA414!important;border-top:none!important;font-size:0.12rem!important;'>"+data[1].data[12].value[1]+"</td></tr>")
 
-                      $($(".el-table__footer tbody tr")[0]).append("<td style='border-top:none!important;'>13</td><td style='color:#439AFF!important;border-top:none!important;font-size:0.12rem!important;'>区域合计</td><td style='color:#439AFF!important;border-top:none!important;font-size:0.12rem!important;'>"+data[1].data[12].value[0]+"</td><td style='color:#FFA414!important;border-top:none!important;font-size:0.12rem!important;'>"+data[1].data[12].value[1]+"</td>")
+                      $(".el-table__footer tbody").append("<tr><td style='border-top:none!important;font-size:0.12rem!important;'>14</td><td style='color:#439AFF!important;border-top:none!important;font-size:0.12rem!important;'>部门合计</td><td style='border-top:none!important;' colspan='2'></td></tr>")
+                      $(".el-table__footer tbody").append("<tr><td style='border-top:none!important;font-size:0.12rem!important;'>15</td><td style='color:#439AFF!important;border-top:none!important;font-size:0.12rem!important;'>月均</td><td style='color:#439AFF!important;border-top:none!important;font-size:0.12rem!important;'>"+data[1].data[13].value[0]+"</td><td style='color:#FFA414!important;border-top:none!important;font-size:0.12rem!important;'>"+data[1].data[13].value[1]+"</td></tr>")
                       for(let i=0;i<data[2].data.length;i++){
                         $($(".el-table__footer tbody tr")[0]).append("<td style='color:#439AFF!important;border-top:none!important;font-size:0.12rem!important;'>"+data[2].data[i].value[0]+"</td><td style='color:#FFA414!important;border-top:none!important;font-size:0.12rem!important;'>"+data[2].data[i].value[1]+"</td>")
                       }
 
-                      $(".el-table__footer tbody").append("<tr><td style='border-top:none!important;font-size:0.12rem!important;'>14</td><td style='color:#439AFF!important;border-top:none!important;font-size:0.12rem!important;'>部门合计</td><td style='border-top:none!important;' colspan='2'></td></tr>")
+
                       let lenth = []
                       this.areaList.map((item,index)=> {
                         lenth.push(item.child_data.length)
                       })
+                      console.log($(".el-table__footer tbody tr"))
                       for(let i=0;i<lenth.length;i++){
                         if(lenth[i]==1){
                           $($(".el-table__footer tbody tr")[1]).append('<td colspan="'+lenth[i]+'" style="color:#439AFF!important;font-size:0.14rem!important;border-top:none!important;">'+data[4].data[i].parent_area_total[0]+'</td>')
@@ -352,14 +358,18 @@
                         }
                       }
 
-                      $(".el-table__footer tbody").append("<tr><td style='border-top:none!important;font-size:0.12rem!important;'>15</td><td style='color:#439AFF!important;border-top:none!important;font-size:0.12rem!important;'>月均</td><td style='color:#439AFF!important;border-top:none!important;font-size:0.12rem!important;'>"+data[1].data[13].value[0]+"</td><td style='color:#FFA414!important;border-top:none!important;font-size:0.12rem!important;'>"+data[1].data[13].value[1]+"</td></tr>")
-
-                      for(let j=0;j<data[3].data.length;j++){
-                        $($(".el-table__footer tbody tr")[2]).append("<td style='color:#439AFF!important;border-top:none!important;font-size:0.12rem!important;'>"+data[3].data[j].value[0]+"</td><td style='color:#FFA414!important;border-top:none!important;font-size:0.12rem!important;'>"+data[3].data[j].value[1]+"</td>")
-                      }
 
 
-                      this.loading = false
+                         for(let j=0;j<data[3].data.length;j++){
+                           $($(".el-table__footer tbody tr")[2]).append("<td style='color:#439AFF!important;border-top:none!important;font-size:0.12rem!important;'>"+data[3].data[j].value[0]+"</td><td style='color:#FFA414!important;border-top:none!important;font-size:0.12rem!important;'>"+data[3].data[j].value[1]+"</td>")
+                         }
+
+
+                         $(".firstTab").height($(".con").height())
+                         this.loading = false
+
+
+
                     },500)
 
 

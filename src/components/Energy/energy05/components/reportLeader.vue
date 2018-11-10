@@ -137,6 +137,7 @@
         	}
         },
         mounted(){
+          this.formData.project_id = this.$store.state.projectId;
           this.formData.sys_menu_id = this.$store.state.sysList[2].sys_menu_id;
           this.getData()
             this.getDateSet();
@@ -148,7 +149,7 @@
         methods:{
           export1(){
             let data = {
-              project_id:1,
+              project_id:this.formData.project_id,
               choice_page:2,
               export:true,
               sys_menu_id:this.formData.sys_menu_id,

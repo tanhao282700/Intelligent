@@ -1,13 +1,13 @@
 <template>
   <div id="home">
     <div class="buildModel" >
-      <iframe
+      <!--<iframe
         ref="iframe"
         name="myFrame"
         frameborder="0"
         width="100%"
         height="100%"
-        :src="url3d">
+        :src="url3d">-->
       </iframe>
     </div>
     <div class="systemName">
@@ -88,7 +88,7 @@
       <div class="monitoringCon">
         <div class="monitoringConL">
           <div class="monitorItem" v-for="(i,index) in monitoringData" v-if="index<5">
-            <div class="monitorItemCon">
+            <div class="monitorItemCon" v-if="monitoringData">
               <span v-text="i.name+'：'+i.word" :class="{'cor-r':index==0,'cor-y':index!=0}"></span>
               <div class="time">
                 <span v-text="i.time">14:00</span>
@@ -107,14 +107,14 @@
     <div class="smallMonitoring" v-if="!isOpenMonitor">
       <div class="left">
         <img src="../../assets/img/home/smallAlarm.png" alt="">
-        <span class="cor-r" v-text="monitoringData[0].name+'：'+monitoringData[0].word">电压告警：电压超过正常水平</span>
+        <span class="cor-r" v-if="monitoringData.length!=0" v-text="monitoringData[0].name+'：'+monitoringData[0].word">电压告警：电压超过正常水平</span>
       </div>
       <div class="right">
-        <span v-text="monitoringData[0].time">14:00</span>
-        <span>
+        <span v-if="monitoringData.length!=0" v-text="monitoringData[0].time">14:00</span>
+        <span v-if="monitoringData.length!=0">
               <i style="color:#f36b6d;">01</i>/05
           </span>
-        <span @click="openMonitor"></span>
+        <span class="myBtn" v-if="monitoringData.length > 1" @click="openMonitor"></span>
       </div>
     </div>
     <div class="modules" v-if="isOperateModules">
@@ -258,7 +258,7 @@
           isEditInfo:false,    //编辑个人信息 传参只用传false
           isChangePassword:false  //修改密码
         },
-        monitoringData:[{}],  //实时监控数据
+        monitoringData:[{time:'',name:'',word:''}],  //实时监控数据
         bubbleTip:'', //提示信息
         routerInfo:{},  //权限信息
         dateInfo:{},   //日期信息
@@ -362,7 +362,7 @@
           .then((response)=>{
             if(response.data.code == 0){
               this.monitoringData = response.data.data
-              console.log(this.monitoringData)
+              console.log(this.monitoringData.length)
             }else{
 
             }
@@ -638,7 +638,7 @@
         span{
           margin-right:20px;
         }
-        span:last-child{
+        .myBtn{
           margin-right:10px;
           display: inline-block;
           width:30px;

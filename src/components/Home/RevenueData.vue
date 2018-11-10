@@ -128,7 +128,6 @@
                 });
       },
       drawEchart2(serviceData){
-            console.log(serviceData.type)
         this.revenueCharts2 = this.$echarts.init(document.getElementById("revenueEcharts2"))
         let revData = serviceData
         /*revData.time.map((item,index)=>{
@@ -142,7 +141,6 @@
         }else{
           title = '气'
         }
-        console.log(revData)
         let option2 = {
           title:{
             text:title,
