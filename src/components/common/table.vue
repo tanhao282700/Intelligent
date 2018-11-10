@@ -102,8 +102,12 @@ export default {
   watch:{
     table:{
         handler(newval,oldval){
-            this.tableData = newval;
-            console.log(this.tableData.th);
+            
+            if(newval){
+                this.$set(this.tableData , newval)
+            }
+                
+
         },
         deep:true
     }
@@ -160,7 +164,7 @@ export default {
   },
   mounted(){
     this.tableData = this.table;
-    //console.log(this.table.data)
+    console.log(this.table)
   }
 }
 </script>

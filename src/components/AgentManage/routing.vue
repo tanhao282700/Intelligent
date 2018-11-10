@@ -64,7 +64,7 @@
             <Dialog wid="1200" hei="640" ref="dialog">
               <WorkInfo @tableInfos2Show="tableInfos2Show" @getUserList="rowClick" :table="table3" :query="query2" :dtltime="value7"/>
             </Dialog> 
-            <Dialog wid="910" hei="600" ref="tableInfos2">
+            <Dialog wid="910" hei="650" ref="tableInfos2">
                 <div class="tableInfos">
                     <div class="infoHead">
                       <span class="infoName" v-text="infoItem.user_name"></span>
@@ -99,7 +99,8 @@ import SelectBox from '@/components/form/selectBox';
 import TimePickerT from './components/work/timePickerTit2';
 import Percentage from './components/work/Percentage';
 import WorkInfo from './components/work/workInfo';
-import State from './components/routing/state';
+import State from './components/routing/state'
+import State2 from './components/routing/state2';
 import deal from './normalUser/deal';
 import deal3 from './normalUser/deal2';
 
@@ -238,8 +239,8 @@ export default {
                   const btnss = {
                       fills:param.row.now_state,  
                   };
-                  return h(State,{
-                    props: { states:btnss}
+                  return h(State2,{
+                    props: {state:btnss}
                   });
               }},
             {prop:'fill',label:'操作',wid:210,
@@ -290,8 +291,7 @@ export default {
           localDesc2:{},
           infoSend:[],
           tableData:{
-            len:0,
-            hei:'',
+            hei:260,
             data:[],
             th:[]
           }
@@ -313,24 +313,26 @@ export default {
       this.getDealResult(param)
     },
     getDealResult(param){
-      this.$http.post('/pc_ims/write_job',{
+      this.$http.post('/pc_ims/admin/write_inspectionlist',{
         id:param.infos.info.id,
         type:param.type,
-        pic1:param.infos.info.pic1,
-        pic2:param.infos.info.pic2,
-        end_time:'',
         user_id:param.infos.info.user_id,
         new_user_id:'',
         info:param.infos.localDesc2.value,
-        dispatch_user_id:''
+        form:{list:[]}
       })
       .then(res=>{
         if(res.data.code==0){
-          console.log(res.data)
+          this.$message({
+            type:'success',
+            message:res.data.msg,
+            duration:2000
+          })
         }else{
           this.$message({
             type:'error',
-            message:res.data.msg
+            message:res.data.msg,
+            duration:2000
           })
         }
       })
@@ -474,7 +476,7 @@ export default {
               system:res.data.data.sys_id,
               area:res.data.data.floor_id,
               device:res.data.data.device_id,
-              starttime:res.data.data.addtime,
+              starttime:res.data.data.start_date,
               period:res.data.data.cycle,
               addr:res.data.data.ins_place,
               desc:res.data.data.remarks
@@ -589,8 +591,9 @@ export default {
       this.$http.post('/pc_ims/admin/inspectionlist_info',{ins_id:item.id})
       .then(res=>{
         if(res.data.code==0){
-            //console.log(res.data);
             this.infoItem = res.data.data.info;
+            this.infoItem.vuename = 'routing';
+            //console.log(res.data);
             this.infoItem.desc = [
               {label:'巡检人员',value:this.infoItem.user_name},
               {label:'电话',value:this.infoItem.user_phone},
@@ -604,17 +607,27 @@ export default {
             }else{
               this.infoItem.localDesc = {label:'现场处理情况',value:this.infoItem.complete_info};
             }
+            //console.log(res.data)
+            this.infoItem.tableData = {};
             this.infoItem.job_list = res.data.data.inspection_list;
-            this.infoItem.tableData = res.data.data.zhanshi;
-            this.infoItem.tableData.data = this.infoItem.tableData.list;
-            let arr = [];
-            let arrData = [];
-            $.each(this.infoItem.tableData.data,(n,k)=>{
-              arr.push({prop:'now_value'+n,label:k.name,wid:30})
-              arrData['now_value'+n]=k.now_value;
+            let th = [
+              {prop:'serial',label:'序号',wid:30},
+              {prop:'time',label:'日期'}];
+            $.each(res.data.data.zhanshi[0],(n,k)=>{
+              $.each(k,(n1,k1)=>{
+                th.push({prop:'value'+n1,label:k1.name,type:k1.type,select:k1.select,point_id:k1.point_id});
+              })
             })
-            this.infoItem.tableData.data = arrData;
-            this.infoItem.tableData.th = arr;
+            this.infoItem.tableData.th = th;
+            let values = res.data.data.values;
+            $.each(values,(n,k)=>{
+              $.each(k.value,(n1,k1)=>{
+                let key = 'value'+n1;
+                k[key] = String(k1);
+                k['serial'] = n+1;
+              })
+            })
+            this.infoItem.tableData.data = values;
           }else{
             this.$message({
               type:'error',

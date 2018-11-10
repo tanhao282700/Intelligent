@@ -61,18 +61,32 @@
           </div>
         </div>
       </div>
-      <div v-show="tableShow" class="boxs" style="width:95.6%;margin:0.2rem auto 0">
-        <Table 
-          style="height:2.0rem" 
-          :table = "data.tableData"
-        />
+      <div class="contLabel" v-text="'巡检表格'" v-show="tableShow"></div>
+      <div class="boxs" style="width:95.6%;margin:0 2.2% 0" v-show="tableShow" v-if="newData.tableData">
+        <el-table
+        :height="220"
+        :data="newData.tableData.data"
+        style="width: 100%">
+        <el-table-column
+            :key="i"
+            v-for="(v,i) in newData.tableData.th"
+            :prop="v.prop"
+            :show-overflow-tooltip="true"
+            :label="v.label"
+            :width="v.wid"
+             :min-width="v.minWid">
+        </el-table-column>
+        </el-table>
       </div>
-      
-      <div class="rightHead" v-if="newData && newData.now_state=='5'">
+      <div class="rightHead" v-if="newData.vuename=='routing' && newData.now_state=='3'">
+        <span class="infoBusy" v-text="'拒绝退单'" @click="dealWork(5)"></span>
+        <span class="infoSend" v-text="'允许退单'" @click="dealWork(4)"></span>
+      </div>
+      <div class="rightHead" v-else-if="newData.vuename=='worklist' && newData.now_state=='5'">
         <span class="infoBusy" v-text="'拒绝退单'" @click="dealWork(8)"></span>
         <span class="infoSend" v-text="'允许退单'" @click="dealWork(6)"></span>
       </div>
-      <div class="rightHead" v-else-if="newData && newData.now_state=='2'">
+      <div class="rightHead" v-else-if="newData.vuename=='worklist' && newData.now_state=='2'">
         <span class="infoBusy" v-text="'拒绝延期'" @click="dealWork(7)"></span>
         <span class="infoSend" v-text="'允许延期'" @click="dealWork(3)"></span>
       </div>
@@ -81,7 +95,6 @@
 
 <script>
   import utils from "../../../../assets/js/utils.js";
-  import Table from '@/components/common/table';
   export default {
       props:['data'],
       data () {
@@ -103,7 +116,6 @@
             handler(val){
               if(val){
                 this.newData = val;
-                this.data = val;
                 if(this.newData.localDesc2){
                   this.newData.localDesc2.label?this.backExcu=true:this.backExcu=false;
                 }
@@ -181,7 +193,7 @@
     float:left;
   }
   .contLabel{
-      line-height:0.54rem;
+      line-height:0.45rem;
       padding:0 1.464vw;
       color:#4F648B;
   }
@@ -189,8 +201,7 @@
       padding:0 1.464vw;
   }
   .controlCont1{
-    .vh(50);
-    box-shadow:0px 0px 1px 0px rgba(87,113,176,0.15),0px 1px 2px 0px rgba(0,0,0,0.5);
+    height:0.5rem;
     border-radius:1px;
   }
   .controlCont2{
@@ -199,31 +210,31 @@
     border-radius:1px;
   }
   .rightHead{
-    .vw(234);
+    width:2.34rem;
     bottom:0;
     right:0;
     position: absolute;
     line-height:0.52rem;
     color:#fff;
     .infoBusy{
-      .vhMT(9);
+      margin-top:0.09rem;
       display:inline-block;
       line-height:0.32rem;
-      .vw(96);
+      width:0.96rem;
       background:#164488;
       font-size:12px;
       border-radius:2px;
       text-align:center;
-      .vwMR(12);
+      margin-right:0.12rem;
       &:hover{
         cursor:pointer;
       }
     }
     .infoSend{
-      .vhMT(9);
+      margin-top:0.09rem;
       display:inline-block;
       line-height:0.32rem;
-      .vw(96);
+      width:0.96rem;
       background:#1989FA;
       border-radius:2px;
       font-size:12px;
@@ -239,7 +250,7 @@
     line-height:0.34rem;
     .lines{
       float:left;
-      .vwMLR(10)
+      margin: 0 0.1rem;
     }
     .imgs1,.imgs2{
       float:left;
@@ -250,7 +261,7 @@
       img{
         width:0.9rem;
         height:0.9rem;
-        margin:0.22vw;
+        margin:0.22rem;
       }
     }
   }

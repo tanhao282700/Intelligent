@@ -480,6 +480,7 @@ export default {
         }).then(res=>{
           if(res.data.code==0){
             this.infoItem = res.data.data.info;
+            this.infoItem.vuename = 'worklist';
             this.infoItem.desc = [
             {label:'类型',value:this.infoItem.sys_name},
             {label:'设备类型',value:this.infoItem.device_name},
