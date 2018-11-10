@@ -17,9 +17,9 @@ export default {
     }
   },
   methods:{
-     txts(){
+     txts(val){
           let res = {txt:'',color:'#fff'};
-          switch(this.state.fills){
+          switch(val){
               case 5:
                 res.txt = '申请退单';
                 res.color = '#f56c6c';
@@ -55,7 +55,7 @@ export default {
   watch:{
     state:{
       handler(val){
-        //console.log(val)
+        this.txts(val.fills);
       },
       deep:true
     }
@@ -63,8 +63,7 @@ export default {
   created() {
   },
   mounted() {
-       this.txts();
-       //console.log(this.state)
+       this.txts(this.state.fills);
   },
 }
 </script>

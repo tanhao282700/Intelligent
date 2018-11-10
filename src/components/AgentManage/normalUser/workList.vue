@@ -123,13 +123,17 @@
                     </div>
                   </div>
                 </div>
-                <div class="btnsgroups" v-show="dtlObj.now_state==0">
+                <div class="btnsgroups" v-if="dtlObj.now_state==0">
                   <span class="infoBusy" v-text="'退单'" @click="backWork(dtlObj,5)"></span>
                   <span class="infoSend" v-text="'取消'" @click="backWork(dtlObj,0)"></span>
-                  <span class="infoSubmit" v-text="'提交'" @click="backWork(dtlObj,4)"></span>
+                  <span class="infoSubmit" v-text="'接单'" @click="backWork(dtlObj,1)"></span>
                 </div>
-                <div class="btnsgroups" v-show="dtlObj.now_state==2 || dtlObj.now_state==3">
+                <div class="btnsgroups" v-else-if="dtlObj.now_state==1">
                   <span class="infoBusy" v-text="'退单'" @click="backWork(dtlObj,5)"></span>
+                  <span class="infoSend" v-text="'取消'" @click="backWork(dtlObj,0)"></span>
+                </div>
+                <div class="btnsgroups" v-else>
+                  <span class="infoSend" v-text="'取消'" @click="backWork(dtlObj,0)"></span>
                 </div>
               </div>
               <div v-show="tabPosition=='延期处理'" class="tabLists">
@@ -186,13 +190,9 @@
                     v-model="dtlObj.complete_info">
                   </el-input>
                 </div>
-                <div class="btnsgroups" v-show="dtlObj.now_state==0">
-                  <span class="infoBusy" v-text="'退单'" @click="backWork(dtlObj,5)"></span>
+                <div class="btnsgroups" v-show="dtlObj.now_state==1">
+                  <span class="infoBusy" v-text="'申请延期'" @click="backWork(dtlObj,2)"></span>
                   <span class="infoSend" v-text="'取消'" @click="backWork(dtlObj,0)"></span>
-                  <span class="infoSubmit" v-text="'提交'" @click="backWork(dtlObj,4)"></span>
-                </div>
-                <div class="btnsgroups" v-show="dtlObj.now_state==2 || dtlObj.now_state==3">
-                  <span class="infoBusy" v-text="'退单'" @click="backWork(dtlObj,5)"></span>
                 </div>
               </div>
             </div>
@@ -261,6 +261,7 @@
 import Header from '@/components/common/sysHead'
 import utils from "../../../assets/js/utils.js";
 import SelectBox from '@/components/form/selectBox';
+import sendType from '../components/work/sendType'
 import State from './state';
 import deal from './deal';
 import Table from '@/components/common/table';
@@ -329,7 +330,16 @@ export default {
               {prop:'addtime',label:'派发时间'},
               {prop:'devicename',label:'设备名称'},
               {prop:'description',label:'内容描述'},
-              {prop:'type_id',label:'派发类别'},
+              {prop:'type_id',label:'派发类别',operate: true, 
+                render: (h, param)=> {
+                    const btnss = {
+                        fills:param.row.type_id,  
+                    };
+                    return h(sendType,{
+                    props: { state:btnss},
+                    on:{}
+                    });
+                }},
               {prop:'now_state',label:'状态',operate: true, 
                 render: (h, param)=> {
                     const btnss = {
@@ -430,7 +440,6 @@ export default {
         this.$http.post('/pc_ims/staff/jobinfo_user',{job_id:row.id}).
         then(res=> {
            if(res.data.code==0){
-
              this.dtlObj = res.data.data.info;
              this.dtlObj.pic1 = res.data.data.pic1;
              this.dtlObj.pic2 = res.data.data.pic2;
@@ -530,7 +539,7 @@ export default {
         });
       },
       backWork(item,type){
-        console.log(item.id)
+        //console.log(item.id)
         this.dealWorkParam = {
           item :{
             id:item.id,

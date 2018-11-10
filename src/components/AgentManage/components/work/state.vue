@@ -13,13 +13,14 @@ export default {
   props:['state'],
   data () {
     return {
-        txt:{txt:'',color:'#fff'}
+        txt:{txt:'',color:'#fff'},
+        states:{}
     }
   },
   methods:{
      txts(){
           let res = {txt:'',color:'#fff'};
-          switch(this.state.fills){
+          switch(this.states.fills){
               case 0:
                 res.txt = '未接单';
                 res.color='#fff'
@@ -52,9 +53,21 @@ export default {
           this.txt = res;
       }
   },
+  watch:{
+    state:{
+      handler(val){
+        if(val){
+          this.states = val;
+          this.txts();
+        }
+      },
+      deep:true
+    }
+  },
   created() {
   },
   mounted() {
+      this.states = this.state;
        this.txts();
   },
 }

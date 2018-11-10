@@ -150,6 +150,7 @@ export default {
           department:'',
           name:''
         },
+        getStatus:'',
         query3:{//工单详情的查询条件
           types:[],
           type:'',
@@ -403,14 +404,17 @@ export default {
                 state0:1,
                 txt:'是否允许退单'
             };
+            this.getStatus = 5;
+            this.$refs.isRefult.show();
         }else if(state==2){ //申请延期处理
             this.dialogBoxs = {
                 item:item,
                 state0:1,
                 txt:'是否允许延期处理'
             };
+            this.getStatus =2;
         } 
-        this.$refs.isRefult.show();
+        
       },
       refult(item){//拒绝
         //console.log(item);
@@ -439,8 +443,13 @@ export default {
         this.getDealResult(this.detalrowdata);
       },
       submitOk(){ //处理工单 同意/拒绝退单/延期
-          this.$refs.isRefult.hide();
-          this.$refs.sendWork2.show();
+          if(this.getStatus==2){
+             this.$refs.isRefult.hide();
+              this.$refs.sendWork2.show();
+          }else{
+            this.getDealResult(this.detalrowdata);
+          }
+         
       },
       submitNo(){ //取消
         this.$refs.isRefult.hide();
@@ -465,7 +474,7 @@ export default {
           }else{
             this.$message({
               type:'error',
-              message:res.data.msg
+              message:'派发失败！'
             })
           }
         })
