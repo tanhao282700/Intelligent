@@ -398,7 +398,6 @@ export default {
             dispatch_user_id:this.$store.state.userInfoTotal.userinfo.id
           }
         let state = item.now_state;
-        alert(state);
         if(state==5){ //退单
             this.dialogBoxs = {
                 item:item,
@@ -408,6 +407,7 @@ export default {
             this.getStatus = 5;
             this.$refs.isRefult.show();
         }else if(state==2){ //申请延期处理
+            this.detalrowdata.type = 3;
             this.dialogBoxs = {
                 item:item,
                 state0:1,
@@ -420,29 +420,43 @@ export default {
       },
       refult(item){//拒绝
         //console.log(item);
-        this.detalrowdata = {
-          infos:{
-              id:item.id,
-              pic1:[],
-              pic2:[],
-              user_id:item.user_id,
-              localDesc:{
-                info:item.description
-              }
-          },
-          end_time:'',
-          type:8,
-          user_name:this.$store.state.userInfoTotal.userinfo.name,
-          dispatch_user_id:this.$store.state.userInfoTotal.userinfo.id
+        if(item.now_state==2){
+            this.detalrowdata = {
+            infos:{
+                id:item.id,
+                pic1:[],
+                pic2:[],
+                user_id:item.user_id,
+                localDesc:{
+                  info:item.description
+                }
+            },
+            end_time:'',
+            type:7,
+            user_name:this.$store.state.userInfoTotal.userinfo.name,
+            dispatch_user_id:this.$store.state.userInfoTotal.userinfo.id
+          }
+        }else{
+          this.detalrowdata = {
+            infos:{
+                id:item.id,
+                pic1:[],
+                pic2:[],
+                user_id:item.user_id,
+                localDesc:{
+                  info:item.description
+                }
+            },
+            end_time:'',
+            type:8,
+            user_name:this.$store.state.userInfoTotal.userinfo.name,
+            dispatch_user_id:this.$store.state.userInfoTotal.userinfo.id
+          }
         }
+        
         this.infoItem = item;
         let state = item.now_state;
-        // if(state==2){
-        //   this.infoItem.now_state = 6;
-        // }else if(state==5){
-        //   this.infoItem.now_state = 7;
-        // }
-        this.getDealResult(this.detalrowdata);
+        //this.getDealResult(this.detalrowdata);
       },
       submitOk(){ //处理工单 同意/拒绝退单/延期
           this.$refs.isRefult.hide();
