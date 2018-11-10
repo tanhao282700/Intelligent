@@ -8,8 +8,8 @@
             <span @click.stop="agree" style="color:#3B89F9;text-decoration: underline;">接单</span>
             <span @click.stop="refult">退单</span>
         </div>
-        <div  class="dealBtn" v-else-if="btnss.item.now_state==3">
-            审核中，无法退单
+        <div  class="dealBtn" v-else-if="btnss.item.now_state==1">
+            <span @click.stop="postpone" style="color:#3B89F9;text-decoration: underline;">申请延期</span>
         </div>
         <span v-else>-</span>
     </div>
@@ -32,6 +32,9 @@ export default {
     },
     refult(){ //拒绝
         this.$emit('refult',this.btnss,5);
+    },
+    postpone(){
+        this.$emit('postpone',this.btnss,2)
     }
   },
   created() {

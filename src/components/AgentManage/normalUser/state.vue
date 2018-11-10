@@ -52,6 +52,14 @@ export default {
           this.txt = res;
       }
   },
+  watch:{
+    state:{
+      handler(val){
+        //console.log(val)
+      },
+      deep:true
+    }
+  },
   created() {
   },
   mounted() {

@@ -215,6 +215,15 @@
               <span @click="submitBack">提交</span>
           </div>
       </Dialog> 
+      <!-- <Dialog wid="564" hei="286" ref="isRefult2">
+          <div class="isRefTit">延期时间</div>
+          <div class="isRefDesc">
+            <el-input type="textarea" v-model="dealWorkParam.info" placeholder="请输入退单原因"></el-input>
+          </div>
+          <div class="isRbtnBoxs2">
+              <span @click="submitBack">提交</span>
+          </div>
+      </Dialog>  -->
       <Dialog wid="414" hei="256" ref="sendWork2"><!-- 重新选择工单处理人员 -->
           <div class="sendWork2">
               <div class="oldName">
@@ -339,7 +348,7 @@ export default {
                     };
                     return h(deal,{
                     props: { btnss:btnss},
-                    on:{agree:this.agree,refult:this.refult}
+                    on:{agree:this.agree,refult:this.refult,postpone:this.postpone}
                     });
                 }
               },
@@ -473,6 +482,11 @@ export default {
         this.$refs.isRefult.show();
         this.dealWorkParam = item;
         this.dealWorkParam.type = type;
+      },
+      postpone(item,type){
+        this.dealWorkParam = item;
+        this.dealWorkParam.type = type;
+        this.dealWork()
       },
       dealWork(){
         if(!this.dealWorkParam.info){
