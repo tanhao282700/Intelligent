@@ -233,3 +233,10 @@
   height:1rem !important;
   color: #fff;
 }
+.routigtable .el-input__inner,.routigtable .el-input.is-disabled .el-input__inner{
+  border: none !important;
+}
+.noicon.el-select::after{
+  width:0 !important;
+}
+

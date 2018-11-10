@@ -227,7 +227,7 @@
             let res = '';
             $.each(this.formvals1.areas,(n,k)=>{
               if(k.value==val){
-                this.$emit('getFloorVal',val)
+                this.$emit('getFloorVal',k.label)
               }
             })
             this.formval.area = val;

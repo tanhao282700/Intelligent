@@ -101,6 +101,7 @@ import Percentage from './components/work/Percentage';
 import WorkInfo from './components/work/workInfo';
 import State from './components/routing/state';
 import deal from './normalUser/deal';
+import deal3 from './normalUser/deal2';
 
 import deal2 from './components/routing/deal';
 import RoutingTakModdel from './components/routing/routingTakModdel';
@@ -176,7 +177,16 @@ export default {
             {prop:'sys_name',label:'系统'},
             {prop:'floor',label:'区域'},
             {prop:'start_date',label:'开始时间'},
-            {prop:'period',label:'巡检周期'},
+            {prop:'period',label:'巡检周期',operate:true,
+              render: (h, param)=> {
+                  const btnss = {
+                      item:param.row,  
+                  };
+                  return h(deal3,{
+                    props: {btnss:btnss}
+                  });
+              }
+            },
             {prop:'user_name',label:'巡检人'},
             {prop:'title',label:'专业'},
             {prop:'time_limit',label:'完成时限'},
@@ -819,8 +829,7 @@ export default {
             })
           }
         });
-      },
-     
+      }
   },
   created() {
       let val = (this.$router.history.current.fullPath).split('/AgentManage/routing')[1];

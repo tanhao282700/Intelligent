@@ -682,9 +682,8 @@ export default {
           console.log(res);
           if(res.data.code==0){
             let data = res.data.data;
-            console.log(res.data.data);
             $.each(data,(n,k)=>{
-              data[n].value = data[n].id;
+              data[n].value = data[n].title;
               data[n].label = data[n].title;
             })
             this.query3.devices = data;

@@ -222,7 +222,11 @@
                         <div class="nameBox">
                           <div class="labelBox">
                             <label for="">当前状态：</label>
-                            <span v-text="dia.now_process" class="dqStatus"></span>
+                            <span v-if="dia.now_process==0" class="dqStatus" style="color:#fff">新建</span>
+                            <span v-else-if="dia.now_process==1" class="dqStatus">被换班人同意换班</span>
+                            <span v-else-if="dia.now_process==2" class="dqStatus">审核通过</span>
+                            <span v-else-if="dia.now_process==10" class="dqStatus">被换班人拒绝换班</span>
+                            <span v-if="dia.now_process==11" class="dqStatus">驳回</span>
                           </div>
                           <div class="labelBox">
                             <label for="">审核人：</label>

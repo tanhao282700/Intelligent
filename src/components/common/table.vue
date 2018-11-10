@@ -45,18 +45,18 @@ rowClick(row){
 -->
 
 <template>
-  <div class="tableBox" :class="{'padding0':tableData.len!=undefined}">
+  <div class="tableBox" :class="{'padding0':tableData}">
         <el-table
         :size="table.small"
         :height="table.hei"
-        :data="table.data"
+        :data="tableData.data"
         @row-click = "rowClick"
         @cell-mouse-enter = "rowEnter"
         @cell-mouse-leave = "rowLeave"
         style="width: 100%">
         <el-table-column
             :key="i"
-            v-for="(v,i) in table.th"
+            v-for="(v,i) in tableData.th"
             :prop="v.prop"
             :show-overflow-tooltip="true"
             :label="v.label"
@@ -79,7 +79,7 @@ rowClick(row){
                 :pager-count="5"
                 :page-size="table.pageSize"
                 layout="total, prev, pager, next, jumper"
-                :total="table.len">
+                s>
             </el-pagination>
         </div>
     </div>
@@ -103,6 +103,7 @@ export default {
     table:{
         handler(newval,oldval){
             this.tableData = newval;
+            console.log(this.tableData.th);
         },
         deep:true
     }
@@ -123,41 +124,43 @@ export default {
     }
   },
   created() {
-    let ths = this.table.th;
-    let len = ths.length;
-    let attrs = [];
-    for(let i= 0;i<len;i++){
-        let obj = ths[i];
-        if(ths[i].wid==undefined){
-            obj.wid = 'auto';
-        }else{
-             obj.wid = utils.wid(Number(obj.wid));
-        }
-        attrs.push(obj);
-    }
-    this.table.th =attrs;
-    if(this.table.hei==undefined){
-        this.table.hei = 'auto';
-    }else{
-        this.table.hei = utils.hei(Number(this.table.hei));
-    }
-    if(this.table.pageSize==undefined){
-        this.table.pageSize = 20;
-    }
-    if(this.table.operate==undefined){
-        this.table.operate = true;
-    }
-    if(this.table.page==undefined){
-        this.table.page = 1;
-    }
-    if(this.table.small==undefined){
-        this.table.small = '';
-    }
+    // let ths = this.table.th;
+    // console.log(this.table);
+    // console.log(ths);
+    // let len = ths.s;
+    // let attrs = [];
+    // for(let i= 0;i<len;i++){
+    //     let obj = ths[i];
+    //     if(ths[i].wid==undefined){
+    //         obj.wid = 'auto';
+    //     }else{
+    //          obj.wid = utils.wid(Number(obj.wid));
+    //     }
+    //     attrs.push(obj);
+    // }
+    // this.table.th =attrs;
+    // if(this.table.hei==undefined){
+    //     this.table.hei = 'auto';
+    // }else{
+    //     this.table.hei = utils.hei(Number(this.table.hei));
+    // }
+    // if(this.table.pageSize==undefined){
+    //     this.table.pageSize = 20;
+    // }
+    // if(this.table.operate==undefined){
+    //     this.table.operate = true;
+    // }
+    // if(this.table.page==undefined){
+    //     this.table.page = 1;
+    // }
+    // if(this.table.small==undefined){
+    //     this.table.small = '';
+    // }
 
   },
   mounted(){
     this.tableData = this.table;
-    //this.tableData.len = this.table.data.length;
+    //console.log(this.table.data)
   }
 }
 </script>

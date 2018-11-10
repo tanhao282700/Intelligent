@@ -87,11 +87,11 @@
                 <ul>
                   <li>
                     <span class="taskLabel">派发人员</span>
-                    <span class="taskCont">{{dtlObj.user_name}}</span>
+                    <span class="taskCont">{{dtlObj.dispatch_user_name}}</span>
                   </li>
                   <li>
                     <span class="taskLabel">联系电话</span>
-                    <span class="taskCont">{{dtlObj.user_phone}}</span>
+                    <span class="taskCont">{{dtlObj.dispatch_user_phone}}</span>
                   </li>
                 </ul>
                 <div style="clear:both">

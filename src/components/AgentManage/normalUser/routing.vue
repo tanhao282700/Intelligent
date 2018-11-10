@@ -43,8 +43,12 @@
       <Dialog wid="910" hei="600" ref="tableInfos2">
           <div class="tableInfos">
               <div class="infoHead">
-                <span class="infoName" v-text="newData.user_name"></span>
-                <span class="infoState" v-text="infoTit(newData.now_value)"></span>
+                <span class="infoName" v-text="'巡检详情'"></span>
+                <span class="infoState" v-if="newData.now_value==2">已完成</span>
+                <span class="infoState" v-else>
+                  未完成
+                  <span class="infoBack" v-text="'退单'" @click="dealWork(newData,3,'d')"></span>
+                </span>
               </div>
               <div class="infoBoxs">
                 <div class="routingTask">
@@ -56,7 +60,7 @@
                       </div>
                     </li>
                   </ul>
-
+                  <div style="clear:both"></div>
                   <div>
                     <div class="contLabel" v-text="'现场处理情况'"></div>
                     <el-input
@@ -68,20 +72,41 @@
                     </el-input>
                   </div>
                   <div class="contLabel" v-text="'巡检表格'"></div>
-                  <div class="boxs" style="width:95.6%;margin:0.2rem auto 0">
-                    <Table
-                      :table = "newData.tableData"
-                    />
+                  <div class="boxs routigtable" style="width:95.6%;margin:0 2.2%;">
+                    <el-table
+                      :height="table.hei"
+                      :data="newData.tableData.data"
+                      style="width: 100%">
+                      <el-table-column :label="v.label" v-for="(v,i) in newData.tableData.th" :key="i">
+                        <template slot-scope="scope">
+                          <div>
+                            <span v-if="scope.row.serial!=newData.tableData.data.length">
+                              <!--  从后台获取的数据用input：readonly只读 -->
+                              <el-input v-model="scope.row[v.prop]" placeholder=""  :readonly="(scope.row.serial!=newData.tableData.data.length)?true:false"></el-input>
+                            </span>
+                            <!--  最后一行数据判断是输入框还是下拉列表 无type 取值-->
+                            <span v-else-if="scope.row.serial==newData.tableData.data.length && v.type!=0 && v.type!=1">
+                              <el-input v-model="scope.row[v.prop]" placeholder="" :readonly="'readonly'"></el-input>
+                            </span>
+                            <!-- type=1 选择 -->
+                            <span v-else-if="scope.row.serial==newData.tableData.data.length && v.type==1">
+                              <el-select v-model="scope.row[v.prop]" placeholder="请选择" :class="(scope.row.serial==newData.tableData.data.length)?'':'noicon'">
+                                <el-option v-for="(item,index) in v.select" :key="index" :label="item" :value="item">
+                                </el-option>
+                              </el-select>
+                            </span>
+                            <!-- type=0 输入 -->
+                            <span v-else-if="scope.row.serial==newData.tableData.data.length && v.type=='0'">
+                              <el-input v-model="scope.row[v.prop]" placeholder="请输入"></el-input>
+                            </span>
+                          </div>
+                        </template>
+                      </el-table-column>
+                    </el-table>
                   </div>
-
-                  <!-- <div class="rightHead" v-if="newData && newData.now_state=='5'">
-                    <span class="infoBusy" v-text="'拒绝退单'" @click="dealWork(8)"></span>
-                    <span class="infoSend" v-text="'允许退单'" @click="dealWork(6)"></span>
+                  <div v-if="newData.now_state!=2" class="rightHead">
+                    <span class="infoBusy" v-text="'提交'" @click="dealWork(newData,2,'d')"></span>
                   </div>
-                  <div class="rightHead" v-else-if="newData && newData.now_state=='2'">
-                    <span class="infoBusy" v-text="'拒绝延期'" @click="dealWork(7)"></span>
-                    <span class="infoSend" v-text="'允许延期'" @click="dealWork(3)"></span>
-                  </div> -->
                 </div>
               </div>
           </div>
@@ -124,38 +149,27 @@ export default {
         rowData:{},
         // crumbs:['代维系统','巡检'],
         workH:[],
-        jobs:[
-          {label:'给排水',value:1},
-          {label:'电梯',value:2},
-          {label:'变配电',value:3},
-          {label:'照明',value:4},
-          {label:'暖通',value:5},
-        ],
+        jobs:[],
         vJob:'',
-        names:[
-          {label:'李白',value:1},
-          {label:'杜甫',value:2},
-          {label:'王安石',value:3},
-          {label:'白居易',value:4},
-          {label:'狗蛋儿',value:5},
-        ],
+        names:[],
         newData:{
           desc:[],
           localDesc2:{},
           tableData:{
             len:1,
-            data:[{time:''}],
-            th:[{props:'serial',label:'序号'},
-            {props:'time',label:'日期'}]
+            data:[],
+            th:[{select:[]}],
+            hei:'2.8rem'
           }
         },
+        pOptions:[],        
         vName:-1,
         //日期选择
         value7:'8-24',
         cant:false,
         table:{
             // small:'small',
-            hei:328, //table高度  设置后有滚动条
+            hei:320, //table高度  设置后有滚动条
             len:0, //总条数
             data:[],
             th:[
@@ -188,23 +202,12 @@ export default {
               {id:3,name:'巡检',route:'/AgentManage/normalUser/routing'},
               {id:4,name:'完成情况',route:'/AgentManage/normalUser/report'},
           ]
-        },
-        infoItem:{
-          desc:[],
-          tableData:{
-            len:0,
-            data:[],
-            th:[]
-          }
-        },  //某个工单的详情
+        }
     }
   },
   methods:{
     change1(val){ //选择
       this.vJob = val;
-    },
-    dealWork(){
-
     },
     changes(val){
         this.value7 = val;
@@ -277,44 +280,42 @@ export default {
     cancelAdd(){
       this.$refs.add.hide();
     },
-    saveAdd(formData){
-      console.log(formData)
-    },
-    changeStatus(state){
-      console.log(state);
-    },
     rowClick(row){
       this.rowData = row;
-      return
       this.$refs.tableInfos2.show();
       this.rowData.operate='check';
       this.$http.post('/pc_ims/staff/inspectiondata_info',{ins_id:row.id}).then(res=>{
           if(res.data.code==0){
             let data = res.data.data.info;
+            let zhanshi = res.data.data.zhanshi;
+            this.newData.tableData.th = [
+              {prop:'serial',label:'序号'},
+              {prop:'time',label:'日期'}];
+            $.each(res.data.data.zhanshi[0],(n,k)=>{
+              $.each(k,(n1,k1)=>{
+                this.newData.tableData.th.push({prop:'value'+n1,label:k1.name,type:k1.type,select:k1.select,point_id:k1.point_id});
+              })
+            })
             this.newData.desc = [
               {label:'类别',value:data.title},
               {label:'设备名称',value:data.devicename},
               {label:'设备地点',value:data.floorname},
               {label:'检查人员',value:data.user_name},
-              {label:'电话',value:data.user_phone},
-            ]
-            let data1 = res.data.data.zhanshi;
-            let timearr = [];
-            let _this = this;
+              {label:'电话',value:data.user_phone}
+            ];
 
-            $.each(data1,(n,k)=>{
-                //this.newData.tableData.data[n].time = k.time;
-                $.each(data1[n].from.list,(n1,k1)=>{
-                    // if(k1.name!=k2.label){
-                    //     this.newData.tableData.th.push({props:'value'+n1,label:k1.name});
-                    //   }
-                    console.log(this.newData.tableData.th)
-                     this.newData.tableData.data[n1] = k1;
-                     k1['value1'] = data1[n].from.list[n1].now_value;
-                })
+            let values = res.data.data.values;
+            $.each(values,(n,k)=>{
+              $.each(k.value,(n1,k1)=>{
+                let key = 'value'+n1;
+                k[key] = String(k1);
+                k['serial'] = n+1;
+              })
             })
-            this.infoItem.tableData.data = arrData;
-            this.infoItem.tableData.th = arr;
+            this.newData.tableData.data = values;
+            this.newData.tableData.data.push({});
+            this.newData.tableData.data[this.newData.tableData.data.length-1].serial = this.newData.tableData.data.length;
+            this.newData.tableData.data[this.newData.tableData.data.length-1].time =utils.time(new Date()/1000,1);
           }else{
             this.$message({
               type:'error',
@@ -324,12 +325,22 @@ export default {
       })
     },
     agree(item,type){ //同意
-        this.dealWork(item,type)
+        this.dealWork(item,1)
     },
     refult(item,type){//拒绝
-       this.dealWork(item,type)
+       this.dealWork(item,3)
     },
-    dealWork(item,type){
+    dealWork(item,type,three){
+      if(three){
+        item.info = item.complete_info;
+        let data = this.newData.tableData.data;
+        let th = this.newData.tableData.th;
+        $.each(th,(n,k)=>{
+          console.log(k);
+        })
+        console.log(this.newData.tableData.data);
+        //item.form = 
+      }
       item = item.item;
       if(!item.info){
         item.info = '';
@@ -382,14 +393,17 @@ export default {
     infoTit(state){
       let res = '';
       switch(state){
-        case -1:
-          res = '申请退单';
-        break;
-        case 2:
+        case 1:
           res = '处理中';
         break;
-        case 3:
+        case 2:
+          res = '已完成';
         break;
+        case 3:
+          res = '申请退单';
+        break;
+        case 4:
+          res = '退单完成';
       }
       return res;
     } ,
@@ -516,7 +530,7 @@ export default {
   }
   .workHead{
     width: 95.6%;
-    .vh(108);
+    height:1.08rem;
     margin-left: 0.3rem;
     display: flex;
     .numBox{
@@ -544,18 +558,18 @@ export default {
   }
   .tableBoxs{
     width: 95.6%;
-    .vh(407);
-    .vhMT(20);
+    height:4.47rem;
+    margin-top:0.2rem;
     margin-left: 0.3rem;
     .tabHead{
       width: 100%;
       position: relative;
-      .vh(59);
-      .vhPT(20);
+      height:0.59rem;
+      padding-top:0.2rem;
       .jobBoxs{
         float: left;
         width: 1.15rem;
-        .vh(32);
+        height:0.32rem;
         background-color: rgba(255, 255, 255, 0.01);
         border-radius: 0.02rem;
         border: solid 0.01rem #1989fa;
@@ -565,7 +579,7 @@ export default {
       .nameBoxs{
         float: left;
          width: 0.87rem;
-        .vh(32);
+        height:0.32rem;
         background-color: rgba(255, 255, 255, 0.01);
         border-radius: 0.02rem;
         border: solid 0.01rem #1989fa;
@@ -576,8 +590,8 @@ export default {
         float: left;
         margin-left: 0.12rem;
         width: 0.93rem;
-        .vh(32);
-        .vhLH(32);
+        height:0.32rem;
+        line-height:0.32rem;
         color: #fff;
         font-size: 0.14rem;
         text-align: center;
@@ -594,13 +608,13 @@ export default {
       }
       .dateBox{
         position: absolute;
-        .vhTop(24);
+        top:0.24rem;
         left: 4.95rem;
       }
     }
     .tableIn{
       width: 99%;
-      .vh(328);
+      height:3.28rem;
       margin-left: 1%;
       .tableBox{
          margin-left:0;
@@ -609,11 +623,11 @@ export default {
   }
   .dispatch{
     width: 100%;
-    .vh(100);
+    height:1rem;
     display: flex;
     // align-items: center;
     justify-content: center;
-    .vhPT(20);
+    padding-top:0.2rem;
     .dispatchBtn{
       width: 0.6rem;
       height: 0.6rem;
@@ -639,7 +653,7 @@ export default {
     width: 100%;
     height: 100%;
     .infoHead{
-      .vh(52);
+      height:0.52rem;
       width: 100%;
       background: rgba(0,0,0,0.2);
       padding-left: 0.2rem;
@@ -657,19 +671,31 @@ export default {
         padding-left: 0.20rem;
         border-left: 0.01rem solid #4a90e2;
       }
+      .infoBack{
+        position: absolute;
+        top: 0.1rem;
+        border: 1px solid #3c88f8;
+        width: 1rem;
+        height: 0.32rem;
+        text-align: center;
+        border-radius: 2px;
+        right: 0.4rem;
+        line-height: 0.32rem;
+        font-size: 0.14rem;
+      }
       .infoType{
         font-size: 0.12rem;
       }
       .rightHead{
         position: absolute;
         right: 0;
-        .vhLH(52);
+        line-height:0.52rem;
         top:0;
         width: 12.59vw;
         .infoBusy{
-          .vhMT(9);
+          margin-top:0.09rem;
           display:inline-block;
-          .vhLH(24);
+          line-height:0.24rem;
           background:#008AFF;
           width:4.98vw;
           font-size:12px;
@@ -677,9 +703,9 @@ export default {
           text-align:center;
         }
         .infoSend{
-          .vhMT(9);
+          margin-top:0.09rem;
           display:inline-block;
-          .vhLH(24);
+          line-height:0.24rem;
           background:#FA6074;
           width:4.98vw;
           border-radius:2px;
@@ -712,6 +738,10 @@ export default {
   .job_det{
     float:left;
   }
+  .el-th li{
+    float:left;
+    color:#fff;
+  }
   .contLabel{
       line-height:0.54rem;
       padding:0 1.464vw;
@@ -720,20 +750,14 @@ export default {
   .controlCont{
       padding:0 1.464vw;
   }
-  .controlCont1{
-    .vh(50);
-    box-shadow:0px 0px 1px 0px rgba(87,113,176,0.15),0px 1px 2px 0px rgba(0,0,0,0.5);
-    border-radius:1px;
-  }
   .controlCont2{
     height:0.7rem;
     box-shadow:0px 0px 1px 0px rgba(87,113,176,0.15),0px 1px 2px 0px rgba(0,0,0,0.5);
     border-radius:1px;
   }
   .rightHead{
-    width:2.34rem;
     bottom:0;
-    right:0;
+    left:3.57rem;
     position: absolute;
     line-height:0.52rem;
     color:#fff;
@@ -742,24 +766,11 @@ export default {
       display:inline-block;
       line-height:0.32rem;
       width:0.96rem;
-      background:#164488;
+      background:linear-gradient(360deg, #2772e3 0%, #4b94f9 100%);
       font-size:12px;
       border-radius:2px;
       text-align:center;
       margin-right:0.12rem;
-      &:hover{
-        cursor:pointer;
-      }
-    }
-    .infoSend{
-      margin-top:0.09rem;
-      display:inline-block;
-      line-height:0.32rem;
-      width:0.96rem;
-      background:#1989FA;
-      border-radius:2px;
-      font-size:12px;
-      text-align:center;
       &:hover{
         cursor:pointer;
       }

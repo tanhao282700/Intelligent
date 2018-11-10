@@ -17,36 +17,6 @@
             <div class="boxs tableBoxs">
                 <div class="tabHead thHead">
                   <div class="jobBoxs thJobBoxs">
-                    <!--<el-date-picker
-                      v-model="year"
-                      class="datetemp"
-                      popper-class="noTitle"
-                      format="yyyy"
-                      value-format="yyyy"
-                      type="year"
-                      @change="changeYear"
-                      placeholder="年">
-                    </el-date-picker>
-                    <el-date-picker
-                      v-model="month"
-                      type="month"
-                      format="MM"
-                      @change="changeMonth"
-                      value-format="yyyy-MM"
-                      class="datetemp"
-                      popper-class="noTitle"
-                      placeholder="月">
-                    </el-date-picker>
-                    <el-date-picker
-                      v-model="day"
-                      class="datetemp"
-                      popper-class="noTitle"
-                      value-format="yyyy-MM-dd"
-                      format="dd"
-                      type="date"
-                      @change="changeDay"
-                      placeholder="日">
-                    </el-date-picker>-->
                     <el-select placeholder="请选择" v-model="dateUnit" class="dateUnitSelectItem" clearable @change="dateTypeChange">
                       <el-option
                         v-for="item in dateOptions"
@@ -107,14 +77,25 @@
                     style="width:100%"
                     :table = "table2"
                     @changePage="changePage2"
-                    @rowEnter="mouseOverLi"
-                    @rowLeave = "mouseOutLi"
                   />
                 </div>
             </div>
         </el-tab-pane>
       </el-tabs>
+      <div v-show="visible">
+        <ul  class="hover" :style="{top:1.18+(0.4*hoverIndex)+'rem'}">
+          <li v-for="(item,index) in hoverData" >
+            <i class="el-icon-arrow-left"></i>
+            <dl>
+              <dt><span class="serial">0{{index}}</span><span class="line">|</span>{{item.time}}维修人：{{item.name}}</dt>
+              <dd class="desc">内容描述</dd>
+              <dd class="desccont">{{item.description}}</dd>
+            </dl>
+          </li>
+        </ul>
+      </div>
   </div>
+  
 </template>
 
 <script>
@@ -122,6 +103,7 @@ import utils from "../../assets/js/utils.js";
 import SelectBox from '@/components/form/selectBox';
 import TimePickerT from './components/work/timePickerTit2';
 import Percentage from './components/work/Percentage';
+import deal from './components/routing/deal2' 
 import Table from '@/components/common/table';
 export default {
   name:'gReport',
@@ -135,6 +117,9 @@ export default {
         currentNum1:1,
       currentNum2:1,
       dateUnit:'year',
+      visible:false,
+      hoverIndex:0,
+      hoverData:[],
       dateOptions:[{id:'year',title:"年"},{id:'month',title:"月"},{id:'day',title:"日"}],
       dateRangeValue:"",
         year:'',
@@ -190,17 +175,19 @@ export default {
             th:[
               {prop:'index',label:'编号',minWid:'20%'},
               {prop:'floor',label:'位置',minWid:'20%'},
-              {prop:'type',label:'类别',minWid:'20%'},
-              {prop:'device_name',label:'设备名称',minWid:'20%'},
-              {prop:'count',label:'本周保修次数',minWid:'20%'
-              // ,operate:true,
-              //   render: (h, param)=> {
-              //       console.log(param)
-              //         const btnss = {
-              //             fills:param.row.count,
-              //         };
-              //     }
-                 }
+              {prop:'type',label:'类别',minWid:'10%'},
+              {prop:'device_name',label:'设备名称',minWid:'10%'},
+              {prop:'count',label:'本周保修次数',minWid:'40%',operate:true,
+                render: (h, param)=> {
+                      const btnss = {
+                          fills:param.row,
+                      };
+                    return h(deal,{
+                      props:{btnss:btnss},
+                      on:{mousehover:this.mouseOverLi,mouseOut:this.mouseOutLi}
+                    })
+                }
+              }
             ]
         },
     }
@@ -219,32 +206,6 @@ export default {
     handleClick(){
 
     },
-    changeYear(val){
-        console.log(this.month)
-      console.log(this.day)
-        /*if(this.month){
-          this.month = this.year +'-'+ (parseInt(this.month.split('-')[0])+1)
-        }
-        if(this.day){
-            this.day = this.month + '-'+this.day.split('-')[2]
-        }*/
-      /*let curr = (utils.time(new Date(val)/1000,10))
-      this.$set(this.year,curr);*/
-    },
-    changeDay(val){
-
-      /*if(!val){
-        this.day = ''
-      }*/
-    },
-    changeMonth(val){
-        /*if(this.day){
-            this.day = this.month+'-'+(parseInt(this.day.split('-')[2])+1)
-        }*/
-      /*this.day = this.month*/
-      /*this.month = val;
-      this.day = utils.time(new Date(this.year)/1000,10) +'-'+ val ;*/
-    },
     exportList(){
       if(this.activeName=='first'){// 导出完成情况
          window.open('https://tesing.china-tillage.com/pc_ims/down/count?year=&month=&day=&Authorization='+this.$store.state.userInfoTotal.userinfo.password + "_" + this.$store.state.projectId + "_" + this.$store.state.userId);
@@ -252,24 +213,24 @@ export default {
         window.open('https://tesing.china-tillage.com/pc_ims/down/count_device?Authorization='+this.$store.state.userInfoTotal.userinfo.password + "_" + this.$store.state.projectId + "_" + this.$store.state.userId);
       }
     },
-    mouseOverLi(row){
-      //console.log(row)
-      // this.$http.post('/pc_ims/admin/count_deviceinfo',{
-      //   name:'一号客梯'
-      // }).then(res=> {
-      //      console.log(res)
-      //      if(res.data.code==0){
-      //       this.table.data = res.data.data;
-      //     }else{
-      //       this.$message({
-      //         type:'error',
-      //         message:res.data.msg
-      //       })
-      //     }
-      // })
+    mouseOverLi(name,index){
+      this.hoverIndex = index;
+      this.$http.post('/pc_ims/admin/count_deviceinfo',{
+        name:name
+      }).then(res=> {
+           if(res.data.code==0){
+            this.hoverData = res.data.data;
+            this.visible =true;
+          }else{
+            this.$message({
+              type:'error',
+              message:res.data.msg
+            })
+          }
+      })
     },
     mouseOutLi(row){
-
+      this.visible = false;
     },
     getReportData(){
       let year = ''
@@ -465,6 +426,57 @@ export default {
       padding-right:0.1rem;
     }
   }
+  .hover {
+    position:absolute;
+    right:14%;
+    width:2.83rem;
+    background:#05152c;
+    padding:0.2rem;
+    border:1px solid #4789d7;
+    box-shadow: -3px 0px 3px rgba(20,60,121,0.5),
+    3px 0px 3px rgba(20,60,121,0.5),
+    0px 3px 3px rgba(20,60,121,0.5);
+    li{
+      color:#fff;
+      font-size:0.13rem;
+      line-height:0.25rem;
+    .serial{
+      color:#f48301;
+    }
+    .line{
+      margin:0 0.2rem;
+    }
+    .desc{
+      color:#425679;
+      font-size:0.12rem;
+    }
+    .desccont{
+      color:#ffa415;
+      background:#001837;
+      width:100%;
+      padding-bottom:0.07rem;
+      padding-left:0.12rem;
+    }
+    i{
+      position:absolute;
+      width:0.12rem;
+      top:0.32rem;
+      left:-3%;
+      color:#4789d7;
+    }
+    i:after{
+        content:'';
+        display:block;
+        position:absolute;
+        left: 0.053rem;
+        z-index:1;
+        top: 0.02rem;
+        border-right: 4px solid #05152c;
+        border-top:4px solid transparent;
+        border-bottom: 4px solid transparent;
+      }
+    }
+  }
 }
 </style>
 <style>
@@ -513,4 +525,5 @@ export default {
   .reportBox .tableBoxs .thHead .checkBox{
     height:100%!important;
   }
+
 </style>
