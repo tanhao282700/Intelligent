@@ -7,7 +7,7 @@
         </div>
         <div class="doorInfoBgBox">
             <div class="tableBox">
-                <el-table :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)" style="width: 100%;height:100%;">
+                <el-table :data="tableData" style="width: 100%;height:100%;">
                     <el-table-column prop="show_id" label="编号" align="cneter"></el-table-column>
                     <el-table-column prop="id_card" label="ID卡号" align="cneter"></el-table-column>
                     <el-table-column prop="name" label="姓名"  align="cneter"></el-table-column>
@@ -47,14 +47,16 @@
 </template>
 <script>
     export default {
-        props:["doorInfoId","doorInfomation"],
+        props:["doorInfoId","doorInfomation","doorDeviceId","floorIds"],
         data () {
         	return {
                 toPageNum:1,
-                totalPageNum:1,
+                totalPageNum:3,
+                total:0,
                 tableData: [],
-                pagesize:10,
+                pagesize:20,
                 currentPage:1,
+                currPage:''
         	}
         },
         watch:{
@@ -67,12 +69,27 @@
         },
         methods:{
             getData(){
-                
+
+                var that = this;
+                this.$http.post('/entrance/record',{
+                    sys_menu_id:this.$store.state.sysList['14'].sys_menu_id,
+                    project_id:this.$store.state.projectId,
+                    floor_id:that.floorIds,
+                    device_id:that.doorDeviceId
+                }).then(function(response){
+                    // 响应成功回调
+                    console.log(response.data.data);
+                    that.tableData = response.data.data.entrance_guard_record;
+                }, function(response){
+                    // 响应错误回调
+                });
+            
+            
             },
             exportTable(){
                 var that = this;
                 this.$http.post('/entrance/record',{
-                    sys_menu_id:this.$store.state.sysList[14].sys_menu_id,
+                    sys_menu_id:this.$store.state.sysList['14'].sys_menu_id,
                     project_id:this.$store.state.projectId,
                     floor_id:1,
                     export:1,
@@ -80,7 +97,6 @@
                     // 响应成功回调
                     //http://images.china-tillage.com/门禁系统门禁记录20181031124347.xls
                     var str = "http://"+response.data;
-                    that.downLoadSrc = str;
                     console.log(str);
                     window.open(str);
                     //that.downExcelA();
@@ -91,9 +107,8 @@
             },
             toInputPage(){
               /*显示输入页表格数据*/
-              var num = Number(this.toPageNum);
-              this.getData(num);
-              this.currentPage = num;
+              this.currentPage = Number(this.currPage);
+              this.getData();
             },
             doSearch(){},
             addPolicy(){},
@@ -102,7 +117,9 @@
                 this.pagesize = size;
             },
             handleCurrentChange: function(currentPage){
-                this.currentPage = currentPage;
+                this.currentPage =  Number(currentPage);
+                this.currPage = this.currentPage;
+                this.getData()
             },
             doorInfoHide(){
                 this.$emit("doorInfoHide",false);

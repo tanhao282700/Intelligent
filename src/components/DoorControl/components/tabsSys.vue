@@ -58,14 +58,14 @@
                    @mouseenter = "popToggle(index,item.x,item.y,item.device_name,item.device_state,item.point_list)" 
                    @mouseout = "popHide" 
                    @click.stop="doorInfoPanel(item.device_id,item.device_name,item)"
-                   :style="{left:item.position_x*coefficientX + 'px',top:item.position_y*coefficientY + 'px'}"
+                   :style="{left:((item.position_x / 1326)*100 -4) + '%',top:((item.position_y / 580)*100 -3) + '%'}"
                 ><span v-html = "item.all_state_pic[item.device_state]" ></span>
                     <pops v-on:doorInfoHide="doorInfoHide" :doorControlMsg = "doorControlMsg"  :info = "onMouseDoor" :infoSta = "infoSta" :controlDoorFun = "controlDoorFun" :itemIndex="index" @changeDoorStatus="changeDoorStatus"></pops>
                 </i>
                 
             </div>
         </div>
-        <door-info v-on:doorInfoHide="doorInfoHide" :doorInfoId="doorInfoId" :doorInfomation="doorInfomation" v-show="doorInfoShow" :hid = "doorInfoShow"></door-info>
+        <door-info v-on:doorInfoHide="doorInfoHide" :doorInfoId="doorInfoId" :floorIds="floorIds" :doorDeviceId="doorDeviceId" :doorInfomation="doorInfomation" v-show="doorInfoShow" :hid = "doorInfoShow"></door-info>
     </div>
 </template>
 <script>
@@ -90,6 +90,7 @@
                 doorWarning:'', //警告状态门数量
                 doorOpenN:'', //打开门数量
                 doorInfoId:'', //pop弹框当前门id
+                doorDeviceId:'',//pop当前门设备id
                 doorInfomation:[], //当前门详细信息
                 doorInfoShow:false, //弹框显示隐藏
                 onMouseDoor:'', //当前滑过icon
@@ -182,11 +183,13 @@
                 this.iList[obj.itemIndex].device_state=status;
             },
             doorInfoPanel(id,name,item){
+                console.log(this.$store.state.sysList);
                 this.doorInfoId = name;
+                this.doorDeviceId = id,
                 this.doorInfoShow = true;
                 var that = this;
                 this.$http.post('/entrance/record',{
-                    sys_menu_id:this.$store.state.sysList[14].sys_menu_id,
+                    sys_menu_id:this.$store.state.sysList['14'].sys_menu_id,
                     project_id:this.$store.state.projectId,
                     floor_id:that.floorIds,
                     device_id:id
@@ -204,7 +207,7 @@
             },
             //获取页面数据
             getDoorData(slevel){
-                console.log(this.$store.state.sysList[14].sys_menu_id);
+                console.log(this.$store.state.sysList['14'].sys_menu_id);
                 console.log(this.$store.state);
                 // this.coefficientX = document.getElementById("floorImgBox").offsetWidth / 518;
                 // this.coefficientY = document.getElementById("floorImgBox").offsetHeight / 247;
@@ -212,7 +215,7 @@
                 this.coefficientY = (document.body.clientHeight - 190) / 579;
                 let that = this;
                 this.$http.post('/entrance/all_info',{
-                    sys_menu_id:this.$store.state.sysList[14].sys_menu_id,
+                    sys_menu_id:this.$store.state.sysList['14'].sys_menu_id,
                     project_id:this.$store.state.projectId,
                     floor_id:that.floorIds,
                 }).then(function(data){

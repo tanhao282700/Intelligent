@@ -61,7 +61,7 @@ nav.tabNav span a.on{color:#008aff;}
 .popBgBox .popDoorStatus span,.popBgBox .popDoorControl span{float: left;}
 .topShadow{position: absolute;top:90px;-webkit-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);-moz-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);box-shadow:0 0 10px rgba(74, 144, 226, 0.22);display: block;width: 100%;height:60px;}
 .bottomShadow{position:relative;width:100%;height:100%;-webkit-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);-moz-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);box-shadow:0 0 10px rgba(74, 144, 226, 0.22);}
-.bottomShadow .floorImgBox{position:absolute;display:block;left:0;top:0;}
+.bottomShadow .floorImgBox{position:absolute;display:block;left:0;top:0;width:100%;height:100%;}
 .bottomShadow .floorImgBox img{display: block;width:100%;height:100%;}
 .bottomShadow .floorImgBox i{position:absolute;display: block;width:auto;height:auto;cursor: pointer;font-size: 12px;line-height: 24px;text-align: center;}
 /*.bottomShadow .floorImgBox i.doorSta0{background:url(../../assets/img/doorControl/door1.png) no-repeat;background-size: 100% 100%;}
@@ -114,10 +114,10 @@ nav.tabNav span a.on{color:#008aff;}
 .videoPopBg>i{position: absolute;right:-13px;top:-9px;cursor:pointer;font-size:18px;line-height: 20px;text-align: center;display: block;width:20px;height:20px;border-radius:10px;background:#00275b;color:#3b89f9;}
 .videoPopBg{width:100%;height:100%;background:#02132a;position:relative;-webkit-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);-moz-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);box-shadow:0 0 10px rgba(74, 144, 226, 0.22);padding-top:40px;}
 .videoDeviceTitle{display:block;height:40px;width:100%;line-height: 40px;background: rgba(0,0,0,.25);position:absolute;left:0;top:0;padding:0 20px;}
-.videoDeviceTitle span.dateBox{height:40px;line-height: 40px;width:140px;position: absolute;top:0;left:50%;margin-left: -70px;text-align: center;font-size: 14px;}
-.videoDeviceTitle span.deviceaAcription{font-size: 12px;display: inline-block;height:40px;line-height: 40px;}
+.videoDeviceTitle span.dateBox{height:40px;line-height: 40px;width:140px;position: absolute;top:0;left:50%;margin-left: -70px;text-align: center;font-size: 18px;}
+.videoDeviceTitle span.deviceaAcription{font-size: 16px;display: inline-block;height:40px;line-height: 40px;}
 .videoPanelBox{padding:20px;width:100%;height:100%;}
-.videoDeviceInfo{height:30px;line-height: 30px;padding:0 20px;background: #00275b;color:#fff;font-size: 12px;border-radius: 4px;border:0px;outline:none;margin-top:5px;cursor:pointer;}
+.videoDeviceInfo{height:30px;line-height: 30px;padding:0 20px;background: #00275b;color:#fff;font-size: 14px;border-radius: 4px;border:0px;outline:none;margin-top:5px;cursor:pointer;}
 
 .deviceInfoPop{position:absolute;top:0;left:0;display:block;width:100%;height:100%;background:rgba(0,0,0,.1);}
 .deviceInfoPop .deviceInfoBgBox{position: absolute;top:50%;left:50%;width:700px;height:440px;margin-left:-350px;margin-top:-240px;background:#02132a;border-radius: 8px;-webkit-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);-moz-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);box-shadow:0 0 10px rgba(74, 144, 226, 0.22);padding:60px 0 20px 0;}
