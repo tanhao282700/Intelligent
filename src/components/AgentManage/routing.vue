@@ -665,7 +665,7 @@ export default {
           {id:1,tit:'今日在岗人数',val:res.data.data.zaiban,color:'#b5d7ff'},
           {id:2,tit:'今日巡检数',val:res.data.data.count,color:'#f38a00'},
           {id:3,tit:'已完成数量',val:res.data.data.complete,color:'#4ae283'},
-          {id:4,tit:'今日巡检完成率',val:res.data.data.percent,color:'#4ae283'}];
+          {id:4,tit:'今日巡检完成率',val:res.data.data.percent+'%',color:'#4ae283'}];
         }else{
           this.$message({
             type:'error',
