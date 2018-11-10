@@ -215,7 +215,7 @@ export default {
                 } 
             }]
         },
-        vName:-1,
+        vName:'',
         //日期选择
         value7:utils.time(new Date()/1000,5),
         value8:utils.time(new Date()/1000,5),
@@ -398,6 +398,7 @@ export default {
             dispatch_user_id:this.$store.state.userInfoTotal.userinfo.id
           }
         let state = item.now_state;
+        alert(state);
         if(state==5){ //退单
             this.dialogBoxs = {
                 item:item,
@@ -413,6 +414,7 @@ export default {
                 txt:'是否允许延期处理'
             };
             this.getStatus =2;
+            this.$refs.isRefult.show();
         } 
         
       },
@@ -588,6 +590,9 @@ export default {
         let info ='';
         if(param.infos.localDesc2 && param.infos.localDesc2.info){
           info = param.infos.localDesc2.info
+        }
+        if(!this.vName || this.vName==''){
+          this.vName = '';
         }
         this.$http.post('/pc_ims/write_job',{
           id:param.infos.id,
@@ -872,7 +877,7 @@ export default {
     }
     .tableIn{
       width: 99%;
-      height:3.28rem;
+      height:4rem;
       margin-left: 1%;
       .tableBox{
          margin-left:0;
