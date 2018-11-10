@@ -8,7 +8,7 @@
     @show="getInfo"
     trigger="hover">
     <div class="popover-btn isPointer no-select" slot="reference">
-      <div class="imgBox" v-html="tuliCodes">
+      <div class="imgBox" v-show="v.show" v-html="v.codes" v-for="(v,i) in devicePic" :key="i">
         <!--<img src="../../../../assets/img/airConditioner/device1.png" alt="">-->
       </div>
     </div>
@@ -27,7 +27,7 @@
     components:{
     },
     name: "selfPopover2",
-    props: ['device_id','tuliCodes'],
+    props: ['device_id','devicePic'],
     data () {
       return {
         info:[],
@@ -81,6 +81,14 @@
     mounted() {
 
     },
+    watch:{
+      devicePic:{
+        handler(a,b){
+          this.$forceUpdate();
+        },
+        deep:true,
+      }
+    }
   }
 </script>
 

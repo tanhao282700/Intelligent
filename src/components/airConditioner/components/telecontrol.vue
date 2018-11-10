@@ -10,11 +10,11 @@
     </div>
     <div class="telecontrol">
       <el-tabs class="tabBoxs" v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane name="first">
+        <el-tab-pane name="first" lazy>
           <span slot="label" class="tabItems">{{first}}</span>
           <cold-source-station ref="first" />
         </el-tab-pane>
-        <el-tab-pane name="second">
+        <el-tab-pane name="second" lazy>
           <span slot="label" class="tabItems">{{second}}</span>
           <air-conditioner-end ref="second" />
         </el-tab-pane>
@@ -92,8 +92,10 @@
         console.log(tab.index);
         if (tab.index == 0){
           this.$refs.second.removeMessageEvent();
+          this.$refs.first.addMessageEvent();
         } else if (tab.index == 1) {
           this.$refs.first.removeMessageEvent();
+          this.$refs.second.addMessageEvent();
         }
       },
       toHome(){

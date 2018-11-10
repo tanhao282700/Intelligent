@@ -3,7 +3,7 @@
     <div class="head">
       <span class="title">定时自动控制</span>
       <div class="btnBox">
-        <button @click="switchControl(i)" type="button" v-for="(v,i) in btnLists" v-text="v.tit" :key="i" :class="{active:i==btnActive}"></button>
+        <button v-show="showAllModeBtn" @click="switchControl(i)" type="button" v-for="(v,i) in btnLists" v-text="v.tit" :key="i" :class="{active:i==btnActive}"></button>
       </div>
     </div>
     <div class="body">
@@ -82,6 +82,7 @@
     name: "modeControl",
     data() {
       return {
+        showAllModeBtn:true,
         btnId:-1,
         btnActive:0,
         btnLists:[
@@ -255,15 +256,20 @@
           let data = res.data;
           console.log('模式控制总开关', config, res);
           if (data.code == 0) {
-            if (data.data[0].state == 0){
-              this.btnActive = 1;
-              this.btnId = data.data[0].id;
-            } else if (data.data[0].state == 1) {
-              this.btnActive = 0;
-              this.btnId = data.data[0].id;
-            }else {
-              alert('总开关按钮未知错误！')
+            if (data.data.length !== 0){
+              if (data.data[0].state == 0){
+                this.btnActive = 1;
+                this.btnId = data.data[0].id;
+              } else if (data.data[0].state == 1) {
+                this.btnActive = 0;
+                this.btnId = data.data[0].id;
+              }else {
+                alert('总开关按钮未知错误！')
+              }
+            } else {
+              this.showAllModeBtn = false;
             }
+
           } else {
 
             this.$message(data.message);
@@ -404,6 +410,7 @@
         display: flex;
         align-items: center;
         button{
+          cursor: pointer;
           &:first-of-type{
             margin-right: 0.1rem;
           }

@@ -1,5 +1,10 @@
 <template>
-  <div class="airConditionerEnd">
+  <div
+    v-loading="loading"
+    element-loading-background="rgba(0, 0, 0, 0.5)"
+    element-loading-spinner="el-icon-loading"
+    element-loading-text="拼命加载中"
+    class="airConditionerEnd">
     <div class="rtBtnBox">
       <button @click="showControlFail" type="button">控制失败列表（{{newNum}}）<span v-show="newNum!=0" class="tip"></span></button>
       <button @click="showControlMost" type="button">批量控制</button>
@@ -7,7 +12,7 @@
 
     <div class="deviceDetailBox" id="deviceDetailBox2">
       <div class="deviceSet">
-        <div class="imgBox" v-html="codes">
+        <div class="imgBox" v-show="v.show" v-html="v.codes" v-for="(v,i) in device_pic" :key="i">
           <!--<img src="../../../../assets/img/airConditioner/device1.png" alt="">-->
         </div>
 
@@ -16,7 +21,25 @@
             <div class="left" v-text="tuliTit"></div>
             <self-popover3 :device_id="tuliDeviceId"/>
           </div>
-          <div class="title">温度</div>
+
+          <el-scrollbar style="height:100%">
+            <div class="controlBtnBox">
+              <div class="btnItem" v-for="(v,i) in tuliBtnList" :key="i">
+                <span class="tit">{{v.title}}</span>
+                <div class="selBtnList">
+                  <button @click="tuliBtnClick(v.point_id,v2.id,i,i2)" :class="{active:v2.id==v.now_value}" type="button" v-for="(v2,i2) in v.btnList" v-text="v2.tit" :key="i2"></button>
+                </div>
+              </div>
+              <div class="btnItem" v-for="(v3,i3) in tuliTempBtnList" :key="'a'+i3">
+                <span class="tit">{{v3.title}}</span>
+                <div class="inputBox">
+                  <el-input-number v-model="v3.now_value" @change="tempHandleChange(v3.point_id,v3.now_value)" :min="1" :max="30" label="描述文字"></el-input-number>
+                  <span class="unit" v-text="v3.unit"></span>
+                </div>
+              </div>
+            </div>
+          </el-scrollbar>
+          <!--<div class="title">温度</div>
           <Lines type="h" :wid="93" :left="145"/>
           <div class="inputBox">
             <el-input-number v-model="tempVal" @change="tempHandleChange" :min="1" :max="100" label="描述文字"></el-input-number>
@@ -31,7 +54,7 @@
             <div class="right">
               <button @click="openClosePump(pumpSwitchText)" type="button" class="self-border self-btn"><span class="icon-switch"></span>{{pumpSwitchText}}</button>
             </div>
-          </div>
+          </div>-->
 
         </div>
       </div>
@@ -156,9 +179,40 @@
     name: "airConditionerEnd",
     data() {
       return {
-        tuliTit:'5楼风机',
+        tuliBtnList:[
+          /*{
+            "now_value": "0",
+            "params": "{\"value\": [\"0\", \"1\"], \"showvalue\": [\"开启\", \"关闭\"], \"type\": 0}",
+            "point_id": 566,
+            "title": "主机启停",
+            "unit": "",
+            btnList:[
+              {
+                id:0,
+                tit:'开启'
+              },
+              {
+                id:1,
+                tit:'关闭'
+              }
+            ]
+          }*/
+        ],
+        tuliTempBtnList:[
+          /*{
+            "now_value": "19",
+            "params": "",
+            "point_id": 566,
+            "title": "温度设置2",
+            "unit": "度",
+          }*/
+        ],
+        loading:false,
+        device_pic:[
+
+        ],
+        tuliTit:'',
         tuliDeviceId:'',
-        codes:'',
         showDevice:{
           one:{
             show:false,
@@ -236,7 +290,7 @@
 
         tabActive:0,
         tabData:[
-          {
+          /*{
             id:1,
             title:'送风/回风温度',
             unit:['℃'],
@@ -359,7 +413,7 @@
               ]
 
             }
-          },
+          },*/
         ],
         loopRenderData:[],
         showLoopRender:false,
@@ -403,8 +457,16 @@
       }
     },
     methods: {
+      addMessageEvent(){
+        window.addEventListener('message', this.handleMessage);
+      },
       removeMessageEvent(){
+        //alert('触发2')
         window.removeEventListener('message',this.handleMessage);
+      },
+      tuliBtnClick(point_id,id,i1,i2){
+        this.requestOneKeyControl(point_id,id);
+        this.tuliBtnList[i1].now_value = id;
       },
       hide(){
         if (this.showSingleDevice) {
@@ -493,27 +555,30 @@
             break;
           case 'reDeviceClick':
             //console.log(data.params.clickObjName);
-            this.getEchartsData(data.params.clickObjName);
-            this.object_device.some((item,i)=>{
-              if (item.object_id === data.params.clickObjName) {
-                this.tuliDeviceId = item.device_id;
+            setTimeout(()=>{
+              this.getEchartsData(data.params.clickObjName);
+              this.object_device.some((item,i)=>{
+                if (item.object_id === data.params.clickObjName) {
+                  this.tuliDeviceId = item.device_id;
+                }
+              })
+              if (!this.showSingleDevice) {
+                Velocity($('#deviceDetailBox2'), {
+                  height: '28.15vh',
+                  marginTop: '0.27vh',
+                }, {
+                  duration: 300
+                });
+                Velocity($('#threeDBox2'), {
+                  height: '48.62vh',
+                  marginTop: '2.74vh',
+                }, {
+                  duration: 300
+                });
               }
-            })
-            if (!this.showSingleDevice) {
-              Velocity($('#deviceDetailBox2'), {
-                height: '28.15vh',
-                marginTop: '0.27vh',
-              }, {
-                duration: 300
-              });
-              Velocity($('#threeDBox2'), {
-                height: '48.62vh',
-                marginTop: '2.74vh',
-              }, {
-                duration: 300
-              });
-            }
-            this.showSingleDevice = true;
+              this.showSingleDevice = true;
+            },200)
+
             break;
           case 'cancelDevice':
             console.log(data.params.cancelObject_id)
@@ -523,6 +588,30 @@
       },
 
 
+      //设备点位控制
+      requestOneKeyControl(point_id,nowVal){
+        let that = this;
+        let config = {
+          point_id:point_id,
+          now_value:nowVal
+        }
+        let headers = {
+          //'Content-Type': 'multipart/form-data'
+        }
+        this.$http.get('/realtime_pc/pc/control', config, headers).then(res => {
+          let data = res.data;
+          console.log('点位设备控制2', config, res);
+          if (data.code == 0) {
+            this.$message(data.message);
+
+
+          } else {
+            this.$message(data.message);
+          }
+        }).catch(err=>{
+          this.$message(err);
+        })
+      },
 
       //获取机房3d模型2
       get3DFloor(sysID=this.$store.state.sysList[1].sys_menu_id){
@@ -578,7 +667,7 @@
                 object_device.map((item, i) => {
                   this.changeDeviceState(item.object_id, item.state)
                 })
-              }, 1000)
+              }, 3000)
             }else {
 
               this.options.some((item11,i11)=>{
@@ -643,6 +732,7 @@
       },
       //获取单个设备echarts数据
       getEchartsData(object_id){
+        this.loading = true;
         let that = this;
         let config = {
           object_id:object_id
@@ -652,7 +742,7 @@
         }
         this.$http.get('/hvac_pc/pc/index/device', config, headers).then(res => {
           let data = res.data;
-          console.log('获取echarts数据', config, res);
+          console.log('获取echarts数据2', config, res);
           if (data.code == 0) {
             //报表
             let commtable = data.data.commtable;
@@ -678,16 +768,75 @@
             this.tabData = tempArr1;
             //设备
             let control = data.data.control;
-            let device_info = data.data.device_info;
-            let device_pic = data.data.device_pic;
 
-            this.codes = device_pic[0].codes;
+            let tempArr3 = [];
+            let tempArr333=[];
+            control.map((item3,i3)=>{
+              let params = item3.params;
+              if (params !== '') {
+                let obj33 = {};
+                obj33.now_value = item3.now_value;
+                obj33.title = item3.title;
+                obj33.unit = item3.unit;
+                obj33.point_id = item3.point_id;
+
+                let paramsObj = eval('(' + params + ')');
+                obj33.btnList = [];
+                paramsObj.showvalue.map((item4, i4) => {
+                  let obj34 = {};
+                  obj34.id = paramsObj.value[i4];
+                  obj34.tit = item4;
+                  obj33.btnList.push(obj34);
+                })
+                tempArr3.push(obj33);
+                //console.log('hahaha',eval('('+params+')'))
+              } else {
+                let obj333 = {};
+                obj333.now_value = item3.now_value;
+                obj333.title = item3.title;
+                obj333.unit = item3.unit;
+                obj333.point_id = item3.point_id;
+                obj333.params = item3.params;
+                tempArr333.push(obj333)
+              }
+            })
+            this.tuliBtnList = tempArr3;
+            this.tuliTempBtnList = tempArr333;
+
+
+            let device_info = data.data.device_info;
+
+            this.tuliTit = device_info.name;
+
+            let device_pic = data.data.device_pic;
+            let tempArr2 = [];
+            device_pic.map((item2,i2)=>{
+
+              let obj22 = {};
+              obj22.category_func_id = item2.category_func_id;
+              obj22.codes = item2.codes;
+              obj22.device_pic_2d_id = item2.device_pic_2d_id;
+              obj22.id = item2.id;
+              obj22.title = item2.title;
+              obj22.type = item2.type;
+              obj22.update_date = item2.update_date;
+              if(item2.type == device_info.now_state){
+                obj22.show = true;
+              } else {
+                obj22.show = false;
+              }
+              tempArr2.push(obj22);
+            })
+            this.device_pic = tempArr2;
+            this.loading = false;
+
 
           } else {
-
+            this.loading = false;
             this.$message(data.message);
           }
         }).catch(err=>{
+          this.loading = false;
           this.$message(err);
         })
       },
@@ -817,7 +966,7 @@
             this.showLoopRender = true;*/
             floor.map((item,i)=>{
               let obj = {};
-              obj.id = item.floor_id;//又是floor_id又是id的，我头晕
+              obj.id = item.hasOwnProperty('id')?item.id:undefined;//又是floor_id又是id的，我头晕
 
               obj.label = item.title;
               obj.children = [];
@@ -878,7 +1027,7 @@
 
       },
       look(item){ //查看
-        this.$message('查看什么嘛');
+        this.$message('查看');
       },
       ignore(item){
         console.log('忽略',item)
@@ -910,8 +1059,9 @@
         },200)
 
       },
-      tempHandleChange(val) {
-        console.log(val)
+      tempHandleChange(point_id,val) {
+        this.requestOneKeyControl(point_id,val)
+        //console.log(point_id,val)
       },
       sureControl() {
         console.log(this.parentToggle)
@@ -1092,6 +1242,36 @@
             }
 
           }
+
+          .controlBtnBox{
+            .btnItem{
+              .vhMT(10);
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              .selBtnList{
+                margin-left: 0.15rem;
+                button{
+                  width: 0.5rem;
+                  height: 0.32rem;
+                  background-color: rgba(59, 137, 249, 0.2);
+                  outline: none;
+                  border: 0;
+                  border-radius: 4px;
+                  color: #fff;
+                  margin-left: 0.1rem;
+                  cursor: pointer;
+                  &.active{
+                    background-color: #3a89f9;
+                  }
+                  &:first-of-type{
+                    margin-left: 0;
+                  }
+                }
+              }
+            }
+          }
+
           .title{
             .vhMT(15);
             font-family: PingFangSC-Regular;
@@ -1106,8 +1286,7 @@
           .inputBox{
             display: flex;
             align-items: center;
-            .vhMT(8);
-            width: 100%;
+            width: 2rem;
             .vh(42);
             background-color: #011f51;
             box-shadow: 0px 0px 2px 0px
@@ -1118,13 +1297,13 @@
             position: relative;
             .unit{
               position: absolute;
-              left: 2.2rem;
+              left: 1.2rem;
               top: 0;
               height: 100%;
               display: flex;
               align-items: center;
               font-family: PingFangSC-Regular;
-              font-size: 0.24rem;
+              font-size: 0.20rem;
               font-weight: normal;
               font-stretch: normal;
               letter-spacing: 0px;
@@ -1153,7 +1332,7 @@
             .el-input-number .el-input__inner{
               border: 0 !important;
               font-family: PingFangSC-Regular;
-              font-size: 0.24rem!important;
+              font-size: 0.20rem!important;
               font-weight: normal;
               font-stretch: normal;
               letter-spacing: 0px;
@@ -1518,7 +1697,7 @@
                 .el-input-number .el-input{
                   display: flex;
                   justify-content: center;
-                  width: 100% !important;
+                  width: 100%!important;
                 }
                 .el-input-number__decrease, .el-input-number__increase{
                   font-size: 0.2rem;

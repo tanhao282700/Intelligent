@@ -1,6 +1,10 @@
 <template>
-  <div class="coldSourceStation">
-
+  <div
+    v-loading="loading"
+    element-loading-background="rgba(0, 0, 0, 0.5)"
+    element-loading-spinner="el-icon-loading"
+    element-loading-text="拼命加载中"
+    class="coldSourceStation">
     <div class="deviceLists">
       <div class="part" v-for="(item,i) in lists1" :key="i">
         <div class="img" v-html="item.self_id==1102?imgArr[0]:item.self_id==1103?imgArr[1]:item.self_id==1108?imgArr[2]:''">
@@ -19,7 +23,7 @@
     </div>
     <div class="deviceDetailBox" id="deviceDetailBox">
       <div class="deviceSet">
-        <self-popover2 :device_id="tuliDeviceId" :tuliCodes="codes" />
+        <self-popover2 :device_id="tuliDeviceId" :devicePic="device_pic" />
 
         <el-scrollbar style="height:100%">
           <div class="controlBtnBox">
@@ -27,6 +31,18 @@
               <span class="tit">{{v.title}}</span>
               <div class="selBtnList">
                 <button @click="tuliBtnClick(v.point_id,v2.id,i,i2)" :class="{active:v2.id==v.now_value}" type="button" v-for="(v2,i2) in v.btnList" v-text="v2.tit" :key="i2"></button>
+              </div>
+            </div>
+            <div class="btnItem" v-for="(v2,i2) in tuliTempBtnList" :key="i2+1">
+              <span class="tit">{{v2.title}}</span>
+              <div class="inputBox">
+                <div class="showState">
+                  <p class="text">
+                    <input type="text" v-model="v2.now_value" ref="tempInput" :readonly="!btnActive" oninput="value=value.replace(/[^\d]/g,'')" maxlength="2">
+                    <span v-text="v2.unit"></span>
+                  </p>
+                  <i :class="['editBtn',{one:!btnActive},{two:btnActive}]" @click="changeEditState(v2.point_id,v2.now_value,i2)"></i>
+                </div>
               </div>
             </div>
           </div>
@@ -136,6 +152,8 @@
       props:['sysId'],
       data() {
         return {
+          device_pic:[],
+          loading:false,
           imgArr:['<img src="/static/img/zhuji.png" alt="主机">','<img src="/static/img/shuibeng.png" alt="水泵">','<img src="/static/img/lengque.png" alt="冷却塔">'],
           tuliBtnList:[
             /*{
@@ -154,6 +172,15 @@
                   tit:'关闭'
                 }
               ]
+            }*/
+          ],
+          tuliTempBtnList:[
+            /*{
+              "now_value": "11",
+              "params": "",
+              "point_id": 566,
+              "title": "温度设置",
+              "unit": "度",
             }*/
           ],
           tuliDeviceId:'',
@@ -199,7 +226,6 @@
           ],
           selectedOptions2: [],
           btnActive:false,
-          tempVal:8,
           parentToggle:false,
 
           tabData:[
@@ -354,7 +380,11 @@
         }
       },
       methods: {
+        addMessageEvent(){
+          window.addEventListener('message', this.handleMessage);
+        },
         removeMessageEvent(){
+          //alert('触发1')
           window.removeEventListener('message',this.handleMessage);
         },
         tuliBtnClick(point_id,id,i1,i2){
@@ -447,27 +477,31 @@
               this.postDeviceData(this.deviceStates);
               break;
             case 'reDeviceClick':
+              //点击模型响应事件
               //console.log(data.params.clickObjName);
-              this.getEchartsData(data.params.clickObjName);
-              this.object_device.some((item,i)=>{
-                if (item.object_id === data.params.clickObjName) {
-                  this.tuliDeviceId = item.device_id;
+              setTimeout(()=>{
+                this.getEchartsData(data.params.clickObjName);
+                this.object_device.some((item,i)=>{
+                  if (item.object_id === data.params.clickObjName) {
+                    this.tuliDeviceId = item.device_id;
+                  }
+                })
+                if (!this.showSingleDevice) {
+                  Velocity($('#deviceDetailBox'), {
+                    height: '24.72vh',
+                    marginTop: '2.74vh',
+                  }, {
+                    duration: 300
+                  });
+                  Velocity($('#threeDBox'), {
+                    height: '36.95vh'
+                  }, {
+                    duration: 300
+                  });
                 }
-              })
-              if (!this.showSingleDevice) {
-                Velocity($('#deviceDetailBox'), {
-                  height: '24.72vh',
-                  marginTop: '2.74vh',
-                }, {
-                  duration: 300
-                });
-                Velocity($('#threeDBox'), {
-                  height: '36.95vh'
-                }, {
-                  duration: 300
-                });
-              }
-              this.showSingleDevice = true;
+                this.showSingleDevice = true;
+              },200)
+
               break;
             case 'cancelDevice':
               console.log(data.params.cancelObject_id)
@@ -518,6 +552,7 @@
         },
         //获取单个设备echarts数据
         getEchartsData(object_id){
+          this.loading = true;
           let that = this;
           let config = {
             object_id:object_id
@@ -556,35 +591,71 @@
               //console.log('通知设备',control)
 
               let tempArr2 = [];
+              let tempArr20 = [];
               control.map((item2,i2)=>{
-                let obj22 = {};
-                obj22.now_value = item2.now_value;
-                obj22.title = item2.title;
-                obj22.unit = item2.unit;
-                obj22.point_id = item2.point_id;
                 let params = item2.params;
-                let paramsObj = eval('('+params+')');
-                obj22.btnList = [];
-                paramsObj.showvalue.map((item3,i3)=>{
+                if (params !== '') {
+                  let obj22 = {};
+                  obj22.now_value = item2.now_value;
+                  obj22.title = item2.title;
+                  obj22.unit = item2.unit;
+                  obj22.point_id = item2.point_id;
+
+                  let paramsObj = eval('(' + params + ')');
+                  obj22.btnList = [];
+                  paramsObj.showvalue.map((item3, i3) => {
+                    let obj23 = {};
+                    obj23.id = paramsObj.value[i3];
+                    obj23.tit = item3;
+                    obj22.btnList.push(obj23);
+                  })
+                  tempArr2.push(obj22);
+                  //console.log('hahaha',eval('('+params+')'))
+                }else {
                   let obj23 = {};
-                  obj23.id = paramsObj.value[i3];
-                  obj23.tit = item3;
-                  obj22.btnList.push(obj23);
-                })
-                tempArr2.push(obj22);
-                console.log('hahaha',eval('('+params+')'))
+                  obj23.now_value = item2.now_value;
+                  obj23.title = item2.title;
+                  obj23.unit = item2.unit;
+                  obj23.point_id = item2.point_id;
+                  obj23.params = item2.params;
+                  tempArr20.push(obj23);
+                }
               })
               this.tuliBtnList = tempArr2;
+              this.tuliTempBtnList = tempArr20;
               let device_info = data.data.device_info;
               let device_pic = data.data.device_pic;
 
-              this.codes = device_pic[device_info.now_state].codes;
+              let tempArr3 = [];
+              device_pic.map((item3,i3)=>{
+
+                let obj33 = {};
+                obj33.category_func_id = item3.category_func_id;
+                obj33.codes = item3.codes;
+                obj33.device_pic_2d_id = item3.device_pic_2d_id;
+                obj33.id = item3.id;
+                obj33.title = item3.title;
+                obj33.type = item3.type;
+                obj33.update_date = item3.update_date;
+                if(item3.type == device_info.now_state){
+                  obj33.show = true;
+                } else {
+                  obj33.show = false;
+                }
+                tempArr3.push(obj33);
+              })
+              this.device_pic = tempArr3;
+
+
+
+              this.loading = false;
 
             } else {
-
+              this.loading = false;
               this.$message(data.message);
             }
           }).catch(err=>{
+            this.loading = false;
             this.$message(err);
           })
         },
@@ -657,7 +728,7 @@
                       object_device.map((item, i) => {
                         this.changeDeviceState(item.object_id, item.state)
                       })
-                    }, 1000)
+                    }, 3000)
                   }
                 })
               }
@@ -739,12 +810,13 @@
         tempHandleChange() {
           this.$refs.dialog.show();
         },
-        changeEditState(){
+        changeEditState(point_id,val,i){
           this.btnActive = !this.btnActive;
           if (this.btnActive) {
-            this.$refs.tempInput.focus();
+            this.$refs.tempInput[i].focus();
           } else {
-            this.$refs.tempInput.blur();
+            this.$refs.tempInput[i].blur();
+            this.requestOneKeyControl(point_id,val)
           }
         },
         sureControl() {
@@ -788,14 +860,10 @@
       mounted() {
 
         // 在外部vue的window上添加postMessage的监听，并且绑定处理函数handleMessage
-        window.addEventListener('message', this.handleMessage)
+        window.addEventListener('message', this.handleMessage);
         this.iframeWin = this.$refs.iframe.contentWindow
 
 
-
-
-        let str = "{\"value\": [\"0\",\"1\"],\"showvalue\": [\"手动\",\"自动\"],\"type\":0}";
-        console.log('啦啦啦',eval('('+str+')'))
 
         /*// 这里就拿到了iframe的对象
         console.log(this.$refs.iframe)
@@ -897,6 +965,7 @@
         #4a90e2;
         border-radius: 4px;
         .controlBtnBox{
+          margin-left: 0.6rem;
           .btnItem{
             .vhMT(10);
             display: flex;
@@ -906,7 +975,7 @@
               margin-left: 0.15rem;
               button{
                 width: 0.5rem;
-                height: 0.32rem;
+                .vh(32);
                 background-color: rgba(59, 137, 249, 0.2);
                 outline: none;
                 border: 0;
@@ -919,6 +988,75 @@
                 }
                 &:first-of-type{
                   margin-left: 0;
+                }
+              }
+            }
+          }
+
+          .inputBox{
+            display: flex;
+            align-items: center;
+            width: 1.1rem;
+            .vh(32);
+            background-color: #011f51;
+            box-shadow: 0px 0px 2px 0px
+            rgba(87, 113, 176, 0.15),
+            inset 0px 0px 3px 0px
+            rgba(0, 0, 0, 0.33);
+            border: solid 1px #000c22;
+            .showState{
+              position: relative;
+              width: 100%;
+              height: 100%;
+              display: flex;
+              align-items: center;
+              .text{
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                input{
+                  width: 0.35rem;
+                  border: 0;
+                  outline: none;
+                  background-color: transparent;
+
+                  font-family: PingFangSC-Regular;
+                  font-weight: normal;
+                  font-stretch: normal;
+                  letter-spacing: 0px;
+                  color: #fa6074;
+                  text-shadow: 2px 2px 4px rgba(245, 108, 108, 0.6);
+                  text-align: center;
+                }
+                span{
+                  font-family: PingFangSC-Regular;
+                  font-weight: normal;
+                  font-stretch: normal;
+                  letter-spacing: 0px;
+                  color: #fa6074;
+                  text-shadow: 2px 2px 4px rgba(245, 108, 108, 0.6);
+                  text-align: center;
+                }
+              }
+              .editBtn{
+                display: inline-block;
+
+
+                position: absolute;
+                right: 0.06rem;
+                .vhTop(8);
+                width: 0.15rem;
+                height: 0.15rem;
+                color: #b5d7ff;
+                cursor: pointer;
+                &.one{
+                  background: url("../../../../assets/img/airConditioner/icon_edit.png") no-repeat center;
+                  background-size: 100% 100%;
+                }
+                &.two{
+                  background: url("../../../../assets/img/airConditioner/icon_save.png") no-repeat center;
+                  background-size: 100% 100%;
                 }
               }
             }

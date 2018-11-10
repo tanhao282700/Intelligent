@@ -153,11 +153,19 @@
           <i class="el-icon-circle-close colseBoxs" style="position: absolute;right: -5px;top: -5px" @click="hideVideo"></i>
           <div class="title" v-text="videoTit"></div>
           <div class="videoBox">
-            <video-player  class="video-player vjs-custom-skin"
+            <!--<video-player  class="video-player vjs-custom-skin"
                            ref="videoPlayer"
                            :playsinline="true"
                            :options="playerOptions"
-            ></video-player>
+            ></video-player>-->
+            <iframe
+              name="myFrame22"
+              frameborder="0"
+              width="100%"
+              height="100%"
+              :src="videoUrl">
+
+            </iframe>
             <div class="videoList">
               <button v-for="(v,i) in videoList" :class="['item',{active:videoBtnActive==i}]" type="button" @click="selVideo(v,i)" v-text="(i+1)<10?('0'+(i+1)):(i+1)"></button>
             </div>
@@ -189,6 +197,7 @@
     name:'fireMonitor',
     data () {
       return {
+        videoUrl:'',
         floorTit:'',
         cirStateArr:[false,false,false,false,false],
         showTip:true,
@@ -290,11 +299,17 @@
         },
         isShowVideo:false,
         videoBtnActive:0,
-        videoList:[
+        /*videoList:[
           {id:1,url:'http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4',poster:'https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1536198298&di=a980cc1553e2bec11ddef063aeba25d9&src=http://pic.58pic.com/58pic/15/33/18/13A58PICi3r_1024.jpg'},
           {id:2,url:'http://221.228.226.23/11/t/j/v/b/tjvbwspwhqdmgouolposcsfafpedmb/sh.yinyuetai.com/691201536EE4912BF7E4F1E2C67B8119.mp4',poster:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1541311886121&di=4844f0b21c6a53dfb0870fc825e4cf71&imgtype=0&src=http%3A%2F%2Fpic.58pic.com%2F58pic%2F14%2F45%2F78%2F02j58PICEVZ_1024.jpg'},
           {id:3,url:'http://221.228.226.5/14/z/w/y/y/zwyyobhyqvmwslabxyoaixvyubmekc/sh.yinyuetai.com/4599015ED06F94848EBF877EAAE13886.mp4',poster:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1541311969570&di=b9adee174d91efa6b4871668423626e8&imgtype=0&src=http%3A%2F%2Fpic.xtuan.com%2Fupload%2FcasePictures%2F20131218%2F09565524262_w.gif'},
           {id:4,url:'http://221.228.226.5/15/t/s/h/v/tshvhsxwkbjlipfohhamjkraxuknsc/sh.yinyuetai.com/88DC015DB03C829C2126EEBBB5A887CB.mp4',poster:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1541311994921&di=cc3192752c3d864644e618ff51f239ca&imgtype=0&src=http%3A%2F%2Fpic.qiantucdn.com%2F58pic%2F17%2F92%2F61%2F55ad624dd33e8_1024.jpg'},
+        ],*/
+        videoList:[
+          {id:1,url:'/static/testVideo/test1.html',poster:'https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1536198298&di=a980cc1553e2bec11ddef063aeba25d9&src=http://pic.58pic.com/58pic/15/33/18/13A58PICi3r_1024.jpg'},
+          {id:2,url:'/static/testVideo/test2.html',poster:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1541311886121&di=4844f0b21c6a53dfb0870fc825e4cf71&imgtype=0&src=http%3A%2F%2Fpic.58pic.com%2F58pic%2F14%2F45%2F78%2F02j58PICEVZ_1024.jpg'},
+          {id:3,url:'/static/testVideo/test3.html',poster:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1541311969570&di=b9adee174d91efa6b4871668423626e8&imgtype=0&src=http%3A%2F%2Fpic.xtuan.com%2Fupload%2FcasePictures%2F20131218%2F09565524262_w.gif'},
+          {id:4,url:'/static/testVideo/test4.html',poster:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1541311994921&di=cc3192752c3d864644e618ff51f239ca&imgtype=0&src=http%3A%2F%2Fpic.qiantucdn.com%2F58pic%2F17%2F92%2F61%2F55ad624dd33e8_1024.jpg'},
         ]
 
       }
@@ -325,17 +340,20 @@
       },
       selVideo(item,index){
         this.videoBtnActive = index;
-        this.playerOptions.poster = item.poster;
-        this.playerOptions.sources[0].src = item.url;
+        this.videoUrl = item.url;
+        // this.playerOptions.poster = item.poster;
+        // this.playerOptions.sources[0].src = item.url;
       },
       showVideo(url,index){
         this.videoTit = url.time;
         if (index !==4 ) {
-          this.playerOptions.poster = this.videoList[index].poster;
-          this.playerOptions.sources[0].src = this.videoList[index].url;
+          this.videoUrl = this.videoList[index].url;
+          // this.playerOptions.poster = this.videoList[index].poster;
+          // this.playerOptions.sources[0].src = this.videoList[index].url;
         } else {
-          this.playerOptions.poster = this.videoList[0].poster;
-          this.playerOptions.sources[0].src = this.videoList[0].url;
+          this.videoUrl = this.videoList[0].url;
+          // this.playerOptions.poster = this.videoList[0].poster;
+          // this.playerOptions.sources[0].src = this.videoList[0].url;
         }
         this.isShowVideo = true;
         //alert(url)
