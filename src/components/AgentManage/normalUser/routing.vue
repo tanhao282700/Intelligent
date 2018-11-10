@@ -185,9 +185,10 @@ export default {
                       const btnss = {
                           item:param.row,
                       };
+                      console.log(btnss.item)
                       return h(deal,{
-                        props: { btnss:btnss},
-                        on:{agree:this.agree,refult:this.refult}
+                          props: { btnss:btnss},
+                          on:{agree:this.agree,refult:this.refult}
                       });
                   }
               },
@@ -288,6 +289,7 @@ export default {
           if(res.data.code==0){
             let data = res.data.data.info;
             let zhanshi = res.data.data.zhanshi;
+            this.newData.item = data;
             this.newData.tableData.th = [
               {prop:'serial',label:'序号'},
               {prop:'time',label:'日期'}];
@@ -332,29 +334,69 @@ export default {
     },
     dealWork(item,type,three){
       if(three){
-        item.info = item.complete_info;
+        item.id = item.item.id;
+        if(item.item.user_id){
+          item.user_id = ''
+        }
+        if(item.item.newuser_id){
+          item.newuser_id = '';
+        }
+        if(!item.item.complete_info){
+          this.$message({
+            type:'error',
+            message:'请输入现场处理情况',
+            duration:2000
+          })
+          return;
+        }else{
+          item.info = item.item.complete_info;
+        }
+        
         let data = this.newData.tableData.data;
         let th = this.newData.tableData.th;
+        let zhanshi = {
+          list:[]
+        };
+        if(type==2){
+
+        }
         $.each(th,(n,k)=>{
-          console.log(k);
+          if(k.point_id!=undefined){
+             if(!data[0][k.prop]){
+                this.$message({
+                  type:'error',
+                  message:'请输入'+k.label,
+                  duration:2000
+                })
+                return;
+             }else{
+                zhanshi.list.push({name:k.label,now_value:data[0][k.prop],point_id:k.point_id,type:k.type,select:k.select});
+             }
+             
+          }
         })
-        console.log(this.newData.tableData.data);
-        //item.form = 
+        
+        item.form = zhanshi.list;
+      }else{
+        item = item.item;
+        if(!item.info){
+          item.info = '';
+        }
+        if(!item.newuser_id){
+          item.newuser_id = ''
+        }
+        if(!item.list){
+          item.form = {};
+        }
       }
-      item = item.item;
-      if(!item.info){
-        item.info = '';
-      }
-      if(!item.newuser_id){
-        item.newuser_id = ''
-      }
+      
       this.$http.post('/pc_ims/admin/write_inspectionlist',{
         id:item.id,
         type:type,
         info:item.info,
         user_id:item.user_id,
         newuser_id:item.newuser_id,
-        form:JSON.parse(item.form).list
+        form:{list:JSON.stringify(item.form)}
       }).then(res=>{
         if(res.data.code==0){
           console.log(res.data.data);

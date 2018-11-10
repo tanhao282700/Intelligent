@@ -182,10 +182,10 @@ export default {
         total:0,//总完成率
         data:[0,0,0,0],
         crate:{
-          monW:'56.2',
-          monR:'78.9',
-          yearW:'88.9',
-          yearR:'71.9'
+          monW:'0',
+          monR:'0',
+          yearW:'0',
+          yearR:'0'
         },
       },
       barData:{//工单&巡检完成率的数据
@@ -213,10 +213,10 @@ export default {
               '#f56c6c','#008aff'
             ],
             size:[0,'72.89%'],
-            total:0,
+            total:1,
             data:[
-              {value:24, name:0+'%',tit:'已完成数'},
-              {value:88, name:0+'%',tit:'未完成数'},
+              {value:0, name:0+'%',tit:'已完成数'},
+              {value:0, name:0+'%',tit:'未完成数'},
             ],
         },
         echartCirData4:{//巡检的数据
@@ -225,10 +225,10 @@ export default {
               '#f56c6c','#008aff'
             ],
             size:[0,'72.89%'],
-            total:0,
+            total:1,
             data:[
-              {value:2, name:0+'%',tit:'未完成数'},
-              {value:100, name:0+'%',tit:'已完成数'},
+              {value:0, name:0+'%',tit:'未完成数'},
+              {value:0, name:0+'%',tit:'已完成数'},
             ],
         },
 

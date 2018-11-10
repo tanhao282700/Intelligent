@@ -101,7 +101,7 @@ export default {
                     },
                     formatter:function(params){
                        // console.log(params);
-                        return ((params.value / totleNum)*100).toFixed(1)  + "% " + params.value; 
+                        return ((params.value / totleNum)*100).toFixed(2)  + "% " + params.value; 
 
                     }//'{c}'
                 },

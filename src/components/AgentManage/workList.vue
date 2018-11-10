@@ -380,6 +380,7 @@ export default {
         })
       },
       agree(item){ //同意
+        console.log(item);
         this.detalrowdata = {
             infos:{
                 id:item.id,
@@ -390,13 +391,13 @@ export default {
                   info:''
                 }
             },
-            type:item.now_state,
+            type:6,
             end_time:'',
             user_name:this.$store.state.userInfoTotal.userinfo.name,
             dispatch_user_id:this.$store.state.userInfoTotal.userinfo.id
           }
         let state = item.now_state;
-        if(state==5){ //退单
+        if(state==6){ //退单
             this.dialogBoxs = {
                 item:item,
                 state0:1,
@@ -451,13 +452,14 @@ export default {
         this.$refs.send.show();
       },
       sendInfosShow(form){
-        console.log(form)
+       // console.log(form)
         this.$http.post('/pc_ims/admin/send_job',form).then(res=>{
           if(res.data.code==0){
             this.$message({
               type:'success',
               message:res.data.msg
             })
+            this.$refs.send.hide();
             this.getTableList();
           }else{
             this.$message({
@@ -873,7 +875,7 @@ export default {
     // align-items: center;
     justify-content: center;
     .dispatchBtn{
-      margin-top:0.2rem;
+      margin-top:0.4rem;
       width: 0.6rem;
       height: 0.6rem;
       border-radius: 50%;
