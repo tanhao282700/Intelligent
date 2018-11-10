@@ -13,16 +13,17 @@ nav.tabNav span a{color: #cdcdcd;cursor: pointer;padding-left: 20px;}
 nav.tabNav span a.on{color:#008aff;}
 .cursor{cursor: pointer;}
 .floatRt{float:right!important;}
-.borderShadow{width:100%;height:100%;position: relative;padding-top: 50px;padding-bottom: 10px;-webkit-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);-moz-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);box-shadow:0 0 10px rgba(74, 144, 226, 0.22);}
+.borderShadow{width:100%;height:100%;position: relative;padding-top: 0.5rem;padding-bottom: 10px;-webkit-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);-moz-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);box-shadow:0 0 10px rgba(74, 144, 226, 0.22);}
 .tabsDomBox{padding-top: 0.85rem;position: relative;width:100%;height:100%;}
 .tableBox{width:100%;height:100%;position:relative;box-sizing:border-box;padding-bottom:50px;}
 .navCrumbs{position: absolute;top:50px;left:0;display: block;height:30px;line-height: 30px;color:#4d5d76;font-size: 0.12rem;}
 .navCrumbs>span{color:#008aff;}
-.tabsDomBox .searchConditionBox{position: absolute;left:0;top:0px;height:50px;display: block;width:100%;padding-top:9px;padding-left:15px;}
-.searchConditionBox .dateBox{height:32px;padding-right:20px;float: left;}
+.tabsDomBox .searchConditionBox{position: absolute;left:0;top:0px;height:0.5rem;display: flex;align-items:center;width:100%;padding-left:15px;}
+.searchConditionBox .dateBox{height:0.32rem;padding-right:20px;float: left;}
 .dateBox .el-input__inner,.dateBox .el-input{height:100%!important;}
-.btn{padding:0 15px;color:#fff;border-radius:2px;background: #3a84ee;border:1px solid #1989fa;height:32px;line-height:32px;cursor: pointer;width:0.88rem;font-size: 0.14rem!important;}
+.btn{padding:0 15px;color:#fff;border-radius:2px;background: #3a84ee;border:1px solid #1989fa;height:0.32rem;line-height:0.32rem;cursor: pointer;width:0.88rem;font-size: 0.14rem!important;}
 .btnExport{margin-right:15px;}
+.tabsDomBox .searchConditionBox .btnExport.floatRt{position: absolute;right:15px;top:50%;margin-top:-0.16rem;}
 .tableBox .el-table__header{background:rgba(0,0,0,.25);}
 .el-pagination__sizes{display:none!important;}
 .tableBox .el-pagination.is-background .btn-next,.tableBox .el-pagination.is-background .btn-prev,.tableBox .el-pagination.is-background .el-pager li{width:0.24px!important;height:24px!important;min-width: 20px;margin-right:10px!important;margin-left: 0!important;line-height: 24px;color:#008aff;}
@@ -34,9 +35,9 @@ nav.tabNav span a.on{color:#008aff;}
 .tableBox .el-pagination__jump{margin-right:10px;}
 .tableBox .el-table thead th.is-leaf{padding:0!important;border:0!important;}
 .tabsDomBox0{padding-top: 170px;position: relative;height: 100%;}
-.tabsDomBox0 .el-select .el-input__inner{height:32px;width:0.98rem;font-size: 0.12rem!important;}
+.tabsDomBox0 .el-select .el-input__inner{height:0.32rem;width:0.98rem;font-size: 0.12rem!important;}
 .el-select:hover .el-input__inner,.el-input__inner:hover{border:1px solid #1989fa;}
-.tabsDomBox0 .el-select{margin-top:14px;margin-left: 20px;}
+.tabsDomBox0 .el-select{margin-left: 20px;}
 .tabsDomBox0 .el-select:nth-child(2){margin-left: 10px;}
 .floorImgBox i:hover .pop{display: block;}
 /*.floorImgBox i .pop:hover{display: none;}*/
@@ -59,7 +60,7 @@ nav.tabNav span a.on{color:#008aff;}
 .popBgBox .popDoorControl span:nth-child(2){color:#36fceb;text-decoration: underline;margin-left: 10px;font-size: 0.14rem;cursor: pointer;}
 .arrowLeft{position:absolute;left:5px;top:3px;display:block;width: 0;height: 0;border-top: 10px solid transparent;border-right: 15px solid #022d6b;border-bottom: 10px solid transparent;}
 .popBgBox .popDoorStatus span,.popBgBox .popDoorControl span{float: left;}
-.topShadow{position: absolute;top:90px;-webkit-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);-moz-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);box-shadow:0 0 10px rgba(74, 144, 226, 0.22);display: block;width: 100%;height:60px;}
+.topShadow{position: absolute;top:90px;-webkit-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);-moz-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);box-shadow:0 0 10px rgba(74, 144, 226, 0.22);width: 100%;height:60px;display: flex;align-items:center;}
 .bottomShadow{position:relative;width:100%;height:100%;-webkit-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);-moz-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);box-shadow:0 0 10px rgba(74, 144, 226, 0.22);}
 .bottomShadow .floorImgBox{position:absolute;display:block;left:0;top:0;width:100%;height:100%;}
 .bottomShadow .floorImgBox img{display: block;width:100%;height:100%;}
@@ -92,7 +93,7 @@ nav.tabNav span a.on{color:#008aff;}
 .doorWarning{border:1px solid #e04f4f;background:#FF5D3B;}
 .doorOpen{border:1px solid #fff;background:#fff;}
 .marginRt10{margin-right: 10px!important;}
-.exportIcon{display: inline-block;width:16px;height:16px;background:url(../../assets/img/doorControl/export.png) no-repeat;background-size: 100% 100%;margin-right:10px;margin-bottom: -3px;}
+.exportIcon{display: inline-block;width:0.16rem;height:0.16rem;background:url(../../assets/img/doorControl/export.png) no-repeat;background-size: 100% 100%;margin-right:0.1rem;margin-bottom: -0.03rem;}
 /*  门禁模块样式  e*/
 
 /* 视频监控  s*/
