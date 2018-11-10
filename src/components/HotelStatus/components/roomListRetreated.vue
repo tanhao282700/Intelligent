@@ -32,7 +32,7 @@
                 <el-table-column prop="phone" label="手机号"  align="cneter"></el-table-column>
                 <el-table-column prop="num" label="入住人数"  align="cneter"></el-table-column>
                 <el-table-column prop="stay_time" label="入住时间" align="cneter"></el-table-column>
-                <el-table-column prop="leave_time" label="退房时间" width="200" align="cneter"></el-table-column>
+                <el-table-column prop="leave_time" label="退房时间" align="cneter"></el-table-column>
             </el-table>
             <!--分页器-->
             <div class="paginationBox">

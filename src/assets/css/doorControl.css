@@ -14,7 +14,7 @@ nav.tabNav span a.on{color:#008aff;}
 .cursor{cursor: pointer;}
 .floatRt{float:right!important;}
 .borderShadow{width:100%;height:100%;position: relative;padding-top: 50px;padding-bottom: 10px;-webkit-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);-moz-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);box-shadow:0 0 10px rgba(74, 144, 226, 0.22);}
-.tabsDomBox{padding-top: 0.9rem;position: relative;width:100%;height:100%;}
+.tabsDomBox{padding-top: 0.85rem;position: relative;width:100%;height:100%;}
 .tableBox{width:100%;height:100%;position:relative;box-sizing:border-box;padding-bottom:50px;}
 .navCrumbs{position: absolute;top:50px;left:0;display: block;height:30px;line-height: 30px;color:#4d5d76;font-size: 0.12rem;}
 .navCrumbs>span{color:#008aff;}
@@ -80,8 +80,8 @@ nav.tabNav span a.on{color:#008aff;}
 .bottomShadow .floorImgBox i.door11{left:734px;top:119px;}
 .bottomShadow .floorImgBox i.door12{left:822px;top:350px;}*/
 
-.doorStatusBox{position: absolute;right:0;top:22px;height:16px;}
-.doorStatusBox li{float: left;padding:0 20px;border-right:2px solid #4a90e2;height:16px;line-height: 16px;font-size: 0.16rem;}
+.doorStatusBox{position: absolute;right:0;top:0;height:100%;line-height: 60px;}
+.doorStatusBox li{padding:0 20px;border-right:2px solid #4a90e2;height:0.16rem;line-height: 0.16rem;font-size: 0.16rem;display: inline;position: relative;}
 .doorStatusBox li:last-child{border:0px;}
 .doorStatusBox li span:first-child{padding-right:20px;}
 .doorAllN{color: #f38a00;font-size: 0.18rem;}
@@ -151,8 +151,8 @@ video{object-fit:fill;}
 .maintenanceRecord ul.devHistryList>li span.dateHistryBox a i{position:absolute;left: 0;top:0;display: block;width:1px;height:12px;background:linear-gradient(180deg,rgba(0,193,255,1) 0%,rgba(0,142,254,1) 100%); }
 .maintenanceRecord ul.devHistryList>li span.maintenanceContent{color:#fff;font-size: 0.12rem;display: block;width:100%;height:28px;background:#011f51;line-height: 28px;padding-left: 6px;margin-top:4px;box-shadow:0px 0px 1px 0px rgba(87,113,176,0.15),0px 0px 2px 0px rgba(0,0,0,0.33);}
 
-.hotelStatus{width:100%;height:100%;padding-top: 0.9rem;position:relative;}
-.hotelMainContent{width:100%;height:100%;position: relative;padding-left:240px;}
+.hotelStatus{width:100%;height:100%;padding-top: 0.85rem;position:relative;}
+.hotelMainContent{width:100%;height:100%;position: relative;padding-left:2.4rem;}
 .hotelMainInfo{position:absolute;top:0px;left:0;width:2.2rem;height:100%;box-shadow:0px 2px 5px 0px rgba(74,144,226,0.22),1px 1px 1px 0px rgba(248,253,255,0.15),0px 0px 1px 0px rgba(74,144,226,1);border-radius:4px;}
 .hotelMainInfo li{width:100%;height:40px;padding-left: 10px;position:relative;background:rgba(30,69,155,0.35);}
 .hotelMainInfo li:first-child{margin-bottom: 15px;background:rgba(0,0,0,.2);border-radius:4px 4px 0 0;}
