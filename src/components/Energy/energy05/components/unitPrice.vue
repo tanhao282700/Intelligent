@@ -70,8 +70,9 @@
               <span>元</span>
             </li>
     			</ul>
-    			<div class="addMode" @click="addMode"><span><i class="el-icon-circle-plus"></i>添加模式</span></div>
+
 			</el-form>
+        <div class="addMode" @click="addMode"><span><i class="el-icon-circle-plus"></i>添加模式</span></div>
             <div class="btnGroupBox">
                 <span @click="hideModel">取消</span>
                 <span @click="setPrise" class="btnOk">确定</span>
@@ -344,7 +345,7 @@
     cursor:pointer;
   }
   .thUnit .el-form{
-    max-height:5rem;
+    max-height:70%;
     overflow-y:auto;
   }
   .thUnit .el-form ul.itemsBox li:first-child .liCloseBox{
