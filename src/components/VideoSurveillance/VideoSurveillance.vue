@@ -64,7 +64,7 @@
 	        		<button class="videoDeviceInfo floatRt" @click="deviceInfoGet(onVideoId)">设备信息</button>
 	        	</div>
 	        	<div class="videoPanelBox">
-                    <div id="videoElement"></div>      
+                    <video id="videoElement" width="100%" height="100%"></video>
                 </div>
         	</div>
         	<div class="deviceInfoPop" v-show="isDeviceInfoPopShow">
@@ -85,6 +85,7 @@
 </template>
 
 <script>
+    import '../../assets/js/flv.min.js'
 
 	import sysHead from '../common/sysHead.vue'
 	import deviceInfo from './components/deviceInfo.vue'
@@ -229,6 +230,26 @@
                     });
                 });
 
+                this.videoNow();
+            },
+            videoNow(){
+                if (flvjs.isSupported()) {
+                    var videoElement = document.getElementById('videoElement');
+                    var flvPlayer = flvjs.createPlayer({
+                            type: 'flv',
+                            isLive: true,
+                            enableStashBuffer:true,
+                            hasAudio: false,
+                            stashInitialSize: 384,
+                            hasVideo: true,
+                            enableWorker: true,
+                            autoCleanupSourceBuffer: true,
+                            url: 'ws://120.76.20.236:8081/action=stream,project=14,camera=25??'
+                    });
+                    flvPlayer.attachMediaElement(videoElement);
+                    flvPlayer.load();
+                    flvPlayer.play();
+                }
             },
             getbuildData(){
                 console.log(this.$store.state);
