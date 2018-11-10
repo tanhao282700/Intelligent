@@ -237,15 +237,15 @@
 				    })
         		}
 	        	let option3 = {
-					tooltip : {
-				        trigger: 'axis',
-				        axisPointer: {
-				            type: 'cross',
-				            label: {
-				                backgroundColor: '#6a7985'
-				            }
-				        }
-				    },
+              tooltip : {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'cross',
+                        label: {
+                            backgroundColor: '#6a7985'
+                        }
+                    }
+                },
 		            grid:{
 		          	    left:0,
 		          	    top:35,
@@ -262,30 +262,30 @@
 		            },
 		            calculable : true,
 		            xAxis: {
-				        type:'category',
-				        data:arr2x,
-				        boundaryGap: true,
-				        axisLine: {show:false},
-				        axisTick: {show:false},
-				        splitLine: {show:false},
-				        axisLabel: {textStyle: {
-						    color: '#708FBE'
-						}}
-			        },
-			    	yAxis: {
-				        axisLine: {show:false},
-				        axisTick: {show:false},
-				        splitLine: {show:false},
-				        axisLabel: {show:false},
-				        splitArea: {
-				        	show:true,
-				        	areaStyle: {color:['rgba(142,187,255,.1)','rgba(142,187,255,.05)']},
-				        },
-				        type: 'value'
-			    	},
-				    series: series,
-			        color:["#F35E5E","#EEB66E","#008AFF"]
-				};
+                  type:'category',
+                  data:arr2x,
+                  boundaryGap: true,
+                  axisLine: {show:false},
+                  axisTick: {show:false},
+                  splitLine: {show:false},
+                  axisLabel: {textStyle: {
+                    color: '#708FBE'
+                  }}
+			          },
+                yAxis: {
+                    axisLine: {show:false},
+                    axisTick: {show:false},
+                    splitLine: {show:false},
+                    axisLabel: {show:false},
+                    splitArea: {
+                      show:true,
+                      areaStyle: {color:['rgba(142,187,255,.1)','rgba(142,187,255,.05)']},
+                    },
+                    type: 'value'
+                },
+                series: series,
+                color:["#F35E5E","#EEB66E","#008AFF"]
+            };
             let option2 = {
                 tooltip : {
                     trigger: 'item',
@@ -365,7 +365,7 @@
               device_date: that.data.config.device_date,
             }
             that.$http.post('/hotel_energy/analysis',config).then(res=>{
-              console.log(res);
+
               that.calcDeviceData(res);
               that.calcAreaData(res);
 
@@ -466,6 +466,15 @@
                 }
               });
             })
+
+            arr2Label = arr2Label.filter(function(element,index,self){
+              return self.indexOf(element) === index;
+            });
+
+            arr2x = arr2x.filter(function(element,index,self){
+              return self.indexOf(element) === index;
+            });
+
             that.getBottomEcharts(arr,arr2,arr2x,arr2Label);
           },
 	        getDatas(){
@@ -477,7 +486,7 @@
 	        	}
             that.$http.post('/hotel_energy/analysis',param)
 	        	.then(res=>{
-	        	  console.log(res);
+
 	        		//区域图
               that.calcDeviceData(res);
               that.calcAreaData(res);

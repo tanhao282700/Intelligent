@@ -53,28 +53,8 @@
 	        	}
             that.$http.post('/hotel_energy/analysis',param)
 	        	.then(res=>{
-	        	  console.log(res);
-
-	        		//区域图
-	        		// console.log(res);
-	        		// let barData = res.data.data.area_energy_use.column_data;
-	        		// let lastThisData = barData.last_this_time;//同期
-	        		// let thisData = barData.this_time;//本期
-	        		// let lastData = barData.last_time;//上期
-	        		// let chineseData = res.data.data.area_energy_use.floor_map;
-
-        			// console.log(barData);
-        			// console.log(chineseData);
-        			// $.each(chineseData,(n0,k0)=>{
-        			// 	$.each(thisData,(n1,k1)=>{
-        			// 		if(k0.area_id == k1.area_id){
-        			// 			this.
-        			// 		}
-        			// 	});
-        			// });
 
               that.trendData = res.data.data.area_energy_use.trend_data;
-              console.log(that.trendData);
 
               let trendData = res.data.data.area_energy_use.trend_data;
               let newRzl = [];
@@ -94,7 +74,7 @@
               })
               tempArray.push(that.areaEnergyRzl);
               that.trendValueData = tempArray;
-              console.log(that.trendValueData)
+
 
               $.each(trendData.floor_value[0].data,function(i,k){
                 newKf.push([k.date,k.value]);
@@ -130,9 +110,7 @@
 		        for(var x=0;x<trendValueData[0].length;x++){
 		          let xtemp = trendValueData[0][x][0];
 		          trendXdata.push(xtemp);
-
 		        }
-		        console.log(trendXdata);
 
 		        for (var i = 0; i < legendLen; i++) {
 		            var seriesDataVal = null;
@@ -147,7 +125,6 @@
 		        }
 
             let trendLegendLabel = data.trendLegendLabel;
-		        console.log(trendLegendLabel);
 
 		        for(var j=0;j<trendValueData.length;j++){
               var trendItem;
@@ -169,7 +146,6 @@
               }
               trendValueArray.push(trendItem);
             }
-            console.log(trendValueArray);
 
 		        let option = {
                 color:["#FD97AA","#008AFF","#F35E5E","#EEB66E","#EBF191","#C382EF","#95EDC5",'#b5d7ff'],
@@ -192,9 +168,10 @@
 		            legend: {
 			          	textStyle: {color: '#B5D7FF',},
 			          	top:5,
-			          	itemWidth: 20,
+			          	itemWidth: 15,
 	        			  itemHeight: 10,
-			            data: trendLegendLabel,
+                  itemGap:5,
+                  data: trendLegendLabel,
                  /* data: ['客房','宴会厅','餐厅厨房','公共区域','餐厅','空调','1-5号主机','入住率'],*/
 		            },
 		            calculable : true,
