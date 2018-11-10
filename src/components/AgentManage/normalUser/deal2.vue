@@ -41,7 +41,7 @@ export default {
   created() {
   },
   mounted() {
-      this.txts(this.btnss.item.time_limit)
+      this.txts(this.btnss.item.period)
   },
 }
 </script>

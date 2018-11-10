@@ -513,6 +513,7 @@ export default {
               user_id:'',
               now_state:''
             });
+            this.$refs.add.hide();
           }else{
             this.$message({
               type:'error',

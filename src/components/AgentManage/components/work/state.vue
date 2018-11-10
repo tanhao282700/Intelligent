@@ -34,7 +34,7 @@ export default {
                 res.color = '#fa6074'
               break;
               case 3:
-                res.txt = '延期审请通过'
+                res.txt = '延期申请通过'
                 res.color='#ffa414'
               break;
               case 4:

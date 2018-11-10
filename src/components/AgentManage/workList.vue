@@ -398,7 +398,7 @@ export default {
             dispatch_user_id:this.$store.state.userInfoTotal.userinfo.id
           }
         let state = item.now_state;
-        if(state==5){ //退单
+        if(state==5){ //同意退单 type =6
             this.dialogBoxs = {
                 item:item,
                 state0:1,
@@ -406,7 +406,7 @@ export default {
             };
             this.getStatus = 5;
             this.$refs.isRefult.show();
-        }else if(state==2){ //申请延期处理
+        }else if(state==2){ //同意延期 type = 3
             this.detalrowdata.type = 3;
             this.dialogBoxs = {
                 item:item,
@@ -420,7 +420,7 @@ export default {
       },
       refult(item){//拒绝
         //console.log(item);
-        if(item.now_state==2){
+        if(item.now_state==2){//拒绝延期 type=7
             this.detalrowdata = {
             infos:{
                 id:item.id,
@@ -436,7 +436,7 @@ export default {
             user_name:this.$store.state.userInfoTotal.userinfo.name,
             dispatch_user_id:this.$store.state.userInfoTotal.userinfo.id
           }
-        }else{
+        }else{//拒绝退单 type=8
           this.detalrowdata = {
             infos:{
                 id:item.id,
@@ -630,6 +630,7 @@ export default {
               date:this.value7,
               user_id:this.infoItem.user_id
             })
+            this.$refs.tableInfos2.hide();
           }else{
             this.$message({
               type:'error',
