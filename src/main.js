@@ -40,6 +40,12 @@ require('video.js/dist/video-js.css')
 require('vue-video-player/src/custom-theme.css')
 Vue.use(VideoPlayer);
 
+//引入FLV.js
+import flv from 'flv';
+require('flv');
+require('fs');
+Vue.use(flv);
+
 //全局组件
 import Crumbs from '@/components/common/crumbs/index.js'; // 导入自定义组件文件
 Vue.use(Crumbs);
