@@ -7,8 +7,8 @@
         frameborder="0"
         width="100%"
         height="100%"
-        :src="url3d">-->
-      </iframe>
+        :src="url3d">
+      </iframe>-->
     </div>
     <div class="systemName">
       <div class="systemCon">泰立汇云智慧酒店管理系统</div>
@@ -766,6 +766,7 @@
       height:0.54rem;
       left:0;
       top:0;
+      z-index: 5;
       text-align: center;
       .systemCon{
         font-size:0.16rem;
@@ -778,6 +779,18 @@
         background-size:100% 100%;
       }
     }
+    .systemName::after{
+      content: "";
+      display: block;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+      z-index: -10;
+      background:url(../../assets/img/home/titlebg.png) no-repeat left top;
+      background-size:100% 0.54rem;
+    }
     .header{
       color:#f2fdff;
       width:100%;
@@ -786,10 +799,9 @@
       height:0.54rem;
       line-height:0.54rem;
       position:absolute;
-      background:url(../../assets/img/home/titlebg.png) no-repeat left top;
-      background-size:100% 0.54rem;
       top:0;
       left:0;
+      z-index: 10;
       display:flex;
       flex-direction: row;
       justify-content: space-between;
@@ -1257,9 +1269,9 @@
   }
 
   .homeDropDown{
-    top: .61rem!important;
+    top: 65px!important;
     width: 1rem;
-    height: 1.1rem!important;
+    height: 1.02rem!important;
     background:#061733!important;
     border: 1px solid #4a90e2!important;
     margin-right:20px!important;

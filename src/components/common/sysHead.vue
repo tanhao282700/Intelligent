@@ -10,7 +10,7 @@
         <span>泰立智汇</span>
       </div>
       <div class = "searchBox">
-         <input type="text" :placeholder="placeholder" v-model="inputs">
+         <input type="text" :placeholder="placeholder" v-model="inputs" id="sysHeadSearchInput">
          <div class="searchBtn" @click="search">
              <i></i>
          </div>
@@ -20,7 +20,7 @@
         <el-tab-pane v-for="(item,index) in datas.lists" :key="item.id" :label="item.name" :name="'item'+index" :route="item.route" :stretch="true">
         </el-tab-pane>
       </el-tabs>
-      <el-row class="block-col-2 userCenter" style="position: absolute;right: 2.2%;top: 0.1rem;">
+      <el-row class="block-col-2 userCenter" style="position: absolute;right: .2rem;top: 10px;">
         <el-col :span="12">
           <el-dropdown trigger="hover" @command="handleCommand" >
             <span class="el-dropdown-link">
@@ -177,15 +177,20 @@ export default {
         top:0;
         width:100%;
         height:50px;
-        padding-top:5px;
         display:flex;
+        align-items: center;
         z-index: 300;
         background:rgba(0,45,104,0.8);
         box-shadow:0px 2px 3px 0px rgba(0,0,0,0.2);
+
+        #sysHeadSearchInput::-webkit-input-placeholder,#sysHeadSearchInput{
+            font-size: 16px!important;
+        }
+
         .userIcon{
           width:30px;
           height:30px;
-          display: inline-block;
+          display: block;
           background:url(../../assets/img/home/usericon.png) no-repeat center center;
           background-size: cover;
           &:hover{
