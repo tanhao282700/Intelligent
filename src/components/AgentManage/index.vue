@@ -353,6 +353,9 @@ export default {
       font-size: 0.14rem;
       cursor: pointer;
       margin-top:0.07rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       &.active{
         cursor:auto;
         background: #1575d9;

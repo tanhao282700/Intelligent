@@ -490,7 +490,7 @@
             echarts:{
               id:'lineEchartShui'+random,
               type:'shui',
-              unit:'m³',
+              unit:'Kg/m³',
               title:'水',
               titShow:true,
               style:{width:'100%',height:'100%'},
@@ -522,7 +522,7 @@
           echarts:{
             id:'lineEchartDian'+random,
             type:'dian',
-            unit:'Kw/h',
+            unit:'Kg/Kw/h',
             title:'电',
             titShow:true,
             style:{width:'100%',height:'100%'},
