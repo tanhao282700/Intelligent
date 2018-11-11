@@ -202,7 +202,7 @@ export default {
                       const btnss = {
                           item:param.row,
                       };
-                      console.log(btnss.item)
+                      //console.log(btnss.item)
                       return h(deal,{
                           props: { btnss:btnss},
                           on:{agree:this.agree,refult:this.refult}

@@ -215,6 +215,7 @@
          },
          change2(val){
             this.formval.department = val;
+            this.$emit('getUserlist',val);
          },
          change3(val){
             this.formval.limit = val;
@@ -222,19 +223,21 @@
          change4(val){
             this.formval.system=val;
             this.$emit('getSystemval',val);
+            this.$emit('getFloorVal',this.formval.area,val)
          },
          change5(val){
             let res = '';
             $.each(this.formvals1.areas,(n,k)=>{
               if(k.value==val){
-                this.$emit('getFloorVal',k.label)
+                this.$emit('getFloorVal',k.label,this.formval.system)
+                
               }
             })
             this.formval.area = val;
          },
          change6(val){
             this.formval.device = val;
-            this.$emit('getDeviceVal',val)
+            this.$emit('getDeviceVal',val,this.formval.system)
          },
          change7(val){
             this.formval.starttime=val;

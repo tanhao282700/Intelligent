@@ -87,7 +87,7 @@
         </el-tab-pane>      
       </el-tabs>  
       <Dialog wid="910" hei="622" ref="add" > <!-- 新增巡检模板 -->
-        <AddModel :data="rowData" :formvals="queryModel" :title="tempTitle" @cancelAdd="cancelAdd" @saveAdd="saveAdd" @getFloorVal="getFloorVal" @getDeviceVal="getDeviceVal" @getSystemval="getSystemval"/>
+        <AddModel :data="rowData" :formvals="queryModel" :title="tempTitle" @cancelAdd="cancelAdd" @saveAdd="saveAdd" @getFloorVal="getFloorVal" @getDeviceVal="getDeviceVal" @getSystemval="getSystemval" @getUserlist="getNameList"/>
       </Dialog> 
   </div>
 </template>
@@ -101,7 +101,7 @@ import Percentage from './components/work/Percentage';
 import WorkInfo from './components/work/workInfo';
 import State from './components/routing/state'
 import State2 from './components/routing/state2';
-import deal from './normalUser/deal';
+import deal from './components/work/deal';
 import deal3 from './normalUser/deal2';
 
 import deal2 from './components/routing/deal';
@@ -368,9 +368,11 @@ export default {
       this.queryModel.device = val;
       this.getDatasList(val)
     },
-    getFloorVal(val){
-      this.queryModel.area = val;
-      this.getDeviceList(val)
+    getFloorVal(val1,val2){
+      this.queryModel.area = val1;
+      this.queryModel.system = val2
+      //console.log(val1+'@@@@@@@@@@@@@@@'+val2);
+      this.getDeviceList(val1,val2)
     },
     getSys(val){
       this.getAreaList(val)
@@ -476,7 +478,7 @@ export default {
               system:res.data.data.sys_id,
               area:res.data.data.floor_id,
               device:res.data.data.device_id,
-              starttime:res.data.data.start_date,
+              starttime:res.data.data.addtime,
               period:res.data.data.cycle,
               addr:res.data.data.ins_place,
               desc:res.data.data.remarks
@@ -716,8 +718,8 @@ export default {
         }
       })
     },
-    getNameList(){
-        this.$http.post('/pc_ims/get_user').then(res=>{
+    getNameList(id){
+        this.$http.post('/pc_ims/get_user',{department_id:id}).then(res=>{
           if(res.data.code==0){
             let data = res.data.data;
             $.each(data,(n,k)=>{
@@ -826,8 +828,8 @@ export default {
           }
         });
       },
-      getDeviceList(id){//设备
-        this.$http.post('/pc_ims/get_device',{floor_name:id}).then(res=>{
+      getDeviceList(val1,val2){//设备
+        this.$http.post('/pc_ims/get_device',{floor_name:val1,sys_id:val2}).then(res=>{
           //console.log(res);
           if(res.data.code==0){
             let data = res.data.data;
@@ -863,7 +865,7 @@ export default {
       this.getTopData();
       this.getTableList();
       this.getModelList(this.queryModel);
-      this.getNameList();
+      //this.getNameList();
       this.getSystemList();
       this.getSystemIdList();
       this.getDepartList();

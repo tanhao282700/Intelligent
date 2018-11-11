@@ -419,7 +419,7 @@ export default {
         
       },
       refult(item){//拒绝
-        //console.log(item);
+        console.log(item);
         if(item.now_state==2){//拒绝延期 type=7
             this.detalrowdata = {
             infos:{
@@ -456,7 +456,7 @@ export default {
         
         this.infoItem = item;
         let state = item.now_state;
-        //this.getDealResult(this.detalrowdata);
+        this.getDealResult(this.detalrowdata);
       },
       submitOk(){ //处理工单 同意/拒绝退单/延期
           this.$refs.isRefult.hide();
