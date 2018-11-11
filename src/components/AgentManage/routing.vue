@@ -101,7 +101,7 @@ import Percentage from './components/work/Percentage';
 import WorkInfo from './components/work/workInfo';
 import State from './components/routing/state'
 import State2 from './components/routing/state2';
-import deal from './components/work/deal';
+import deal from './components/routing/deal3';
 import deal3 from './normalUser/deal2';
 
 import deal2 from './components/routing/deal';

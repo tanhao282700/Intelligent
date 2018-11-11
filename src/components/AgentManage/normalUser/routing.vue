@@ -776,6 +776,7 @@ export default {
           line-height:0.24rem;
           background:#008AFF;
           width:4.98vw;
+          cursor:pointer;
           font-size:12px;
           border-radius:2px;
           text-align:center;

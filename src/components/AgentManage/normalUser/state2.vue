@@ -47,7 +47,7 @@ export default {
   watch:{
     state:{
       handler(val){
-        //
+        this.txts(val.fills)
       }
     },
     deep:true
@@ -57,7 +57,7 @@ export default {
   mounted() {
        
        //console.log(this.state)
-       this.txts();
+       this.txts(this.state.fills);
   },
 }
 </script>
