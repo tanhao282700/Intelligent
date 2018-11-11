@@ -5,7 +5,6 @@
        v-loading="loading"
        element-loading-background="rgba(0, 0, 0, 0.5)"
        element-loading-spinner="el-icon-loading"
-       element-loading-text="拼命加载中"
   >
     <!--面包屑-->
     <el-breadcrumb separator-class="el-icon-arrow-right">
