@@ -31,16 +31,16 @@ export default {
   },
   methods:{
     agree(){ //赞同
-        this.$emit('agree',this.btnss.item);
+        this.$emit('agree',this.btnss.item,4);
     },
     refult(){ //拒绝
-        this.$emit('refult',this.btnss.item);
+        this.$emit('refult',this.btnss.item,5);
     }
   },
   created() {
   },
   mounted() {
-       console.log(this.btnss)
+       //console.log(this.btnss)
   },
 }
 </script>

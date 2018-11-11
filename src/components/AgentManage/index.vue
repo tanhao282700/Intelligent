@@ -116,7 +116,7 @@
             <Lines type="h" :wid="148" :left="35"/>
             <div class="workBox1In1">
               <p v-text="circleData.crate.yearR+'%'"></p>
-              <span class="colorB" v-text="`本${yearWeek[1]}工单完成率`"></span>
+              <span class="colorB" v-text="`本${yearWeek[1]}巡检完成率`"></span>
             </div>
           </div>
         </div>

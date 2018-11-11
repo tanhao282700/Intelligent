@@ -72,7 +72,7 @@ rowClick(row){
         </el-table-column>
 
         </el-table>
-         <div class="pageBoxs" v-if = "table.showPagination!=undefined">
+         <!-- <div class="pageBoxs" v-if = "table.showPagination!=undefined">
             <el-pagination
                 @current-change="handleCurrentChange"
                 :current-page.sync="table.page"
@@ -81,7 +81,7 @@ rowClick(row){
                 layout="total, prev, pager, next, jumper"
                 s>
             </el-pagination>
-        </div>
+        </div> -->
     </div>
 </template>
 
@@ -164,7 +164,7 @@ export default {
   },
   mounted(){
     this.tableData = this.table;
-    console.log(this.table)
+    //console.log(this.table)
   }
 }
 </script>

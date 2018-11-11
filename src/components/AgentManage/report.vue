@@ -62,8 +62,8 @@
                   <Table
                     style="width:100%"
                     :table = "table"
-                    @changePage="changePage1"
                   />
+                  <Page @changeCurrentPage="changeCurrentPage" :pages = "page"/>
                 </div>
             </div>
         </el-tab-pane>
@@ -78,11 +78,12 @@
                     :table = "table2"
                     @changePage="changePage2"
                   />
+                  <Page @changeCurrentPage="changeCurrentPage2" :pages = "page2"/>
                 </div>
             </div>
         </el-tab-pane>
       </el-tabs>
-      <div v-show="visible">
+      <div v-show="visible" style="height:2rem">
         <ul  class="hover" :style="{top:1.18+(0.4*hoverIndex)+'rem'}">
           <li v-for="(item,index) in hoverData" >
             <i class="el-icon-arrow-left"></i>
@@ -105,21 +106,25 @@ import TimePickerT from './components/work/timePickerTit2';
 import Percentage from './components/work/Percentage';
 import deal from './components/routing/deal2' 
 import Table from '@/components/common/table';
+import Page from '@/components/AgentManage/components/index/pages'
 export default {
   name:'gReport',
   components:{
     'Table':Table,
     'SelectBox':SelectBox,
-    'TimePickerT':TimePickerT
+    'TimePickerT':TimePickerT,
+    'Page':Page
   },
   data () {
     return {
-        currentNum1:1,
-      currentNum2:1,
+      currentPage:1,
+      currentPage2:1,
       dateUnit:'year',
       visible:false,
       hoverIndex:0,
       hoverData:[],
+      page:{totalDataNumber:0,currentPage:0,totalPageNum:0},
+      page2:{totalDataNumber:0,currentPage:0,totalPageNum:0},
       dateOptions:[{id:'year',title:"年"},{id:'month',title:"月"},{id:'day',title:"日"}],
       dateRangeValue:"",
         year:'',
@@ -143,7 +148,7 @@ export default {
             len:0, //总条数
             data:[],
             th:[
-              {prop:'index',label:'编号'},
+              {prop:'serial',label:'编号'},
               {prop:'name',label:'名称'},
               {prop:'phone',label:'联系电话',wid:150},
               {prop:'department',label:'专业岗位'},
@@ -173,7 +178,7 @@ export default {
             len:0, //总条数
             data:[],
             th:[
-              {prop:'index',label:'编号',minWid:'20%'},
+              {prop:'serial',label:'编号',minWid:'20%'},
               {prop:'floor',label:'位置',minWid:'20%'},
               {prop:'type',label:'类别',minWid:'10%'},
               {prop:'device_name',label:'设备名称',minWid:'10%'},
@@ -229,6 +234,14 @@ export default {
           }
       })
     },
+    changeCurrentPage(val){
+      this.currentPage = val;
+      this.getReportData();
+    },
+    changeCurrentPage2(val){
+      this.currentPage2 = val;
+      this.getRepeatRate();
+    },
     mouseOutLi(row){
       this.visible = false;
     },
@@ -257,15 +270,21 @@ export default {
         year:year,
         month:month,
         day:day,
-        pagenumber:this.table.page,
+        pagenumber:this.currentPage,
         pagesize:20
       }).then(res=> {
-        console.log(res);
+        //console.log(res);
          if(res.data.code==0){
             this.table.len = res.data.count;
+            //console.log(res.data.pages);
+            this.page = {
+              currentPage: this.currentPage,
+              totalDataNumber:20*res.data.pages,
+              totalPageNum:res.data.pages
+            }
             this.table.data = res.data.data;
             this.table.data.map((item,index)=>{
-                item.index = index+1
+                this.table.data[index].serial = (this.currentPage - 1) * 20 + 1 + index;
             })
           }else{
             this.$message({
@@ -277,7 +296,7 @@ export default {
     },
     getRepeatRate(){
       this.$http.post('/pc_ims/admin/count_device',{
-        pagenumber:this.table2.page,
+        pagenumber:this.currentPage2,
         pagesize:20
       }).then(res=>{
         console.log(res)
@@ -285,8 +304,13 @@ export default {
             //序号
             this.table2.len = res.data.count
             this.table2.data = res.data.data;
+            this.page2 = {
+              currentPage: this.currentPage2,
+              totalDataNumber:20*res.data.pages,
+              totalPageNum:res.data.pages
+            }
             this.table2.data.map((item,index)=>{
-                item.index = index+1
+                this.table2.data[index].serial = (this.currentPage2 - 1) * 20 + 1 + index;
             })
           }else{
             this.$message({
@@ -337,7 +361,7 @@ export default {
 <style lang="less" scoped='scoped' type="text/less">
 @import '../../assets/css/comon.less';
 .reportBox{
-  width:100%;
+  width:96%;
   .searchBoxs{
     position: absolute;
     right: 2.2%;

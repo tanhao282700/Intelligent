@@ -89,6 +89,35 @@
       <Dialog wid="910" hei="622" ref="add" > <!-- 新增巡检模板 -->
         <AddModel :data="rowData" :formvals="queryModel" :title="tempTitle" @cancelAdd="cancelAdd" @saveAdd="saveAdd" @getFloorVal="getFloorVal" @getDeviceVal="getDeviceVal" @getSystemval="getSystemval" @getUserlist="getNameList"/>
       </Dialog> 
+      <Dialog wid="364" hei="216" ref="isRefult"><!-- 同意退单 -->
+          <div v-text="dialogBoxs.txt" class="isRefTxt"></div>
+          <div class="isRbtnBoxs">
+              <span @click="submitOk">确定</span>
+              <span @click="submitNo">取消</span>
+          </div>
+      </Dialog> 
+      <Dialog wid="414" hei="260" ref="sendWork2"><!-- 重新选择工单处理人员 -->
+          <div class="sendWork2">
+              <div class="oldName" style="padding-top:0.2rem">
+                  <label for="">原处理人员：{{detalrowdata.user_name}}</label>
+                  <span class="namess" v-text="dialogBoxs.item.name"></span>
+              </div>
+              <div class="newName">
+                  <label for="">新工单处理人员：</label>
+                  <div class="ChooseBox">
+                      <SelectBox
+                          :options = 'queryModel.newNames' 
+                          :value = "queryModel.vName" 
+                          placeholder='选择人员'
+                          @change = 'changeNew'
+                      />
+                  </div>
+              </div>
+          </div>
+          <div class="sendWork2Boxs btnBai1" @click="sendWork2">
+              <span>确定</span>
+          </div>
+      </Dialog> 
   </div>
 </template>
 
@@ -134,6 +163,11 @@ export default {
           department:'',
           name:''
         },
+        dialogBoxs:{
+            item:{name:''},
+            state0:0, //1 同意，0拒绝
+            txt:'是否允许退单'
+        },
         query2:{
           time:'10-29',
           types:[],
@@ -150,6 +184,8 @@ export default {
           areas:[],
           areass:[],
           examine:[],
+          newNames:[],
+          vName:'',
           examines:[],
           taskStatus:[{value:1,label:'启用'},{value:2,label:'停用'}],
           system:'',
@@ -214,6 +250,7 @@ export default {
             },
           ]
         },
+        detalrowdata:{},
         table3:{
           title:'巡检单详情',
           tabs:[],
@@ -312,13 +349,18 @@ export default {
     dealWork(param){//处理工单
       this.getDealResult(param)
     },
+    changeNew(val){
+      this.queryModel.vName = val;
+      this.detalrowdata.new_user_id = val;
+    },
     getDealResult(param){
+      //console.log(param);
       this.$http.post('/pc_ims/admin/write_inspectionlist',{
-        id:param.infos.info.id,
+        id:param.infos.id,
         type:param.type,
-        user_id:param.infos.info.user_id,
+        user_id:param.infos.user_id,
         new_user_id:'',
-        info:param.infos.localDesc2.value,
+        info:param.infos.localDesc.value,
         form:{list:[]}
       })
       .then(res=>{
@@ -337,24 +379,29 @@ export default {
         }
       })
     },
-    dealWork(item,type){
-      item = item.item;
-      if(!item.info){
-        item.info = '';
-      }
+    dealWorks(item,type){
       if(!item.newuser_id){
-        item.newuser_id = ''
+          item.newuser_id = ''
       }
+      if(!type){
+        type = item.type;
+      }
+      let form = JSON.parse(item.form).list;
       this.$http.post('/pc_ims/admin/write_inspectionlist',{
         id:item.id,
         type:type,
-        info:item.info,
+        info:item.descript,
         user_id:item.user_id,
-        newuser_id:item.newuser_id,
-        form:JSON.parse(item.form).list
+        new_user_id:item.newuser_id,
+        form:JSON.stringify({list:form})
       }).then(res=>{
         if(res.data.code==0){
-          console.log(res.data.data);
+          this.$message({
+            type:'success',
+            message:res.data.msg,
+            duration:2000
+          })
+          this.rowClick(this.rowData)
         }else{
           this.$message({
             type:'error',
@@ -555,6 +602,7 @@ export default {
       })
     },
     rowClick(row){
+      this.rowData = row;
       if(!row.type){
         row.type = '';
       }
@@ -572,6 +620,10 @@ export default {
       }).then(res=>{
           if(res.data.code==0){
             this.table3.len = res.data.count;
+            let info = res.data.data.info;
+            $.each(info,(n,k)=>{
+              info[n].serial = n+1;
+            })
             this.table3.data = res.data.data.info;
             this.table3.tabs = [{'name':'今日巡检总数',num:res.data.data.zong},
             {'name':'已完成',num:res.data.data.wan},
@@ -585,16 +637,33 @@ export default {
       })
     },
     agree(item,type){ //同意
-        this.dealWork(item,type);
+        this.$refs.isRefult.show();
+        this.detalrowdata = item;
+        this.detalrowdata.type = type;
     },
     refult(item,type){//拒绝
-        this.dealWork(item,type);
+      this.dealWorks(item,type);
+    },
+    submitOk(){ //处理工单 同意/拒绝退单/延期
+        this.$refs.isRefult.hide();
+        this.$refs.sendWork2.show();
+    },
+    submitNo(){ //取消
+      this.$refs.isRefult.hide();
+    },
+    sendWork2(){ //重新选择工单处理人员
+      this.$refs.sendWork2.hide();
+      this.detalrowdata.newuser_id = this.queryModel.vName;
+      console.log(this.detalrowdata.newuser_id)
+      this.dealWorks(this.detalrowdata);
     },
     tableInfos2Show(item){
       this.$http.post('/pc_ims/admin/inspectionlist_info',{ins_id:item.id})
       .then(res=>{
         if(res.data.code==0){
+            let user_id = this.infoItem.user_id;
             this.infoItem = res.data.data.info;
+            this.infoItem.user_id = user_id;
             this.infoItem.vuename = 'routing';
             //console.log(res.data);
             this.infoItem.desc = [
@@ -727,8 +796,12 @@ export default {
               data[n].label = data[n].truename;
             })
             this.names = data;
-            this.queryModel.examine = data;
-            this.queryModel.examines = data;
+            if(id && id!=''){
+              this.queryModel.examine = data;
+              this.queryModel.examines = data;
+            }else{
+              this.queryModel.newNames = data;
+            }
           }else{
             this.$message({
               type:'error',
@@ -865,7 +938,7 @@ export default {
       this.getTopData();
       this.getTableList();
       this.getModelList(this.queryModel);
-      //this.getNameList();
+      this.getNameList('');
       this.getSystemList();
       this.getSystemIdList();
       this.getDepartList();
@@ -1063,6 +1136,67 @@ export default {
       }
     }
 
+  }
+   .sendWork2{
+      height:1.97rem;
+      width: 100%;
+      paddidng-top:0.13rem;
+      padding-left: 0.20rem;
+      .oldName,.newName{
+          width: 100%;
+          font-size: 0.14rem;
+          label{
+              height:0.32rem;
+              line-height:0.32rem; 
+              color: #4f648b;   
+          }
+          span.namess{
+              color: #ffa414;
+          }
+          .ChooseBox{
+              height:0.4rem;
+              width: 2.24rem;
+              background-color: rgba(255, 255, 255, 0.01);
+              border-radius: 0.04rem;
+              border: solid 1px #1989fa;
+              margin-top:0.07rem;
+              span{
+                  font-size: 0.14rem !important;
+                  color: green!important;
+              }
+          }            
+      }
+    }
+    .isRefTxt{
+      height:1.75rem;
+      width: 100%;
+      text-align: center;
+      font-size: 0.18rem;
+      color: #b5d7ff;
+      line-height:1.45rem;
+  }
+  .isRbtnBoxs{
+      width: 100%;
+      height:0.45rem;
+      display:flex;
+      overflow: hidden;
+      border: 0.01rem solid #4a90e2;
+      border-bottom-left-radius: 0.08rem;
+      border-bottom-right-radius: 0.08rem;
+      span{
+          flex: 1;
+          text-align: center;
+          line-height:0.45rem;            
+          font-size: 0.16rem;
+          color: #fff;
+          cursor: pointer;
+          &:nth-child(1){
+              border-right: 0.01rem solid #4a90e2;
+          }
+          &:active{
+              background: #3b85ef;
+          }
+      }
   }
 }
 </style>

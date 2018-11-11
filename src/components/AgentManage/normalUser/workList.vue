@@ -46,6 +46,7 @@
             :table = "table"
             @rowClick = "rowClick"
           />
+          <Page @changeCurrentPage="changeCurrentPage" :pages = "page"/>
         </div>
       </div>
       <Dialog wid="910" hei="600" ref="tableInfos2">
@@ -269,15 +270,18 @@ import sendType from '../components/work/sendType'
 import State from './state';
 import deal from './deal';
 import Table from '@/components/common/table';
+import Page from '@/components/AgentManage/components/index/pages'
 export default {
   components:{
     'Table':Table,
     'SelectBox':SelectBox,
-    'Header':Header
+    'Header':Header,
+    'Page':Page
   },
   data () {
     return {
         value1:'',
+        currentPage:1,
         value2:'',
         navsData:{
           active:'item2',
@@ -289,6 +293,8 @@ export default {
               {id:4,name:'完成情况',route:'/AgentManage/normalUser/report'},
           ]
         },
+        page:{totalDataNumber:0,currentPage:0,totalPageNum:0},
+        page2:{totalDataNumber:0,currentPage:0,totalPageNum:0},
         tabPosition:'正常处理',
         crumbs:['代维系统','工单'],
         workH:[],
@@ -328,7 +334,7 @@ export default {
             // len:800, //总条数
             data:[],
             th:[
-              {prop:'id',label:'编号'},
+              {prop:'serial',label:'编号'},
               {prop:'title',label:'类别'},
               {prop:'floor',label:'地点',wid:180},
               {prop:'addtime',label:'派发时间'},
@@ -379,6 +385,10 @@ export default {
     }
   },
   methods:{
+    changeCurrentPage(val){
+      this.currentPage = val;
+      this.getTableList();
+    },
     change1(val){ //选择
       this.vsystem = val;
     },
@@ -625,14 +635,19 @@ export default {
         this.$http.post('/pc_ims/staff/jobdata_user',{
           sys_name:this.vsystem,
           type:this.vtype,
-          pagenumber:'1',
+          pagenumber:this.currentPage,
           pagesize:'20'
         }).then(res=> {
+            console.log(res)
            if(res.data.code==0){
              $.each(res.data.data,(n,k)=>{
-                res.data.data[n].serial = (1 - 1) * 20 + 1 + n;
-
+                res.data.data[n].serial = (this.currentPage - 1) * 20 + 1 + n;
              })
+             this.page = {
+                currentPage: this.currentPage,
+                totalDataNumber:20*res.data.pages,
+                totalPageNum:res.data.pages
+             }
              this.table.len = res.data.count;
              this.table.data = res.data.data;
 
@@ -707,18 +722,19 @@ export default {
   }
   .tableBoxs{
     width: 95.6%;
-    .vh(407);
-    .vhMT(20);
+    height:4.27rem;
+    margin-top:0.2rem;
+    position:relative;
     margin-left: 0.3rem;
     .tabHead{
       width: 100%;
       position: relative;
-      .vh(59);
-      .vhPT(20);
+      height:0.59rem;
+      padding-top:0.2rem;
       .jobBoxs{
         float: left;
         width: 1.15rem;
-        .vh(32);
+        height:0.32rem;
         background-color: rgba(255, 255, 255, 0.01);
         border-radius: 0.02rem;
         border: solid 0.01rem #1989fa;
@@ -728,7 +744,7 @@ export default {
       .nameBoxs{
         float: left;
          width: 0.87rem;
-        .vh(32);
+        height:0.32rem;
         background-color: rgba(255, 255, 255, 0.01);
         border-radius: 0.02rem;
         border: solid 0.01rem #1989fa;
@@ -739,8 +755,8 @@ export default {
         float: left;
         margin-left: 0.12rem;
         width: 0.93rem;
-        .vh(32);
-        .vhLH(32);
+        height:0.32rem;
+        line-height:0.32rem;
         color: #fff;
         font-size: 0.14rem;
         text-align: center;
@@ -757,13 +773,13 @@ export default {
       }
       .dateBox{
         position: absolute;
-        .vhTop(24);
+        top:0.24rem;
         left: 4.95rem;
       }
     }
     .tableIn{
       width: 99%;
-      .vh(328);
+      height:3.28rem;
       margin-left: 1%;
       .tableBox{
          margin-left:0;
@@ -772,11 +788,11 @@ export default {
   }
   .dispatch{
     width: 100%;
-    .vh(100);
+    height:1rem;
     display: flex;
     // align-items: center;
     justify-content: center;
-    .vhPT(20);
+    padding-top:0.2rem;
     .dispatchBtn{
       width: 0.6rem;
       height: 0.6rem;
@@ -805,7 +821,7 @@ export default {
     width: 100%;
     height: 8rem;
     .infoHead{
-      .vh(52);
+      height:0.52rem;
       width: 100%;
       background: rgba(0,0,0,0.2);
       padding-left: 0.2rem;
@@ -831,13 +847,13 @@ export default {
     .rightHead{
         position: absolute;
         right: 0.3rem;
-        .vhLH(52);
+        line-height:0.52rem;
         color:#fff;
         top:0;
         .infoBusy{
-          .vhMT(9);
+          margin-top:0.09rem;
           display:inline-block;
-          .vhLH(24);
+          line-height:0.24rem;
           background:#008AFF;
           width:4.98vw;
           font-size:12px;
@@ -967,26 +983,26 @@ export default {
   .sendWork2{
       .vh(197);
       width: 100%;
-      .vhPT(13);
+      padding-top:0.13rem;
       padding-left: 0.20rem;
       .oldName,.newName{
           width: 100%;
           font-size: 0.14rem;
           label{
-              .vh(32);
-              .vhLH(32); 
+              height:0.32rem;
+              line-height:0.32rem; 
               color: #4f648b;   
           }
           span.namess{
               color: #ffa414;
           }
           .ChooseBox{
-              .vh(40);
+              height:0.4rem;
               width: 2.24rem;
               background-color: rgba(255, 255, 255, 0.01);
               border-radius: 0.04rem;
               border: solid 1px #1989fa;
-              .vhMT(7);
+              margin-top:0.07rem;
               span{
                   font-size: 0.14rem !important;
                   color: green!important;
@@ -996,7 +1012,7 @@ export default {
     }
     .sendWork2Boxs{
         width: 3.84rem;
-        .vh(43);
+        height:0.43rem;
         margin-left: 0.15rem;
     }
 }
@@ -1046,8 +1062,8 @@ export default {
 }
 .isRbtnBoxs2{
     width: 100%;
-    .vh(32);
-    .vhLH(32);
+    height:0.32rem;
+    line-height:0.32rem;
     display:flex;
     width:17.94%;
     overflow: hidden;
@@ -1058,7 +1074,7 @@ export default {
     span{
         flex: 1;
         text-align: center;
-        .vhLH(32);            
+        line-height:0.32rem;            
         font-size: 0.16rem;
         color: #fff;
         cursor: pointer;

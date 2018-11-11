@@ -37,7 +37,7 @@
             :table = "table"
             @rowClick = "rowClick"
           />
-
+          <Page @changeCurrentPage="changeCurrentPage" :pages = "page"/>
         </div>
       </div>
       <Dialog wid="910" hei="600" ref="tableInfos2">
@@ -136,7 +136,7 @@ import RoutingTakModdel from '../components/routing/routingTakModdel';
 import RoutingTask from '../components/routing/routingTask';
 import RoutingInfo from '../components/routing/routingInfo';
 import AddModel from '../components/routing/addTemp';
-
+import Page from '@/components/AgentManage/components/index/pages'
 import Table from '@/components/common/table';
 export default {
   components:{
@@ -148,11 +148,14 @@ export default {
     'RoutingTakModdel':RoutingTakModdel,
     'RoutingTask':RoutingTask,
     'RoutingInfo':RoutingInfo,
-    'AddModel':AddModel
+    'AddModel':AddModel,
+    'Page':Page
   },
   data () {
     return {
         tempTitle:'新增',//弹框的标题
+        currentPage:1,
+        page:{totalDataNumber:0,currentPage:0,totalPageNum:0},
         activeName:'first',
         rowData:{},
         // crumbs:['代维系统','巡检'],
@@ -225,10 +228,14 @@ export default {
   },
   methods:{
     change1(val){ //选择
-      this.vJob = val;
+        this.vJob = val;
     },
     changes(val){
         this.value7 = val;
+    },
+    changeCurrentPage(val){
+      this.currentPage = val;
+      this.getTableData();
     },
     deletes(){
       let attrs = this.value7.split('-');
@@ -365,7 +372,7 @@ export default {
         if(item.item.newuser_id){
           item.newuser_id = '';
         }
-        console.log(item.item.complete_info)
+        //console.log(item.item.complete_info)
         if(!item.item.complete_info){
           this.$message({
             type:'error',
@@ -503,14 +510,20 @@ export default {
     getTableData(){
       this.$http.post('/pc_ims/staff/inspectiondata_user',{
         sys_name:this.vJob,
-        pagenumber:1,
+        pagenumber:this.currentPage,
         pagesize:20})
       .then(res=> {
            if(res.data.code==0){
              this.table.data = res.data.data;
              this.table.len = res.data.count;
+             console.log(res.data)
+             this.page = {
+                currentPage: this.currentPage,
+                totalDataNumber:20*res.data.pages,
+                totalPageNum:res.data.pages
+              }
               this.table.data.map((item,index)=>{
-                  item.index = index+1
+                  this.table.data[index].index = (this.currentPage - 1) * 20 + 1 + index;
                   let dwList = JSON.parse(item.form).list //点位数据
                   if(dwList.length!=0){
                       let name = ''
@@ -639,6 +652,7 @@ export default {
     height:4.47rem;
     margin-top:0.2rem;
     margin-left: 0.3rem;
+    position:relative;
     .tabHead{
       width: 100%;
       position: relative;
