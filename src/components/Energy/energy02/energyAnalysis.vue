@@ -27,7 +27,7 @@
                 </div>
                 <div class="analysisBoxs">
                   <el-date-picker
-                    v-if=" data.config.area_query_date_type =='year' "
+                    v-if=" areaDateType =='year' "
                     v-model="areaDate "
                     value-format="yyyy"
                     type="year"
@@ -35,7 +35,7 @@
                   </el-date-picker>
 
                   <el-date-picker
-                    v-if=" data.config.area_query_date_type=='month' "
+                    v-if=" areaDateType =='month' "
                     v-model="areaDate"
                     type="month"
                     value-format="yyyyMM"
@@ -43,7 +43,7 @@
                   </el-date-picker>
 
                   <el-date-picker
-                    v-if=" data.config.area_query_date_type=='day' "
+                    v-if=" areaDateType =='day' "
                     v-model="areaDate"
                     type="date"
                     value-format="yyyyMMdd"
@@ -247,9 +247,9 @@
                     }
                 },
 		            grid:{
-		          	    left:0,
+		          	    left:20,
 		          	    top:35,
-		          	    right:0,
+		          	    right:20,
 		                bottom:4,
 		                containLabel: true,
 		            },
@@ -268,9 +268,16 @@
                   axisLine: {show:false},
                   axisTick: {show:false},
                   splitLine: {show:false},
-                  axisLabel: {textStyle: {
-                    color: '#708FBE'
-                  }}
+                  axisLabel: {
+                    interval:2,
+                    width:20,
+                    textStyle: {
+                      color: '#708FBE',
+                      showMinLabel:true,
+                      showMaxLabel:true,
+                      fontSize:10,
+                    }
+                  },
 			          },
                 yAxis: {
                     axisLine: {show:false},
@@ -334,7 +341,6 @@
           areaQueryData(){
             let that = this;
             that.loading1 = true;
-
 
             let config = {
               sys_menu_id: that.data.config.sys_menu_id,

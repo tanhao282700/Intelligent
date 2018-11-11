@@ -1,9 +1,9 @@
 <!--
     工单列表
-    2018-8-24 
+    2018-8-24
 -->
 <template>
-    <div class="workBox">    
+    <div class="workBox">
         <div class="colorBox" :style="{'background':colors(btnss.fills),'width':1*(btnss.fills/100)+'rem'}"></div><span v-text="btnss.fills+'%'"></span>
     </div>
 </template>
@@ -13,7 +13,7 @@ export default {
   props:['btnss'],
   data () {
     return {
-        
+
     }
   },
   methods:{
@@ -34,13 +34,13 @@ export default {
   created() {
   },
   mounted() {
-       
+
   },
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="less" scoped="" type="text/less"> 
+<style lang="less" scoped="" type="text/less">
 @import '../../../../assets/css/comon.less';
 
 .workBox{
@@ -53,9 +53,11 @@ export default {
     }
     span{
         float: left;
-        font-size: 0.14rem;
+        font-size: 14px;
         color: #fff;
-        padding-left: 0.1rem;
+        padding-left: 6px;
+        width: .6rem;  
+
     }
 }
 </style>

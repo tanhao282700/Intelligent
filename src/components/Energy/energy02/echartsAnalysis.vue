@@ -25,7 +25,8 @@
         		areaEnergyKf:[],
             trendData:[],
             trendValueData:[],
-            seviceAllDatas:{}
+            seviceAllDatas:{},
+            areaDateType:"",
         	}
         },
         watch:{
@@ -42,6 +43,7 @@
         	getChartLineData(){
         	  let that = this;
         	  that.viewsLoading = true;
+
         	  let datas = that.data;
 
         		let param = {
@@ -159,9 +161,9 @@
                     }
                 },
 		            grid:{
-		          	    left:0,
+		          	    left:20,
 		          	    top:35,
-		          	    right:0,
+		          	    right:20,
 		                bottom:4,
 		                containLabel: true,
 		            },
@@ -181,10 +183,12 @@
                   axisTick: {show:false},
                   splitLine: {show:false},
                   axisLabel: {
+                    interval:3,
                     textStyle: {
                       color: '#708FBE',
-                      showMinLabel:false,
-                      showMaxLabel:false,
+                      showMinLabel:true,
+                      showMaxLabel:true,
+                      fontSize:10,
                     }
                   },
                   nameTextStyle:{
