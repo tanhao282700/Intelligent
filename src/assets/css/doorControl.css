@@ -236,9 +236,9 @@ video{object-fit:fill;}
 .el-dropdown-menu__item div{color:#fff;}
 /*.el-dropdown-menu__item div.itemChild{display:none;}*/
 .el-dropdown-menu__item div:hover{color:#1989fa!important;}
-.el-dropdown-menu__item:focus, .el-dropdown-menu__item:not(.is-disabled):hover{background:none;color:#fff;}
+.el-dropdown-menu__item:focus, .el-dropdown-menu__item:not(.is-disabled):hover{background:none!important;color:#fff;}
 .el-dropdown-menu__item--divided:before{background:#04152c!important;}
-.el-dropdown-menu__item--divided{border-top: 1px solid #333;}
+.el-dropdown-menu__item--divided{border-top: 1px solid #333!important;}
 .el-dropdown-menu__item b.left{
 	content: "";
 	position: absolute;
