@@ -58,7 +58,7 @@ rowClick(row){
             :key="i"
             v-for="(v,i) in tableData.th"
             :prop="v.prop"
-            :show-overflow-tooltip="true"
+            :show-overflow-tooltip="false"
             :label="v.label"
             :width="v.wid"
              :min-width="v.minWid">

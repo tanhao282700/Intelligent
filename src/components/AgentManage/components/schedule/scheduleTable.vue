@@ -448,10 +448,12 @@ export default {
     },
     deletePaiBan(id){
         let _this = this;
+        let year = this.value7.split('-')[0];
+        let month = this.value7.split('-')[1];
         this.$http.post('/pc_ims/admin/del_work',{
             user_id:id,
-            year:'2018',
-            month:'07',
+            year:year,
+            month:month,
         }).then(function(res){
             if(res.data.code==0){
                 _this.$message({

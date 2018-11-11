@@ -66,6 +66,9 @@ const  utils = {
                 case 10:
                 res = Y;
                 break;
+                case 11:
+                res = h+":"+m
+                break;
             }
             return res;
         },

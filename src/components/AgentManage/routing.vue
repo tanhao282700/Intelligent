@@ -236,7 +236,7 @@ export default {
                     props: {states:btnss}
                   });
               }},
-            {prop:'fill',label:'操作',wid:200,
+            {prop:'fill',label:'操作',wid:220,
                 operate: true, 
                 render: (h, param)=> {
                   const btnss = {
@@ -268,8 +268,8 @@ export default {
             {prop:'title',label:'类别'},
             {prop:'floorname',label:'地点'}, 
             {prop:'devicename',label:'设备名称'},
-            {prop:'addtime',label:'派发时间'},
-            {prop:'descript',label:'内容描述'},
+            {prop:'addtime',label:'派发时间',wid:160},
+            {prop:'descript',label:'内容描述',wid:160},
             {prop:'now_state',label:'状态',wid:100,
             operate: true, 
               render: (h, param)=> {
@@ -422,6 +422,7 @@ export default {
       this.getDeviceList(val1,val2)
     },
     getSys(val){
+      this.getNameList(val);
       this.getAreaList(val)
     },
     getSystemval(val){
@@ -509,14 +510,16 @@ export default {
       this.$refs.add.show();
       this.$http.post('/pc_ims/admin/get_one_temp',{ins_id:rowData.id})
       .then(res=>{
-         console.log(res)
+         //console.log(res)
          if(res.data.code==0){
             let list = JSON.parse(res.data.data.point_info);
+            console.log(list)
             let arr = [];
             console.log(res.data.data);
             $.each(list,(n,k)=>{
               arr.push(JSON.parse(k).point_id.cate_id);
             })
+            console.log(arr)
             this.rowData = {
               exam:res.data.data.user_id,
               data:arr,
@@ -528,7 +531,8 @@ export default {
               starttime:res.data.data.addtime,
               period:res.data.data.cycle,
               addr:res.data.data.ins_place,
-              desc:res.data.data.remarks
+              desc:res.data.data.remarks,
+              floor_name:res.data.data.floor_name
             }
 
           }else{

@@ -432,7 +432,7 @@ export default {
         info:item.info,
         user_id:item.user_id,
         newuser_id:item.newuser_id,
-        form:{list:JSON.stringify(item.form)}
+        form:JSON.stringify({list:item.form})
       }).then(res=>{
         if(res.data.code==0){
           this.$message({

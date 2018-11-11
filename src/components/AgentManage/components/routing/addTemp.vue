@@ -12,13 +12,22 @@
                 专业
               </el-col>
               <el-col :span="18" class="addContInput" v-if="formvals1.departments">
-                <SelectBox 
-                  :options = 'formvals1.departments' 
+                <el-select v-model="formval.department" placeholder="请选择">
+                  <el-option
+                    v-for="(item,index) in formvals1.departments"
+                    :key="index"
+                    :label="item.label"
+                    @change="change2"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+                <!-- <el-select>  -->
+                  <!-- :options = '' 
                   :value = "formval.department" 
                   :icon="'el-icon-d-caret'"
                   placeholder="专业"
                   @change = "change2"
-                />
+                /> -->
               </el-col>
             </el-row>
           </el-col>
@@ -28,13 +37,21 @@
                 巡检人员
               </el-col>
               <el-col :span="18" class="addContInput" v-if="formvals1.examine">
-                <SelectBox 
+                <!-- <SelectBox 
                   :options = 'formvals1.examine' 
                   :value = "formval.exam" 
                   :icon="'el-icon-d-caret'"
                   placeholder="巡检人员"
                   @change = "change1"
-                />
+                /> -->
+                <el-select v-model="formval.exam" placeholder="请选择">
+                  <el-option
+                    v-for="(item,index) in formvals1.examine"
+                    :key="index"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
               </el-col>
             </el-row>
           </el-col>
@@ -58,13 +75,22 @@
                 巡检系统<i>*</i>
               </el-col>
               <el-col :span="18" class="addContInput" v-if="formvals1.systems">
-                <SelectBox 
+                <!-- <SelectBox 
                   :options = 'formvals1.systems' 
                   :value = "formval.system" 
                   :icon="'el-icon-d-caret'"
                   placeholder="巡检系统"
                   @change = "change4"
-                />
+                /> -->
+                <el-select v-model="formval.system" placeholder="请选择">
+                  <el-option
+                    v-for="(item,index) in formvals1.systems"
+                    :key="index"
+                    :label="item.label"
+                    @change="change4"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
               </el-col>
             </el-row>
           </el-col>
@@ -74,13 +100,22 @@
                 巡检区域<i>*</i>
               </el-col>
               <el-col :span="18" class="addContInput" v-if="formvals1.areas">
-                <SelectBox 
+                <!-- <SelectBox 
                   :options = 'formvals1.areas' 
                   :value = "formval.area" 
                   :icon="'el-icon-d-caret'"
                   placeholder="巡检区域"
                   @change = "change5"
-                />
+                /> -->
+                <el-select v-model="formval.area" placeholder="请选择">
+                  <el-option
+                    v-for="(item,index) in formvals1.areas"
+                    :key="index"
+                    @change="change5"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
               </el-col>
             </el-row>
           </el-col>
@@ -90,13 +125,22 @@
                 巡检设备
               </el-col>
               <el-col :span="18" class="addContInput" v-if="formvals1.devices">
-                <SelectBox 
+                <!-- <SelectBox 
                   :options = 'formvals1.devices' 
                   :value = "formval.device" 
                   :icon="'el-icon-d-caret'"
                   placeholder="巡检设备"
                   @change = "change6"
-                />
+                /> -->
+                <el-select v-model="formval.device" placeholder="请选择">
+                  <el-option
+                    v-for="(item,index) in formvals1.devices"
+                    :key="index"
+                    @change="change6"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
               </el-col>
             </el-row>
           </el-col>
@@ -124,13 +168,22 @@
                 巡检周期<i>*</i>
               </el-col>
               <el-col :span="18" class="addContInput" v-if="formvals1.periods">
-                <SelectBox 
+                <!-- <SelectBox 
                   :options = 'formvals1.periods' 
                   :value = "formval.period" 
                   :icon="'el-icon-d-caret'"
                   placeholder="巡检周期"
                   @change = "change8"
-                />
+                /> -->
+                <el-select v-model="formval.period" placeholder="请选择">
+                  <el-option
+                    v-for="(item,index) in formvals1.periods"
+                    :key="index"
+                    :multiple="true"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
               </el-col>
             </el-row>
           </el-col>
@@ -140,14 +193,22 @@
                 采集数据点
               </el-col>
               <el-col :span="18"  class="addContInput" v-if="formvals1.datas">
-                <SelectBox 
+                <!-- <SelectBox 
                   :options = 'formvals1.datas' 
                   :value = "formval.data" 
                   :multiple="true"
                   :icon="'el-icon-d-caret'"
                   placeholder="采集数据点"
                   @change="change9"
-                />
+                /> -->
+                <el-select v-model="formval.data" multiple placeholder="请选择">
+                  <el-option
+                    v-for="(item,index) in formvals1.datas"
+                    :key="index"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
               </el-col>
             </el-row>
           </el-col>
@@ -281,7 +342,7 @@
         formvals:{
           handler(val){
             if(val){
-              this.formvals1 = val;
+              this.formvals = val;
             }
           },
           deep:true
@@ -290,16 +351,18 @@
           handler(val){
             if(val){
               this.formval = val;
-              //console.log(this.formval);
-              // if(this.formval.system && this.formval.device){
-              //    this.$emit('getSystemval',this.formval.device);
-              // }
-              // if(this.formval.system && this.formval.area){
-              //   this.$emit('getFloorVal',this.formval.system)
-              // }
-              // if(this.formval.area && this.formval.device){
-              //   this.$emit('getDeviceVal',this.formval.area)
-              // }
+              if(val.system){
+                this.$emit('getSystemval',val);
+              }
+              if(val.department){
+                this.$emit('getUserlist',val);
+              }
+              if(val.floor_id,val.system){
+                  this.$emit('getFloorVal',val.floor_name,this.formval.system)
+              }
+              if(val.device){
+                this.$emit('getDeviceVal',val.device)
+              }
             }
           },
           deep:true
@@ -307,6 +370,7 @@
       },
       mounted() {
         this.formval = this.data;
+        //console.log(this.data)
         this.formvals1 = this.formvals;
       }
   }

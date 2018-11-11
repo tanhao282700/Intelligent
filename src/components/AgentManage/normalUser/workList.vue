@@ -95,7 +95,7 @@
                     <span class="taskCont">{{dtlObj.dispatch_user_phone}}</span>
                   </li>
                 </ul>
-                <div style="clear:both">
+                <div style="clear:both" v-show="dtlObj.dtlIsShow">
                   <div class="contLabel">现场处理情况</div>
                   <el-input
                     type="textarea"
@@ -105,7 +105,7 @@
                     v-model="dtlObj.complete_info">
                   </el-input>
                 </div>
-                <div class="dealimg">
+                <div class="dealimg" v-show="dtlObj.dtlIsShow">
                   <el-row :gutter="20">
                     <el-col :span="12">
                       <div>处理前</div>
@@ -143,7 +143,7 @@
                   </li>
                   </ul>
                 </el-row>  
-                <div>
+                <div v-show="dtlObj.dtlIsShow">
                   <div class="contLabel">详情描述</div>
                   <el-input
                     type="textarea"
@@ -156,30 +156,30 @@
                 <ul>
                   <li>
                     <span class="taskLabel">派发人员</span>
-                    <span class="taskCont">{{dtlObj.user_name}}</span>
+                    <span class="taskCont">{{dtlObj.dispatch_user_name}}</span>
                   </li>
                   <li>
                     <span class="taskLabel">联系电话</span>
-                    <span class="taskCont">{{dtlObj.user_phone}}</span>
+                    <span class="taskCont">{{dtlObj.dispatch_user_phone}}</span>
                   </li>
                 </ul>
-                <div style="clear:both" class="yuji">
+                <div style="clear:both" class="yuji" v-show="dtlObj.dtlIsShow">
                   <div class="contLabel">延后预计完成时间</div>
                   <div class="yujiDate">
                     <el-date-picker
-                      v-model="value2"
+                      v-model="value1"
                       type="date"
                       placeholder="选择日期">
                     </el-date-picker>
                   </div>
                   <div class="yujitime"> 
                     <el-time-select
-                      v-model="value1"
+                      v-model="value2"
                       placeholder="选择时间">
                     </el-time-select>
                   </div>
                 </div> 
-                <div style="clear:both">
+                <div style="clear:both" v-show="dtlObj.dtlIsShow">
                   <div class="contLabel">现场处理情况</div>
                   <el-input
                     type="textarea"
@@ -197,7 +197,7 @@
                 <div class="btnsgroups" v-else-if="dtlObj.now_state==1 || dtlObj.now_state==3">
                   <span class="infoBusy" v-text="'退单'" @click="backWork(dtlObj,5)"></span>
                   <span class="infoSend" v-text="'取消'" @click="backWork(dtlObj,0)"></span>
-                  <span class="infoSubmit" v-text="'提交'" @click="backWork(dtlObj,4)"></span>
+                  <span class="infoSubmit" v-text="'提交'" @click="backWork(dtlObj,2)"></span>
                 </div>
               </div>
             </div>
@@ -368,7 +368,7 @@ export default {
                     };
                     return h(deal,{
                     props: { btnss:btnss},
-                    on:{agree:this.agree,refult:this.refult,postpone:this.postpone}
+                    on:{agree:this.agree,refult:this.refult}
                     });
                 }
               },
@@ -450,11 +450,15 @@ export default {
       }, 
       rowClick(row){
         this.infoItem = row;
+        //console.log(row);
         this.$refs.tableInfos2.show();
         this.$http.post('/pc_ims/staff/jobinfo_user',{job_id:row.id}).
         then(res=> {
            if(res.data.code==0){
              this.dtlObj = res.data.data.info;
+             this.dtlObj.dtlIsShow = row.dtlIsShow;
+             this.value1 = this.dtlObj.end_time.split(' ')[0];
+             this.value2 = this.dtlObj.end_time.split(' ')[1];
              this.dtlObj.pic1 = res.data.data.pic1;
              this.dtlObj.pic2 = res.data.data.pic2;
              if(this.dtlObj.priority==1){
@@ -506,11 +510,6 @@ export default {
         this.dealWorkParam = item;
         this.dealWorkParam.type = type;
       },
-      postpone(item,type){
-        this.dealWorkParam = item;
-        this.dealWorkParam.type = type;
-        this.dealWork()
-      },
       dealWork(){
         if(!this.dealWorkParam.info){
           this.dealWorkParam.info = '';
@@ -546,6 +545,8 @@ export default {
               if(this.dealWorkParam.type==4){
                 this.$refs.tableInfos2.hide();
               }
+              this.value1 = '';
+              this.value2 = '';
             }else{
               this.$message({
                 type:'error',
@@ -556,7 +557,23 @@ export default {
         });
       },
       backWork(item,type){
-        //console.log(item.id)
+        if(type==2){
+          if(!this.value1 || !this.value2){
+            this.$message({
+              type:'error',
+              message:'请选择延期时间',
+              duration:2000
+            })
+            return;
+          }
+          let time1 = utils.time(new Date(this.value1)/1000,1);
+          let time2 = utils.time(new Date(this.value2)/1000,11);
+          item.endtime = time1+time2;
+        }else{
+          if(!item.endtime){
+            item.endtime = ''
+          }
+        }
         this.dealWorkParam = {
           item :{
             id:item.id,
@@ -564,7 +581,7 @@ export default {
           },
           type:type,
           info:item.complete_info,
-          end_time:item.end_time,
+          end_time:item.endtime,
           pic1:item.pic1,
           pic2:item.pic2
         }
@@ -642,6 +659,11 @@ export default {
            if(res.data.code==0){
              $.each(res.data.data,(n,k)=>{
                 res.data.data[n].serial = (this.currentPage - 1) * 20 + 1 + n;
+                if(k.now_state==0){
+                  res.data.data[n].dtlIsShow = false;//未接单状态，现场处理情况和处理前后模块不显示
+                }else{
+                  res.data.data[n].dtlIsShow = true;//相反
+                }
              })
              this.page = {
                 currentPage: this.currentPage,
@@ -915,7 +937,8 @@ export default {
               border-radius:2px;
               height:0.32rem;
               line-height:0.32rem;
-              border:1px solid rgba(25,137,250,1)
+              border:1px solid rgba(25,137,250,1);
+              cursor:pointer;
             }
             .infoSend{
               display:inline-block;
@@ -923,6 +946,7 @@ export default {
               text-align:center;
               background:rgba(22,68,136,1);
               border-radius:2px;
+              cursor:pointer;
               height:0.32rem;
               line-height:0.32rem;
             }
@@ -930,6 +954,7 @@ export default {
               text-align:center;
               display:inline-block;
               width:0.96rem;
+              cursor:pointer;
               background:rgba(58,132,238,1);
               border-radius:2px;
               height:0.32rem;

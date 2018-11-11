@@ -244,3 +244,9 @@
 .routingDtl .el-textarea__inner{
   color:#fff;
 }
+.addContInput .el-select{
+  width:100%;
+}
+.addContInput .el-select .el-tag{
+  background: transparent;
+}

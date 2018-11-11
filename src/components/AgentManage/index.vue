@@ -65,7 +65,7 @@
                   <label for="">已完成数</label>
                   <div class="numBox">
                       <div class="numFeal">
-                        <div class="numLines" :style="{'width':2.10*echartCirData4.data[1].value/echartCirData4.total +'rem'}">{{echartCirData4.data[1].value}}</div>
+                        <div class="numLines" :style="{'width':2.10*echartCirData4.data[0].value/echartCirData4.total +'rem'}">{{echartCirData4.data[0].value}}</div>
                       </div>
                   </div>
                 </li>
@@ -73,7 +73,7 @@
                   <label for="">未完成数</label>
                   <div class="numBox">
                     <div class="numFeals">
-                      <div class="numLines2" :style="{'width':2.10*echartCirData4.data[0].value/echartCirData4.total +'rem'}">{{echartCirData4.data[0].value}}</div>
+                      <div class="numLines2" :style="{'width':2.10*echartCirData4.data[1].value/echartCirData4.total +'rem'}">{{echartCirData4.data[1].value}}</div>
                     </div>
                   </div>
                 </li>
@@ -222,7 +222,7 @@ export default {
         echartCirData4:{//巡检的数据
             id:'echart4',
             color:[
-              '#f56c6c','#008aff'
+              '#008aff','#f56c6c'
             ],
             size:[0,'72.89%'],
             total:1,
@@ -283,7 +283,7 @@ export default {
            let gongdanwei = res.data.data.gongdan.wei;
            let gongdanwan = res.data.data.gongdan.wan;
            let xunjianwei = res.data.data.xunjian.wei;
-           let xunjianwan = res.data.data.xunjianwan;
+           let xunjianwan = res.data.data.xunjian.wan;
            //工单
            _this.echartCirData3.data  = [
               {value:res.data.data.gongdan.wan,name:Math.floor(gongdanwan/(gongdanwan+gongdanwei)*100)+'%',tit:'已完成数'},
@@ -291,8 +291,8 @@ export default {
               //巡检
           _this.echartCirData4.total = res.data.data.xunjian.xunjian_count;
           _this.echartCirData4.data = [
-            {value:res.data.data.xunjian.wan,name:Math.floor(xunjianwan/(xunjianwan+xunjianwei)*100)+'%',tit:'已完成数'},
-            {value:res.data.data.xunjian.wei,name:Math.floor(xunjianwei/(xunjianwei+xunjianwan)*100)+'%',tit:'未完成数'}];
+            {value:xunjianwan,name:Math.floor(xunjianwan/(xunjianwan+xunjianwei)*100)+'%',tit:'已完成数'},
+            {value:xunjianwei,name:Math.floor(xunjianwei/(xunjianwei+xunjianwan)*100)+'%',tit:'未完成数'}];
             //工单来源
           _this.barData.data = [res.data.data.sys,res.data.data.people,res.data.data.complain]
           //console.log(res.data.data.now)
@@ -446,7 +446,7 @@ export default {
                     padding-bottom:0.07rem;
                     .numLines{
                       height: 100%;
-                      background: #008aff;
+                      background: #f56c6c;
                       color:#fff;
                       text-align:right;
                       padding-right:5*100/1366vw;
@@ -454,7 +454,7 @@ export default {
                     }
                     .numLines2{
                       height: 100%;
-                      background: #f56c6c;
+                      background: #008aff;
                       color:#fff;
                       text-align:right;
                       line-height:0.22rem;

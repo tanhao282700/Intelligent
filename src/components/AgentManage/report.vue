@@ -84,16 +84,19 @@
         </el-tab-pane>
       </el-tabs>
       <div v-show="visible" style="height:2rem">
-        <ul  class="hover" :style="{top:1.18+(0.4*hoverIndex)+'rem'}">
-          <li v-for="(item,index) in hoverData" >
-            <i class="el-icon-arrow-left"></i>
-            <dl>
-              <dt><span class="serial">0{{index}}</span><span class="line">|</span>{{item.time}}维修人：{{item.name}}</dt>
-              <dd class="desc">内容描述</dd>
-              <dd class="desccont">{{item.description}}</dd>
-            </dl>
-          </li>
-        </ul>
+        <div class="hover" :style="{top:0.78+(0.4*hoverIndex)+'rem'}">
+          <ul>
+            <li v-for="(item,index) in hoverData" >
+              <i class="el-icon-arrow-left"></i>
+              <dl>
+                <dt><span class="serial">0{{index}}</span><span class="line">|</span>{{item.time}}维修人：{{item.name}}</dt>
+                <dd class="desc">内容描述</dd>
+                <dd class="desccont">{{item.description}}</dd>
+              </dl>
+            </li>
+          </ul>
+        </div>
+        
       </div>
   </div>
   
@@ -219,6 +222,7 @@ export default {
       }
     },
     mouseOverLi(name,index){
+      console.log(index);
       this.hoverIndex = index;
       this.$http.post('/pc_ims/admin/count_deviceinfo',{
         name:name
@@ -243,7 +247,7 @@ export default {
       this.getRepeatRate();
     },
     mouseOutLi(row){
-      this.visible = false;
+      //this.visible = false;
     },
     getReportData(){
       let year = ''
@@ -452,14 +456,19 @@ export default {
   }
   .hover {
     position:absolute;
-    right:14%;
+    right:14.5%;
     width:2.83rem;
+    height:2.78rem;
     background:#05152c;
     padding:0.2rem;
     border:1px solid #4789d7;
     box-shadow: -3px 0px 3px rgba(20,60,121,0.5),
     3px 0px 3px rgba(20,60,121,0.5),
     0px 3px 3px rgba(20,60,121,0.5);
+    ul{
+      height:2.38rem;
+      overflow-y:scroll;
+    }
     li{
       color:#fff;
       font-size:0.13rem;

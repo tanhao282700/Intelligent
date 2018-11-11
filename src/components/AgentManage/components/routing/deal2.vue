@@ -5,7 +5,7 @@
 <template>
     <div class="dealBox">    
         <div class="dealBtn">
-            <span @mouseenter="mousehover(btnss.fills.device_name,btnss.fills.index)" @mouseleave="mouseOut()">{{btnss.fills.count}}</span>
+            <span @mouseenter="mousehover(btnss.fills.device_name,btnss.fills.serial)" @mouseleave="mouseOut()">{{btnss.fills.count}}</span>
         </div>
     </div>
 </template>
@@ -42,7 +42,7 @@ export default {
     }
   },
   mounted() {
-    console.log()
+    //console.log(this.btnss.fills)
   },
 }
 </script>

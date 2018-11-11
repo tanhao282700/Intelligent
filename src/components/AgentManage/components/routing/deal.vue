@@ -5,7 +5,7 @@
 <template>
     <div class="dealBox">    
         <div class="dealBtn">
-            <span @click.stop="update">修改</span>
+            <span @click.stop="update" v-show="isStop">修改</span>
             <span @click.stop="deletes">删除</span>
             <el-radio-group class="routeRadio" v-model="radio.radio3" @change="changeStatus" :fill="radio.color">
               <el-radio-button label="启动"></el-radio-button>
@@ -23,9 +23,10 @@ export default {
       radio:{
         radio3:'启动',
         color:'#4AE283',
-        state:''
-      }
+        state:'',
         
+      },
+      isStop:false
     }
   },
   methods:{
@@ -59,9 +60,11 @@ export default {
           this.state = val.item.now_state;
           if(val.item.now_state=='1'){
             this.radio.radio3 = '启动'
+            this.isStop = false;
             this.getStatus(this.radio.radio3)
           }else if(val.item.now_state==2){
             this.radio.radio3='停用';
+            this.isStop =true;
             this.getStatus(this.radio.radio3)
           }
         }
@@ -70,13 +73,14 @@ export default {
     }
   },
   mounted() {
-     // console.log(this.btnss.item.now_state);
       this.state = this.btnss.item.now_state;
       if(this.btnss.item.now_state=='1'){
         this.radio.radio3 = '启动'
         this.getStatus(this.radio.radio3)
+        this.isStop = false;
       }else if(this.btnss.item.now_state==2){
         this.radio.radio3='停用';
+        this.isStop = true;
         this.getStatus(this.radio.radio3)
       }
       
@@ -101,9 +105,8 @@ export default {
         }    
     }
     .routeRadio{
-      .vh(24);
-      .vhLH(24);
-      .vw(80);
+      height:0.24rem;
+      line-height:0.24rem;
     }
 }
 
