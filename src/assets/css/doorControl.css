@@ -104,7 +104,7 @@ video{object-fit:fill;}
 .VideoSurveillance .mainContentBox{width:100%;height:100%;border-radius: 4px;-webkit-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);-moz-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);box-shadow:0 0 10px rgba(74, 144, 226, 0.22);position: relative;padding-top: 0.5rem;}
 .videoConditionsBox{position:absolute;top:0;left:0;height:0.5rem;width:100%;background:rgba(0,0,0,.25);border-radius: 4px 4px 0 0;display: flex;align-items:center;}
 .videoConditionsBox li{float: left;width:1.2rem;height:0.32rem;text-align: right;padding-right:20px;line-height: 32px;font-size: 0.12rem;}
-.videoConditionsBox li:first-child{width:1rem;font-size: 0.14rem;}
+.videoConditionsBox li:first-child{width:1rem;font-size: 0.14rem;height:0.5rem;line-height: 0.5rem;}
 .videoConditionsBox li .el-input__inner{height:0.32rem;font-size: 0.14rem!important;}
 .videoConditionsBox li.floatRt{width:1.7rem;position: absolute;right:0;top:50%;margin-top:-0.16rem;}
 .videoConditionsBox li .vieCtBgBox{text-align: left;width: 1.51rem;height: 0.32rem;background: rgba(74,144,226,0.1);border-radius: 2px;padding-left: 10px;}
