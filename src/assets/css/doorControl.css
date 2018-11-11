@@ -34,7 +34,7 @@ nav.tabNav span a.on{color:#008aff;}
 .tableBox .el-pagination__total{left:15px;bottom:0px;}
 .tableBox .el-pagination__jump{margin-right:10px;}
 .tableBox .el-table thead th.is-leaf{padding:0!important;border:0!important;}
-.tabsDomBox0{padding-top: 170px;position: relative;height: 100%;}
+.tabsDomBox0{padding-top: 1.7rem;position: relative;height: 100%;}
 .tabsDomBox0 .el-select .el-input__inner{height:0.32rem;width:0.98rem;font-size: 0.12rem!important;}
 .el-select:hover .el-input__inner,.el-input__inner:hover{border:1px solid #1989fa;}
 .tabsDomBox0 .el-select{margin-left: 20px;}
@@ -60,7 +60,7 @@ nav.tabNav span a.on{color:#008aff;}
 .popBgBox .popDoorControl span:nth-child(2){color:#36fceb;text-decoration: underline;margin-left: 10px;font-size: 0.14rem;cursor: pointer;}
 .arrowLeft{position:absolute;left:5px;top:3px;display:block;width: 0;height: 0;border-top: 10px solid transparent;border-right: 15px solid #022d6b;border-bottom: 10px solid transparent;}
 .popBgBox .popDoorStatus span,.popBgBox .popDoorControl span{float: left;}
-.topShadow{position: absolute;top:90px;-webkit-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);-moz-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);box-shadow:0 0 10px rgba(74, 144, 226, 0.22);width: 100%;height:60px;display: flex;align-items:center;}
+.topShadow{position: absolute;top:0.9rem;-webkit-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);-moz-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);box-shadow:0 0 10px rgba(74, 144, 226, 0.22);width: 100%;height:0.6rem;display: flex;align-items:center;}
 .bottomShadow{position:relative;width:100%;height:100%;-webkit-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);-moz-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);box-shadow:0 0 10px rgba(74, 144, 226, 0.22);}
 .bottomShadow .floorImgBox{position:absolute;display:block;left:0;top:0;width:100%;height:100%;}
 .bottomShadow .floorImgBox img{display: block;width:100%;height:100%;}
@@ -155,16 +155,16 @@ video{object-fit:fill;}
 .hotelStatus{width:100%;height:100%;padding-top: 0.85rem;position:relative;}
 .hotelMainContent{width:100%;height:100%;position: relative;padding-left:2.4rem;}
 .hotelMainInfo{position:absolute;top:0px;left:0;width:2.2rem;height:100%;box-shadow:0px 2px 5px 0px rgba(74,144,226,0.22),1px 1px 1px 0px rgba(248,253,255,0.15),0px 0px 1px 0px rgba(74,144,226,1);border-radius:4px;}
-.hotelMainInfo li{width:100%;height:40px;padding-left: 10px;position:relative;background:rgba(30,69,155,0.35);}
-.hotelMainInfo li:first-child{margin-bottom: 15px;background:rgba(0,0,0,.2);border-radius:4px 4px 0 0;}
+.hotelMainInfo li{width:100%;height:0.4rem;padding-left: 10px;position:relative;background:rgba(30,69,155,0.35);}
+.hotelMainInfo li:first-child{margin-bottom: 0.15rem;background:rgba(0,0,0,.2);border-radius:4px 4px 0 0;}
 .hotelMainInfo li:nth-child(2),.hotelMainInfo li:nth-child(3){margin-bottom: 1px;}
-.hotelMainInfo li span{height:40px;line-height: 40px;color:#b5d7ff;font-size: 0.16rem;}
-.hotelMainInfo li a{height:40px;line-height: 40px;color:#fff;font-size: 0.16rem;float:right;padding-right:10px;}
+.hotelMainInfo li span{height:0.4rem;line-height: 0.4rem;color:#b5d7ff;font-size: 0.16rem;}
+.hotelMainInfo li a{height:0.4rem;line-height: 0.4rem;color:#fff;font-size: 0.16rem;float:right;padding-right:10px;}
 .hotelMainInfo li:first-child span{color:#008aff;padding-right:10px;}
-.hotelMainInfo li:first-child i{position:absolute;left:90px;top:12px;display: block;width:2px;height:16px;background:#008aff;border-radius: 2px;}
-.roomsStaListPanel{width:100%;height:100%;position: relative;padding-top:40px;box-shadow:0px 2px 5px 0px rgba(74,144,226,0.22),1px 1px 1px 0px rgba(248,253,255,0.15),0px 0px 1px 0px rgba(74,144,226,1);border-radius:4px;}
-.roomListHeadBox{position: absolute;left:0;top:0;display: block;width:100%;height:40px;background:rgba(0,0,0,.2);border-radius:4px 4px 0 0;}
-.roomListHeadBox span{height:40px;line-height: 40px;font-size: 0.16rem;padding-left:30px;position:relative;display: inline-block;}
+.hotelMainInfo li:first-child i{position:absolute;left:0.9rem;top:0.12rem;display: block;width:0.02rem;height:0.16rem;background:#008aff;border-radius: 2px;}
+.roomsStaListPanel{width:100%;height:100%;position: relative;padding-top:0.4rem;box-shadow:0px 2px 5px 0px rgba(74,144,226,0.22),1px 1px 1px 0px rgba(248,253,255,0.15),0px 0px 1px 0px rgba(74,144,226,1);border-radius:4px;}
+.roomListHeadBox{position: absolute;left:0;top:0;display: block;width:100%;height:0.4rem;background:rgba(0,0,0,.2);border-radius:4px 4px 0 0;}
+.roomListHeadBox span{height:0.4rem;line-height: 0.4rem;font-size: 0.16rem;padding-left:30px;position:relative;display: inline-block;}
 .roomListHeadBox span i{position:absolute;left:14px;top:14px;display: block;width:12px;height:12px;border-radius:10px;}
 .roomListHeadBox span.emptyDirty{color:#FF85C0;}
 .roomListHeadBox span.emptyClean{color:#91D5FF;}
@@ -180,10 +180,10 @@ video{object-fit:fill;}
 .roomListHeadBox span.roomLock i{background:#FF7875;}
 .roomListHeadBox span.roomRepair i{background:#FF4D4F;}
 
-.roomListHeadBox span:first-child{color:#008aff;padding-right:20px;padding-left: 10px;}
-.roomListHeadBox span:first-child i{position:absolute;left:106px;top:12px;display: block;width:2px;height:16px;background:#008aff;border-radius: 2px;}
+.roomListHeadBox span:first-child{color:#008aff;padding-right:0.2rem;padding-left: 0.1rem;}
+.roomListHeadBox span:first-child i{position:absolute;left:1.06rem;top:0.12rem;display: block;width:2px;height:0.16rem;background:#008aff;border-radius: 2px;}
 .roomListHeadBox .el-select{float:right;margin-right:10px;width:0.72rem;}
-.roomListHeadBox .el-select .el-input__inner{height:30px!important;width:0.54rem!important;padding:0!important;border:0px!important;}
+.roomListHeadBox .el-select .el-input__inner{height:0.3rem!important;width:0.54rem!important;padding:0!important;border:0px!important;}
 
 .roomsTypeStaBox{width:100%;height:100%;padding-left:10px; }
 .roomsTypeStaBox ul li:first-child{height:40px;line-height: 40px;font-size: 0.16rem;}
@@ -208,18 +208,18 @@ video{object-fit:fill;}
 .reportChartHeadBox>span i{position:absolute;top:12px;left:120px;display: block;width:2px;background:#008AFF;height: 16px;border-radius: 2px;}
 
 .roomLists .navCrumbs{left:3px;}
-.roomLists .roomListsTabBox{width: 100%;height:100%;padding-top:38px;position: relative;}
-.roomLists .roomListsTabBox .tabNav{position: absolute;top:0;left:0;display: block;height:20px;line-height: 20px;}
+.roomLists .roomListsTabBox{width: 100%;height:100%;padding-top:0.38rem;position: relative;}
+.roomLists .roomListsTabBox .tabNav{position: absolute;top:0;left:0;display: block;height:0.2rem;line-height: 0.2rem;}
 .roomLists .roomListsTabBox nav.tabNav span:first-child a{margin-left:0;}
 .roomLists .roomListsTabBox nav.tabNav span a{padding-left: 3px;margin-left:20px;padding-bottom: 8px;font-size: 0.16rem;}
 .roomLists .roomListsTabBox nav.tabNav span a.on {border-bottom: 2px solid #008aff}
 
-.roomListsTabDomBox{width: 100%;height:100%;position: relative;box-shadow:0px 2px 5px 0px rgba(74,144,226,0.22),1px 1px 1px 0px rgba(248,253,255,0.15),0px 0px 1px 0px rgba(74,144,226,1);border-radius:4px;position: relative;padding-top:50px;}
+.roomListsTabDomBox{width: 100%;height:100%;position: relative;box-shadow:0px 2px 5px 0px rgba(74,144,226,0.22),1px 1px 1px 0px rgba(248,253,255,0.15),0px 0px 1px 0px rgba(74,144,226,1);border-radius:4px;position: relative;padding-top:0.5rem;}
 
-.roomListSearchPanel{padding-left:20px;height:50px;position: absolute;left:0;top:0;display: block;width:100%;}
-.roomListSearchPanel .el-select{margin-top:10px;margin-right:10px;}
-.roomListSearchPanel .el-input__inner{height:30px;width:1rem;}
-.roomListSearchPanel .roomListDatePickerDef .el-input__inner{height:30px;width:1.2rem;}
+.roomListSearchPanel{padding-left:20px;height:0.5rem;position: absolute;left:0;top:0;display: flex;width:100%;align-items:center;}
+.roomListSearchPanel .el-select{margin-right:10px;}
+.roomListSearchPanel .el-input__inner{height:0.3rem;width:1rem;}
+.roomListSearchPanel .roomListDatePickerDef .el-input__inner{height:0.3rem;width:1.2rem;}
 
 .roomListDatePicker{display: inline-block;width:2.4rem;margin-right:10px;}
 .roomListDatePickerDef{width:1.2rem;}
