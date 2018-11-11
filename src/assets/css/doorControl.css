@@ -203,9 +203,9 @@ video{object-fit:fill;}
 .reportChartbox .chartDom{width:100%;height:100%;}
 .reportChartHeadBox{position:absolute;top:0;left:0;display:block;width:100%;height:40px;background:rgba(0,0,0,.2);border-radius:4px 4px 0 0;}
 .reportChartHeadBox .el-select{float:right;margin-right:20px;}
-.reportChartHeadBox .el-select .el-input__inner{height:30px!important;width:0.64rem!important;padding:0!important;border:0px!important;}
+.reportChartHeadBox .el-select .el-input__inner{height:0.3rem!important;width:0.64rem!important;padding:0!important;border:0px!important;}
 .reportChartHeadBox>span{display: inline-block;padding-left:15px;height:40px;line-height: 40px;color:#008AFF;font-size: 0.16rem;position:relative;width:1.2rem;}
-.reportChartHeadBox>span i{position:absolute;top:12px;left:120px;display: block;width:2px;background:#008AFF;height: 16px;border-radius: 2px;}
+.reportChartHeadBox>span i{position:absolute;top:0.12rem;left:1.2rem;display: block;width:2px;background:#008AFF;height: 0.16rem;border-radius: 2px;}
 
 .roomLists .navCrumbs{left:3px;}
 .roomLists .roomListsTabBox{width: 100%;height:100%;padding-top:0.38rem;position: relative;}
