@@ -43,7 +43,7 @@ nav.tabNav span a.on{color:#008aff;}
 /*.floorImgBox i .pop:hover{display: none;}*/
 .el-table td, .el-table th{padding:2px 0;}
 .el-table .cell{font-size: 0.12rem;text-align: center;}
-.el-table th>.cell{text-align: center;font-size: 0.14rem!important;padding: 0!important;}
+.el-table th>.cell{text-align: center;font-size: 0.14rem!important;padding: 0!important;line-height: 0.24rem;}
 .el-table .el-table__body td{padding:0;font-size: 0.14rem;color:#f4f4f4;}
 .el-table .el-table__body td .cell{font-size: 0.14rem;color:#f4f4f4;text-align: center;}
 .doorInfoBgBox .tableBox .el-table__header{background:rgba(0,0,0,0);}
@@ -228,7 +228,7 @@ video{object-fit:fill;}
 .roomListDatePicker .el-date-editor .el-range-separator{line-height: 0.22rem;padding:0;color:#d8d8d8;font-size: 0.12rem;}
 
 .roomListHeadBox .el-dropdown{float: right;margin-right:10px;width:0.86rem;cursor:pointer;}
-.roomListHeadBox  .el-dropdown>span{color:#fff;padding:0;cursor:pointer;}
+.roomListHeadBox  .el-dropdown>span{color:#fff;padding:0;cursor:pointer;width:100%!important;}
 .hotelStaDropDown .el-dropdown-menu__item{padding-left:26px;}
 .roomListHeadBox  .el-dropdown>span i{color:#fff;border:0px;}
 .el-dropdown-menu{background: #04152c!important;border: 1px solid #4a90e2!important;-webkit-box-shadow: 0px 2px 12px 0px rgba(39, 141, 255, 0.25)!important;box-shadow: 0px 2px 12px 0px rgba(39, 141, 255, 0.25)!important;border-radius: 4px!important;}
