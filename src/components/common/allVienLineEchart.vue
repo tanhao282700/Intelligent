@@ -40,7 +40,7 @@
           {img:require('../../assets/img/echart/lineZ.png')},
         ],
         color:[
-          {color1:'rgba(69,50,138,1)',color2:'rgba(69,50,138,0.69)'},
+          {color1:'rgba(0,138,255,1)',color2:'rgba(0,138,255,.65)'},
           {color1:'rgba(46,204,223,1)',color2:'rgba(46,204,223,0.69)'},
           {color1:'rgba(55, 42, 191,1)',color2:'rgba(55, 42, 191,0.69)'},
         ],

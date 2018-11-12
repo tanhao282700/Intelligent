@@ -69,7 +69,7 @@
   			<div class="chartLeftTit">
   				<div class="tit1">设备能耗 | </div>
   				<div class="analysisBoxs analysisBoxs1">
-                  <el-select v-model="data.config.device_query_date_type" @change="deviceDateTypeChange">
+                  <el-select v-model="deviceDateType" @change="deviceDateTypeChange">
                     <el-option
                       v-for="item in deviceDateTypes"
                       :key="item.value"
@@ -80,24 +80,24 @@
                 </div>
                 <div class="analysisBoxs">
                   <el-date-picker
-                    v-if=" data.config.device_query_date_type=='year' "
-                    v-model="data.config.device_date"
+                    v-if=" deviceDateType=='year' "
+                    v-model="deviceDate"
                     type="year"
                     value-format="yyyy"
                     placeholder="请选择">
                   </el-date-picker>
 
                   <el-date-picker
-                    v-if=" data.config.device_query_date_type=='month' "
-                    v-model="data.config.device_date"
+                    v-if=" deviceDateType=='month' "
+                    v-model="deviceDate"
                     type="month"
                     value-format="yyyyMM"
                     placeholder="请选择">
                   </el-date-picker>
 
                   <el-date-picker
-                    v-if=" data.config.device_query_date_type=='day' "
-                    v-model="data.config.device_date"
+                    v-if=" deviceDateType=='day' "
+                    v-model="deviceDate"
                     type="date"
                     value-format="yyyyMMdd"
                     placeholder="请选择">
@@ -150,7 +150,7 @@
               label: '日'
             }],
             deviceDateType:"month",
-            deviceDate:"",
+            deviceDate: new Date(),
             areaDateTypes:[
               {
               value: 'year',
@@ -163,7 +163,7 @@
               label: '日'
             }],
             areaDateType:"month",
-            areaDate:"",
+            areaDate: "" ,
             energy_type: "0",
         		crumbs:['能源管理系统','用能分析'],
         		iscur:0,
@@ -194,8 +194,6 @@
                 area_query_date_type: "month",
                 area_date: "",
                 energy_type: "0",
-                device_query_date_type: "month",
-                device_date: ""
               },
               trendLegendLabel:[]
         		},
@@ -326,8 +324,8 @@
             let config = {
               sys_menu_id: that.data.config.sys_menu_id,
               project_id: that.data.config.project_id,
-              area_query_date_type: that.data.config.area_query_date_type,
-              area_date: that.data.config.area_date,
+              area_query_date_type: that.areaDateType,
+              area_date: that.areaDate,
               energy_type: that.data.config.energy_type,
             }
             that.$http.post('/hotel_energy/analysis',config).then(res=>{
@@ -367,13 +365,12 @@
         	  let config = {
               sys_menu_id: that.data.config.sys_menu_id,
               project_id: that.data.config.project_id,
-              device_query_date_type: that.data.config.device_query_date_type,
-              device_date: that.data.config.device_date,
+              device_query_date_type: that.deviceDateType,
+              device_date: that.deviceDate,
             }
             that.$http.post('/hotel_energy/analysis',config).then(res=>{
 
               that.calcDeviceData(res);
-              that.calcAreaData(res);
 
             })
           },
@@ -492,7 +489,7 @@
 	        	}
             that.$http.post('/hotel_energy/analysis',param)
 	        	.then(res=>{
-
+              console.log(res);
 	        		//区域图
               that.calcDeviceData(res);
               that.calcAreaData(res);
@@ -514,6 +511,8 @@
         created(){
           this.data.config.sys_menu_id = this.sys_menu_id = this.$store.state.sysList[2].sys_menu_id;
           this.data.config.project_id = this.project_id = this.$store.state.projectId;
+          let curMonth = new Date().getFullYear().toString() + (new Date().getMonth() +1);
+          this.areaDate = curMonth;
         },
         mounted(){
           let that = this;

@@ -415,9 +415,9 @@
           },
           series : [
             {
-              name:'访问来源',
+              name:'电能峰平谷',
               type:'pie',
-              radius : '80%',
+              radius : '95%',
               center: ['50%', '50%'],
               color: ['#2DF0E0','#FFA414', '#316EFF' ],
               data:[
@@ -463,7 +463,10 @@
           backgroundColor: 'transparent',
           tooltip : {
             trigger: 'item',
-            formatter: "{b} : {c} 度"
+            formatter: "{b} : {c} 度",
+            textStyle:{
+              fontSize:10
+            }
           },
           visualMap: {
             show: false,
@@ -473,9 +476,9 @@
           },
           series : [
             {
-              name:'访问来源',
+              name:'电能峰平谷',
               type:'pie',
-              radius : '80%',
+              radius : '95%',
               center: ['50%', '50%'],
               color: ['#2DF0E0','#FFA414', '#316EFF' ],
               data:[
@@ -489,7 +492,8 @@
                 normal: {
                   formatter: '{d}% ',
                   position: 'inner',
-                  fontSize: 14
+                  fontSize: 10,
+                  position:'inside'
                 }
               },
               labelLine: {
@@ -535,9 +539,9 @@
           },
           series : [
             {
-              name:'访问来源',
+              name:'电能峰平谷',
               type:'pie',
-              radius : '80%',
+              radius : '95%',
               center: ['50%', '50%'],
               color: ['#2DF0E0','#FFA414', '#316EFF' ],
               data:[
@@ -587,15 +591,13 @@
           },
           visualMap: {
             show: false,
-            min: 80,
-            max: 600,
             inRange: {}
           },
           series : [
             {
-              name:'访问来源',
+              name:'电能峰平谷',
               type:'pie',
-              radius : '80%',
+              radius : '95%',
               center: ['50%', '50%'],
               color: ['#2DF0E0','#FFA414', '#316EFF' ],
               data:[
@@ -609,7 +611,7 @@
                 normal: {
                   formatter: '{d}% ',
                   position: 'inner',
-                  fontSize: 14
+                  fontSize: 10
                 }
               },
               labelLine: {
@@ -1037,8 +1039,8 @@
             },
             xDate:['01','02','03','04','05','06','07','08','09','10','11','12'],
             list:[
-              {name:"2018",data:data['2017']},
-              {name:"2017",data:data['2018']},
+              {name:"2018",data:data['2018']},
+              {name:"2017",data:data['2017']},
               {name:"今年计划",data:data['this_year_plan']},
             ]
           }

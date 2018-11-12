@@ -55,6 +55,7 @@
 	        	}
             that.$http.post('/hotel_energy/analysis',param)
 	        	.then(res=>{
+	        	  console.log(res);
 
               that.trendData = res.data.data.area_energy_use.trend_data;
 
