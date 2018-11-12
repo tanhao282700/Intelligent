@@ -5,17 +5,23 @@
          element-loading-spinner="el-icon-loading"
          element-loading-text="拼命加载中">
     	<div class="reportTabBoxsHead reportMonthQu">
-            <el-select v-model="formData.energy_type" placeholder="类型">
+            <el-select style="float:left;" v-model="formData.energy_type" placeholder="类型">
                 <el-option label="电" value="0"></el-option>
                 <el-option label="水" value="1"></el-option>
                 <el-option label="气" value="2"></el-option>
             </el-select>
             <!--<span class="todaySpan">{{todaySpan}}</span>-->
-	        <div class="dateBox ">
+	        <div class="dateBox " style="float:left;">
 	            <el-date-picker v-model="formData.query_date" value-format="yyyy" type="year" placeholder="年"></el-date-picker>
 	        </div>
-	        <button class="btn" @click="query" >查询</button>
-	        <button class="btn btnExport floatRt" @click="export1">导出</button>
+        <div class="thSearchBtn" @click="query">
+          <img src="../../../../assets/img/common/search.png" alt="">
+          <button >查询</button>
+        </div>
+        <div class="thSearchBtn1" @click="export1">
+          <img src="../../../../assets/img/DoorControl/export.png" alt="">
+          <button>导出</button>
+        </div>
     	</div>
     	<div class="reportTablesBox">
         <div class="con" :class="{opacity0:loading==true}" style="height:100%;">  <!--宽度要和表格宽度一致-->
@@ -547,5 +553,73 @@
 
 .el-table__footer td{
   text-align: center!important;
+}
+
+  .thSearchBtn{
+    float:left;
+    padding: 0 15px;
+    border-radius: 2px;
+    background: #3a84ee;
+    border: 1px solid #1989fa;
+    height: 32px;
+    line-height: 32px;
+    cursor: pointer;
+    width: 88px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+.thSearchBtn:hover{
+  cursor: pointer;
+}
+.thSearchBtn img{
+  width:18px;
+  height:18px;
+  display: inline-block;
+}
+.thSearchBtn button{
+  background:none!important;
+  border:none!important;
+  color: #fff!important;
+  font-size: 15px!important;
+  margin-left:4px;
+}
+.thSearchBtn button:hover{
+  cursor: pointer;
+}
+.thSearchBtn1{
+  margin-right:8px;
+  float:right;
+  padding: 0 15px;
+  border-radius: 2px;
+  background: #3a84ee;
+  border: 1px solid #1989fa;
+  height: 32px;
+  line-height: 32px;
+  cursor: pointer;
+  width: 88px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.thSearchBtn1:hover{
+  cursor: pointer;
+}
+.thSearchBtn1 img{
+  width:18px;
+  height:18px;
+  display: inline-block;
+}
+.thSearchBtn1 button{
+  background:none!important;
+  border:none!important;
+  color: #fff!important;
+  font-size: 15px!important;
+  margin-left:4px;
+}
+.thSearchBtn1 button:hover{
+  cursor: pointer;
 }
 </style>

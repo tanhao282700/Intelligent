@@ -5,17 +5,23 @@
        element-loading-spinner="el-icon-loading"
        element-loading-text="拼命加载中">
     <div class="reportTabBoxsHead reportDayQu">
-      <el-select v-model="formData.energy_type" placeholder="类型">
+      <el-select style="float:left;" v-model="formData.energy_type" placeholder="类型">
         <el-option label="电" value="0"></el-option>
         <el-option label="水" value="1"></el-option>
         <el-option label="气" value="2"></el-option>
       </el-select>
       <!--<span class="todaySpan">{{todaySpan}}</span>-->
-      <div class="dateBox">
+      <div class="dateBox" style="float:left;">
         <el-date-picker class="reportDaySle" v-model="formData.query_date" value-format="yyyyMM" type="month" placeholder="月"></el-date-picker>
       </div>
-      <button class="btn" @click="query" >查询</button>
-      <button class="btn btnExport floatRt" @click="export1">导出</button>
+      <div class="thSearchBtn" @click="query">
+        <img src="../../../../assets/img/common/search.png" alt="">
+        <button >查询</button>
+      </div>
+      <div class="thSearchBtn1" @click="export1">
+        <img src="../../../../assets/img/DoorControl/export.png" alt="">
+        <button>导出</button>
+      </div>
     </div>
     <div class="reportTablesBox">
       <div class="con" :class="{opacity0:loading==true}" style="height:100%;">  <!--宽度要和表格宽度一致-->
@@ -23,7 +29,7 @@
           <el-table-column prop="index" label="序号" width="40">
           </el-table-column>
           <el-table-column label="名称">
-            <el-table-column prop="day" label="月份" :width="columnw">
+            <el-table-column prop="day" label="日期" :width="columnw">
             </el-table-column>
           </el-table-column>
           <el-table-column :label="label.type">

@@ -1,22 +1,28 @@
 <template>
     <!-- 用能预设模块 -->
-    <div class="reportTabBoxs" v-loading="loading"
+    <div class="reportTabBoxs" v-loading="loading" style="min-height:620px!important;"
          element-loading-background="rgba(0, 0, 0, 0.5)"
          element-loading-spinner="el-icon-loading"
          element-loading-text="拼命加载中">
     	<div class="reportTabBoxsHead">
-            <el-select v-model="formData.date_type" placeholder="日" @change="currentSel">
+            <el-select style="float:left;" v-model="formData.date_type" placeholder="日" @change="currentSel">
               <el-option label="日" value=""></el-option>
               <el-option label="月" value="month"></el-option>
             </el-select>
             <span style="font-size:0.14rem;" class="todaySpan">{{todaySpan}}</span>
-	        <button class="btn" @click="queryCli">查询</button>
-	        <button class="btn btnExport floatRt" @click="export1">导出</button>
+        <div class="thSearchBtn" style="margin-left:10px;" @click="queryCli">
+          <img src="../../../../assets/img/common/search.png" alt="">
+          <button >查询</button>
+        </div>
+        <div class="thSearchBtn1" @click="export1">
+          <img src="../../../../assets/img/DoorControl/export.png" alt="">
+          <button>导出</button>
+        </div>
     	</div>
     	<div class="reportTablesBox reportLeader" :class="{opacity0:loading==true}" >
 
-	    	<el-table class="leaderTab"  :data="tableData3"  :cell-class-name="cell"
-               height="50vh"
+	    	<el-table style="min-height:541px!important;border-bottom:none!important;" class="leaderTab"  :data="tableData3"  :cell-class-name="cell"
+
 	    			   show-summary>
 	    		<el-table-column type="index" label="序号">
 	    		</el-table-column>
@@ -121,7 +127,7 @@
               title:'间天耗费用（元）',
 		          city: 4,
 		        },{
-              title:'能耗总额（万元）',
+              title:'能耗总额（元）',
               city: 4,
             },{
               title:'百元费用率（%）',
@@ -162,6 +168,12 @@
           queryCli(){
               this.loading = true
               $(".el-table__footer td").remove()
+              console.log(this.formData.date_type)
+            if(this.formData.date_type == 'month'){
+                  this.tableData3[7].title = '能耗总额（万元）'
+            }else{
+              this.tableData3[7].title = '能耗总额（元）'
+            }
               this.getData()
           },
             getData(){

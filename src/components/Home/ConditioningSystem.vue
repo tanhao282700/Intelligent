@@ -141,7 +141,7 @@
         this.broadTwoList = response.data.data[0].data4
         this.patternData = response.data.data[0].data2
         this.patternData[0].param = JSON.parse(this.patternData[0].param)
-        if(this.patternData[1].param){
+        if(this.patternData[1]){
           this.patternData[1].param = JSON.parse(this.patternData[1].param)
         }
         this.conditionData = response.data.data
