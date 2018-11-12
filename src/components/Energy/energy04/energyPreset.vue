@@ -51,10 +51,10 @@
                   <span v-text = "'计划'+v0.tit"></span>
                   <span
                     :class ="{'colorFF':!isChangeing,'colorGray':isChangeing}"
-                    v-show = '!(isChangeing && i>dateM)'
+                    v-show = '!(isChangeing && canEditMonth[i])'
                     v-text = "v0.plan===''?'0':v0.plan"
                   ></span>
-                  <input v-show = 'isChangeing && i>dateM' placeholder="未设置" v-model = "v0.plan"/>
+                  <input v-show = 'isChangeing && canEditMonth[i]' placeholder="未设置" v-model = "v0.plan"/>
                 </div>
                 <div class = "actualBox">
                   <span v-text = "'实际'+v0.tit"></span>
@@ -90,12 +90,27 @@
     },
     data () {
       return {
+        hasSearch:false,
+        canEditMonth:{
+          0:false,
+          1:false,
+          2:false,
+          3:false,
+          4:false,
+          5:false,
+          6:false,
+          7:false,
+          8:false,
+          9:false,
+          10:false,
+          11:false
+        },
         years: "",
         updateData: "",
         loading:false,
         dateM:Number((new Date()).getMonth()),
         isChangeing:false,   //正在修改状态
-        times:utils.time(),
+        times: utils.time(),
         allData:[
           {
             tit:'一月',
@@ -202,13 +217,16 @@
           },
 
         ],
+        curYear: Number(new Date().getFullYear()),
       }
     },
     methods:{
       isChange(val){ //切换年份，如果在编辑状态， 清空切换状态
-        if(val<(new Date()).getFullYear()){
-          this.isChangeing =false;
-          /*this.getData();*/
+        let that = this;
+        that.hasSearch = false;
+        that.isChangeing =false;
+        for(var item in that.canEditMonth){
+          that.canEditMonth[item] = false;
         }
       },
       isSearch(){
@@ -216,12 +234,27 @@
       },
       openChange(){
         let that = this;
-        let searchYear = this.years;
-        var curYear = new Date().getFullYear();
+        if(!that.hasSearch){
+          that.$message("请先搜索当前年份数据");
+          return;
+        }
+
+        let searchYear = Number(this.years);
+        var curYear = that.curYear;
         if(searchYear<curYear){
           that.isChangeing = false;
           that.$message("不可编辑");
-        }else{
+        }else if(searchYear>curYear){
+          for(var item in that.canEditMonth){
+            that.canEditMonth[item] = true;
+          }
+          that.isChangeing = true;
+        }else if(searchYear == curYear){
+          for(var item in that.canEditMonth){
+            if(item>that.dateM){
+              that.canEditMonth[item] = true;
+            }
+          }
           that.isChangeing = true;
         }
 
@@ -367,9 +400,11 @@
             }
             that.allData = attrs;
             that.loading = false;
+            that.hasSearch = true;
           }else{
             this.$message.error(res.data.message);
             that.loading = false;
+            that.hasSearch = false;
           }
         }).catch(err=>{
           console.log(err);
