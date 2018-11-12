@@ -25,15 +25,15 @@
       <div class="deviceSet">
         <self-popover2 :device_id="tuliDeviceId" :devicePic="device_pic" />
 
-        <el-scrollbar style="height:100%">
+        <el-scrollbar style="height:99%">
           <div class="controlBtnBox">
-            <div class="btnItem" v-for="(v,i) in tuliBtnList" :key="i">
+            <div class="btnItem" v-for="(v,i) in tuliBtnList" :key="'first'+i">
               <span class="tit">{{v.title}}</span>
               <div class="selBtnList">
                 <button @click="tuliBtnClick(v.point_id,v2.id,i,i2)" :class="{active:v2.id==v.now_value}" type="button" v-for="(v2,i2) in v.btnList" v-text="v2.tit" :key="i2"></button>
               </div>
             </div>
-            <div class="btnItem" v-for="(v2,i2) in tuliTempBtnList" :key="i2+1">
+            <div class="btnItem" v-for="(v2,i2) in tuliTempBtnList" :key="'second'+i2">
               <span class="tit">{{v2.title}}</span>
               <div class="inputBox">
                 <div class="showState">
@@ -375,7 +375,8 @@
           object_device:[],
           yijianNowVal:undefined,
           yijianPointId:undefined,
-          tempObjName:''
+          tempObjName:'',
+          tempObjName2:'',
 
         }
       },
@@ -469,7 +470,7 @@
               let objName = data.params.objName;
               if (this.tempObjName != objName) {
                 this.tempObjName = objName;
-                this.requestOneDeviceInfo(objName);
+                this.requestOneDeviceInfo(this.tempObjName);
               }else {
                 //alert('你废了哦？')
               }
@@ -478,7 +479,7 @@
               break;
             case 'reDeviceClick':
               //点击模型响应事件
-              //console.log(data.params.clickObjName);
+              //console.log('点击次数',data.params.clickObjName);
               setTimeout(()=>{
                 this.getEchartsData(data.params.clickObjName);
                 this.object_device.some((item,i)=>{
@@ -501,6 +502,7 @@
                 }
                 this.showSingleDevice = true;
               },200)
+
 
               break;
             case 'cancelDevice':
@@ -858,9 +860,9 @@
 
       },
       mounted() {
-
+        window.removeEventListener('message',this.handleMessage,false);
         // 在外部vue的window上添加postMessage的监听，并且绑定处理函数handleMessage
-        window.addEventListener('message', this.handleMessage);
+        window.addEventListener('message', this.handleMessage,false);
         this.iframeWin = this.$refs.iframe.contentWindow
 
 
@@ -871,6 +873,12 @@
         console.log(this.$refs.iframe.contentWindow)*/
 
       },
+      /*beforeDestroy(){
+        alert('出发')
+      },*/
+      destroyed(){
+        window.removeEventListener('message',this.handleMessage,false);
+      }
     }
 </script>
 
@@ -965,9 +973,11 @@
         #4a90e2;
         border-radius: 4px;
         .controlBtnBox{
-          margin-left: 0.6rem;
+          width: 3.6rem;
+          padding: 0 0.2rem 0 0.15rem;
+          .vhPB(10);
           .btnItem{
-            .vhMT(10);
+            .vhMT(11);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -1186,6 +1196,7 @@
               color: #818181;
               padding: 0 0.2rem;
               cursor: pointer;
+              text-align: center;
               &.active{
                 background-color: transparent;
                 color: #fff;

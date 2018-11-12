@@ -22,23 +22,27 @@
             <self-popover3 :device_id="tuliDeviceId"/>
           </div>
 
-          <el-scrollbar style="height:100%">
-            <div class="controlBtnBox">
-              <div class="btnItem" v-for="(v,i) in tuliBtnList" :key="i">
-                <span class="tit">{{v.title}}</span>
-                <div class="selBtnList">
-                  <button @click="tuliBtnClick(v.point_id,v2.id,i,i2)" :class="{active:v2.id==v.now_value}" type="button" v-for="(v2,i2) in v.btnList" v-text="v2.tit" :key="i2"></button>
+          <div class="controlBtnBoxWrap">
+
+            <el-scrollbar style="height:100%">
+              <div class="controlBtnBox">
+                <div class="btnItem" v-for="(v,i) in tuliBtnList" :key="i">
+                  <span class="tit">{{v.title}}</span>
+                  <div class="selBtnList">
+                    <button @click="tuliBtnClick(v.point_id,v2.id,i,i2)" :class="{active:v2.id==v.now_value}" type="button" v-for="(v2,i2) in v.btnList" v-text="v2.tit" :key="i2"></button>
+                  </div>
+                </div>
+                <div class="btnItem" v-for="(v3,i3) in tuliTempBtnList" :key="'a'+i3">
+                  <span class="tit">{{v3.title}}</span>
+                  <div class="inputBox">
+                    <el-input-number v-model="v3.now_value" @change="tempHandleChange(v3.point_id,v3.now_value)" :min="1" :max="30" label="描述文字"></el-input-number>
+                    <span class="unit" v-text="v3.unit"></span>
+                  </div>
                 </div>
               </div>
-              <div class="btnItem" v-for="(v3,i3) in tuliTempBtnList" :key="'a'+i3">
-                <span class="tit">{{v3.title}}</span>
-                <div class="inputBox">
-                  <el-input-number v-model="v3.now_value" @change="tempHandleChange(v3.point_id,v3.now_value)" :min="1" :max="30" label="描述文字"></el-input-number>
-                  <span class="unit" v-text="v3.unit"></span>
-                </div>
-              </div>
-            </div>
-          </el-scrollbar>
+            </el-scrollbar>
+
+          </div>
           <!--<div class="title">温度</div>
           <Lines type="h" :wid="93" :left="145"/>
           <div class="inputBox">
@@ -1118,6 +1122,9 @@
       window.addEventListener('message', this.handleMessage)
       this.iframeWin2 = this.$refs.iframe2.contentWindow
     },
+    destroyed(){
+      window.removeEventListener('message',this.handleMessage,false);
+    }
   }
 </script>
 
@@ -1243,6 +1250,9 @@
 
           }
 
+          .controlBtnBoxWrap{
+            .vh(164);
+          }
           .controlBtnBox{
             .btnItem{
               .vhMT(10);
@@ -1471,6 +1481,7 @@
               color: #818181;
               padding: 0 0.2rem;
               cursor: pointer;
+              text-align: center;
               &.active{
                 background-color: transparent;
                 color: #fff;
