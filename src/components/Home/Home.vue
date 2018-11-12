@@ -757,8 +757,8 @@
         width:100%;
         height:100%;
       }
-      background:url(../../assets/img/home/1.png) no-repeat left top;
-      background-size:cover;
+      /*background:url(../../assets/img/home/1.png) no-repeat left top;
+      background-size:cover;*/
     }
     .systemName{
       position:absolute;

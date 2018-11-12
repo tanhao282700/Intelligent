@@ -269,12 +269,12 @@
                   axisTick: {show:false},
                   splitLine: {show:false},
                   axisLabel: {
-                    interval:2,
+                    interval:3,
                     width:20,
+                    showMinLabel:true,
+                    showMaxLabel:true,
                     textStyle: {
                       color: '#708FBE',
-                      showMinLabel:true,
-                      showMaxLabel:true,
                       fontSize:10,
                     }
                   },
