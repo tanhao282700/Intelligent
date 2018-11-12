@@ -160,7 +160,7 @@ export default {
               {prop:'percent_job',label:'工单完成率'},
               {prop:'count_xun',label:'本月所派巡检数',width:200},
               {prop:'wan_xun',label:'完成数量'},
-              {prop:'percent_xun',label:'完成率',wid:180,
+              {prop:'percent_xun',label:'巡检完成率',wid:180,
                 operate: true,
                   render: (h, param)=> {
                       const btnss = {
@@ -288,6 +288,7 @@ export default {
             }
             this.table.data = res.data.data;
             this.table.data.map((item,index)=>{
+                this.table.data[index].percent_job = this.table.data[index].percent_job+'%';
                 this.table.data[index].serial = (this.currentPage - 1) * 20 + 1 + index;
             })
           }else{
