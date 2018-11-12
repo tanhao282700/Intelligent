@@ -15,7 +15,7 @@
 
     <div class="presetContentBox boxs">
       <div class= 'powerSetTit'>
-        <div class ='timeBox'>
+        <div class ='powerYearBox'>
           <el-date-picker
             v-model="years"
             @change = 'isChange'
@@ -416,7 +416,7 @@
       height:.32rem;
       line-height: .32rem;
       margin-bottom: .14rem;
-      .timeBox{
+      .powerYearBox{
         display:block;
         width:1.2rem;
         height:.32rem;

@@ -1,17 +1,17 @@
-.powerSetTit .timeBox input{
+.powerSetTit .powerYearBox input{
   width: 1.2rem !important;
   height: .2rem !important;
   padding-left: .16rem;
   border: none!important;
 }
-.powerSetTit .timeBox{
+.powerSetTit .powerYearBox{
   display: flex;
   align-items: center;
   border: 1px solid #1989fa!important;
   border-radius: 2px;
   position: relative;
 }
-.timeBox::after{
+.powerYearBox::after{
   content: "";
   display: block;
   height: 100%;
@@ -23,4 +23,4 @@
   background-size: 10px auto;
   pointer-events: none;
 }
-.powerSetTit .timeBox>div span{display: none;}
+.powerSetTit .powerYearBox>div span{display: none;}

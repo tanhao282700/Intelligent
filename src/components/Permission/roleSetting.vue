@@ -116,16 +116,6 @@
           <el-form-item :label="form.role.label" >
             <el-input v-model="form.role.key" autocomplete="off" placeholder="输入角色名称"></el-input>
           </el-form-item>
-          <!--<el-form-item :label="form.department.label" >
-            <el-select v-model="form.department.key" placeholder="请选择">
-              <el-option :label="item.title" :value="item.id" v-for="item in options[0]" :key="item.id"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item :label="form.position.label" >
-            <el-select v-model="form.position.key" placeholder="请选择">
-              <el-option :label="item.title" :value="item.id" v-for="item in options[1]" :key="item.id"></el-option>
-            </el-select>
-          </el-form-item>-->
           <el-form-item :label="form.powerRange.label" class="powerSelectBox">
             <el-select v-model="form.powerRange.key" placeholder="选择权限"  @visible-change="powerSelectBlur" ref="powerSelectEl">
               <el-option :value="powerValue">
