@@ -37,7 +37,7 @@
                     <SelectBox 
                         :options = 'applyhbSelect.bTimes' 
                         :value = "applyhbSelect.bTime" 
-                        class="selectStyle"
+                        :class="'selectStyle'"
                         :icon="'el-icon-d-caret'"
                         placeholder="选择班次"
                         @change = 'change1'
@@ -56,7 +56,7 @@
                     <SelectBox 
                         :options = 'applyhbSelect.peos' 
                         :value = "applyhbSelect.vpeo" 
-                        class="selectStyle"
+                        :class="'selectStyle'"
                         :vmultiple = 'true'
                         :icon="'el-icon-d-caret'"
                         placeholder="选择人员"
@@ -480,7 +480,8 @@ export default {
           let data = res.data.data;
           let arr=[],arr2=[];
           $.each(data,(n,k)=>{
-            arr.push({label:k.workdate,value:k.id});
+            console.log(k);
+            arr.push({label:k.workdate+' '+k.start_time+'~'+k.endt_ime,value:k.id});
           })
           this.applyhbSelect.bTimes = arr;
          }else{
@@ -499,7 +500,7 @@ export default {
           let data = res.data.data;
           let arr=[],arr2=[];
           $.each(data,(n,k)=>{
-            arr.push({label:k.workdate,value:k.id});
+            arr.push({label:k.workdate+' '+k.start_time+'~'+k.endt_ime,value:k.id});
           })
           this.applyhbSelect.hbTimes = arr;
          }else{
@@ -572,6 +573,7 @@ export default {
       }
   },
   mounted() {
+    console.log(this.$store.state.userInfoTotal.userinfo)
     this.dia.truename = this.$store.state.userInfoTotal.userinfo.name;
     this.dia.tel1 = this.$store.state.userInfoTotal.userinfo.phone;
     this.getTableList();

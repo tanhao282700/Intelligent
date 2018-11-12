@@ -37,7 +37,7 @@ export default {
   created() {
   },
   mounted() {
-      console.log(this.btnss.item)
+     // console.log(this.btnss.item)
   },
 }
 </script>

@@ -566,9 +566,15 @@ export default {
             })
             return;
           }
-          let time1 = utils.time(new Date(this.value1)/1000,1);
-          let time2 = utils.time(new Date(this.value2)/1000,11);
-          item.endtime = time1+time2;
+          let time1 = '';
+          let time2 = '';
+          if(this.value1){
+            time1 = utils.time(new Date(this.value1)/1000,1);
+          }
+          if(this.value2){
+            time2 = this.value2;
+          }
+          item.endtime = time1+' '+time2;
         }else{
           if(!item.endtime){
             item.endtime = ''

@@ -48,7 +48,7 @@ export default {
   },
   mounted() {
       this.states = this.state;
-      console.log(this.state.fills);
+      //console.log(this.state.fills);
        this.txts();
   },
 }

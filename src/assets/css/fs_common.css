@@ -250,3 +250,7 @@
 .addContInput .el-select .el-tag{
   background: transparent;
 }
+.el-select-dropdown.el-popper .el-select-dropdown__item{
+  text-align: left !important;
+  padding:0 0.1rem !important;
+}
