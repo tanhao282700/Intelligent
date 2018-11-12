@@ -185,7 +185,7 @@ export default {
               {prop:'floor',label:'位置',minWid:'20%'},
               {prop:'type',label:'类别',minWid:'10%'},
               {prop:'device_name',label:'设备名称',minWid:'10%'},
-              {prop:'count',label:'本周保修次数',minWid:'40%',operate:true,
+              {prop:'count',label:'本周报修次数',minWid:'40%',operate:true,
                 render: (h, param)=> {
                       const btnss = {
                           fills:param.row,

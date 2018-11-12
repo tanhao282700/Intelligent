@@ -163,7 +163,12 @@ export default {
        myChart.setOption(option); 
     }
   },
-  created() {
+  watch:{
+    echartCirData:{
+      handler(val){
+        this.getData()
+      },deep:true
+    }
   },
   mounted() {
     this.getData();

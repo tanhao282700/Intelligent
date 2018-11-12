@@ -184,7 +184,7 @@ export default {
           '#f56c6c','#008aff'
         ],
         size:[0,'72.89%'],
-        total:0,
+        total:1,
         data:[
           {value:0, name:0+'%',tit:'未完成数'},
           {value:0, name:0+'%',tit:'已完成数'},
