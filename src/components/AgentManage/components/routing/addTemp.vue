@@ -12,12 +12,11 @@
                 专业
               </el-col>
               <el-col :span="18" class="addContInput" v-if="formvals1.departments">
-                <el-select v-model="formval.department" placeholder="请选择">
+                <el-select v-model="formval.department" placeholder="请选择" @change="change2">
                   <el-option
                     v-for="(item,index) in formvals1.departments"
                     :key="index"
                     :label="item.label"
-                    @change="change2"
                     :value="item.value">
                   </el-option>
                 </el-select>
@@ -82,12 +81,11 @@
                   placeholder="巡检系统"
                   @change = "change4"
                 /> -->
-                <el-select v-model="formval.system" placeholder="请选择">
+                <el-select v-model="formval.system" placeholder="请选择" @change="change4">
                   <el-option
                     v-for="(item,index) in formvals1.systems"
                     :key="index"
                     :label="item.label"
-                    @change="change4"
                     :value="item.value">
                   </el-option>
                 </el-select>
@@ -107,11 +105,10 @@
                   placeholder="巡检区域"
                   @change = "change5"
                 /> -->
-                <el-select v-model="formval.area" placeholder="请选择">
+                <el-select v-model="formval.area" placeholder="请选择" @change="change5">
                   <el-option
                     v-for="(item,index) in formvals1.areas"
                     :key="index"
-                    @change="change5"
                     :label="item.label"
                     :value="item.value">
                   </el-option>
@@ -132,11 +129,10 @@
                   placeholder="巡检设备"
                   @change = "change6"
                 /> -->
-                <el-select v-model="formval.device" placeholder="请选择">
+                <el-select v-model="formval.device" placeholder="请选择" @change="change6">
                   <el-option
                     v-for="(item,index) in formvals1.devices"
                     :key="index"
-                    @change="change6"
                     :label="item.label"
                     :value="item.value">
                   </el-option>
@@ -275,22 +271,23 @@
             this.formval.exam=val;
          },
          change2(val){
+            this.$emit('getUserlist',{department_id:val});
             this.formval.department = val;
-            this.$emit('getUserlist',val);
          },
          change3(val){
             this.formval.limit = val;
          },
          change4(val){
+            //console.log(val);
             this.formval.system=val;
-            this.$emit('getSystemval',val);
-            this.$emit('getFloorVal',this.formval.area,val)
+            this.$emit('getSystemval',{sys_id:val});
+            this.$emit('getFloorVal',{floor_name:this.formval.area,sys_id:val})
          },
          change5(val){
             let res = '';
             $.each(this.formvals1.areas,(n,k)=>{
               if(k.value==val){
-                this.$emit('getFloorVal',k.label,this.formval.system)
+                this.$emit('getFloorVal',{floor_name:k.label,sys_id:this.formval.system})
                 
               }
             })
@@ -298,7 +295,7 @@
          },
          change6(val){
             this.formval.device = val;
-            this.$emit('getDeviceVal',val,this.formval.system)
+            this.$emit('getDeviceVal',{device:val,sys_id:this.formval.system})
          },
          change7(val){
             this.formval.starttime=val;
@@ -351,18 +348,18 @@
           handler(val){
             if(val){
               this.formval = val;
-              if(val.system){
-                this.$emit('getSystemval',val);
-              }
-              if(val.department){
-                this.$emit('getUserlist',val);
-              }
-              if(val.floor_id,val.system){
-                  this.$emit('getFloorVal',val.floor_name,this.formval.system)
-              }
-              if(val.device){
-                this.$emit('getDeviceVal',val.device)
-              }
+              // if(val.system){
+              //   this.$emit('getSystemval',val);
+              // }
+              // if(val.department){
+              //   this.$emit('getUserlist',val);
+              // }
+              // if(val.floor_id,val.system){
+              //     this.$emit('getFloorVal',val.floor_name,this.formval.system)
+              // }
+              // if(val.device){
+              //   this.$emit('getDeviceVal',val.device)
+              // }
             }
           },
           deep:true

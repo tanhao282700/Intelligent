@@ -412,22 +412,22 @@ export default {
       })
     },
     getDeviceVal(val){
-      this.queryModel.device = val;
-      this.getDatasList(val)
+      this.queryModel.device = val.device;
+      this.getDatasList(val.device)
     },
-    getFloorVal(val1,val2){
-      this.queryModel.area = val1;
-      this.queryModel.system = val2
-      //console.log(val1+'@@@@@@@@@@@@@@@'+val2);
-      this.getDeviceList(val1,val2)
+    getFloorVal(val1){
+      console.log(val1)
+      this.queryModel.area = val1.floor_name;
+      this.queryModel.system = val1.sys_id;
+      this.getDeviceList(val1.floor_name,val1.sys_id)
     },
     getSys(val){
       this.getNameList(val);
       this.getAreaList(val)
     },
     getSystemval(val){
-      this.queryModel.system = val;
-      this.getAreaList(val)
+      this.queryModel.system = val.sys_id;
+      this.getAreaList(val.sys_id)
     },
     update(){
       this.$refs.add.show();
@@ -792,7 +792,7 @@ export default {
       })
     },
     getNameList(id){
-        this.$http.post('/pc_ims/get_user',{department_id:id}).then(res=>{
+        this.$http.post('/pc_ims/get_user',{department_id:id.department_id}).then(res=>{
           if(res.data.code==0){
             let data = res.data.data;
             $.each(data,(n,k)=>{
