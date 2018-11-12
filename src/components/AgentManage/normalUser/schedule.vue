@@ -161,7 +161,7 @@
                         <div class="nameBox">
                           <div class="labelBox">
                             <label for="">当前状态：</label>
-                            <span v-text="dia.now_process" class="dqStatus"></span>
+                            <span v-if="dia.now_process==1" class="dqStatus">待审核</span>
                           </div>
                         </div>
                       </div>
