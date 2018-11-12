@@ -72,6 +72,11 @@
         		xData : '',
         		SelesData:[],
 
+        		daysData:[],
+        		monthsData:[],
+        		legendDay:[],
+        		legendMonth:[],
+
 	        };
 	    },
         mounted(){
@@ -139,74 +144,74 @@
                     month:monthPa,
                     year:that.floorNumber1,
                 }).then(function(data){
-                	that.dining = [];
-                	that.room = [];
-                	that.ballroom = [];
-                	that.others = [];
-                	that.diningY = [];
-                	that.roomY = [];
-                	that.ballroomY = [];
-                	that.othersY = [];
-                    // 日
-                    console.log(data);
-                    $.each(data.data.data.day_data.dining,function(key,value){
-                    	that.dining.push([parseInt(key),parseInt(value)]);
-                    });
-                    $.each(data.data.data.day_data.room,function(key,value){
-                    	that.room.push([parseInt(key),parseInt(value)]);
-                    });
-                    $.each(data.data.data.day_data.ballroom,function(key,value){
-                    	that.ballroom.push([parseInt(key),parseInt(value)]);
-                    });
-                    $.each(data.data.data.day_data.other,function(key,value){
-                    	that.others.push([parseInt(key),parseInt(value)]);
-                    });
-                    //月
-                    $.each(data.data.data.month_data.dining,function(key,value){
-                    	that.diningY.push([parseInt(key),parseInt(value)]);
-                    });
-                    $.each(data.data.data.month_data.room,function(key,value){
-                    	that.roomY.push([parseInt(key),parseInt(value)]);
-                    });
-                    $.each(data.data.data.month_data.ballroom,function(key,value){
-                    	that.ballroomY.push([parseInt(key),parseInt(value)]);
-                    });
-                    $.each(data.data.data.month_data.other,function(key,value){
-                    	that.othersY.push([parseInt(key),parseInt(value)]);
-                    });
+                	console.log(data.data.data);
+                	let data1 = data.data.data.day_data;
+                	let data2 = data.data.data.month_data;
+                    that.legendDay = [],
+                    that.legendMonth = [],
+	        		that.daysData = new Array(data1.length);
+	        		that.monthsData = new Array(data2.length);
+	        		
+	        		$.each(that.daysData,(n,k)=>{
+	        			that.daysData[n] = [];
+	        		})
+	        		$.each(that.monthsData,(n,k)=>{
+	        			that.monthsData[n] = [];
+	        		})
+	        		$.each(data1,function(i,k){
+	        			that.legendDay.push(k.label);
+	        			$.each(k.data,function(n,m){
+	        				that.daysData[i].push([parseInt(n),parseInt(m)]);
+	        			});
+	        			//console.log(that.daysData)
+	        		})
+	        		$.each(data2,function(i,k){
+	        			that.legendMonth.push(k.label);
+	        			$.each(k.data,function(n,m){
+	        				that.monthsData[i].push([parseInt(n),parseInt(m)]);
+	        			});
+	        			//console.log(that.daysData)
+	        		})
+	        		$.each(that.daysData,function(a,b){
+	        			b.sort(function(x, y){
+						  return x[0]-y[0];
+						});
+	        		})
+	        		$.each(that.monthsData,function(a,b){
+	        			b.sort(function(x, y){
+						  return x[0]-y[0];
+						});
+	        		})
 
-                    that.room.sort(function(x, y){
-					  return x[0]-y[0];
-					});
-                    that.dining.sort(function(x, y){
-					  return x[0]-y[0];
-					});
-                    that.ballroom.sort(function(x, y){
-					  return x[0]-y[0];
-					});
-                    that.others.sort(function(x, y){
-					  return x[0]-y[0];
-					});
-                    that.roomY.sort(function(x, y){
-					  return x[0]-y[0];
-					});
-                    that.diningY.sort(function(x, y){
-					  return x[0]-y[0];
-					});
-                    that.ballroomY.sort(function(x, y){
-					  return x[0]-y[0];
-					});
-                    that.othersY.sort(function(x, y){
-					  return x[0]-y[0];
-					});
 
-                    that.getData("reportChartMonth",that.xData,that.room,that.dining,that.ballroom,that.others);
-                    that.getData("reportChartYear",12,that.roomY,that.diningY,that.ballroomY,that.othersY);
+                    that.getData("reportChartMonth",that.xData,that.legendDay,that.daysData);
+                    that.getData("reportChartYear",12,that.legendMonth,that.monthsData);
                 }, function(data){
                     // 响应错误回调
                 });
 	    	},
- 			getData(id,xData,room,dining,ballroom,other){
+ 			getData(id,xData,legendData,data){
+ 				var setSeries = [];
+ 				var colors = ['rgba(48, 241, 225, .4)','rgba(253, 153, 27, .4)','rgba(27, 127, 253, .4)','rgba(238, 76, 76, .4)']
+ 				for(var i=0;i<data.length;i++){
+ 					setSeries.push({
+				    	name:legendData[i],
+				        data: data[i],
+				        type: 'line',
+				        symbol: "circle", 
+				        symbolSize:0,
+				        smooth: true,
+			            lineStyle: {
+			                normal: {
+			                    width: 2,
+			                    shadowColor: colors[i],
+			                    shadowBlur: 5,
+			                    shadowOffsetY: 5
+			                }
+			            },
+				    });
+ 				}
+
  				this.chart = this.$echarts.init(document.getElementById(id));
 		        let option = {
 		            title : {
@@ -241,7 +246,7 @@
 			          	top:5,
 			          	itemWidth: 20,
 	        			itemHeight: 10,
-			            data:['客房','餐厅','宴会厅','其他'],
+			            data:legendData,
 		            },
 		            calculable : true,
 		            xAxis: {
@@ -249,13 +254,10 @@
 				        min:1,
 				        max:xData,
 				        interval:1,
-				        // boundaryGap: true,
 				        axisLine: {show:false},
 				        axisTick: {show:false},
 				        splitLine: {show:false},
 				        axisLabel: {
-				        	// showMinLabel:false,
-				        	// showMaxLabel:false,
 				        	interval:0,
 				        	textStyle: {
 						    	color: '#708FBE'
@@ -275,69 +277,7 @@
 				        },
 				        type: 'value'
 			    	},
-				    series: [{
-				    	name:'客房',
-				        data: room,
-				        type: 'line',
-				        symbol: "circle", 
-				        symbolSize:0,
-				        smooth: true,
-			            lineStyle: {
-			                normal: {
-			                    width: 2,
-			                    shadowColor: 'rgba(48, 241, 225, .4)',
-			                    shadowBlur: 5,
-			                    shadowOffsetY: 5
-			                }
-			            },
-				    },
-				    {
-				    	name:'餐厅',
-				        data: dining,
-				        type: 'line',
-				        symbol: "circle", 
-				        symbolSize:0,
-				        smooth: true,
-			            lineStyle: {
-			                normal: {
-			                    width: 2,
-			                    shadowColor: 'rgba(253, 153, 27, .4)',
-			                    shadowBlur: 5,
-			                    shadowOffsetY: 5
-			                }
-			            },
-				    },{
-				    	name:'宴会厅',
-				        data: ballroom,
-				        type: 'line',
-				        symbol: "circle", 
-				        symbolSize:0,
-				        smooth: true,
-			            lineStyle: {
-			                normal: {
-			                    width: 2,
-			                    shadowColor: 'rgba(27, 127, 253, .4)',
-			                    shadowBlur: 5,
-			                    shadowOffsetY: 5
-			                }
-			            },
-				    },{
-				    	name:'其他',
-				        data: other,
-				        type: 'line',
-				        symbol: "circle", 
-				        symbolSize:0,
-				        smooth: true,
-			            lineStyle: {
-			                normal: {
-			                    width: 2,
-			                    shadowColor: 'rgba(238, 76, 76, .4)',
-			                    shadowBlur: 5,
-			                    shadowOffsetY: 5
-			                }
-			            },
-				    }
-				    ],
+				    series: setSeries,
 			        color:["#55F8F0","#FD991B","#1B7FFD","#F26666"]
 		        };
 		        this.chart.setOption(option,true);
@@ -350,3 +290,4 @@
 <style>
 
 </style>
+

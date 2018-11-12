@@ -247,7 +247,7 @@ export default {
       this.getRepeatRate();
     },
     mouseOutLi(row){
-      //this.visible = false;
+      this.visible = false;
     },
     getReportData(){
       let year = ''

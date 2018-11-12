@@ -174,7 +174,7 @@
                     // that.tableData = response.data.data.entrance_guard_record;
                     that.hotelMainInfo[0].labVal = Number(data.data.data.rooms).toFixed(0);
                     that.hotelMainInfo[1].labVal = Number(data.data.data.room_reservation).toFixed(0);
-                    that.hotelMainInfo[2].labVal = data.data.data.vacancy//Number(data.data.data.vacancy).toFixed(0);
+                    that.hotelMainInfo[2].labVal = Number(data.data.data.vacancy).toFixed(0);
                     that.hotelMainInfo[3].labVal = Number(data.data.data.check_in_num).toFixed(0);
                     that.hotelMainInfo[4].labVal = Number(data.data.data.occupancy_rate).toFixed(1) + '%';
                     that.hotelMainInfo[5].labVal = Number(data.data.data.vacancy_rate).toFixed(1) + '%';
