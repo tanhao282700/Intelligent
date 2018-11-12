@@ -84,7 +84,7 @@
             <div class="reason">
               <div class="diaTit2">换班原因</div>
               <div class="reasonBox" >
-                <el-input type="textarea" v-model="dia.reason"></el-input>
+                <el-input type="textarea" v-model="dia.reason" @focus="clearVal"></el-input>
               </div>
             </div>
             <div style="text-align:center;">
@@ -379,6 +379,9 @@ export default {
     }
   },
   methods:{
+    clearVal(){
+      this.dia.reason = '';
+    },
     handleClick(tab, event) {
       let activeName = this.activeName;
       this.$router.replace({ path: `/AgentManage/normalUser/schedule/${activeName}`});     

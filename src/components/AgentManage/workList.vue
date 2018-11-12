@@ -170,7 +170,9 @@ export default {
           type_id:[{label:'系统自动派发',value:0},{label:'手工派发',value:1},{label:'投诉工单',value:2},{label:'维保工单',value:3}]
         },
         departments:[],//专业下拉框
-        names:[],//姓名下拉框
+        names:[{
+          value:'',label:'请选择'
+        }],//姓名下拉框
         dialogBoxs:{
             item:{name:''},
             state0:0, //1 同意，0拒绝
@@ -640,15 +642,15 @@ export default {
         })
       },
       getNameList(){
+        this.names = [{value:'',label:'全部'}]
         this.$http.post('/pc_ims/get_user').then(res=>{
           if(res.data.code==0){
             let data = res.data.data;
             $.each(data,(n,k)=>{
               data[n].value = data[n].user_id;
               data[n].label = data[n].truename;
+              this.names.push({value:data[n].user_id,label:data[n].truename})
             })
-            console.log(data);
-            this.names = data;
             this.query2.names = data;
             this.query3.names = data;
           }else{
@@ -660,14 +662,18 @@ export default {
         });
       },
       getDepartList(){
+        this.departments = [{
+          value:'',label:'全部'
+        }];
         this.$http.post('/pc_ims/get_description').then(res=>{
           if(res.data.code==0){
             let data = res.data.data;
             $.each(data,(n,k)=>{
               data[n].value = data[n].id;
               data[n].label = data[n].title;
+              this.departments.push({value:data[n].id,label:data[n].title})
             })
-            this.departments = data;
+            
           }else{
             this.$message({
               type:'error',

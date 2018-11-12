@@ -89,7 +89,7 @@
       <Dialog wid="910" hei="622" ref="add" > <!-- 新增巡检模板 -->
         <AddModel :data="rowData" :formvals="queryModel" :title="tempTitle" @cancelAdd="cancelAdd" @saveAdd="saveAdd" @getFloorVal="getFloorVal" @getDeviceVal="getDeviceVal" @getSystemval="getSystemval" @getUserlist="getNameList"/>
       </Dialog> 
-      <Dialog wid="364" hei="216" ref="isRefult"><!-- 同意退单 -->
+      <Dialog wid="364" hei="2.18rem" ref="isRefult"><!-- 同意退单 -->
           <div v-text="dialogBoxs.txt" class="isRefTxt"></div>
           <div class="isRbtnBoxs">
               <span @click="submitOk">确定</span>
@@ -1172,7 +1172,7 @@ export default {
       }
     }
     .isRefTxt{
-      height:1.75rem;
+      height:1.7rem;
       width: 100%;
       text-align: center;
       font-size: 0.18rem;

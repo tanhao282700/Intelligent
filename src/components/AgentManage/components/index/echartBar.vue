@@ -115,13 +115,13 @@ export default {
 
         // Enable data zoom when user click bar.
         var zoomSize = 6;
-        myChart.on('click', function (params) {
-            myChart.dispatchAction({
-                type: 'dataZoom',
-                startValue: dataAxis[Math.max(params.dataIndex - zoomSize / 2, 0)],
-                endValue: dataAxis[Math.min(params.dataIndex + zoomSize / 2, data.length - 1)]
-            });
-        });
+        // myChart.on('click', function (params) {
+        //     myChart.dispatchAction({
+        //         type: 'dataZoom',
+        //         startValue: dataAxis[Math.max(params.dataIndex - zoomSize / 2, 0)],
+        //         endValue: dataAxis[Math.min(params.dataIndex + zoomSize / 2, data.length - 1)]
+        //     });
+        // });
         myChart.setOption(option);
     }
   },

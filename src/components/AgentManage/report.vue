@@ -58,7 +58,7 @@
                     <span>查询</span>
                   </div>
                 </div>
-                <div class="tableIn myAgenTab">
+                <div class="tableIn myAgenTab reportPages">
                   <Table
                     style="width:100%"
                     :table = "table"
@@ -72,7 +72,7 @@
                 重复报修率
             </span>
             <div class="boxs tableBoxs">
-                <div class="tableIn myAgenTab2">
+                <div class="tableIn myAgenTab2 reportPages">
                   <Table
                     style="width:100%"
                     :table = "table2"
@@ -388,7 +388,7 @@ export default {
       width:0.16rem;
       height:0.16rem;
       vertical-align:sub;
-      background:url('../../assets/img/AgentManage/export.png') no-repeat;
+      background:url('../../assets/img/Alarm/export.png') no-repeat;
       background-size:0.16rem;
     }
   }
@@ -415,6 +415,7 @@ export default {
       .jobBoxs{
         float: left;
         height:0.32rem;
+        width: 1.48rem;
         background-color: rgba(255, 255, 255, 0.01);
         border-radius: 0.02rem;
         text-align: center;

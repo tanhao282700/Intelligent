@@ -237,6 +237,7 @@
 }
 .routigtable .el-input__inner,.routigtable .el-input.is-disabled .el-input__inner{
   border: none !important;
+  padding: 0;
 }
 .noicon.el-select::after{
   width:0 !important;
@@ -253,4 +254,7 @@
 .el-select-dropdown.el-popper .el-select-dropdown__item{
   text-align: left !important;
   padding:0 0.1rem !important;
+}
+.reportPages .paginationBox{
+  width:96% !important;
 }

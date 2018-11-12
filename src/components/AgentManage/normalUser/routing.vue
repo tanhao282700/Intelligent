@@ -850,9 +850,11 @@ export default {
   }
   .rightHead{
     bottom:0;
-    left:3.57rem;
+    left:0;
     position: absolute;
     line-height:0.52rem;
+    text-align: center;
+    width: 100%;
     color:#fff;
     .infoBusy{
       margin-top:0.09rem;
