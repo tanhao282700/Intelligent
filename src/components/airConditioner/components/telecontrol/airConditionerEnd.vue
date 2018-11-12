@@ -769,6 +769,26 @@
               obj1.datas.list.push(obj2);
               tempArr1.push(obj1);
             })
+
+            let energytable = data.data.energytable;
+            energytable.map((item0,i0)=>{
+              let obj0 = {};
+              obj0.id = item0.point_id;
+              obj0.title = item0.title;
+              obj0.unit = [];
+              obj0.unit.push(item0.unit);
+              obj0.datas = {};
+              obj0.datas.id = 'selfEchart'+item0.point_id;
+              obj0.datas.style = {width:'6.43rem',height:146*100/728+'vh'};
+              obj0.datas.showMarkL = true;
+              obj0.datas.markLineVal = item0.standard;
+              obj0.datas.list = [];
+              let obj00 = {};
+              obj00.name = item0.title;
+              obj00.data = item0.data;
+              obj0.datas.list.push(obj00);
+              tempArr1.push(obj0);
+            })
             this.tabData = tempArr1;
             //设备
             let control = data.data.control;

@@ -12,15 +12,15 @@
       <el-tabs class="tabBoxs" v-model="activeName" @tab-click="handleClick">
         <el-tab-pane name="first">
           <span slot="label" class="tabItems">冷水机组运行</span>
-          <chiller-running/>
+          <chiller-running lazy/>
         </el-tab-pane>
         <el-tab-pane name="second">
           <span slot="label" class="tabItems">能耗情况</span>
-          <energy-situation/>
+          <energy-situation lazy/>
         </el-tab-pane>
         <el-tab-pane name="third">
           <span slot="label" class="tabItems">报警管理</span>
-          <air-con-alarm-manage/>
+          <air-con-alarm-manage lazy/>
         </el-tab-pane>
       </el-tabs>
     </div>

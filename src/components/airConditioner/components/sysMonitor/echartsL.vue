@@ -13,6 +13,12 @@
         color:[
           {color1:'rgba(229,81,80,1)',color3:'rgba(229,81,80,0.5)'},
           {color1:'rgba(45,240,224,1)',color3:'rgba(45,240,224,0.5)'},
+          {color1:'rgba(229,81,80,1)',color3:'rgba(229,81,80,0.5)'},
+          {color1:'rgba(45,240,224,1)',color3:'rgba(45,240,224,0.5)'},
+          {color1:'rgba(229,81,80,1)',color3:'rgba(229,81,80,0.5)'},
+          {color1:'rgba(45,240,224,1)',color3:'rgba(45,240,224,0.5)'},
+          {color1:'rgba(229,81,80,1)',color3:'rgba(229,81,80,0.5)'},
+          {color1:'rgba(45,240,224,1)',color3:'rgba(45,240,224,0.5)'},
         ],
 
       }
@@ -68,7 +74,7 @@
                 {
                   symbol: 'none',
                   name: 'Y 轴值为 x 的水平线',
-                  yAxis: 5,
+                  yAxis: datas.markLineVal,
                   x: '1.5%'
                 },
               ]
@@ -193,8 +199,11 @@
       this.drawLine();
     },
     watch:{
-      datas:function (a,b) {
-        this.drawLine();
+      datas:{
+        handler: function(){
+          this.drawLine();
+        },
+        deep:true,
       }
     }
   }

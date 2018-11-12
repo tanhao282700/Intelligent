@@ -12,11 +12,11 @@
       <el-tabs class="tabBoxs" v-model="activeName" @tab-click="handleClick">
         <el-tab-pane name="first">
           <span slot="label" class="tabItems">模式控制</span>
-          <mode-control/>
+          <mode-control lazy/>
         </el-tab-pane>
         <el-tab-pane name="second">
           <span slot="label" class="tabItems">控制日志</span>
-          <control-log/>
+          <control-log lazy/>
         </el-tab-pane>
       </el-tabs>
     </div>

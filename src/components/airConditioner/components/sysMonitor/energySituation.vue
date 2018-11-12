@@ -14,7 +14,7 @@
       <div class="copEchartBox">
         <div class="title">cop情况</div>
         <div class="content">
-          <echarts-l v-if="v.id==btnActiveId" v-for="(v,i) in tabData" :key="i" :datas="v.datas" />
+          <echarts-l ref="myEcharts" v-if="true" v-for="(v,i) in devTitLists" :key="'ss'+i" :datas="v.tabData.datas" />
         </div>
       </div>
     </div>
@@ -58,66 +58,34 @@
     data() {
       return {
         loading:false,
-        btnActiveId:'',
+        btnActiveId: '',
+        btnActiveIndex:0,
         devTitLists:[
-          /*{id:1,tit:'一号机房'},
-          {id:2,tit:'二号机房'},*/
-        ],
-        tabData:[
-          /*{
+          {
             id:1,
-            title:'cop',
-            unit:['℃'],
-            datas:{
-              id:'selfEchart11',
-              style:{width:'12.76rem',height:244*100/728+'vh'},
-              showMarkL:true,
-              colorArr:[
-                {color1:'rgba(229,81,80,1)',color3:'rgba(229,81,80,0.5)'},
-                {color1:'rgba(45,240,224,1)',color3:'rgba(45,240,224,0.5)'},
-              ],
-              markLineVal:6.5,
-              showLegends:true,
-              list:[
-                {
-                  name:'主机cop',
-                  data:[
-                    {
-                      "value": [
-                        "2018-09-25 09:00",
-                        4
-                      ]
-                    },
-                    {
-                      "value": [
-                        "2018-09-25 09:30",
-                        15
-                      ]
-                    }
+            tit:'测试机房',
+            tabData: {
+                datas:{
+                  id:'selfEchart111',
+                  style:{width:'12.76rem',height:244*100/728+'vh'},
+                  showMarkL:true,
+                  colorArr:[
+                    {color1:'rgba(229,81,80,1)',color3:'rgba(229,81,80,0.5)'},
+                    {color1:'rgba(45,240,224,1)',color3:'rgba(45,240,224,0.5)'},
+                    {color1:'rgba(229,81,80,1)',color3:'rgba(229,81,80,0.5)'},
+                    {color1:'rgba(45,240,224,1)',color3:'rgba(45,240,224,0.5)'},
+                    {color1:'rgba(229,81,80,1)',color3:'rgba(229,81,80,0.5)'},
+                    {color1:'rgba(45,240,224,1)',color3:'rgba(45,240,224,0.5)'},
                   ],
-                },
-                {
-                  name:'系统cop',
-                  data:[
-                    {
-                      "value": [
-                        "2018-09-25 09:00",
-                        12
-                      ]
-                    },
-                    {
-                      "value": [
-                        "2018-09-25 09:30",
-                        8
-                      ]
-                    }
-                  ],
-                }
-              ]
+                  markLineVal:0,
+                  showLegends:true,
+                  list:[]
 
-            }
-          },*/
+                }
+              },
+          }
         ],
+
         tabData2:[
           /*{
             id:1,
@@ -260,17 +228,20 @@
           console.log('能耗情况cop', config, res);
           if (data.code == 0) {
             let data2 = data.data;
-            let titArr = [];
             let conArr = [];
-            data2.map((item,i)=>{
-              if (i===0){
-                this.btnActiveId = item.id;
-              }
-              let titObj = {};
-              titObj.id = item.id;
-              titObj.tit = item.device_title;
-              titArr.push(titObj);
 
+            data2.map((item,i)=>{
+              if (item.data.length !== 0) {
+                let obj = {};
+                obj.name = item.device_title+item.point_title;
+                obj.data = item.data;
+                conArr.push(obj);
+              }
+            })
+
+
+
+            /*data2.map((item,i)=>{
               let obj = {};
               obj.id = item.id;
               obj.title = item.point_title;
@@ -294,10 +265,35 @@
               obj2.data = item.data;
               obj.datas.list.push(obj2);
               conArr.push(obj);
+            })*/
+            this.devTitLists.some((item0,i0)=>{
+              if (item0.id == this.btnActiveId){
+                this.btnActiveIndex = i0;
+                this.devTitLists[i0].tabData =
+                  {
+                    datas: {
+                      id: 'selfEchart111',
+                      style: {width: '12.76rem', height: 244 * 100 / 728 + 'vh'},
+                      showMarkL: true,
+                      colorArr: [
+                        {color1: 'rgba(229,81,80,1)', color3: 'rgba(229,81,80,0.5)'},
+                        {color1: 'rgba(45,240,224,1)', color3: 'rgba(45,240,224,0.5)'},
+                        {color1: 'rgba(229,81,80,1)', color3: 'rgba(229,81,80,0.5)'},
+                        {color1: 'rgba(45,240,224,1)', color3: 'rgba(45,240,224,0.5)'},
+                        {color1: 'rgba(229,81,80,1)', color3: 'rgba(229,81,80,0.5)'},
+                        {color1: 'rgba(45,240,224,1)', color3: 'rgba(45,240,224,0.5)'},
+                      ],
+                      markLineVal: data2[data2.length-1].standard,
+                      showLegends: true,
+                      list: conArr,
+                    }
+                  };
+
+
+                return true;
+              }
             })
 
-            this.devTitLists = titArr;
-            this.tabData = conArr;
             this.loading = false;
 
           } else {
@@ -325,22 +321,57 @@
           if (data.code == 0) {
             let data2 = data.data;
             let tempArr = [];
+            let tempArr0 =[];
             if (data2.length === 0) {
               this.$message(data.message);
             } else {
               data2.map((item,i)=>{
+
+                if (i == 0){
+                  this.selectedOptions2 = [item.id];
+                  this.btnActiveIndex = i;
+                  this.btnActiveId = item.id;
+                  this.getEnergy1(item.id);
+                  this.getEnergy2(item.id);
+                }
                 let obj = {};
-                obj.value = item.id;
-                obj.label = item.title;
+                obj.id = item.id;
+                obj.tit = item.title;
+                obj.tabData = {
+                  datas:{
+                    id:'selfEchart111',
+                    style:{width:'12.76rem',height:244*100/728+'vh'},
+                    showMarkL:true,
+                    colorArr:[
+                      {color1:'rgba(229,81,80,1)',color3:'rgba(229,81,80,0.5)'},
+                      {color1:'rgba(45,240,224,1)',color3:'rgba(45,240,224,0.5)'},
+                      {color1:'rgba(229,81,80,1)',color3:'rgba(229,81,80,0.5)'},
+                      {color1:'rgba(45,240,224,1)',color3:'rgba(45,240,224,0.5)'},
+                      {color1:'rgba(229,81,80,1)',color3:'rgba(229,81,80,0.5)'},
+                      {color1:'rgba(45,240,224,1)',color3:'rgba(45,240,224,0.5)'},
+                    ],
+                    markLineVal:0,
+                    showLegends:true,
+                    list:[]
+
+                  }
+                };
+
                 tempArr.push(obj);
 
-              })
-              this.selectedOptions2 = [data2[0].id];
-            }
-            this.options = tempArr;
+                let obj0 = {};
+                obj0.value = item.id;
+                obj0.label = item.title;
+                tempArr0.push(obj0);
 
-            this.getEnergy1(data2[0].id);
-            this.getEnergy2(data2[0].id);
+              })
+
+            }
+            this.options = tempArr0;
+            this.devTitLists = tempArr;
+            console.log(tempArr)
+            this.getCOPData();
+
           } else {
 
             this.$message(data.message);
@@ -465,12 +496,7 @@
 
       },
       tabClick(index,id){
-        this.btnActiveId= id;
-        // alert(432532)
-        this.loading = true;
-        setTimeout(()=>{
-          this.loading = false;
-        },200)
+        this.getCOPData(this.$store.state.sysList[1].son_list[0].sys_menu_id,id);
       },
       handleChange(val){
         this.getEnergy1(this.selectedOptions2[0]);
@@ -479,7 +505,6 @@
       }
     },
     created(){
-      this.getCOPData();
       this.getTitData();
     }
   }
