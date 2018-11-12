@@ -18,7 +18,7 @@ export default {
        echartCirData3:{//工单的数据
             id:'echart3',
             color:[
-              '#008aff','#f56c6c'
+              '#f56c6c','#008aff'
             ],
             size:[0,'72.89%'],
             total:0,
