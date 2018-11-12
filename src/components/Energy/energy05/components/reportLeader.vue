@@ -15,7 +15,7 @@
           <button >查询</button>
         </div>
         <div class="thSearchBtn1" @click="export1">
-          <img src="../../../../assets/img/DoorControl/export.png" alt="">
+          <img src="../../../../assets/img/Energy/export.png" alt="">
           <button>导出</button>
         </div>
     	</div>
