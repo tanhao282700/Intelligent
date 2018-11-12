@@ -542,11 +542,11 @@ export default {
                 duration:2000
               })
               this.getTableList();
-              if(this.dealWorkParam.type==4){
+              if(this.dealWorkParam.type==4 || this.dealWorkParam.type==2){
                 this.$refs.tableInfos2.hide();
+                this.value1 = '';
+                this.value2 = '';
               }
-              this.value1 = '';
-              this.value2 = '';
             }else{
               this.$message({
                 type:'error',
