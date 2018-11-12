@@ -11,7 +11,7 @@
         </div>
         <div class="mainContentBox">
         	<ul class="videoConditionsBox">
-        		<li @click="viewLiveVideoFn('')">区域选择</li>
+        		<li>区域选择</li>
         		<li>
 		            <el-select v-model="selectedValue" @change="chooseBuild">
 		                <el-option v-for="(item,index) in buildDatas"
@@ -22,7 +22,7 @@
 		            </el-select>
         		</li>
                 <li>
-                    <el-select v-model="selectedValue1" @change="chooseBuild1">
+                    <el-select v-model="selectedValue1" @change="chooseBuild1" v-show="isSelectShow">
                         <el-option v-for="(item,index) in buildDatas1"
                             :key="item.value"
                             :label="item.title"
@@ -57,20 +57,20 @@
 
         <div class="videoShowBox" v-show="isVideoShowBoxShow">
         	<div class="videoPopBg">
-        		<i clase="closevideoShowBoxIcon" @click="isVideoShowBoxShow = false">×</i>
+        		<i clase="closevideoShowBoxIcon" @click="emptyVideo">×</i>
 	        	<div class="videoDeviceTitle">
-	        		<span class="deviceaAcription">1栋1层{{onVideoId}}号视频设备</span>
-	        		<span class="dateBox">{{todaySpan}}</span>
+	        		<span class="deviceaAcription">{{onVideoId}}</span>
+	        		<!-- <span class="dateBox">{{todaySpan}}</span> -->
 	        		<button class="videoDeviceInfo floatRt" @click="deviceInfoGet(onVideoId)">设备信息</button>
 	        	</div>
-	        	<div class="videoPanelBox">
-                    <video id="videoElement" width="100%" height="100%"></video>
+	        	<div class="videoPanelBox" id="videoPanelBox" v-html="videoHtml">
+                    <!-- <video id="videoElement" width="100%" height="100%"></video> -->
                 </div>
         	</div>
         	<div class="deviceInfoPop" v-show="isDeviceInfoPopShow">
         		<div class="deviceInfoBgBox">
         			<i clase="closeDeviceInfoIcon" @click="clearIframeStale">×</i>
-        			<span>{{onVideoId}}号视频设备</span>
+        			<span>{{onVideoId}}</span>
         			<div class="deviceTabBox">
 				        <nav class="tabNav">
 				            <span><a :class="isActive1==true?'on':''" @click="toggleTabs(first)">设备信息</a></span>
@@ -99,10 +99,12 @@
         },
 	    data() {
 	        return {
+                isSelectShow:false,
+                videoHtml:'',
                 floorBgImg:'../../../assets/img/doorControl/bg_lc.png', //楼层背景图
-                selectedValue:'1栋',
-                selectedValue1:'1单元',
-	        	selectedValue2:'1楼',
+                selectedValue:'',
+                selectedValue1:'',
+	        	selectedValue2:'',
 	        	isDeviceInfoPopShow:false,
 	        	isVideoShowBoxShow:false,
                 coefficientX:1.74, //定位系数
@@ -142,6 +144,10 @@
             this.iframeWin = this.$refs.iframe.contentWindow
         },
 	    methods: {
+            emptyVideo(){
+                isVideoShowBoxShow = false;
+                document.getElementById('videoPanelBox').innerHTML = "";
+            },
             removeMessageEvent(){
               window.removeEventListener('message',this.handleMessage);
             },
@@ -219,18 +225,31 @@
 
                 this.isVideoShowBoxShow = true 
                 console.log(deviceId); 
-                console.log(this.floorObjs);
-                $.each(this.floorObjs,function(i,k){
-                    $.each(k.object_device,function(i1,k1){
-                         if(k1.object_id == deviceId) {
-                             console.log(k1.device_id)
-                             console.log(k1.object_id)
-                             console.log(k1.state)
-                         }
-                    });
+
+                var that = this;
+                this.$http.get('/hvac_pc/pc/index/device',{
+                    object_id:deviceId
+                }).then(function(data){
+                    //响应成功回调
+                    console.log(data);
+                    that.onVideoId = data.data.data.device_info.name;
+                    that.videoHtml = data.data.data.device_pic[0].codes;
+
+                }, function(data){
+                    // 响应错误回调
                 });
 
-                this.videoNow();
+                // $.each(this.floorObjs,function(i,k){
+                //     $.each(k.object_device,function(i1,k1){
+                //          if(k1.object_id == deviceId) {
+                //              console.log(k1.device_id)
+                //              console.log(k1.object_id)
+                //              console.log(k1.state)
+                //          }
+                //     });
+                // });
+
+                // this.videoNow();
             },
             videoNow(){
                 if (flvjs.isSupported()) {
@@ -261,9 +280,12 @@
                     console.log(data)
                     that.floorObjs = data.data.data;
                    $.each(data.data.data,function(i,k){
+                        if(i == 0){
+                           that.selectedValue = k.title;
+                           that.iframeSrc = k.object_3d;
+                        }
                        that.buildDatas.push({value:i,title:k.title,floor_id:k.floor_id});
                    })
-
                 }, function(data){
                     // 响应错误回调
                 });
