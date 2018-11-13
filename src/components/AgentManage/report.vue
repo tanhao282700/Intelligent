@@ -84,7 +84,7 @@
         </el-tab-pane>
       </el-tabs>
       <div v-show="visible" style="height:2rem">
-        <div class="hover" :style="{top:0.78+(0.4*hoverIndex)+'rem'}">
+        <div class="hover" :style="{top:0.78+(0.4*hoverIndex+1)+'rem'}">
           <ul>
             <li v-for="(item,index) in hoverData" >
               <i class="el-icon-arrow-left"></i>
@@ -181,11 +181,11 @@ export default {
             len:0, //总条数
             data:[],
             th:[
-              {prop:'serial',label:'编号',minWid:'20%'},
+              {prop:'serial',label:'编号',minWid:'10%'},
               {prop:'floor',label:'位置',minWid:'20%'},
               {prop:'type',label:'类别',minWid:'10%'},
               {prop:'device_name',label:'设备名称',minWid:'10%'},
-              {prop:'count',label:'本周报修次数',minWid:'40%',operate:true,
+              {prop:'count',label:'本周报修次数',minWid:'50%',operate:true,
                 render: (h, param)=> {
                       const btnss = {
                           fills:param.row,
@@ -458,7 +458,7 @@ export default {
   }
   .hover {
     position:absolute;
-    right:14.5%;
+    right:20px;
     width:2.83rem;
     height:2.78rem;
     background:#05152c;

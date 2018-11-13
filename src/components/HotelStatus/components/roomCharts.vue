@@ -192,6 +192,7 @@
 	    	},
  			getData(id,xData,legendData,data){
  				var setSeries = [];
+ 				var colorLst=["#55F8F0","#FD991B","#1B7FFD","#F26666",'#000','#e4393c']
  				var colors = ['rgba(48, 241, 225, .4)','rgba(253, 153, 27, .4)','rgba(27, 127, 253, .4)','rgba(238, 76, 76, .4)']
  				for(var i=0;i<data.length;i++){
  					setSeries.push({
@@ -232,7 +233,26 @@
 				            label: {
 				                backgroundColor: '#6a7985'
 				            }
-				        }
+				        },
+				        formatter: function (params, ticket, callback) {
+						    // console.log(params);
+						    var str1 = '';
+						    var str2 = '';
+						    $.each(params,(i,k)=>{
+						    	if(i == 0){
+						    		str1 = k.axisValue
+						    	}
+						    	str2 += ( '<b style="width:10px;height:10px;display:inline-block;border-radius:6px;margin-right:2px;margin-bottom:-1px;background:'+ colorLst[i] +'"></b>' + k.seriesName + ' : ' + k.data[1] +'<br/>')
+						    });
+						    // console.log(xData);
+						    if(xData == 12){
+						    	str1 = str1 + ' 月'
+						    }else{
+						    	str1 = str1 + ' 日'
+						    }
+						    console.log(str1)
+						    return str1 + '<br/>' + str2;
+						}
 				    },
 		            grid:{
 		          	    left:10,
