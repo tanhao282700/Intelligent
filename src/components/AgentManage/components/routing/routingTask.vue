@@ -30,7 +30,7 @@
         <div class="progressDiv">
             <div v-for="(item,index) in newData.job_list">
               <img src="../../../../assets/img/AgentManage/point@2x.png" class="item1" :style="{left:6.73+(index*160*100/1366)+'vw'}">
-              <img src="../../../../assets/img/AgentManage/point2@2x.png" class="item2" :style="{left:12.59+(index*160*100/1366)+'vw'}">
+              <img src="../../../../assets/img/AgentManage/point2@2x.png" class="item2" :style="{left:12.59+(index*160*100/1366)+'vw'}" v-if="item.interval && item.interval!=''">
             </div>
         </div> 
         <div class="middleTime">
@@ -53,6 +53,7 @@
         return {
           newData:{},
           isZero:false,
+          intervals:[]
         }
       },
       methods:{
@@ -67,7 +68,11 @@
                this.newData = newval;
                if(this.newData.job_list.length==0){
                   this.newData.job_list = [];
+               }else{
+                  this.intervals = this.newData.job_list.splice(0,1);
                }
+               // console.log(this.intervals)
+               // console.log(this.newData.job_list)
                if(this.newData.now_state==0){
                 this.isZero = true;
                }else{
@@ -82,6 +87,7 @@
       mounted() {
         //console.log(this.data);
          this.newData = this.data;
+         console.log(this.newData);
          if(this.newData.now_state==0){
           this.isZero = true;
          }else{

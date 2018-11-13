@@ -63,6 +63,7 @@
       </div>
       <div class="contLabel" v-text="'巡检表格'" v-show="tableShow"></div>
       <div class="boxs" style="width:95.6%;margin:0 2.2% 0" v-show="tableShow" v-if="newData.tableData">
+        <div>检点人：</div>
         <el-table
         :height="220"
         :data="newData.tableData.data"

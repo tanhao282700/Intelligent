@@ -300,9 +300,8 @@ export default {
         workH:[],
         vSystems:[],
         vTypes:[
-        {label:'系统自动派发',value:'0'},
         {label:'手工派发',value:'1'},
-        {label:'投诉',value:'2'}],
+        {label:'投诉',value:'2'},{label:'维保工单',value:3}],
         vtype:'',
         vsystem:'',
         names:[],
@@ -468,13 +467,11 @@ export default {
              }else{
                 this.dtlObj.jinji ='严重'
              }
-             if(this.dtlObj.type_id==0){
-                this.dtlObj.sendSrc='系统自动派发';
-             }else if(this.dtlObj.type_id==1){
+             if(this.dtlObj.type_id==1){
                 this.dtlObj.sendSrc='手工派发';
              }else if(this.dtlObj.type_id==2){
                 this.dtlObj.sendSrc='投诉工单';
-             }else{
+             }else if(this.dtlObj.type_id==3){
                 this.dtlObj.sendSrc = '维保工单'
              }
              this.dtlObj.devices = [

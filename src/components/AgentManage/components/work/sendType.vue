@@ -20,8 +20,8 @@ export default {
   methods:{
      txts(){
           switch(this.states.fills){
-              case 0:
-                this.txt.txt = '系统自动派发';
+              case 3:
+                this.txt.txt = '维保工单';
               break;
               case 1:
                 this.txt.txt = '手工派发';
