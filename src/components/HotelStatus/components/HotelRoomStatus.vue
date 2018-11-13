@@ -28,6 +28,9 @@
                     <el-dropdown trigger="click">
                         <span class="el-dropdown-link">{{onItemFloor}}</span>
                         <el-dropdown-menu slot="dropdown" class="hotelStaDropDown">
+                            <el-dropdown-item>
+                                <div @click="changeItemId('','全部')">全部</div>
+                            </el-dropdown-item>
                             <el-dropdown-item  v-for="(item,index) in hotelFloors" :key="item.id" divided>
                                 <div @click="changeItemId(item.id,item.title)"><b :class="index==activeIndex ? 'bottom' : 'left'" @click.stop="toggleHdOn(index)"></b>{{item.title}} <input :value="item.id"/></div>
                                 <div v-show="activeIndex===index" class="itemChild" v-for="sItem in item.child" @click="changeItemId(sItem.id,sItem.title)">{{sItem.title}} <input :value="sItem.id"/></div>
@@ -120,6 +123,7 @@
             changeItemId(id,title){
                 this.onItemFloor = title;
                 console.log(id);
+                console.log(title);
                 this.getData(id);
             },
             getFloorsFn(){
