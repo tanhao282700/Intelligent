@@ -171,10 +171,10 @@ export default {
             len:1,
             data:[],
             th:[{select:[]}],
-            hei:'2.8rem'
+            hei:'0'
           }
         },
-        pOptions:[],        
+        pOptions:[],
         vName:-1,
         //日期选择
         value7:'8-24',
@@ -347,7 +347,7 @@ export default {
               this.newData.tableData.data[this.newData.tableData.data.length-1].serial = this.newData.tableData.data.length;
               this.newData.tableData.data[this.newData.tableData.data.length-1].time =utils.time(new Date()/1000,1);
             }
-            
+
           }else{
             this.$message({
               type:'error',
@@ -383,7 +383,7 @@ export default {
         }else{
           item.info = item.item.complete_info;
         }
-        
+
         let data = this.newData.tableData.data;
         let th = this.newData.tableData.th;
         let zhanshi = {
@@ -404,12 +404,12 @@ export default {
              }else{
                 zhanshi.list.push({name:k.label,now_value:data[0][k.prop],point_id:k.point_id,type:k.type,select:k.select});
              }
-             
+
           }
         })
         }
-        
-        
+
+
         if(ress){
           return;
         }
@@ -811,7 +811,10 @@ export default {
   }
   .routingTask{
   width:100%;
-  height:100%;
+  /*height:100%;*/
+.routigtable{
+  height:2.8rem;
+}
   .taskDtl{
     width:100%;
     margin-top:0.11rem;
@@ -851,7 +854,7 @@ export default {
   .rightHead{
     bottom:0;
     left:0;
-    position: absolute;
+    /*position: absolute;*/
     line-height:0.52rem;
     text-align: center;
     width: 100%;
