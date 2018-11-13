@@ -9,7 +9,7 @@
           <el-col :span="8">
             <el-row>
               <el-col :span="6" class="addContLabel">
-                专业
+                专业<i>*</i>
               </el-col>
               <el-col :span="18" class="addContInput" v-if="formvals1.departments">
                 <el-select v-model="formval.department" placeholder="请选择" @change="change2">
@@ -33,7 +33,7 @@
           <el-col :span="8">
             <el-row>
               <el-col :span="6" class="addContLabel">
-                巡检人员
+                巡检人员<i>*</i>
               </el-col>
               <el-col :span="18" class="addContInput" v-if="formvals1.examine">
                 <!-- <SelectBox 

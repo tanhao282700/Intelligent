@@ -28,13 +28,13 @@
           </div>
         </div>    
         <div class="progressDiv">
-            <div v-for="(item,index) in newData.job_list">
-              <img src="../../../../assets/img/AgentManage/point@2x.png" class="item1" :style="{left:6.73+(index*160*100/1366)+'vw'}">
-              <img src="../../../../assets/img/AgentManage/point2@2x.png" class="item2" :style="{left:12.59+(index*160*100/1366)+'vw'}" v-if="item.interval && item.interval!=''">
+            <div >
+              <img src="../../../../assets/img/AgentManage/point@2x.png" class="item1" :style="{left:6.73+(index*160*100/1366)+'vw'}" v-for="(item,index) in newData.job_list">
+              <img src="../../../../assets/img/AgentManage/point2@2x.png" class="item2" :style="{left:12.59+(index*160*100/1366)+'vw'}" v-for="(item,index) in intervals">
             </div>
         </div> 
         <div class="middleTime">
-          <div class="bottomBox"  v-for="(item,index) in newData.job_list" :style="{left:9+(index*160*100/1366)+'vw'}">
+          <div class="bottomBox"  v-for="(item,index) in intervals" :style="{left:9+(index*160*100/1366)+'vw'}">
             <span v-if="item.interval && item.interval!=''">
               <i class="el-icon-arrow-up"></i>
               <div>
@@ -64,15 +64,17 @@
       watch:{
         data:{
           handler(newval){
+            this.intervals = [];
             if(newval){
                this.newData = newval;
                if(this.newData.job_list.length==0){
                   this.newData.job_list = [];
-               }else{
-                  this.intervals = this.newData.job_list.splice(0,1);
                }
-               // console.log(this.intervals)
-               // console.log(this.newData.job_list)
+               $.each(this.newData.job_list,(n,k)=>{
+                  if(n!=0){
+                    this.intervals.push(k);
+                  }
+               })
                if(this.newData.now_state==0){
                 this.isZero = true;
                }else{
@@ -85,9 +87,7 @@
         }
       },
       mounted() {
-        //console.log(this.data);
          this.newData = this.data;
-         console.log(this.newData);
          if(this.newData.now_state==0){
           this.isZero = true;
          }else{
