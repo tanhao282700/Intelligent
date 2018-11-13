@@ -150,7 +150,7 @@
                 console.log(this.floorIds);
             },
             popToggle(i,x,y,id,sta,handle){
-                //this.popShow = true;
+                console.log(handle);
                 this.onMouseDoor = id;
                 this.xLeft = x;
                 this.yTop = y;
@@ -159,7 +159,7 @@
                 $.each(handle,function(i,k){
                     if(k.is_command == 1){
                         handleMsgs = k.params.showvalue[0];
-                        ss.push({pointNow:k.now_value,pointId:k.point_id});
+                        ss.push({pointNow:k.params.value[0],pointId:k.point_id});
                     }
                 });
                 this.controlDoorFun = handleMsgs;
