@@ -145,6 +145,7 @@
 	    methods: {
             emptyVideo(){
                 this.isVideoShowBoxShow = false;
+                window.addEventListener('message', this.handleMessage)
                 document.getElementById('videoPanelBox').innerHTML = "";
             },
             removeMessageEvent(){
