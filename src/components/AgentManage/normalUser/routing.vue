@@ -40,7 +40,7 @@
           <Page @changeCurrentPage="changeCurrentPage" :pages = "page"/>
         </div>
       </div>
-      <Dialog wid="910" hei="600" ref="tableInfos2">
+      <Dialog wid="910" hei="500" ref="tableInfos2">
           <div class="tableInfos">
               <div class="infoHead">
                 <span class="infoName" v-text="'巡检详情'"></span>
@@ -813,7 +813,7 @@ export default {
   width:100%;
   /*height:100%;*/
 .routigtable{
-  height:2.8rem;
+  height:240px;
 }
   .taskDtl{
     width:100%;

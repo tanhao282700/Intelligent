@@ -1082,7 +1082,8 @@
       }
     },
     created(){
-
+      let dates = new Date()
+      this.dateRangeValue = dates.getFullYear().toString()+(dates.getMonth()+1)
     },
     mounted(){
       let that = this;
