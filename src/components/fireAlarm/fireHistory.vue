@@ -83,7 +83,7 @@
 </template>
 <script>
   import utils from "../../assets/js/utils.js";
-  import Table from '../../components/common/table';
+  import Table from '../../components/common/table2';
 
   import showMark from './showMark'
   export default {

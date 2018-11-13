@@ -189,8 +189,7 @@
             },
             splitLine:{
               lineStyle:{
-                color:['#2df0e0'],
-                opacity:0.1
+                color:['rgba(45,240,224,0.1)'],
               }
             }
           },

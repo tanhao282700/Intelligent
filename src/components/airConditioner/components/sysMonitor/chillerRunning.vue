@@ -71,9 +71,10 @@
         :current-page.sync="pagenumber"
         :pager-count="5"
         :page-size="20"
-        layout="total, prev, pager, next, jumper"
+        layout="prev, pager, next, jumper"
         :total="paging">
       </el-pagination>
+      <span class="totalPage">共{{parseInt(paging/20)+(paging%20 !== 0?1:0)}}页</span>
     </div>
   </div>
 </template>
@@ -664,6 +665,19 @@
       justify-content: flex-end;
       border-top: 0px solid rgba(58, 137, 249, 0.3);
       position: relative;
+      .totalPage{
+        display: flex;
+        align-items: center;
+        position: absolute;
+        left: 0.2rem;
+        font-family: PingFangSC-Regular;
+        font-size: 0.12rem;
+        font-weight: normal;
+        font-stretch: normal;
+        line-height: 1;
+        letter-spacing: 0px;
+        color: #008aff;
+      }
     }
   }
 </style>

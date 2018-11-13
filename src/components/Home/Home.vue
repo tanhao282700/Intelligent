@@ -646,7 +646,8 @@
         this.$http.get('/index_pc/pc/model',{self_id:-2})
           .then((response)=>{
             if(response.data.code == 0){
-              this.monitoringData = response.data.data
+
+              this.monitoringData = response.data.data.record
               console.log(this.monitoringData.length)
             }else{
 

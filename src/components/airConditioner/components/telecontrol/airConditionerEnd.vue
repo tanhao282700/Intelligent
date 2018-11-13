@@ -169,7 +169,7 @@
   import SelfPopover3 from "./selfPopover3";
   import LoopRender from "./components/loopRender";
   import utils from "../../../../assets/js/utils";
-  import Table from "../../../common/table";
+  import Table from "../../../common/table2";
   import LineEcharts4 from "../../../common/lineEcharts4";
   export default {
     components: {
@@ -245,7 +245,7 @@
           children: 'children',
           label: 'label'
         },
-        newNum:1,
+        newNum:0,
         table:{
           showPagination:true,
           hei:540, //table高度  设置后有滚动条
@@ -720,7 +720,16 @@
                 obj.tit = item.title;
                 if (item.params !== ''){
                   let paramsObj = eval('('+item.params+')');
-                  obj.val = paramsObj.showvalue[parseInt(item.nowvalue)]
+                  //console.log(paramsObj)
+                  let showvalueIndex;
+                  paramsObj.value.some((item0,i0)=>{
+                    if (item.nowvalue == item0){
+                      showvalueIndex = i0;
+                      return true;
+                    }
+                  })
+                  obj.val = paramsObj.showvalue[showvalueIndex];
+                  //obj.val = paramsObj.showvalue[parseInt(item.nowvalue)]
                 } else {
                   obj.val = item.nowvalue+item.unit;
                 }
@@ -899,6 +908,7 @@
             let arr = [];
             this.table.len =data.paging;
             let data2 = data.data;
+            this.newNum = data2.length;
             data2.map((item,i)=>{
               let obj = {};
               let num = (i+1)+(this.table.page-1)*20;

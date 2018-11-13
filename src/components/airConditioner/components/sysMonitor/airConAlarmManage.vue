@@ -60,7 +60,7 @@
 </template>
 
 <script>
-  import Table from "../../../common/table";
+  import Table from "../../../common/table2";
   import showColorSpan from './showColorSpan';
   import utils from '../../../../assets/js/utils';
   export default {

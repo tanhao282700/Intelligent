@@ -809,7 +809,16 @@
                   obj.tit = item.title;
                   if (item.params !== ''){
                     let paramsObj = eval('('+item.params+')');
-                    obj.val = paramsObj.showvalue[parseInt(item.nowvalue)]
+
+                    let showvalueIndex;
+                    paramsObj.value.some((item0,i0)=>{
+                      if (item.nowvalue == item0){
+                        showvalueIndex = i0;
+                        return true;
+                      }
+                    })
+                    obj.val = paramsObj.showvalue[showvalueIndex];
+                    //obj.val = paramsObj.showvalue[parseInt(item.nowvalue)]
                   } else {
                     obj.val = item.nowvalue+item.unit;
                   }
