@@ -701,7 +701,7 @@
         myChart.setOption(option);
       },
       initArea4Chart2(){
-        var per = this.finance_info.one_house_one_night_use[0];
+        var per = this.finance_info.one_house_one_night_use[1];
         var leftPer= 100 - Number(per);
         var myChart = this.$echarts.init(document.getElementById('energyArea4Chart2'));
         var option = {
@@ -737,7 +737,7 @@
         myChart.setOption(option);
       },
       initArea4Chart3(){
-        var per = this.finance_info.one_house_one_night_use[1];
+        var per = this.finance_info.one_house_one_night_use[0];
         var leftPer= 100 - Number(per);
         var myChart = this.$echarts.init(document.getElementById('energyArea4Chart3'));
         var option = {
@@ -809,7 +809,7 @@
         myChart.setOption(option);
       },
       initArea4Chart5(){
-        var per = this.finance_info.one_seat_use[0];
+        var per = this.finance_info.one_seat_use[1];
         var leftPer = 100 - Number(per);
         var myChart = this.$echarts.init(document.getElementById('energyArea4Chart5'));
         var option = {
@@ -845,7 +845,7 @@
         myChart.setOption(option);
       },
       initArea4Chart6(){
-        var per = this.finance_info.one_seat_use[1];
+        var per = this.finance_info.one_seat_use[0];
         var leftPer = 100 - Number(per);
         var myChart = this.$echarts.init(document.getElementById('energyArea4Chart6'));
         var option = {

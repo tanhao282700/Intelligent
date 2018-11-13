@@ -165,11 +165,21 @@
             console.log(err);
             that.showErr("服务器请求失败");
           })
+        },
+        enterLogin(){
+          let that = this;
+          window.onkeydown=function(){
+            if(event.keyCode == 13 ){
+              that.requestCode();
+            }
+          }
         }
       },
       mounted(){
         let that = this;
         that.codeImgPath = that.imgApi;
+
+        that.enterLogin();
       }
     }
 </script>
