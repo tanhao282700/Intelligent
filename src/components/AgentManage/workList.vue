@@ -509,7 +509,7 @@ export default {
             this.infoItem = res.data.data.info;
             this.infoItem.vuename = 'worklist';
             this.infoItem.desc = [
-            {label:'类型',value:this.infoItem.sys_name},
+            {label:'类型',value:res.data.data.sys_name},
             {label:'设备类型',value:this.infoItem.device_name},
             {label:'设备地点',value:this.infoItem.floor},
             {label:'工单处理人员',value:this.infoItem.user_name}];

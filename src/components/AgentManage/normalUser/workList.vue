@@ -475,7 +475,7 @@ export default {
                 this.dtlObj.sendSrc = '维保工单'
              }
              this.dtlObj.devices = [
-             {label:'类型',value:this.dtlObj.sys_name},
+             {label:'类型',value:res.data.data.sys_name},
              {label:'设备名称',value:this.dtlObj.device_name},
              {label:'设备地点',value:this.dtlObj.floor},
              {label:'工单处理人员',value:this.dtlObj.user_name}]
