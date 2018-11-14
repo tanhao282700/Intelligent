@@ -145,7 +145,13 @@ export default {
         this.$emit('getDevVal',val)
       },
       change2(val){
-        this.formvals.device_name = val;
+        $.each(this.query.devices,(n,k)=>{
+          if(val==k.value){
+            this.formvals.device_name = k.label;
+            this.formvals.device_id = k.value;
+          }
+        })
+        //this.formvals.device_name = val;
       },
       change3(val){
         this.formvals.user_id = val;

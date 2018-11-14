@@ -324,8 +324,8 @@ export default {
                 k.worklist_id = '0'
             }
         })
-        let param = {content:JSON.stringify({"data":this.addParams})}
-        this.$emit('saveAddPaiBan',param)
+        this.$emit('saveAddPaiBan',{content:JSON.stringify({"data":this.addParams})})
+        
         this.addParams = [];
     },
     addPerson(){ //新增人员

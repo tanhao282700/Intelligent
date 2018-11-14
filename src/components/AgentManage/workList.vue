@@ -722,7 +722,7 @@ export default {
           if(res.data.code==0){
             let data = res.data.data;
             $.each(data,(n,k)=>{
-              data[n].value = data[n].title;
+              data[n].value = data[n].id;
               data[n].label = data[n].title;
             })
             this.query3.devices = data;
