@@ -204,7 +204,7 @@
           </div>
         </div>
       </Dialog>
-      <Dialog wid="3.64rem" hei="2.16rem" ref="isRefult"><!-- 同意退单 -->
+      <Dialog wid="364" hei="216" ref="isRefult"><!-- 同意退单 -->
           <div v-text="dialogBoxs.txt" class="isRefTxt"></div>
           <div class="isRbtnBoxs">
               <span @click="submitOk">确定</span>
@@ -1045,7 +1045,7 @@ export default {
     }
 }
 .isRefTxt{
-    height:1.72rem;
+    height:1.75rem;
     width: 100%;
     text-align: center;
     font-size: 0.18rem;
