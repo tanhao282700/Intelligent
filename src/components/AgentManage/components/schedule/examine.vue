@@ -21,11 +21,11 @@
                     </li>
                     <li class="margin5">
                         <label for="">换班人</label>
-                        <span v-text="v.new_truename+' '+v.newstarttime+'~'+v.newendtime"></span>
+                        <span v-text="v.new_truename"></span>
                     </li>
                     <li>
                         <label for="">班次</label>
-                        <span v-text="v.new_workdate"></span>
+                        <span v-text="v.new_workdate+' '+v.newstarttime+'~'+v.newendtime"></span>
                     </li>
                     <img v-show="v.state==0" class="examFlag" src="../../../../assets/img/generation/isno.png" alt="">
                     <img v-show="v.state==1" class="examFlag" src="../../../../assets/img/generation/isok.png" alt="">
