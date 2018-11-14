@@ -234,10 +234,20 @@
         	},
 		    cell({row, column, rowIndex, columnIndex}) {
 		      //加 类
-		        if(columnIndex == 2 || columnIndex == 3 || columnIndex == 4 ||columnIndex == 5 ||columnIndex == 6 || columnIndex == 7 || columnIndex == 8 ||columnIndex == 9 ||columnIndex == 10 ){
+		        /*if(columnIndex == 2 || columnIndex == 3 || columnIndex == 4 ||columnIndex == 5 ||columnIndex == 6 || columnIndex == 7 || columnIndex == 8 ||columnIndex == 9 ||columnIndex == 10 ){
 		        	return 'darkOr'
-
-		        }
+		        }*/
+		        if(this.tabData&&this.tabData.length>0){
+		            let col = 1
+		            for(let i=0;i<this.tabData.length;i++){
+		                for(let j=0;j<this.tabData[i].data.length;j++){
+                      col++;
+                      if(columnIndex==col){
+                        return 'darkOr'
+                      }
+                    }
+                }
+            }
 		    },
         	getDateSet(){
         		var sDate = new Date()
