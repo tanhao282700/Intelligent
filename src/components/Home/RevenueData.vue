@@ -379,12 +379,13 @@
         flex:1;
         position:relative;
         .info{
+          display: flex;
+          flex-direction: column;
           position:absolute;
           /*width:56px;*/
           width:100%;
           height:48px;
           color:white;
-          display: block;
           transform: translate(-50%,-50%);
           left: 50%;
           top: 50%;
