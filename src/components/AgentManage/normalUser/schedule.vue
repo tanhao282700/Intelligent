@@ -224,9 +224,9 @@
                             <label for="">当前状态：</label>
                             <span v-if="dia.now_process==0" class="dqStatus" style="color:#fff">新建</span>
                             <span v-else-if="dia.now_process==1" class="dqStatus">被换班人同意换班</span>
-                            <span v-else-if="dia.now_process==2" class="dqStatus">审核通过</span>
+                            <span v-else-if="dia.now_process==2" class="dqStatus">换班成功</span>
                             <span v-else-if="dia.now_process==10" class="dqStatus">被换班人拒绝换班</span>
-                            <span v-if="dia.now_process==11" class="dqStatus">驳回</span>
+                            <span v-if="dia.now_process==11" class="dqStatus">换班驳回</span>
                           </div>
                           <div class="labelBox">
                             <label for="">审核人：</label>
@@ -290,9 +290,15 @@
                         <div style="clear:both"></div>
                         <div class="nameBox">
                           <div class="labelBox">
-                            <el-button class="refuseHb" @click="noAgree(dia.id)"  v-show="dia.now_process==0">拒绝换班</el-button>
-                            <el-button class="agreeHb" @click="agreeReplace(dia.id)" v-show="dia.now_process==0">同意换班</el-button>
-                            <el-button class="refuseHb" v-show="dia.now_process!=0">{{dia.text}}</el-button>
+                            <span v-if="dia.now_process==0">
+                              <el-button class="refuseHb" @click="noAgree(dia.id)" >拒绝换班</el-button>
+                              <el-button class="agreeHb" @click="agreeReplace(dia.id)">同意换班</el-button>
+                              
+                            </span>
+                            <span v-else-if="dia.now_process==1" class="dqStatus"><el-button class="refuseHb">已同意换班</el-button></span>
+                            <span v-else-if="dia.now_process==2" class="dqStatus"><el-button class="refuseHb">换班成功</el-button></span>
+                            <span v-else-if="dia.now_process==10" class="dqStatus"><el-button class="refuseHb">已拒绝换班</el-button></span>
+                            <span v-if="dia.now_process==11" class="dqStatus"><el-button class="refuseHb">换班驳回</el-button></span>
                           </div>
                         </div>
                       </div>
