@@ -5,7 +5,7 @@
 <template>
   <div class="workBox autoComponent">
       <Header :datas="navsData"></Header>
-      <Crumbs :data ='crumbs'/>  
+      <Crumbs :data ='crumbs'/>
       <div class="workHead boxs">
         <div class="numBox" v-for="(v,i) in workH">
           <div class="numBoxIn">
@@ -18,20 +18,20 @@
       <div class="tableBoxs boxs">
         <div class="tabHead">
           <div class="jobBoxs">
-            <SelectBox 
-              :options = 'vSystems' 
-              :value = "vsystem" 
+            <SelectBox
+              :options = 'vSystems'
+              :value = "vsystem"
               :icon="'el-icon-d-caret'"
               placeholder="类别"
               @change = "change1"
             />
           </div>
           <div class="nameBoxs">
-            <SelectBox 
-              :options = 'vTypes' 
-              :value = "vtype" 
+            <SelectBox
+              :options = 'vTypes'
+              :value = "vtype"
               :icon="'el-icon-d-caret'"
-              placeholder="派发类别" 
+              placeholder="派发类别"
               @change = "change2"
             />
           </div>
@@ -41,8 +41,8 @@
           </div>
         </div>
         <div class="tableIn">
-          <Table 
-            style="width:100%" 
+          <Table
+            style="width:100%"
             :table = "table"
             @rowClick = "rowClick"
           />
@@ -74,7 +74,7 @@
                     <span class="taskCont">{{item.value}}</span>
                   </li>
                   </ul>
-                </el-row>  
+                </el-row>
                 <div>
                   <div class="contLabel">详情描述</div>
                   <el-input
@@ -84,7 +84,7 @@
                     placeholder="请输入内容"
                     v-model="dtlObj.description">
                   </el-input>
-                </div> 
+                </div>
                 <ul>
                   <li>
                     <span class="taskLabel">派发人员</span>
@@ -142,7 +142,7 @@
                     <span class="taskCont">{{item.value}}</span>
                   </li>
                   </ul>
-                </el-row>  
+                </el-row>
                 <div v-show="dtlObj.dtlIsShow">
                   <div class="contLabel">详情描述</div>
                   <el-input
@@ -152,7 +152,7 @@
                     placeholder="请输入内容"
                     v-model="dtlObj.description">
                   </el-input>
-                </div> 
+                </div>
                 <ul>
                   <li>
                     <span class="taskLabel">派发人员</span>
@@ -172,13 +172,13 @@
                       placeholder="选择日期">
                     </el-date-picker>
                   </div>
-                  <div class="yujitime"> 
+                  <div class="yujitime">
                     <el-time-select
                       v-model="value2"
                       placeholder="选择时间">
                     </el-time-select>
                   </div>
-                </div> 
+                </div>
                 <div style="clear:both" v-show="dtlObj.dtlIsShow">
                   <div class="contLabel">现场处理情况</div>
                   <el-input
@@ -203,14 +203,14 @@
             </div>
           </div>
         </div>
-      </Dialog>  
+      </Dialog>
       <Dialog wid="3.64rem" hei="2.16rem" ref="isRefult"><!-- 同意退单 -->
           <div v-text="dialogBoxs.txt" class="isRefTxt"></div>
           <div class="isRbtnBoxs">
               <span @click="submitOk">确定</span>
               <span @click="submitNo">取消</span>
           </div>
-      </Dialog> 
+      </Dialog>
       <Dialog wid="564" hei="286" ref="isRefult2"><!-- 同意退单 -->
           <div class="isRefTit">退单原因</div>
           <div class="isRefDesc">
@@ -219,7 +219,7 @@
           <div class="isRbtnBoxs2">
               <span @click="submitBack">提交</span>
           </div>
-      </Dialog> 
+      </Dialog>
       <!-- <Dialog wid="564" hei="286" ref="isRefult2">
           <div class="isRefTit">延期时间</div>
           <div class="isRefDesc">
@@ -239,8 +239,8 @@
                   <label for="">新工单处理人员：</label>
                   <div class="ChooseBox">
                       <SelectBox
-                          :options = 'names' 
-                          :value = "vName" 
+                          :options = 'names'
+                          :value = "vName"
                           placeholder='姓名'
                           @change = 'change2'
                       />
@@ -250,14 +250,14 @@
           <div class="sendWork2Boxs btnBai1" @click="sendWork2">
               <span>确定</span>
           </div>
-      </Dialog>  
+      </Dialog>
       <Dialog wid="364" hei="216" ref="isRefult"><!-- 同意退单 -->
           <div v-text="dialogBoxs.txt" class="isRefTxt"></div>
           <div class="isRbtnBoxs">
               <span @click="submitOk">确定</span>
               <span @click="submitNo">取消</span>
           </div>
-      </Dialog>   
+      </Dialog>
   </div>
 </template>
 
@@ -300,7 +300,7 @@ export default {
         workH:[],
         vSystems:[],
         vTypes:[
-        {label:'手工派发',value:'1'},
+        {label:'手工派发',value:'1'},{label:'系统派发',value:'0'},
         {label:'投诉',value:'2'},{label:'维保工单',value:3}],
         vtype:'',
         vsystem:'',
@@ -339,20 +339,20 @@ export default {
               {prop:'addtime',label:'派发时间'},
               {prop:'devicename',label:'设备名称'},
               {prop:'description',label:'内容描述'},
-              {prop:'type_id',label:'派发类别',operate: true, 
+              {prop:'type_id',label:'派发类别',operate: true,
                 render: (h, param)=> {
                     const btnss = {
-                        fills:param.row.type_id,  
+                        fills:param.row.type_id,
                     };
                     return h(sendType,{
                     props: { state:btnss},
                     on:{}
                     });
                 }},
-              {prop:'now_state',label:'状态',operate: true, 
+              {prop:'now_state',label:'状态',operate: true,
                 render: (h, param)=> {
                     const btnss = {
-                        fills:param.row.now_state,  
+                        fills:param.row.now_state,
                     };
                     return h(State,{
                     props: { state:btnss},
@@ -363,7 +363,7 @@ export default {
               operate:true,
               render: (h, param)=> {
                     const btnss = {
-                        item:param.row,  
+                        item:param.row,
                     };
                     return h(deal,{
                     props: { btnss:btnss},
@@ -371,7 +371,7 @@ export default {
                     });
                 }
               },
-              
+
             ]
         },
         infoItem:{},  //某个工单的详情
@@ -399,7 +399,7 @@ export default {
     },
     changes(val){
           this.value7 = val;
-      }, 
+      },
       deletes(){
           let attrs = this.value7.split('-');
           // console.log(attrs)
@@ -418,11 +418,11 @@ export default {
                 attrs[0] = Number(attrs[0])-1;
             }else{
                 attrs[1] = Number(attrs[1])-1;
-            }            
+            }
           }else{
               attrs[2] = Number(attrs[2])-1;
           }
-          this.value7 = attrs.join('-'); 
+          this.value7 = attrs.join('-');
       },
       adds(){
           if(this.cant){
@@ -431,7 +431,7 @@ export default {
           let attrs = this.value7.split('-');
 
           if(((attrs[1]==1 ||attrs[1]==3 || attrs[1]==5 ||attrs[1]==7 ||attrs[1]==8 ||attrs[1]==10 ||attrs[1]==12) && attrs[2]==31)
-              ||((attrs[1]==2 ||attrs[1]==6 || attrs[1]==9 ||attrs[1]==11) && attrs[2]==30) 
+              ||((attrs[1]==2 ||attrs[1]==6 || attrs[1]==9 ||attrs[1]==11) && attrs[2]==30)
               ||((attrs[1]==2 && Number(attrs[0])%4==0) && attrs[2]==29)
               ||((attrs[1]==2 && Number(attrs[0])%4!=0) && attrs[2]==28)
           ){
@@ -441,12 +441,12 @@ export default {
                   attrs[0] = Number(attrs[0])+1;
               }else{
                   attrs[1] = Number(attrs[1])+1;
-              }   
+              }
           }else{
               attrs[2] = Number(attrs[2])+1;
           }
-          this.value7 = attrs.join('-');    
-      }, 
+          this.value7 = attrs.join('-');
+      },
       rowClick(row){
         this.infoItem = row;
         //console.log(row);
@@ -480,7 +480,7 @@ export default {
              {label:'设备地点',value:this.dtlObj.floor},
              {label:'工单处理人员',value:this.dtlObj.user_name}]
              // if(data.info.now_state==0){data.info.未接单 1：已接单，2：延期申请，3：延期审请通过，4：完成’)
-              
+
            }else{
               this.$message({
                 type:'error',
@@ -724,7 +724,7 @@ export default {
     .vhMT(8);
     .numBox{
       flex:1;
-      display: flex;      
+      display: flex;
       .numBoxIn{
         display: flex;
         align-items: center;
@@ -786,8 +786,8 @@ export default {
         font-size: 0.14rem;
         text-align: center;
         cursor: pointer;
-        background-image: linear-gradient(0deg, 
-        #2772e3 0%, 
+        background-image: linear-gradient(0deg,
+        #2772e3 0%,
         #4b94f9 100%);
         border-radius: 0.02rem;
         i{
@@ -822,11 +822,11 @@ export default {
       width: 0.6rem;
       height: 0.6rem;
       border-radius: 50%;
-      box-shadow: 0px 4px 10px 0px 
-          rgba(74, 144, 226, 0.4), 
-          inset 1px 1px 2px 0px 
-          rgba(248, 253, 255, 0.15), 
-          inset 0px -1px 1px 0px 
+      box-shadow: 0px 4px 10px 0px
+          rgba(74, 144, 226, 0.4),
+          inset 1px 1px 2px 0px
+          rgba(248, 253, 255, 0.15),
+          inset 0px -1px 1px 0px
           #4a90e2;
       background-color: rgba(51, 51, 51, 0.2);
       display: flex;
@@ -1018,8 +1018,8 @@ export default {
           font-size: 0.14rem;
           label{
               height:0.32rem;
-              line-height:0.32rem; 
-              color: #4f648b;   
+              line-height:0.32rem;
+              color: #4f648b;
           }
           span.namess{
               color: #ffa414;
@@ -1035,7 +1035,7 @@ export default {
                   font-size: 0.14rem !important;
                   color: green!important;
               }
-          }            
+          }
       }
     }
     .sendWork2Boxs{
@@ -1063,7 +1063,7 @@ export default {
     span{
         flex: 1;
         text-align: center;
-        line-height:0.44rem;           
+        line-height:0.44rem;
         font-size: 0.16rem;
         color: #fff;
         cursor: pointer;
@@ -1102,7 +1102,7 @@ export default {
     span{
         flex: 1;
         text-align: center;
-        line-height:0.32rem;            
+        line-height:0.32rem;
         font-size: 0.16rem;
         color: #fff;
         cursor: pointer;
