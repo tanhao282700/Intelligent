@@ -27,6 +27,67 @@
             trendValueData:[],
             seviceAllDatas:{},
             areaDateType:"",
+            trendYlabelArray1:[
+              {
+                name:'能耗',
+                nameTextStyle:{
+                  color:'#fff',
+                  fontSize:10
+                },
+                axisLine: {show:false},
+                axisTick: {show:false},
+                splitLine: {show:false},
+                axisLabel: {
+                  show:true,
+                  color:'#fff'
+                },
+                splitArea: {
+                  show:true,
+                  areaStyle: {color:['rgba(142,187,255,.1)','rgba(142,187,255,.05)']},
+                },
+                type: 'value',
+              },
+              {
+                name:'入住率',
+                nameTextStyle:{
+                  color:'#fff',
+                  fontSize:10
+                },
+                axisLine: {show:false},
+                axisTick: {show:false},
+                splitLine: {show:false},
+                axisLabel: {
+                  show:true,
+                  color:'#fff'
+                },
+                splitArea: {
+                  show:true,
+                  areaStyle: {color:['rgba(142,187,255,.1)','rgba(142,187,255,.05)']},
+                },
+                type: 'value',
+              },
+            ],
+            trednYlabelArray2:[
+              {
+                name:'能耗',
+                nameTextStyle:{
+                  color:'#fff',
+                  fontSize:10
+                },
+                axisLine: {show:false},
+                axisTick: {show:false},
+                splitLine: {show:false},
+                axisLabel: {
+                  show:true,
+                  color:'#fff'
+                },
+                splitArea: {
+                  show:true,
+                  areaStyle: {color:['rgba(142,187,255,.1)','rgba(142,187,255,.05)']},
+                },
+                type: 'value',
+              }
+            ]
         	}
         },
         watch:{
@@ -55,7 +116,6 @@
 	        	}
             that.$http.post('/hotel_energy/analysis',param)
 	        	.then(res=>{
-	        	  console.log(res);
 
               that.trendData = res.data.data.area_energy_use.trend_data;
 
@@ -75,7 +135,12 @@
                 })
                 tempArray[index] = temp;
               })
-              tempArray.push(that.areaEnergyRzl);
+
+              let areaDateType = datas.config.area_query_date_type;
+              if(areaDateType != 'year'){
+                tempArray.push(that.areaEnergyRzl);
+              }
+
               that.trendValueData = tempArray;
 
 
@@ -128,9 +193,11 @@
 		        }
 
             let trendLegendLabel = data.trendLegendLabel;
+            let areaDateType = that.data.config.area_query_date_type;
 
 		        for(var j=0;j<trendValueData.length;j++){
               var trendItem;
+
               trendItem = {
                 name: trendLegendLabel[j],
                 data: trendValueData[j],//data.custom,
@@ -147,11 +214,21 @@
                   }
                 },
               }
+              if( j == trendValueData.length-1 && areaDateType!='year'){
+                trendItem.yAxisIndex = 1;
+              }
               trendValueArray.push(trendItem);
             }
 
+            let trendYlabel = [];
+		        if(areaDateType == 'year'){
+              trendYlabel = that.trednYlabelArray2;
+            }else{
+              trendYlabel = that.trendYlabelArray1;
+            }
+
 		        let option = {
-                color:["#FD97AA","#008AFF","#F35E5E","#EEB66E","#EBF191","#C382EF","#95EDC5",'#b5d7ff'],
+                color:["#FD97AA","#008AFF","#F35E5E","#EEB66E","#EBF191","#C382EF","#95EDC5",'#b5d7ff','#F56C6C','#999'],
                 tooltip : {
                     trigger: 'axis',
                     axisPointer: {
@@ -162,9 +239,9 @@
                     }
                 },
 		            grid:{
-		          	    left:20,
-		          	    top:35,
-		          	    right:20,
+		          	    left:10,
+		          	    top:60,
+		          	    right:10,
 		                bottom:4,
 		                containLabel: true,
 		            },
@@ -179,16 +256,16 @@
 		            },
 		            calculable : true,
 		            xAxis: {
-				          type: 'time',
+				          type: 'category',
                   axisLine: {show:false},
                   axisTick: {show:false},
                   splitLine: {show:false},
                   axisLabel: {
-                    interval:3,
+                    interval:1,
+                    showMinLabel:true,
+                    showMaxLabel:true,
                     textStyle: {
                       color: '#708FBE',
-                      showMinLabel:true,
-                      showMaxLabel:true,
                       fontSize:10,
                     }
                   },
@@ -198,42 +275,37 @@
                   nameGap:5,
                   data:trendXdata
 			        },
-                yAxis: {
-                    axisLine: {show:false},
-                    axisTick: {show:false},
-                    splitLine: {show:false},
-                    axisLabel: {show:false},
-                    splitArea: {
-                      show:true,
-                      areaStyle: {color:['rgba(142,187,255,.1)','rgba(142,187,255,.05)']},
-                    },
-                    type: 'value'
-                },
+                yAxis: trendYlabel,
                 series: trendValueArray
 		        };
+
+
 		        let option2 = {
-				    tooltip : {
-				        trigger: 'item',
-				        formatter: "{a}{b} : {c} ({d}%)"
-				    },
-				    series : [
-				        {
-				            name: '',
-				            type: 'pie',
-				            radius : '70%',
-				            center: ['50%', '50%'],
-				            color:["#FD97AA","#008AFF","#F35E5E","#EEB66E","#EBF191","#C382EF","#95EDC5"],
-				            data:data.topPie,
-				            itemStyle: {
-				                emphasis: {
-				                    shadowBlur: 10,
-				                    shadowOffsetX: 0,
-				                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-				                }
-				            }
-				        }
-				    ]
-				};
+                tooltip : {
+                    trigger: 'item',
+                    formatter: "{a}{b} : {c} ({d}%)"
+                },
+                series : [
+                    {
+                        name: '',
+                        type: 'pie',
+                        radius : '60%',
+                        center: ['50%', '50%'],
+                        color:["#FD97AA","#008AFF","#F35E5E","#EEB66E","#EBF191","#C382EF","#95EDC5"],
+                        data:data.topPie,
+                        itemStyle: {
+                            emphasis: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        },
+                        label:{
+                          fontSize:8
+                        }
+                    }
+                ]
+            };
 				    let option3={
                 color: ['#FA6074', '#FFA414', '#3B89F9'],
 		            tooltip: {
@@ -290,9 +362,9 @@
 		            series: seriesValue
 		        };
 
-		        chart.setOption(option);
-		        chart2.setOption(option2);
-		        chart3.setOption(option3);
+		        chart.setOption(option,true);
+		        chart2.setOption(option2,true);
+		        chart3.setOption(option3,true);
 
             that.viewsLoading = false;
         	}

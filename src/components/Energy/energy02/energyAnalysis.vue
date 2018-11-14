@@ -426,7 +426,9 @@
 
             that.data.topPie = tempArray4;
             that.data.axisLabel = tempArray1;
-            tempArray8.push('入住率');
+            if(that.areaDateType != 'year'){
+              tempArray8.push('入住率');
+            }
             that.data.trendLegendLabel = tempArray8;
 
             that.data.config.area_query_date_type = that.areaDateType;

@@ -427,6 +427,7 @@
               ],
               roseType: 'radius',
               selectedMode: 'single',
+              minAngle:60,
               label: {
                 normal: {
                   position: 'outside',
@@ -489,6 +490,7 @@
               ],
               roseType: 'radius',
               selectedMode: 'single',
+              minAngle:60,
               label: {
                 normal: {
                   formatter: '{d}% ',
@@ -552,6 +554,7 @@
               ],
               roseType: 'radius',
               selectedMode: 'single',
+              minAngle:60,
               label: {
                 normal: {
                   position: 'outside',
@@ -609,6 +612,7 @@
               ],
               roseType: 'radius',
               selectedMode: 'single',
+              minAngle:60,
               label: {
                 normal: {
                   formatter: '{d}% ',
