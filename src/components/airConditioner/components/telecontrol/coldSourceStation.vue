@@ -452,7 +452,7 @@
           }, '*')
         },
         //改变模型中的设备状态(暂定为单个设备状态改变）
-        //参数，请求到的数据@name:objName,@state:0为停止，1为运行，2为故障，3为告警
+        //参数，请求到的数据@name:objName,@state:
         changeDeviceState(name,state){
           this.iframeWin.postMessage({
             cmd: 'changeDeviceState',
@@ -507,7 +507,15 @@
               break;
             case 'cancelDevice':
               console.log(data.params.cancelObject_id)
+                  break;
 
+            case 'initModel':
+              //console.log('收收收',data.params.finish);
+              if (data.params.finish) {
+                this.get3DFloor();
+              }else {
+                alert('模型加载错误')
+              }
               break;
           }
         },
@@ -837,6 +845,7 @@
           //console.log(this.selectedOptions2)
           this.getThreeDevice(this.$store.state.sysList[1].son_list[0].sys_menu_id,value[0]);
           this.$store.state.airFloorId = value[0];
+          this.get3DFloor();
         },
         tempHandleChange() {
           this.$refs.dialog.show();
@@ -873,7 +882,7 @@
       created() {
 
 
-        this.get3DFloor();
+
 
 
         // //console.log('系统列表',this.$store.state.sysList)

@@ -60,10 +60,10 @@
                   <div style="width: 100%;height: 100%;">
                     <img src="../../assets/img/fireAlarm/no.png" usemap="Map" style="width:604px;height:583px;" />
                     <map id="Map" name="Map">
-                      <area alt="4f" href="javascript:void(0)" style="background:#ccc;" coords="551, 105, 538, 182, 387, 213, 374, 201, 289, 220, 296, 231, 63, 282, 41, 225, 23, 229, 5, 164, 166, 141, 144, 104, 136, 38, 231, 148, 370, 126, 382, 135, 551, 105" shape="poly" @mouseenter="showArea('floor_4',1)" @mouseleave="showArea('floor_4',0)" @click="showFloor(4)" />
+                      <!--<area alt="4f" href="javascript:void(0)" style="background:#ccc;" coords="551, 105, 538, 182, 387, 213, 374, 201, 289, 220, 296, 231, 63, 282, 41, 225, 23, 229, 5, 164, 166, 141, 144, 104, 136, 38, 231, 148, 370, 126, 382, 135, 551, 105" shape="poly" @mouseenter="showArea('floor_4',1)" @mouseleave="showArea('floor_4',0)" @click="showFloor(4)" />
                       <area alt="3f" href="javascript:void(0)" style="background:#ccc;" coords="538, 185, 524, 276, 382, 312, 370, 301, 291, 322, 296, 333, 82, 387, 60, 324, 45, 327, 25, 259, 6, 172, 24, 229, 40, 226, 61, 282, 297, 235, 291, 221, 374, 205, 385, 215, 538, 185" shape="poly" @mouseenter="showArea('floor_3',1)" @mouseleave="showArea('floor_3',0)" @click="showFloor(3)" />
-                      <area alt="2f" href="javascript:void(0)" style="background:#ccc;" coords="522, 281, 510, 363, 376, 401, 366, 387, 291, 410, 298, 422, 97, 482, 76, 413, 61, 417, 40, 344, 25, 265, 44, 329, 60, 326, 82, 389, 297, 336, 290, 322, 369, 304, 379, 313, 522, 281" shape="poly" @mouseenter="showArea('floor_2',1)" @mouseleave="showArea('floor_2',0)" @click="showFloor(2)" />
-                      <area alt="1f" href="javascript:void(0)" style="background:#ccc;" coords="509, 364, 496, 448, 375, 488, 364, 472, 125, 547, 107, 495, 82, 503, 61, 432, 72, 429, 70, 416, 76, 413, 98, 481, 300, 424, 291, 409, 365, 389, 374, 401, 509, 364" shape="poly" @mouseenter="showArea('floor_1',1)" @mouseleave="showArea('floor_1',0)" @click="showFloor(1)" />
+                      <area alt="2f" href="javascript:void(0)" style="background:#ccc;" coords="522, 281, 510, 363, 376, 401, 366, 387, 291, 410, 298, 422, 97, 482, 76, 413, 61, 417, 40, 344, 25, 265, 44, 329, 60, 326, 82, 389, 297, 336, 290, 322, 369, 304, 379, 313, 522, 281" shape="poly" @mouseenter="showArea('floor_2',1)" @mouseleave="showArea('floor_2',0)" @click="showFloor(2)" />-->
+                      <area alt="1f" href="javascript:void(0)" style="background:#ccc;" coords="208, 219, 691, 389, 828, 333, 826, 303, 691, 342, 673, 341, 200, 186, 208, 219" shape="poly" @mouseenter="showArea('floor_1',1)" @mouseleave="showArea('floor_1',0)" @click="showFloor(1)" />
                     </map>
                   </div>
                 </div>
@@ -72,9 +72,9 @@
                 <div style="position: relative;width: 100%;height: 100%;">
                   <div style="width: 100%;height: 100%;">
                     <div style="width:604px;height:583px;position:relative;">
-                      <div class="floor4" style="" ref="floor_4"></div>
+                      <!--<div class="floor4" style="" ref="floor_4"></div>
                       <div class="floor3" style="" ref="floor_3"></div>
-                      <div class="floor2" style="" ref="floor_2"></div>
+                      <div class="floor2" style="" ref="floor_2"></div>-->
                       <div class="floor1" style="" ref="floor_1"></div>
                     </div>
                   </div>
@@ -107,7 +107,7 @@
               2018/09/11 14:35
             </div>
             <div class="con">
-              酒楼4层消防设备发生火灾报警情况，请火速处理
+              酒楼7层消防设备发生火灾报警情况，请火速处理
             </div>
             <div class="sjx"></div>
           </div>
@@ -116,25 +116,25 @@
             <div class="title">{{floorTit}}</div>
             <div class="floorBoxWrap">
               <div class="floorBox">
-                <div v-show="showCir" class="spot" style="left: 227px;top: 30px">
+                <div v-show="showCir" class="spot" style="left: 139px;top: 92px">
                   <div class="circle"></div>
                   <div class="circle2"></div>
                   <div v-if="cirStateArr[0]" class="circle3"></div>
                 </div>
 
-                <div v-show="showCir" class="spot" style="left: 750px;top: 115px">
+                <div v-show="showCir" class="spot" style="left: 692px;top: 57px">
                   <div class="circle"></div>
                   <div class="circle2"></div>
                   <div v-if="cirStateArr[1]" class="circle3"></div>
                 </div>
 
-                <div v-show="showCir" class="spot" style="left: 400px;top: 200px">
+                <div v-show="showCir" class="spot" style="left: 277px;top: 162px">
                   <div class="circle"></div>
                   <div class="circle2"></div>
                   <div v-if="cirStateArr[2]" class="circle3"></div>
                 </div>
 
-                <div v-show="showCir" class="spot" style="left: 550px;top: 155px">
+                <div v-show="showCir" class="spot" style="left: 410px;top: 37px">
                   <div class="circle"></div>
                   <div class="circle2"></div>
                   <div v-if="cirStateArr[3]" class="circle3"></div>
@@ -211,7 +211,7 @@
           {
             "id":"1",
             "class": "烟感报警",
-            "devicename": "酒楼4层-点型光电感烟火灾探测器-22205083",
+            "devicename": "酒楼7层-点型光电感烟火灾探测器-22205083",
             "floor_id": "88",
             "floor_title": "消防报警酒楼四层",
             "key": "1536647719alarm22d173job0",
@@ -222,7 +222,7 @@
           {
             "id":"2",
             "class": "烟感报警",
-            "devicename": "酒楼4层-点型光电感烟火灾探测器-22205084",
+            "devicename": "酒楼7层-点型光电感烟火灾探测器-22205084",
             "floor_id": "88",
             "floor_title": "消防报警酒楼四层",
             "key": "1536647719alarm22d174job0",
@@ -233,7 +233,7 @@
           {
             "id":"3",
             "class": "烟感报警",
-            "devicename": "酒楼4层-点型光电感烟火灾探测器-22205085",
+            "devicename": "酒楼7层-点型光电感烟火灾探测器-22205085",
             "floor_id": "88",
             "floor_title": "消防报警酒楼四层",
             "key": "1536647719alarm22d175job0",
@@ -244,7 +244,7 @@
           {
             "id":"4",
             "class": "烟感报警",
-            "devicename": "酒楼4层-点型光电感烟火灾探测器-22205086",
+            "devicename": "酒楼7层-点型光电感烟火灾探测器-22205086",
             "floor_id": "88",
             "floor_title": "消防报警酒楼四层",
             "key": "1536647719alarm22d176job0",
@@ -255,7 +255,7 @@
           {
             "id":"5",
             "class": "烟感报警",
-            "devicename": "酒楼4层-点型光电感烟火灾探测器-22205087",
+            "devicename": "酒楼7层-点型光电感烟火灾探测器-22205087",
             "floor_id": "88",
             "floor_title": "消防报警酒楼四层",
             "key": "1536647719alarm22d177job0",
@@ -462,14 +462,14 @@
       showFloor(floor){
         this.showTip = false;
         this.isDetail = true;
-        if (floor == 4) {
+        if (floor == 1) {
           this.showCir = true;
-          this.floorTit = '酒店4楼'
+          this.floorTit = '酒店7楼'
         } else if (floor == 3) {
           this.floorTit = '酒店3楼'
         } else if (floor == 2) {
           this.floorTit = '酒店2楼'
-        } else if (floor == 1) {
+        } else if (floor == 4) {
           this.floorTit = '酒店1楼'
         }
       },
