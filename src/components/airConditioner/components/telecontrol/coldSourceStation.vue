@@ -71,7 +71,7 @@
             <li class="extra"></li>
           </ul>
           <div class="self-tab-body">
-            <line-echarts4 v-for="(v,i) in tabData" :key="i" v-show="i==tabActive" :datas="v.datas" />
+            <line-echarts4 ref="lineCharts4" v-for="(v,i) in tabData" :key="i" v-show="i==tabActive" :datas="v.datas" />
             <div class="emptyText" v-if="tabData.length===0">没有数据</div>
           </div>
         </div>
@@ -383,6 +383,7 @@
       methods: {
 
         updateModelState(){
+          console.log('我在这',this.object_device)
           //setTimeout(() => {   //没有监测到模型是否加载完毕，只能用延时了,re:解决
             this.object_device.map((item, i) => {
               this.changeDeviceState(item.object_id, item.state)
@@ -518,7 +519,7 @@
                   break;
 
             case 'initModel':
-              //console.log('收收收',data.params.finish);
+              console.log('收收收',data.params.finish);
               if (data.params.finish) {
                 this.updateModelState();
               }else {
@@ -686,6 +687,9 @@
 
 
 
+              /*for (let i=0;i<this.$refs.lineCharts4.length;i++) {
+                this.$refs.lineCharts4[i].drawLine();
+              }*/
               this.loading = false;
 
             } else {

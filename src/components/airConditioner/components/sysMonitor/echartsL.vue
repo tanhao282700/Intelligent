@@ -198,13 +198,8 @@
     mounted(){
       this.drawLine();
     },
-    watch:{
-      datas:{
-        handler: function(){
-          this.drawLine();
-        },
-        deep:true,
-      }
+    updated(){
+      this.drawLine();
     }
   }
 </script>

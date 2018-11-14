@@ -91,7 +91,7 @@
             <Lines type="h" :wid="148" :left="35"/>
             <div class="workBox1In1">
               <p v-text="circleData.crate.monR+'%'"></p>
-              <span class="colorR">本月巡检完成率</span>
+              <span class="colorB">本月巡检完成率</span>
             </div>
           </div>
           <div class="workBox1Cir">
@@ -134,7 +134,7 @@ export default {
     'Header':Header
   },
   computed:{
-    
+
   },
   data () {
     return {
@@ -149,7 +149,7 @@ export default {
               {id:4,name:'完成情况',route:'/AgentManage/normalUser/report'},
           ]
       },
-      
+
       barData:{
           id:'barData',
           data:[],

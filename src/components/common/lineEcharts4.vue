@@ -202,7 +202,18 @@
     },
     mounted(){
       this.drawLine();
+    },
+    updated(){
+      this.drawLine();
     }
+    /*watch:{
+      datas:{
+        handler: function(){
+          this.drawLine();
+        },
+        deep:true,
+      }
+    }*/
   }
 </script>
 

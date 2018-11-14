@@ -203,10 +203,8 @@
     mounted(){
       this.drawLine();
     },
-    watch:{
-      datas:function (a,b) {
-        this.drawLine();
-      }
+    updated(){
+      this.drawLine();
     }
   }
 </script>

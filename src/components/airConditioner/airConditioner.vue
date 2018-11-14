@@ -154,7 +154,7 @@
     //background:#dedede;
     //overflow: scroll;
     color:#fff;
-    background:url('../../assets/img/fullBg.png') no-repeat center;
+    background:url('../../assets/img/fullBg.jpg') no-repeat center;
     background-size: 100% 100%;
     box-sizing:border-box;
     .tabsDomBox0{padding-top: 70px;position: relative;height: 100%;}
