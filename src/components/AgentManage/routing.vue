@@ -263,7 +263,7 @@ export default {
           },
           data:[],
           th:[
-            {prop:'serial',label:'序号',wid:50},
+            {prop:'serial',label:'序号',wid:60},
             {prop:'user_name',label:'名称'},
             {prop:'title',label:'类别'},
             {prop:'floorname',label:'地点'}, 
@@ -513,7 +513,7 @@ export default {
          //console.log(res)
          if(res.data.code==0){
             let list = JSON.parse(res.data.data.point_info);
-            console.log(list)
+            //console.log(list)
             let arr = [];
             console.log(res.data.data);
             $.each(list,(n,k)=>{
@@ -687,7 +687,7 @@ export default {
             this.infoItem.tableData = {};
             this.infoItem.job_list = res.data.data.inspection_list;
             let th = [
-              {prop:'serial',label:'序号',wid:30},
+              {prop:'serial',label:'序号',wid:60},
               {prop:'time',label:'日期'}];
             $.each(res.data.data.zhanshi[0],(n,k)=>{
               $.each(k,(n1,k1)=>{

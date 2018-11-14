@@ -78,6 +78,7 @@
                   </div>
                   <div class="contLabel" v-text="'巡检表格'"></div>
                   <div class="boxs routigtable" style="width:95.6%;margin:0 2.2%;">
+                    <div class="jduser" v-if="newData.item.now_value!=2">检点人：{{newData.jduser}}</div>
                     <el-table
                       :height="table.hei"
                       :data="newData.tableData.data"
@@ -332,6 +333,7 @@ export default {
               {label:'检查人员',value:data.user_name},
               {label:'电话',value:data.user_phone}
             ];
+            this.newData.jduser = data.user_name;
 
             let values = res.data.data.values;
             $.each(values,(n,k)=>{
@@ -839,7 +841,7 @@ export default {
     color:#fff;
   }
   .contLabel{
-      line-height:0.54rem;
+      line-height:0.4rem;
       padding:0 1.464vw;
       color:#4F648B;
   }
@@ -874,6 +876,11 @@ export default {
       }
     }
   }
+}
+.jduser{
+  float:right;
+  color:#fff;
+  padding:0.1rem;
 }
 }
 </style>
