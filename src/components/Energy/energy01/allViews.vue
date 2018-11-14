@@ -417,7 +417,7 @@
             {
               name:'电能峰平谷',
               type:'pie',
-              radius : '95%',
+              radius : '90%',
               center: ['50%', '50%'],
               color: ['#2DF0E0','#FFA414', '#316EFF' ],
               data:[
@@ -430,14 +430,15 @@
               label: {
                 normal: {
                   position: 'outside',
-                  formatter:'{c}度'
+                  formatter:'{c}度',
+                  fontSize:10
                 }
               },
               labelLine: {
                 normal: {
                   smooth: 0.2,
-                  length: 10,
-                  length2: 10,
+                  length: 5,
+                  length2: 5,
                 }
               },
               itemStyle: {
@@ -478,7 +479,7 @@
             {
               name:'电能峰平谷',
               type:'pie',
-              radius : '95%',
+              radius : '90%',
               center: ['50%', '50%'],
               color: ['#2DF0E0','#FFA414', '#316EFF' ],
               data:[
@@ -499,8 +500,8 @@
               labelLine: {
                 normal: {
                   smooth: 0.2,
-                  length: 10,
-                  length2: 10,
+                  length: 5,
+                  length2: 5,
 
                 }
               },
@@ -541,7 +542,7 @@
             {
               name:'电能峰平谷',
               type:'pie',
-              radius : '95%',
+              radius : '90%',
               center: ['50%', '50%'],
               color: ['#2DF0E0','#FFA414', '#316EFF' ],
               data:[
@@ -554,14 +555,15 @@
               label: {
                 normal: {
                   position: 'outside',
-                  formatter:'{c}元'
+                  formatter:'{c}元',
+                  fontSize:10
                 }
               },
               labelLine: {
                 normal: {
                   smooth: 0.2,
-                  length: 10,
-                  length2: 10,
+                  length: 5,
+                  length2: 5,
                 }
               },
               itemStyle: {
@@ -597,7 +599,7 @@
             {
               name:'电能峰平谷',
               type:'pie',
-              radius : '95%',
+              radius : '90%',
               center: ['50%', '50%'],
               color: ['#2DF0E0','#FFA414', '#316EFF' ],
               data:[
@@ -617,8 +619,8 @@
               labelLine: {
                 normal: {
                   smooth: 0.2,
-                  length: 10,
-                  length2: 10,
+                  length: 5,
+                  length2: 5,
                 }
               },
               itemStyle: {
