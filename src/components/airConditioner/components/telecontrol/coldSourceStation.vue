@@ -381,6 +381,14 @@
         }
       },
       methods: {
+
+        updateModelState(){
+          //setTimeout(() => {   //没有监测到模型是否加载完毕，只能用延时了,re:解决
+            this.object_device.map((item, i) => {
+              this.changeDeviceState(item.object_id, item.state)
+            })
+          //}, 1000)
+        },
         addMessageEvent(){
           window.addEventListener('message', this.handleMessage);
         },
@@ -452,7 +460,7 @@
           }, '*')
         },
         //改变模型中的设备状态(暂定为单个设备状态改变）
-        //参数，请求到的数据@name:objName,@state:0为停止，1为运行，2为故障，3为告警
+        //参数，请求到的数据@name:objName,@state:
         changeDeviceState(name,state){
           this.iframeWin.postMessage({
             cmd: 'changeDeviceState',
@@ -507,7 +515,15 @@
               break;
             case 'cancelDevice':
               console.log(data.params.cancelObject_id)
+                  break;
 
+            case 'initModel':
+              //console.log('收收收',data.params.finish);
+              if (data.params.finish) {
+                this.updateModelState();
+              }else {
+                alert('模型加载错误')
+              }
               break;
           }
         },
@@ -731,11 +747,7 @@
                 this.modelUrl = data.data[0].object_3d;
                 let object_device = data.data[0].object_device;
                 this.object_device = object_device;
-                setTimeout(() => {   //没有监测到模型是否加载完毕，只能用延时了
-                  object_device.map((item, i) => {
-                    this.changeDeviceState(item.object_id, item.state)
-                  })
-                }, 1000)
+
               }else {
 
                 this.options.some((item11,i11)=>{
@@ -837,6 +849,7 @@
           //console.log(this.selectedOptions2)
           this.getThreeDevice(this.$store.state.sysList[1].son_list[0].sys_menu_id,value[0]);
           this.$store.state.airFloorId = value[0];
+          this.get3DFloor();
         },
         tempHandleChange() {
           this.$refs.dialog.show();
@@ -873,8 +886,8 @@
       created() {
 
 
-        this.get3DFloor();
 
+        this.get3DFloor();
 
         // //console.log('系统列表',this.$store.state.sysList)
         //

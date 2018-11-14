@@ -1,7 +1,7 @@
 <template>
     <div class="doorInfo"> 
         <div class="doorExportPanel">
-            <span>消防通道 {{doorInfoId}} 信息</span>
+            <span>{{doorInfoId}} 信息</span>
             <button class="btn floatRt" @click="exportTable"><i class="exportIcon"></i>导出</button>
             <a class="closeDoorInfo" @click="doorInfoHide">×</a>
         </div>

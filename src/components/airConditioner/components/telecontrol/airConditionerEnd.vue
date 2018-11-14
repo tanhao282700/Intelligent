@@ -461,6 +461,13 @@
       }
     },
     methods: {
+      updateModelState(){
+        //setTimeout(() => {   //没有监测到模型是否加载完毕，只能用延时了,re:解决
+        this.object_device.map((item, i) => {
+          this.changeDeviceState(item.object_id, item.state)
+        })
+        //}, 1000)
+      },
       addMessageEvent(){
         window.addEventListener('message', this.handleMessage);
       },
@@ -588,6 +595,14 @@
             console.log(data.params.cancelObject_id)
 
             break;
+          case 'initModel':
+            //console.log('收收收',data.params.finish);
+            if (data.params.finish) {
+              this.updateModelState();
+            }else {
+              alert('模型加载错误')
+            }
+            break;
         }
       },
 
@@ -667,11 +682,7 @@
               this.modelUrl2 = data.data[0].object_3d;
               let object_device = data.data[0].object_device;
               this.object_device = object_device;
-              setTimeout(() => {   //没有监测到模型是否加载完毕，只能用延时了
-                object_device.map((item, i) => {
-                  this.changeDeviceState(item.object_id, item.state)
-                })
-              }, 3000)
+
             }else {
 
               this.options.some((item11,i11)=>{
@@ -1142,7 +1153,6 @@
     created() {
 
       this.get3DFloor();
-
       this.getControlFail();
       this.requestMostControl();
 
