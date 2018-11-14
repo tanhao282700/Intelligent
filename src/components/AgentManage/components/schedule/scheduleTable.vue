@@ -1,4 +1,4 @@
-fpid<template>
+<template>
     <div class="examineTable boxs"
         v-loading="loading"
         element-loading-background="rgba(0, 0, 0, 0.5)"
@@ -151,6 +151,7 @@ export default {
         backOrCurr:true,//右上角图标显示：返回当前月还是显示当前月
         cant:false,
         active:'change',
+        xiuworkid:'',
         originNum:0,
         addparam:{},
         isShow:false,
@@ -244,16 +245,17 @@ export default {
         })
 
         objs.worklist[this.ischange[1]].type = val;
+        //console.log(val);
         if(val!=this.addparam.worklist_id){
             this.addparam.worklist_id = val;
+            this.addparam.title = objs.worklist[this.ischange[1]].title;
             $.each(this.addParams,(n,k)=>{
                 if(k.user_id==this.addparam.user_id && k.workdate==this.addparam.workdate){
-                    addParams[n] = this.addparam;
+                    this.addParams[n] = this.addparam;
                 }
             })
             this.addParams.push(this.addparam);
         }
-        console.log(this.addParams);
         this.ischange = [-1,-1];
         this.isShow=false;
     },
@@ -317,6 +319,11 @@ export default {
         }
     },
     saveAddPaiBan(){
+        $.each(this.addParams,(n,k)=>{
+            if(k.title=='休'){
+                k.worklist_id = '0'
+            }
+        })
         let param = {content:JSON.stringify({"data":this.addParams})}
         this.$emit('saveAddPaiBan',param)
         this.addParams = [];
@@ -413,8 +420,12 @@ export default {
                     if(data[n].label!='休'){
                         arr.push({label:data[n].label+'班',timearea:data[n].starttime+'~'+data[n].endtime});
                     }
+                    // else{
+                    //     _this.xiuworkid = data[n].worklist_id;
+                    // }
                 })
                 _this.tableT = arr;
+                console.log(data);
                 _this.wOptions =  data;
             }else{
               _this.$message({
