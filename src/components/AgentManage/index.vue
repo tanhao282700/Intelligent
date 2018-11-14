@@ -32,7 +32,7 @@
                   <label for="">已完成数</label>
                   <div class="numBox">
                       <div class="numFeal">
-                        <div class="numLines" :style="{'width':2.10*echartCirData3.data[0].value/echartCirData3.total +'rem'}">{{echartCirData3.data[0].value}}</div>
+                        <div class="numLines2" :style="{'width':echartCirData3.total?(2.10*echartCirData3.data[1].value/echartCirData3.total+'rem'):0}">{{echartCirData3.data[1].value}}</div>
                       </div>
                   </div>
                 </li>
@@ -40,7 +40,7 @@
                   <label for="">未完成数</label>
                   <div class="numBox">
                     <div class="numFeals">
-                      <div class="numLines2" :style="{'width':2.10*echartCirData3.data[1].value/echartCirData3.total +'rem'}">{{echartCirData3.data[1].value}}</div>
+                      <div class="numLines" :style="{'width':echartCirData3.total?(2.10*echartCirData3.data[0].value/echartCirData3.total +'rem'):0}">{{echartCirData3.data[0].value}}</div>
                     </div>
                   </div>
                 </li>
@@ -65,7 +65,7 @@
                   <label for="">已完成数</label>
                   <div class="numBox">
                       <div class="numFeal">
-                        <div class="numLines" :style="{'width':2.10*echartCirData4.data[0].value/echartCirData4.total +'rem'}">{{echartCirData4.data[0].value}}</div>
+                        <div class="numLines2" :style="{'width':echartCirData4.total?2.10*echartCirData4.data[1].value/echartCirData4.total +'rem':0}">{{echartCirData4.data[1].value}}</div>
                       </div>
                   </div>
                 </li>
@@ -73,7 +73,7 @@
                   <label for="">未完成数</label>
                   <div class="numBox">
                     <div class="numFeals">
-                      <div class="numLines2" :style="{'width':2.10*echartCirData4.data[1].value/echartCirData4.total +'rem'}">{{echartCirData4.data[1].value}}</div>
+                      <div class="numLines" :style="{'width':echartCirData4.total?2.10*echartCirData4.data[0].value/echartCirData4.total +'rem':0}">{{echartCirData4.data[0].value}}</div>
                     </div>
                   </div>
                 </li>
@@ -247,7 +247,6 @@ export default {
         return;
       }
       this.idNow2 =id;
-      console.log(this.idNow2)
       this.getEchartData(id)
     },
     getEchartData(){
@@ -279,6 +278,7 @@ export default {
       this.$http.post('/pc_ims/index',{above_type:timearea,below_type:dayOrMonth,flg:1})
       .then(function(res){
         if(res.data.code==0){
+
            _this.echartCirData3.total = res.data.data.gongdan.gongdan_count;
            let gongdanwei = res.data.data.gongdan.wei;
            let gongdanwan = res.data.data.gongdan.wan;
