@@ -380,7 +380,8 @@
         position:relative;
         .info{
           position:absolute;
-          width:56px;
+          /*width:56px;*/
+          width:100%;
           height:48px;
           color:white;
           display: block;
@@ -394,7 +395,7 @@
             margin-left:-3px;
           }
           span:last-child{
-            font-size:24px;
+            font-size:20px;
             letter-spacing: 1px;
           }
         }
