@@ -204,13 +204,6 @@
           </div>
         </div>
       </Dialog>
-      <Dialog wid="364" hei="216" ref="isRefult"><!-- 同意退单 -->
-          <div v-text="dialogBoxs.txt" class="isRefTxt"></div>
-          <div class="isRbtnBoxs">
-              <span @click="submitOk">确定</span>
-              <span @click="submitNo">取消</span>
-          </div>
-      </Dialog>
       <Dialog wid="564" hei="286" ref="isRefult2"><!-- 同意退单 -->
           <div class="isRefTit">退单原因</div>
           <div class="isRefDesc">
@@ -220,15 +213,6 @@
               <span @click="submitBack">提交</span>
           </div>
       </Dialog>
-      <!-- <Dialog wid="564" hei="286" ref="isRefult2">
-          <div class="isRefTit">延期时间</div>
-          <div class="isRefDesc">
-            <el-input type="textarea" v-model="dealWorkParam.info" placeholder="请输入退单原因"></el-input>
-          </div>
-          <div class="isRbtnBoxs2">
-              <span @click="submitBack">提交</span>
-          </div>
-      </Dialog>  -->
       <Dialog wid="414" hei="256" ref="sendWork2"><!-- 重新选择工单处理人员 -->
           <div class="sendWork2">
               <div class="oldName">
@@ -1045,25 +1029,29 @@ export default {
     }
 }
 .isRefTxt{
-    height:1.75rem;
-    width: 100%;
+    height:2.16rem;
+    width: 3.64rem;
     text-align: center;
     font-size: 0.18rem;
     color: #b5d7ff;
     line-height:1.72rem;
 }
 .isRbtnBoxs{
-    width: 100%;
+    width: 3.64rem;
     height:0.44rem;
-    display:flex;
-    overflow: hidden;
+    position:absolute;
+    bottom:0;
+    left:0;
     border: 0.01rem solid #4a90e2;
     border-bottom-left-radius: 0.08rem;
     border-bottom-right-radius: 0.08rem;
     span{
-        flex: 1;
+        width:1.81rem;
+        float:left;
+        display:inline-block;
         text-align: center;
         line-height:0.44rem;
+        height:0.44rem;
         font-size: 0.16rem;
         color: #fff;
         cursor: pointer;
