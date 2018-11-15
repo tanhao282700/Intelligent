@@ -219,7 +219,7 @@
         		for(var i=0;i<arr2Label.length;i++){
         			series.push({
 				    	name:arr2Label[i],
-				        data: pieData,
+				        data: pieData[i],
 				        type: 'line',
 				        symbol: "circle",
 				        symbolSize:0,
@@ -234,6 +234,8 @@
 			            },
 				    })
         		}
+
+
 	        	let option3 = {
               tooltip : {
                     trigger: 'axis',
@@ -463,9 +465,9 @@
               $.each(trendData2,(n1,k1)=>{
                 arr2Label.push(k.title);
                 if(k1.device_id==k.device_id){
+                  arr2.push(k1.data);
                   $.each(k1.data,(n2,k2)=>{
                     arr2x.push(k2.date);
-                    arr2.push(k2.value);
                   })
 
                 }
@@ -479,6 +481,7 @@
             arr2x = arr2x.filter(function(element,index,self){
               return self.indexOf(element) === index;
             });
+
 
             that.getBottomEcharts(arr,arr2,arr2x,arr2Label);
           },
