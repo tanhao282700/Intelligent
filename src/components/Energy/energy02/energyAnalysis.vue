@@ -269,7 +269,7 @@
                   axisTick: {show:false},
                   splitLine: {show:false},
                   axisLabel: {
-                    interval:3,
+                    interval:1,
                     width:20,
                     showMinLabel:true,
                     showMaxLabel:true,
