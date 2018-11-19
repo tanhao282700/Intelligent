@@ -14,12 +14,12 @@
             text-color="#fff"
             :router="isUserRouter"
             active-text-color="#ffd04b">
-            <el-submenu index="1">
+            <el-submenu index="1" v-if="userRouterInfo[14] || userRouterInfo[5]||userRouterInfo[16]||userRouterInfo[1]">
               <template slot="title">
                 <i class="el-icon-location noLog wisdomManagement"></i>
                 <span class="textPL">智慧管理</span>
               </template>
-              <el-menu-item-group v-if="userRouterInfo[14] || userRouterInfo[5]||userRouterInfo[16]||userRouterInfo[1]">
+              <el-menu-item-group>
                 <!--<template slot="title">分组一</template>-->
                 <el-menu-item v-if="userRouterInfo[14]" index="/DoorControl"><span class="textPL">门禁系统</span></el-menu-item>
                 <el-menu-item v-if="userRouterInfo[5]" index="/VideoSurveillance"><span class="textPL">视频监控系统</span></el-menu-item>

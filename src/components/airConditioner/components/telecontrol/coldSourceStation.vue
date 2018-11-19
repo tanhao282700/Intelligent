@@ -720,12 +720,18 @@
                 this.getThreeDevice(sysID, floor_id);
                 //机房列表
                 let floorList = data.data;
+
                 let tempArr = [];
+                let tempArr0 = [];
                 floorList.map((item, i) => {
                   let obj = {};
+                  let obj0 = {};
                   obj.value = item.floor_id;
                   obj.label = item.title;
-                  if (item.son.length !== 0) {
+
+                  obj0.id = item.floor_id;
+                  obj0.tit = item.title;
+                  /*if (item.son.length !== 0) {
                     obj.children = [];
                     item.son.map((item2, i2) => {
                       let obj2 = {};
@@ -742,10 +748,12 @@
                       }
                       obj.children.push(obj2)
                     })
-                  }
-                  tempArr.push(obj)
+                  }*/
+                  tempArr0.push(obj0);
+                  tempArr.push(obj);
                 })
                 this.options = tempArr;
+                this.$store.state.airFloorLists = tempArr0;
                 this.selectedOptions2 = [floor_id];
                 //3d地址和设备状态
                 this.modelUrl = data.data[0].object_3d;
@@ -762,11 +770,6 @@
                     this.modelUrl = data.data[i11].object_3d;
                     let object_device = data.data[i11].object_device;
                     this.object_device = object_device;
-                    setTimeout(() => {   //没有监测到模型是否加载完毕，只能用延时了
-                      object_device.map((item, i) => {
-                        this.changeDeviceState(item.object_id, item.state)
-                      })
-                    }, 3000)
                   }
                 })
               }
@@ -853,7 +856,6 @@
           //console.log(this.selectedOptions2)
           this.getThreeDevice(this.$store.state.sysList[1].son_list[0].sys_menu_id,value[0]);
           this.$store.state.airFloorId = value[0];
-          this.get3DFloor();
         },
         tempHandleChange() {
           this.$refs.dialog.show();

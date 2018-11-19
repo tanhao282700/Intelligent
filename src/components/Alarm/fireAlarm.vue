@@ -231,6 +231,14 @@
       initData(){
         this.$http.get('/index_pc/pc/select/alarm',this.formData).then((response)=>{
           this.curPageData = response.data.data
+          this.curPageData.map((item,index)=>{
+              if(item.now_state==0){
+                item.now_state = '待处理'
+              }
+            if(item.now_state==1){
+              item.now_state = '已维修'
+            }
+          })
           this.formData.total = response.data.paging
           this.formData.pageCount = Math.ceil(response.data.paging/this.formData.pagesize)
           this.loading = false

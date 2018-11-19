@@ -692,11 +692,11 @@
                   this.modelUrl2 = data.data[i11].object_3d;
                   let object_device = data.data[i11].object_device;
                   this.object_device = object_device;
-                  setTimeout(() => {   //没有监测到模型是否加载完毕，只能用延时了
+                 /* setTimeout(() => {   //没有监测到模型是否加载完毕，只能用延时了
                     object_device.map((item, i) => {
                       this.changeDeviceState(item.object_id, item.state)
                     })
-                  }, 1000)
+                  }, 1000)*/
                 }
               })
             }

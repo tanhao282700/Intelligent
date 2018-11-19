@@ -7,7 +7,7 @@
     class="energySituation">
     <div class="btnBox">
       <div class="tabHead">
-        <button @click="tabClick(i,v.id)" type="button" v-for="(v,i) in devTitLists" v-text="v.tit" :key="i" :class="['btn1',{active:v.id==btnActiveId}]"></button>
+        <button @click="tabClick(i,v.id)" type="button" v-for="(v,i) in devTitLists" v-text="v.tit" :key="i" :class="['btn1',{active:v.id == btnActiveId}]"></button>
       </div>
     </div>
     <div class="row">
@@ -61,7 +61,7 @@
         btnActiveId: '',
         btnActiveIndex:0,
         devTitLists:[
-          {
+          /*{
             id:1,
             tit:'测试机房',
             tabData: {
@@ -83,7 +83,7 @@
 
                 }
               },
-          }
+          }*/
         ],
 
         tabData2:[
@@ -239,40 +239,13 @@
               }
             })
 
-
-
-            /*data2.map((item,i)=>{
-              let obj = {};
-              obj.id = item.id;
-              obj.title = item.point_title;
-              obj.unit = [];
-              obj.unit.push(item.unit);
-              obj.datas = {};
-              obj.datas.id = 'selfEchart'+item.id;
-              obj.datas.style = {width:'12.76rem',height:244*100/728+'vh'};
-              obj.datas.showMarkL = true;
-              obj.datas.colorArr = [];
-              if (item.point_title.indexOf('系统COP') > -1) {
-                obj.datas.colorArr.push({color1:'rgba(45,240,224,1)',color3:'rgba(45,240,224,0.5)'})
-              }else {
-                obj.datas.colorArr.push({color1:'rgba(229,81,80,1)',color3:'rgba(229,81,80,0.5)'})
-              }
-              obj.datas.markLineVal = item.standard;
-              obj.datas.showLegends = true;
-              obj.datas.list = [];
-              let obj2 = {};
-              obj2.name = item.point_title;
-              obj2.data = item.data;
-              obj.datas.list.push(obj2);
-              conArr.push(obj);
-            })*/
             this.devTitLists.some((item0,i0)=>{
               if (item0.id == this.btnActiveId){
                 this.btnActiveIndex = i0;
                 this.devTitLists[i0].tabData =
                   {
                     datas: {
-                      id: 'selfEchart111',
+                      id: ('selfEchart111'+item0.id),
                       style: {width: '12.76rem', height: 244 * 100 / 728 + 'vh'},
                       showMarkL: true,
                       colorArr: [
@@ -320,7 +293,6 @@
           console.log('能耗筛选题目', config, res);
           if (data.code == 0) {
             let data2 = data.data;
-            let tempArr = [];
             let tempArr0 =[];
             if (data2.length === 0) {
               this.$message(data.message);
@@ -330,34 +302,11 @@
                 if (i == 0){
                   this.selectedOptions2 = [item.id];
                   this.btnActiveIndex = i;
-                  this.btnActiveId = item.id;
+
                   this.getEnergy1(item.id);
                   this.getEnergy2(item.id);
                 }
-                let obj = {};
-                obj.id = item.id;
-                obj.tit = item.title;
-                obj.tabData = {
-                  datas:{
-                    id:'selfEchart111',
-                    style:{width:'12.76rem',height:244*100/728+'vh'},
-                    showMarkL:true,
-                    colorArr:[
-                      {color1:'rgba(229,81,80,1)',color3:'rgba(229,81,80,0.5)'},
-                      {color1:'rgba(45,240,224,1)',color3:'rgba(45,240,224,0.5)'},
-                      {color1:'rgba(229,81,80,1)',color3:'rgba(229,81,80,0.5)'},
-                      {color1:'rgba(45,240,224,1)',color3:'rgba(45,240,224,0.5)'},
-                      {color1:'rgba(229,81,80,1)',color3:'rgba(229,81,80,0.5)'},
-                      {color1:'rgba(45,240,224,1)',color3:'rgba(45,240,224,0.5)'},
-                    ],
-                    markLineVal:0,
-                    showLegends:true,
-                    list:[]
 
-                  }
-                };
-
-                tempArr.push(obj);
 
                 let obj0 = {};
                 obj0.value = item.id;
@@ -368,9 +317,13 @@
 
             }
             this.options = tempArr0;
-            this.devTitLists = tempArr;
-            console.log(tempArr)
-            this.getCOPData();
+            //this.devTitLists = tempArr;
+            //console.log(tempArr)
+
+            setTimeout(()=>{//先这样吧
+              this.getCOPData();
+            },500)
+
 
           } else {
 
@@ -505,7 +458,43 @@
       }
     },
     created(){
+      this.devTitLists =  this.$store.state.airFloorLists;
+      //let tempArr = [];
+      this.devTitLists.map((item,i)=>{
+        this.btnActiveId = item.id;
+        // let obj = {};
+        // obj.id = item.id;
+        // obj.tit = item.title;
+        //console.log(item)
+        item.tabData = {
+          datas:{
+            id:('selfEchart111'+item.id),
+            style:{width:'12.76rem',height:244*100/728+'vh'},
+            showMarkL:true,
+            colorArr:[
+              {color1:'rgba(229,81,80,1)',color3:'rgba(229,81,80,0.5)'},
+              {color1:'rgba(45,240,224,1)',color3:'rgba(45,240,224,0.5)'},
+              {color1:'rgba(229,81,80,1)',color3:'rgba(229,81,80,0.5)'},
+              {color1:'rgba(45,240,224,1)',color3:'rgba(45,240,224,0.5)'},
+              {color1:'rgba(229,81,80,1)',color3:'rgba(229,81,80,0.5)'},
+              {color1:'rgba(45,240,224,1)',color3:'rgba(45,240,224,0.5)'},
+            ],
+            markLineVal:0,
+            showLegends:true,
+            list:[]
+
+          }
+        };
+
+        //tempArr.push(obj);
+      })
+
       this.getTitData();
+      //console.log(this.$store.state.airFloorLists)
+    },
+    mounted(){
+      //console.log(this.btnActiveId)
+      console.log(this.devTitLists)
     }
   }
 </script>

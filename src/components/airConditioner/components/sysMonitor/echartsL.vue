@@ -201,6 +201,7 @@
     updated(){
       this.drawLine();
     }
+
   }
 </script>
 
