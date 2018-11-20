@@ -181,8 +181,8 @@ export default {
 <style lang="less" scoped="" type="text/less"> 
 @import '../../../../assets/css/comon.less';
 .myChartBox{
-    width:1.58rem;
-    height:1.58rem;
+    width:1.88rem;
+    height:1.88rem;
     width:100%;
     position:relative; 
     .myChart{

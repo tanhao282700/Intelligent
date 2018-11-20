@@ -346,8 +346,8 @@ export default {
             flex:1;
             padding-left: 0.4rem;
             .msgsInCircle{
-              width: 1.56rem;
-              height:1.56rem;
+              width: 2.15rem;
+              height:1.8rem;
               float: left;
             }
             .msgsInTable{
