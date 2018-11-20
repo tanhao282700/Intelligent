@@ -80,19 +80,19 @@
         },
         verifyInput(){
           var that = this;
-          if(!this.userName){
-            this.showErr(this.nameText);
+          if(!that.userName){
+            that.showErr(this.nameText);
             return;
           }
-          if(!this.password){
-            this.showErr(this.pwText);
+          if(!that.password){
+            that.showErr(this.pwText);
             return;
           }
-          if(!this.validateCode){
-            this.showErr(this.codeText);
+          if(!that.validateCode){
+            that.showErr(this.codeText);
             return;
           }else {
-            this.requestCode();
+            that.requestCode();
           }
 
         },
@@ -112,7 +112,7 @@
             'Content-Type': 'multipart/form-data'
           }).then(res=>{
             let data = res.data;
-            console.log(data);
+
             if(data.code == '0'){
               that.closeErr();
               that.requestLogin();
@@ -136,7 +136,7 @@
           }
           this.$http.post('/users_manage/user_login',config,headers).then(res=>{
             let data = res.data;
-            console.log(data);
+
             if(data.code=='0'){
               that.closeErr();
 

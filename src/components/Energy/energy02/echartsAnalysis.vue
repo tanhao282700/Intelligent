@@ -87,6 +87,27 @@
                 },
                 type: 'value',
               }
+            ],
+            trednYlabelArray3:[
+              {
+                name:'',
+                nameTextStyle:{
+                  color:'#fff',
+                  fontSize:10
+                },
+                axisLine: {show:false},
+                axisTick: {show:false},
+                splitLine: {show:false},
+                axisLabel: {
+                  show:true,
+                  color:'#fff'
+                },
+                splitArea: {
+                  show:true,
+                  areaStyle: {color:['rgba(142,187,255,.1)','rgba(142,187,255,.05)']},
+                },
+                type: 'value',
+              }
             ]
         	}
         },
@@ -128,26 +149,32 @@
               that.areaEnergyRzl = newRzl;
 
               let tempArray = [];
-              trendData.floor_value.map((item,index)=>{
-                let temp = [];
-                item.data.map((items,indexs)=>{
-                  temp.push([items.date,items.value]);
-                })
-                tempArray[index] = temp;
-              })
 
-              let areaDateType = datas.config.area_query_date_type;
-              if(areaDateType != 'year'){
-                tempArray.push(that.areaEnergyRzl);
+              if(trendData.floor_value.length>0){
+                trendData.floor_value.map((item,index)=>{
+                  let temp = [];
+                  item.data.map((items,indexs)=>{
+                    temp.push([items.date,items.value]);
+                  })
+                  tempArray[index] = temp;
+                })
+
+                let areaDateType = datas.config.area_query_date_type;
+                if(areaDateType != 'year'){
+                  tempArray.push(that.areaEnergyRzl);
+                }
+
+                that.trendValueData = tempArray;
+
+
+                $.each(trendData.floor_value[0].data,function(i,k){
+                  newKf.push([k.date,k.value]);
+                });
+                that.areaEnergyKf = newKf;
+              }else {
+                that.trendValueData = [];
               }
 
-              that.trendValueData = tempArray;
-
-
-              $.each(trendData.floor_value[0].data,function(i,k){
-                newKf.push([k.date,k.value]);
-              });
-              that.areaEnergyKf = newKf;
 
 
               that.drawLine(that.data);
@@ -175,10 +202,7 @@
 		        let seriesValue = [];
 		        let trendValueArray = [];
 		        let trendXdata = [];
-		        for(var x=0;x<trendValueData[0].length;x++){
-		          let xtemp = trendValueData[0][x][0];
-		          trendXdata.push(xtemp);
-		        }
+            let trendYlabel = [];
 
 		        for (var i = 0; i < legendLen; i++) {
 		            var seriesDataVal = null;
@@ -195,37 +219,51 @@
             let trendLegendLabel = data.trendLegendLabel;
             let areaDateType = that.data.config.area_query_date_type;
 
-		        for(var j=0;j<trendValueData.length;j++){
-              var trendItem;
+            if(trendValueData.length>0){
 
-              trendItem = {
-                name: trendLegendLabel[j],
-                data: trendValueData[j],//data.custom,
-                type: 'line',
-                symbol: "circle",
-                symbolSize:0,
-                smooth: true,
-                lineStyle: {
-                  normal: {
-                    width: 2,
-                    shadowColor: 'rgba(48, 241, 225, .4)',
-                    shadowBlur: 5,
-                    shadowOffsetY: 5
-                  }
-                },
+              for(var x=0;x<trendValueData[0].length;x++){
+                let xtemp = trendValueData[0][x][0];
+                trendXdata.push(xtemp);
               }
-              if( j == trendValueData.length-1 && areaDateType!='year'){
-                trendItem.yAxisIndex = 1;
+
+              for(var j=0;j<trendValueData.length;j++){
+                var trendItem;
+
+                trendItem = {
+                  name: trendLegendLabel[j],
+                  data: trendValueData[j],//data.custom,
+                  type: 'line',
+                  symbol: "circle",
+                  symbolSize:0,
+                  smooth: true,
+                  lineStyle: {
+                    normal: {
+                      width: 2,
+                      shadowColor: 'rgba(48, 241, 225, .4)',
+                      shadowBlur: 5,
+                      shadowOffsetY: 5
+                    }
+                  },
+                }
+                if( j == trendValueData.length-1 && areaDateType!='year'){
+                  trendItem.yAxisIndex = 1;
+                }
+                trendValueArray.push(trendItem);
               }
-              trendValueArray.push(trendItem);
+
             }
 
-            let trendYlabel = [];
-		        if(areaDateType == 'year'){
-              trendYlabel = that.trednYlabelArray2;
-            }else{
-              trendYlabel = that.trendYlabelArray1;
+
+            if(trendValueData.length>0){
+              if(areaDateType == 'year'){
+                trendYlabel = that.trednYlabelArray2;
+              }else{
+                trendYlabel = that.trendYlabelArray1;
+              }
+            }else {
+              trendYlabel = that.trednYlabelArray3;
             }
+
 
 		        let option = {
                 color:["#FD97AA","#008AFF","#F35E5E","#EEB66E","#EBF191","#C382EF","#95EDC5",'#b5d7ff','#F56C6C','#999'],
@@ -289,7 +327,7 @@
                     {
                         name: '',
                         type: 'pie',
-                        radius : '60%',
+                        radius : '55%',
                         center: ['50%', '50%'],
                         color:["#FD97AA","#008AFF","#F35E5E","#EEB66E","#EBF191","#C382EF","#95EDC5"],
                         data:data.topPie,
@@ -328,8 +366,8 @@
 		                }
 		            },
 		            grid: {
-		                left: '3%',
-		                right: '4%',
+		                left: '1%',
+		                right: '2%',
 		                bottom: '10%',
 		                top:'10%',
 		                containLabel: false
@@ -342,17 +380,17 @@
 		                	color:'#708FBE'
 		                }
 		            }],
-		            yAxis: [{
+		            yAxis: {
 		                min: 0,
 		                type: 'value',
 		                axisLine: {show:false},
-				        axisTick: {show:false},
-				        splitLine: {show:false},
+                    axisTick: {show:false},
+                    splitLine: {show:false},
 		                splitArea: {
-				        	show:true,
-				        	/*areaStyle: {color:['rgba(142,187,255,.1)','rgba(142,187,255,.05)']},*/
-				        },
-		            }],
+				        	    show:true,
+                      /*areaStyle: {color:['rgba(142,187,255,.1)','rgba(142,187,255,.05)']},*/
+                    },
+                },
 		            label: {
 		                normal: { //显示bar数据
 		                    show: true,
