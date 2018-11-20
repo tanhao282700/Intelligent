@@ -24,10 +24,6 @@ export default {
             id:2,
             lists:[
                 {id:1,name:'全景查看',route:'/energy/allViews'},
-                {id:2,name:'用能分析',route:'/energy/analysis'},
-                {id:3,name:'三表远抄',route:'/energy/metersRead'},
-                {id:4,name:'用能预设',route:'/energy/preset'},
-                {id:5,name:'用能报表',route:'/energy/report'}
             ]
         }
     }
@@ -35,7 +31,22 @@ export default {
   methods:{
   },
   created() {
-
+    /*{id:2,name:'用能分析',route:'/energy/analysis'},
+    {id:3,name:'三表远抄',route:'/energy/metersRead'},
+    {id:4,name:'用能预设',route:'/energy/preset'},
+    {id:5,name:'用能报表',route:'/energy/report'}*/
+    if(this.$store.state.sysList[2].role_string[1]!=0){
+      this.sData.lists.push({id:2,name:'用能分析',route:'/energy/analysis'})
+    }
+    if(this.$store.state.sysList[2].role_string[2]!=0 || this.$store.state.sysList[2].role_string[5]!=0||this.$store.state.sysList[2].role_string[6]!=0){
+      this.sData.lists.push({id:3,name:'三表远抄',route:'/energy/metersRead'})
+    }
+    if(this.$store.state.sysList[2].role_string[4]!=0){
+      this.sData.lists.push({id:4,name:'用能预设',route:'/energy/preset'})
+    }
+    if(this.$store.state.sysList[2].role_string[3]!=0||this.$store.state.sysList[2].role_string[7]!=0||this.$store.state.sysList[2].role_string[8]!=0||this.$store.state.sysList[2].role_string[9]!=0){
+      this.sData.lists.push({id:5,name:'用能报表',route:'/energy/report'})
+    }
   },
   mounted() {
 

@@ -12,7 +12,7 @@
     <div class="contentBox">
       <div class="meterNav">
         <span @click="changeView('ReadNumber')" :class="{'active':viewPath=='ReadNumber'}">实时读数</span>
-        <span @click="changeView('History')" :class="{'active':viewPath=='History'}">历史记录录入</span>
+        <span v-if="sysInfo.role_string[6]!=0" @click="changeView('History')" :class="{'active':viewPath=='History'}">历史记录录入</span>
       </div>
       <div class="meterCon boxs">
         <component :is="viewPath"></component>
@@ -32,7 +32,8 @@
     components: {ReadNumber,History},
     data () {
       return {
-        viewPath:'ReadNumber'
+        viewPath:'ReadNumber',
+        sysInfo:{}
       }
     },
     methods:{
@@ -41,7 +42,7 @@
       }
     },
     created() {
-
+      this.sysInfo = this.$store.state.sysList[2]
     },
     mounted() {
 

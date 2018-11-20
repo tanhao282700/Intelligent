@@ -6,8 +6,8 @@
         	<span class="unitPriceBtn" @click="unitShowCli">单价预设</span>
 	        <nav class="tabNav">
 	            <span><a :class="isActive1==true?'on':''" @click="toggleTabs(first)">月报表</a></span>
-	            <span><a :class="isActive2==true?'on':''" @click="toggleTabs(second)">日报表</a></span>
-	            <span><a :class="isActive3==true?'on':''" @click="toggleTabs(third)">能源汇总账单 (领导)</a></span>
+	            <span v-if="sysInfo.role_string[8]!=0"><a :class="isActive2==true?'on':''" @click="toggleTabs(second)">日报表</a></span>
+	            <span v-if="sysInfo.role_string[9]!=0"><a :class="isActive3==true?'on':''" @click="toggleTabs(third)">能源汇总账单 (领导)</a></span>
 	        </nav>
 	        <tabs :is="currentView" keep-alive></tabs>
 		</div>
@@ -34,6 +34,7 @@
         },
 	    data() {
 	        return {
+	            sysInfo:{},
 	          unitComponent:'',
 	        	unitShow:false,
 	        	//tab切换状态
@@ -46,6 +47,9 @@
                 isActive3:false,
 	        };
 	    },
+      created(){
+            this.sysInfo = this.$store.state.sysList[2]
+      },
         mounted(){
             this.getData();
         },
