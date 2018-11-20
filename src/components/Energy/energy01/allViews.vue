@@ -1004,7 +1004,9 @@
         var perObj = [{},{},{}];
         for(var i=0;i<3;i++){
           var num = ((Number(monthActuUsage[i]) / Number(monthPlagUsage[i])) * 100).toFixed(1);
-          var rsNum = Math.round(num);
+          var rsNum;
+          parseInt(num) ? rsNum = Math.round(num) : rsNum = 0;
+
           rsNum>100?num=100:num=rsNum;
           perObj[i].per = num;
           perObj[i].rsNum = rsNum;
