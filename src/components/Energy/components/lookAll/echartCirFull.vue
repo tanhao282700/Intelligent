@@ -20,7 +20,7 @@ export default {
             color:[
               '#008aff','#f56c6c'
             ],
-            size:[0,'1.56rem'],
+            size:[0,'1.76rem'],
             total:0,
             data:[
               {value:24, name:0+'%',tit:'已完成数'},
@@ -32,7 +32,7 @@ export default {
             color:[
               '#f56c6c','#008aff'
             ],
-            size:[0,'1.56rem'],
+            size:[0,'1.76rem'],
             total:0,
             data:[
               {value:2, name:0+'%',tit:'未完成数'},
@@ -181,9 +181,8 @@ export default {
 <style lang="less" scoped="" type="text/less"> 
 @import '../../../../assets/css/comon.less';
 .myChartBox{
-    width:1.88rem;
-    height:1.88rem;
     width:100%;
+    height:100%;
     position:relative; 
     .myChart{
       height:100%;
