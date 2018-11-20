@@ -113,7 +113,7 @@
                     s = that.format(this.datetimerange[0], 'yyyy-MM-dd');
                     e = that.format(this.datetimerange[1], 'yyyy-MM-dd');
                 }
-
+                console.log(111);
                 this.$http.post('/hotel/singe_room',{
                     page:that.currentPage,
                     type:0,

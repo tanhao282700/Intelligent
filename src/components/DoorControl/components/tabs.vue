@@ -72,6 +72,7 @@
                 toPageNum:1,
                 totalPageNum:3,
                 total:0,
+                floorId:0,
 				//时间
                 releasetime1:"",
 				releasetime2:"",
@@ -103,11 +104,11 @@
                     s = "";
                     e = "";
                 }
-                    console.log(this.$store.state.sysList['14'].sys_menu_id);
+                    console.log(this.$store.state);
                 this.$http.post('/entrance/record',{
                     sys_menu_id:this.$store.state.sysList['14'].sys_menu_id,
                     project_id:this.$store.state.projectId,
-                    floor_id:1,
+                    floor_id:this.floorId,
                     page_index:that.currentPage,
                     one_page_num:that.pagesize,
                     start_date:s,
@@ -129,7 +130,7 @@
                 this.$http.post('/entrance/record',{
                     sys_menu_id:this.$store.state.sysList['14'].sys_menu_id,
                     project_id:this.$store.state.projectId,
-                    floor_id:1,
+                    floor_id:this.floorId,
                     export:1,
                 }).then(function(response){
                     // 响应成功回调

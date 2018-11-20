@@ -27,6 +27,11 @@
         mounted(){
 
         },
+        watch:{
+            infoSta(newVal,oldVal){
+                this.infoSta = newVal;
+            }
+        },
         methods:{
             doorInfoHide(){
                 this.$emit("doorInfoHide",false);

@@ -91,7 +91,7 @@
                 this.$http.post('/entrance/record',{
                     sys_menu_id:this.$store.state.sysList['14'].sys_menu_id,
                     project_id:this.$store.state.projectId,
-                    floor_id:1,
+                    floor_id:that.floorIds,
                     export:1,
                 }).then(function(response){
                     // 响应成功回调

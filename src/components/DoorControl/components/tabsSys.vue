@@ -96,7 +96,7 @@
                 onMouseDoor:'', //当前滑过icon
                 xLeft:'', //x值
                 yTop:'', //y值
-                buildingNumber:"", //楼号
+                buildingNumber:"负一楼", //楼号
 				floorNumber:"", //层号
                 floorNum:"",  //楼层
                 iList:[],
@@ -110,6 +110,11 @@
         },
         mounted(){
             this.getDoorData();
+        },
+        watch:{
+            infoSta(newVal,oldVal){
+                this.infoSta = newVal;
+            }
         },
         methods:{
             chooseLevels(selVal){
@@ -156,22 +161,31 @@
                 this.yTop = y;
                 let handleMsgs = '';
                 let ss = [];
+                let staNew='';
                 $.each(handle,function(i,k){
                     if(k.is_command == 1){
                         handleMsgs = k.params.showvalue[0];
                         ss.push({pointNow:k.params.value[0],pointId:k.point_id});
                     }
+                    if(i == 2){
+                       $.each(k.params.value,function(i1,k1){
+                            if(k1 == k.params.type){
+                                staNew = k.params.showvalue[i1]
+                            }
+                       });
+                    }
                 });
                 this.controlDoorFun = handleMsgs;
                 this.doorControlMsg = ss;
                 console.log(ss);
-                if(sta == "0"){
-                    this.infoSta = "关闭";
-                }else if(sta == "1"){
-                    this.infoSta = "开启";
-                }else if(sta == "2"){
-                    this.infoSta = "异常";
-                }
+                this.infoSta = staNew;
+                // if(sta == "0"){
+                //     this.infoSta = "关闭";
+                // }else if(sta == "1"){
+                //     this.infoSta = "开启";
+                // }else if(sta == "2"){
+                //     this.infoSta = "异常";
+                // }
             },
             popHide(){
                 
