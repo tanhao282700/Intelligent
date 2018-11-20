@@ -294,6 +294,9 @@
   width: .16rem;
   height: .16rem;
   color: #3B89F9!important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .dialogBox .el-dialog__body{
   padding: 22px 0 0 60px;

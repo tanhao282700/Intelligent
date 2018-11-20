@@ -197,10 +197,34 @@
           label: 'title'
         },
         role_sys_list:'',
-        checkedListItems:[]
+        checkedListItems:[],
+        disabledSelectedItems:{
+          1:['3','4'],
+          2:['1','2','3'],
+          25:['2']
+        }
       }
     },
     methods:{
+      removeDisItem(res){
+        let expObj = this.disabledSelectedItems;
+        for(let val of res){
+          for(let key1 in expObj){
+            if( val.sys_id == key1){
+
+              let temp = expObj[key1];
+              for(let x of temp){
+                let index = val.ids.indexOf(x);
+                if(index > -1){
+                  val.ids.splice(index,1);
+                }
+              }
+
+            }
+          }
+        }
+        return res;
+      },
       powerSelectBlur(status){
         if(!status){
           this.form.powerRange.key=this.powerValue;
@@ -242,6 +266,7 @@
               tempObj.ids.push(actuId);
               if(i==Len-1){
                 sysList.push(tempObj);
+                sysList = that.removeDisItem(sysList);
                 that.role_sys_list = JSON.stringify(sysList);
                 that.powerValue = tempValue;
                 return;
