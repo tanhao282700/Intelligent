@@ -1,6 +1,6 @@
 <template>
 	<div class="hotelStatus roomLists">
-        <!--面包屑--> 
+        <!--面包屑-->
         <div class="navCrumbs">
             <el-breadcrumb separator-class="el-icon-arrow-right">
               <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
@@ -11,8 +11,8 @@
 		<div class="roomListsTabBox">
 	        <nav class="tabNav">
 	            <span><a :class="isActive1==true?'on':''" @click="toggleTabs(first)">全部房单 <i></i></a></span>
-	            <span><a :class="isActive2==true?'on':''" @click="toggleTabs(second)">宴会厅订单<i></i></a></span>
-	            <span><a :class="isActive3==true?'on':''" @click="toggleTabs(third)">今日已退房单<i></i></a></span>
+	            <span v-if="sysInfo.role_string[3]!=0"><a :class="isActive2==true?'on':''" @click="toggleTabs(second)">宴会厅订单<i></i></a></span>
+	            <span v-if="sysInfo.role_string[4]!=0"><a :class="isActive3==true?'on':''" @click="toggleTabs(third)">今日已退房单<i></i></a></span>
 	        </nav>
 	        <tabs :is="currentView" class="roomListsTabDomBox"  keep-alive ></tabs>
 		</div>
@@ -23,9 +23,9 @@
 
 <script>
 
-	import roomListAll from './roomListAll.vue' 
-	import roomListBanquetHall from './roomListBanquetHall.vue' 
-	import roomListRetreated from './roomListRetreated.vue' 
+	import roomListAll from './roomListAll.vue'
+	import roomListBanquetHall from './roomListBanquetHall.vue'
+	import roomListRetreated from './roomListRetreated.vue'
 
     export default {
         components:{
@@ -35,6 +35,7 @@
         },
 	    data() {
 	        return {
+            sysInfo:{},
 	        	first:'first',
 	        	second:'second',
 	        	third:'third',
@@ -44,6 +45,10 @@
 	        	isActive3:false,
 	        };
 	    },
+      created(){
+            this.sysInfo = this.$store.state.sysList[17]
+        console.log(this.sysInfo)
+      },
 	    methods: {
             toggleTabs(tabText){
                 if(tabText == "first"){
