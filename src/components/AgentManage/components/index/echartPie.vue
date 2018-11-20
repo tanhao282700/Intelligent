@@ -35,7 +35,7 @@ export default {
             let n = data[0],n1=data[1],n2 =data[2],n3 = data[3];
             context.save();
             context.translate(centerX,centerY);
-            context.strokeStyle = "#ffa414"; //设置描边样式 #ffa414 黄色 #008aff蓝色 #fa6074红色 #4ae283绿色
+            context.strokeStyle = "#008aff"; //设置描边样式 #ffa414 黄色 #008aff蓝色 #fa6074红色 #4ae283绿色
             context.lineWidth = 3; //设置线宽
             context.beginPath(); //路径开始
             context.arc(0, 0, 100 , -Math.PI*4.5/3, -Math.PI*4.5/3 +n*rad, false); //用于绘制圆弧context.arc(x坐标，y坐标，半径，起始角度，终止角度，顺时针/逆时针)
@@ -44,13 +44,13 @@ export default {
             context.closePath(); //路径结束
 
             context.translate(Math.round(Math.cos((n*3.6+90)*Math.PI/180 )* 100),Math.round(Math.sin((n*3.6+90)*Math.PI/180 )* 100));
-            context.fillStyle="#ffa414";
+            context.fillStyle="#008aff";
             context.beginPath();
             context.arc(0,0,3, -Math.PI*4.5/3, -Math.PI*4.5/3 + Math.PI*2,false);
             context.fill();
             context.closePath();
             if(n1!==''){
-                context.strokeStyle = "#fa6074";
+                context.strokeStyle = "#4ae283";
                 context.translate(-Math.round(Math.cos((n*3.6+90)*Math.PI/180 )* 100),-Math.round(Math.sin((n*3.6+90)*Math.PI/180 )* 100));
                 context.beginPath(); //路径开始
                 context.arc(0, 0, 90 , -Math.PI*4.5/3, -Math.PI*4.5/3 +n1*rad, false); //用于绘制圆弧context.arc(x坐标，y坐标，半径，起始角度，终止角度，顺时针/逆时针)
@@ -59,14 +59,14 @@ export default {
                 // context.restore();
 
                 context.translate(Math.round(Math.cos((n1*3.6+90)*Math.PI/180 )* 90),Math.round(Math.sin((n1*3.6+90)*Math.PI/180 )* 90));
-                context.fillStyle="#fa6074";
+                context.fillStyle="#4ae283";
                 context.beginPath();
                 context.arc(0,0,3, -Math.PI*4.5/3, -Math.PI*4.5/3 + Math.PI*2,false);
                 context.fill();
                 context.closePath();
             }
             if(n2!==''){
-                context.strokeStyle = "#4ae283";
+                context.strokeStyle = "#ffa414";
                 context.translate(-Math.round(Math.cos((n1*3.6+90)*Math.PI/180 )* 90),-Math.round(Math.sin((n1*3.6+90)*Math.PI/180 )* 90));
                 context.beginPath(); //路径开始
                 context.arc(0, 0, 80 , -Math.PI*4.5/3, -Math.PI*4.5/3 +n2*rad, false); //用于绘制圆弧context.arc(x坐标，y坐标，半径，起始角度，终止角度，顺时针/逆时针)
@@ -75,7 +75,7 @@ export default {
                 // context.restore();
 
                 context.translate(Math.round(Math.cos((n2*3.6+90)*Math.PI/180 )* 80),Math.round(Math.sin((n2*3.6+90)*Math.PI/180 )* 80));
-                context.fillStyle="#4ae283";
+                context.fillStyle="#ffa414";
                 context.beginPath();
                 context.arc(0,0,3, -Math.PI*4.5/3, -Math.PI*4.5/3 + Math.PI*2,false);
                 context.fill();
@@ -83,12 +83,12 @@ export default {
             }
             if(n1==='' && n2===''){
                 context.translate(-Math.round(Math.cos((n*3.6+90)*Math.PI/180 )* 100),-Math.round(Math.sin((n*3.6+90)*Math.PI/180 )* 100));
-                context.strokeStyle = "#008aff";
+                context.strokeStyle = "#fa6074";
                 context.beginPath(); //路径开始
                 context.arc(0, 0, 70 , -Math.PI*4.5/3, -Math.PI*4.5/3 +n3*rad, false); //
             }else{
                 context.translate(-Math.round(Math.cos((n2*3.6+90)*Math.PI/180 )* 80),-Math.round(Math.sin((n2*3.6+90)*Math.PI/180 )* 80));
-                context.strokeStyle = "#008aff";
+                context.strokeStyle = "#fa6074";
                 context.beginPath(); //路径开始
                 context.arc(0, 0, 70 , -Math.PI*4.5/3, -Math.PI*4.5/3 +n3*rad, false); //
             }
@@ -97,7 +97,7 @@ export default {
             context.closePath(); //路径结束
 
             context.translate(Math.round(Math.cos((n3*3.6+90)*Math.PI/180 )* 70),Math.round(Math.sin((n3*3.6+90)*Math.PI/180 )* 70));
-            context.fillStyle="#008aff";
+            context.fillStyle="#fa6074";
             context.beginPath();
             context.arc(0,0,3, -Math.PI*4.5/3, -Math.PI*4.5/3 + Math.PI*2,false);
             context.fill();
@@ -149,7 +149,7 @@ export default {
             context.font = "normal 30px Arial"; //设置字体大小和字体
             //绘制字体，并且指定位置
             context.fillStyle = '#fff'
-            context.fillText(n.toFixed(2)+"%", centerX-50, centerY+5);
+            context.fillText(n.toFixed(2)+"%", centerX-45, centerY+5);
             //context.strokeStyle = "#fff"; //设置描边样式
             context.font = "12px Arial"; //设置字体大小和字体
             context.fillText("总完成率", centerX-25, centerY+35);

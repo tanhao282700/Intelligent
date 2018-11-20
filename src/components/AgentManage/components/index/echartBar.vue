@@ -53,10 +53,11 @@ export default {
 
         let option = {
             grid:{
-                left:10,
-                bottom:10,
-                right:10,
-                top:10,
+                left:0,
+                bottom:0,
+                right:0,
+                top:0,
+                borderColor:'#2d5e96',
                 containLabel: true
             },
             xAxis: {
@@ -66,11 +67,10 @@ export default {
                 axisTick: {show:false},
                 splitLine: {show:false},
                 axisLabel: {
-                    textStyle: {
-                        color: '#708FBE'
-                    }
+                    fontSize:12,
+                    color:'#fff'
                 },
-                data:dataAxis
+               data:dataAxis
             },
             yAxis: {
                 // show:false,

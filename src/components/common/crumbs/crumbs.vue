@@ -58,12 +58,12 @@ export default {
 @import '../../../assets/css/comon.less';
   .crumbsBox{
       width:100%;
-      .vh(26);
-        .vhLH(30);
-      padding-left:2.489vw;
-    position: relative;
+      height:0.38rem;
+      line-height:0.38rem;
+      margin-bottom:0.05rem;
+      padding-left:0.29rem;
+      position: relative;
     .modeBox{
-
       position: absolute;
       left: 50%;
       .vhTop(10);
@@ -100,7 +100,8 @@ export default {
         color:#4d5d76;
         font-family: PingFangSC-Regular;
         .baiLia{
-            color:#4d5d76;
+            color:#4e648b;
+            padding-left:0.05rem;
         }
       }
       .isNow{

@@ -153,6 +153,7 @@ export default {
       barData:{
           id:'barData',
           data:[],
+          style:{width:'100%',height:'2.43rem',padding:'0.1rem'},
           total:1,
           xData:['系统派发','人工派发']
       },
@@ -270,8 +271,9 @@ export default {
     padding-right: 0.2rem;
     span.tit{
       display: inline-block;
-      font-size: 0.16rem;
+      font-size: 0.15rem;
       color:@color-blue;
+      font-weight:400;
       font-family: PingFangSC-Medium;
       height:0.4rem;
       line-height:0.4rem;
@@ -289,6 +291,9 @@ export default {
       font-size: 0.14rem;
       cursor: pointer;
       margin-top:0.07rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       &.active{
         cursor:auto;
         background: #1575d9;
@@ -318,7 +323,7 @@ export default {
 
   }
   .msgBox{
-    height:2.54rem;
+    height:2.93rem;
     margin-top:0.16rem;
     width:95.6%;
     margin:0 auto;
@@ -330,10 +335,11 @@ export default {
           display: flex;
           flex-direction: column;
           .msgsInTit{
-            height:0.26rem;
+            height:0.38rem;
             color:#b5d7ff;
-            text-indent: 0.16rem;
-            font-size: 0.16rem;
+            line-height:0.38rem;
+            text-indent: 0.15rem;
+            font-size: 0.15rem;
             font-family: PingFangSC-Light;
           }
           .msgsInBoxs{
@@ -351,11 +357,12 @@ export default {
               margin-top:0.2rem;
               width: 3.4rem;
               float: left;
-              padding: 0 0.1rem;
+              padding:0.1rem 0.1rem 0;
               flex-direction: column;
               display: flex;
               li{
-                flex:1;
+                height:0.36rem;
+                margin-bottom:0.1rem;
                 align-items: center;
                 display: flex;
                 label{
@@ -371,18 +378,19 @@ export default {
                   align-items: center;
                   span{
                     color: #b5d7ff;
-                    font-size: 0.16rem;
+                    font-size: 0.13rem;
                     text-indent: 0.11rem;
                   }
                   .numFeal,.numFeals{
                     flex:1;
                     padding-right: 0.1rem;
                     height: 100%;
+                    font-size:0.11rem;
                     padding-top:0.07rem;
                     padding-bottom:0.07rem;
                     .numLines{
                       height: 100%;
-                      background: #008aff;
+                      background: #f56c6c;
                       color:#fff;
                       text-align:right;
                       padding-right:5*100/1366vw;
@@ -390,7 +398,7 @@ export default {
                     }
                     .numLines2{
                       height: 100%;
-                      background: #f56c6c;
+                      background: #008aff;
                       color:#fff;
                       text-align:right;
                       line-height:0.22rem;
@@ -412,7 +420,7 @@ export default {
   .dealed{
     display: inline-block;
     width: 47.07%;
-    height:2.94rem;
+    height:2.915rem;
     margin-left: 0.3rem;
     margin-top:0.20rem;
     .workBox1{
@@ -431,8 +439,9 @@ export default {
           p{
             text-align: center;
             height:0.67rem;
+            font-weight:500;
             line-height:0.75rem;
-            font-size: 0.35rem;
+            font-size: 0.27rem;
             color:#fff;
             &.marginTop{
               margin-top:0.17rem;
@@ -448,20 +457,12 @@ export default {
             text-align: center;
             border-radius: 0.02rem;
             &.colorY{
-              color:#ffa414;
-              border-color: #ffa414;
-            }
-             &.colorG{
-              color:#4ae283;
-              border-color: #4ae283;
-            }
-             &.colorR{
-              color:#f56c6c;
-              border-color: #f56c6c;
-            }
-             &.colorB{
               color:#008aff;
               border-color: #008aff;
+            }
+             &.colorB{
+              color:#fa6074;
+              border-color: #fa6074;
             }
           }
         }
@@ -473,8 +474,11 @@ export default {
         justify-content: center;
         height: 100%;
         .workBox1CirIn{
-          width: 1.97rem;
-          height: 1.97rem;
+          width: 1.98rem;
+          height: 1.98rem;
+          background: #011f51;
+          border-radius: 0.99rem;
+          border: 1px solid #000e28;
           div{
             width:100%;
             height:100%;

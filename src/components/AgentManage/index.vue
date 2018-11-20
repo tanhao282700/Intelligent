@@ -47,7 +47,7 @@
               </ul>
             </div>
           </div>
-          <Lines :top="0" :hei="200"/>
+          <Lines :top="21" :hei="200"/>
           <div class="msgsIn">
             <div class="msgsInTit" v-text="`本${msgsInTit}巡检任务数`"></div>
             <div class="msgsInBoxs">
@@ -180,17 +180,17 @@ export default {
         id:'canvas',
         style:{width:'1.98rem',height:'1.98rem'},
         total:0,//总完成率
-        data:[0,0,0,0],
+        data:[1,2,6,4],
         crate:{
-          monW:'0',
-          monR:'0',
-          yearW:'0',
-          yearR:'0'
+          monW:'1',
+          monR:'2',
+          yearW:'6',
+          yearR:'4'
         },
       },
       barData:{//工单&巡检完成率的数据
           id:'barData',
-          style:{width:'94%',height:'2.1rem','marginLeft':'3%','marginTop':'3%'},
+          style:{width:'100%',height:'2.43rem',padding:'0.1rem'},
           data:[0,0,0],
           total:1,
           xData:['系统派发','人工派发','外报维修']
@@ -303,7 +303,7 @@ export default {
             yearW:res.data.data.old.job,
             yearR:res.data.data.old.ins
           }
-          _this.circleData.data = [res.data.data.now.job,res.data.data.now.ins,res.data.data.old.job,res.data.data.old.ins];
+          _this.circleData.data = [res.data.data.old.ins,res.data.data.old.job,res.data.data.now.job,res.data.data.now.ins];
           _this.circleData.total = res.data.data.percentage_count;//巡检&工单总完成率
         }else{
           _this.$message({
@@ -334,8 +334,9 @@ export default {
     padding-right: 0.2rem;
     span.tit{
       display: inline-block;
-      font-size: 0.16rem;
+      font-size: 0.15rem;
       color:@color-blue;
+      font-weight:400;
       font-family: PingFangSC-Medium;
       height:0.4rem;
       line-height:0.4rem;
@@ -385,7 +386,7 @@ export default {
 
   }
   .msgBox{
-    height:2.54rem;
+    height:2.93rem;
     margin-top:0.16rem;
     width:95.6%;
     margin:0 auto;
@@ -397,10 +398,11 @@ export default {
           display: flex;
           flex-direction: column;
           .msgsInTit{
-            height:0.26rem;
+            height:0.38rem;
             color:#b5d7ff;
-            text-indent: 0.16rem;
-            font-size: 0.16rem;
+            line-height:0.38rem;
+            text-indent: 0.15rem;
+            font-size: 0.15rem;
             font-family: PingFangSC-Light;
           }
           .msgsInBoxs{
@@ -418,11 +420,12 @@ export default {
               margin-top:0.2rem;
               width: 3.4rem;
               float: left;
-              padding: 0 0.1rem;
+              padding:0.1rem 0.1rem 0;
               flex-direction: column;
               display: flex;
               li{
-                flex:1;
+                height:0.36rem;
+                margin-bottom:0.1rem;
                 align-items: center;
                 display: flex;
                 label{
@@ -438,13 +441,14 @@ export default {
                   align-items: center;
                   span{
                     color: #b5d7ff;
-                    font-size: 0.16rem;
+                    font-size: 0.13rem;
                     text-indent: 0.11rem;
                   }
                   .numFeal,.numFeals{
                     flex:1;
                     padding-right: 0.1rem;
                     height: 100%;
+                    font-size:0.11rem;
                     padding-top:0.07rem;
                     padding-bottom:0.07rem;
                     .numLines{
@@ -479,7 +483,7 @@ export default {
   .dealed{
     display: inline-block;
     width: 47.07%;
-    height:2.94rem;
+    height:2.915rem;
     margin-left: 0.3rem;
     margin-top:0.20rem;
     .workBox1{
@@ -498,8 +502,9 @@ export default {
           p{
             text-align: center;
             height:0.67rem;
+            font-weight:500;
             line-height:0.75rem;
-            font-size: 0.35rem;
+            font-size: 0.27rem;
             color:#fff;
             &.marginTop{
               margin-top:0.17rem;
@@ -523,8 +528,8 @@ export default {
               border-color: #4ae283;
             }
              &.colorR{
-              color:#f56c6c;
-              border-color: #f56c6c;
+              color:#fa6074;
+              border-color: #fa6074;
             }
              &.colorB{
               color:#008aff;
@@ -540,8 +545,11 @@ export default {
         justify-content: center;
         height: 100%;
         .workBox1CirIn{
-          width: 1.97rem;
-          height: 1.97rem;
+          width: 1.98rem;
+          height: 1.98rem;
+          background: #011f51;
+          border-radius: 0.99rem;
+          border: 1px solid #000e28;
           div{
             width:100%;
             height:100%;

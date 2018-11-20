@@ -523,8 +523,8 @@ export default {
                 duration:2000
               })
               this.getTableList();
+              this.$refs.tableInfos2.hide();
               if(this.dealWorkParam.type==4 || this.dealWorkParam.type==2){
-                this.$refs.tableInfos2.hide();
                 this.value1 = '';
                 this.value2 = '';
               }

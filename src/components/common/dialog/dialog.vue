@@ -35,6 +35,32 @@ export default {
         this.isShow = false;
       }
   },
+  watch:{
+    wid:{
+      handler(val){
+        console.log(val)
+        if(this.wid.split('rem').length<=1){
+            this.wids = utils.wid(this.wid)+'px';
+        }else{
+             this.wids = this.wid;
+        }
+      },
+      deep:true
+      
+    },
+    hei:{
+      handler(val){
+        console.log(val)
+        if(this.hei.split('rem').length<=1){
+            this.heis = utils.hei(this.hei)+'px';
+        }else{
+             this.heis = this.hei;
+        }
+      },
+      deep:true
+      
+    }
+  },
   created() {
       if(this.tit!==undefined){
           this.tits = this.tit;

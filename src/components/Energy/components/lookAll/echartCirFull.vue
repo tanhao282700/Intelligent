@@ -20,7 +20,7 @@ export default {
             color:[
               '#008aff','#f56c6c'
             ],
-            size:[0,'72.89%'],
+            size:[0,'1.56rem'],
             total:0,
             data:[
               {value:24, name:0+'%',tit:'已完成数'},
@@ -32,7 +32,7 @@ export default {
             color:[
               '#f56c6c','#008aff'
             ],
-            size:[0,'72.89%'],
+            size:[0,'1.56rem'],
             total:0,
             data:[
               {value:2, name:0+'%',tit:'未完成数'},
