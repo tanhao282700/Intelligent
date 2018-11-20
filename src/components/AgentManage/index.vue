@@ -65,7 +65,7 @@
                   <label >已完成数</label>
                   <div class="numBox">
                       <div class="numFeal">
-                        <div class="numLines2" :style="{'width':echartCirData4.total?2.10*echartCirData4.data[1].value/echartCirData4.total +'rem':0}">{{echartCirData4.data[0].value}}</div>
+                        <div class="numLines2" :style="{'width':echartCirData4.total?2.10*echartCirData4.data[1].value/echartCirData4.total +'rem':0}">{{echartCirData4.data[1].value}}</div>
                       </div>
                   </div>
                 </li>
@@ -73,7 +73,7 @@
                   <label >未完成数</label>
                   <div class="numBox">
                     <div class="numFeals">
-                      <div class="numLines" :style="{'width':echartCirData4.total?2.10*echartCirData4.data[0].value/echartCirData4.total +'rem':0}">{{echartCirData4.data[1].value}}</div>
+                      <div class="numLines" :style="{'width':echartCirData4.total?2.10*echartCirData4.data[0].value/echartCirData4.total +'rem':0}">{{echartCirData4.data[0].value}}</div>
                     </div>
                   </div>
                 </li>
@@ -291,8 +291,9 @@ export default {
               //巡检
           _this.echartCirData4.total = res.data.data.xunjian.xunjian_count;
           _this.echartCirData4.data = [
+            {value:xunjianwei,name:Math.floor(xunjianwei/(xunjianwei+xunjianwan)*100)+'%',tit:'未完成数'},
             {value:xunjianwan,name:Math.floor(xunjianwan/(xunjianwan+xunjianwei)*100)+'%',tit:'已完成数'},
-            {value:xunjianwei,name:Math.floor(xunjianwei/(xunjianwei+xunjianwan)*100)+'%',tit:'未完成数'}];
+            ];
             //工单来源
           _this.barData.data = [res.data.data.sys,res.data.data.people,res.data.data.complain]
           //console.log(res.data.data.now)
