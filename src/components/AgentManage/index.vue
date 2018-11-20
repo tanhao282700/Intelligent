@@ -56,24 +56,24 @@
               </div>
               <ul class="msgsInTable">
                 <li>
-                  <label for="">巡检单数</label>
+                  <label >巡检单数</label>
                   <div class="numBox">
                     <span v-text="`${echartCirData4.total}单`"></span>
                   </div>
                 </li>
                 <li>
-                  <label for="">已完成数</label>
+                  <label >已完成数</label>
                   <div class="numBox">
                       <div class="numFeal">
-                        <div class="numLines2" :style="{'width':echartCirData4.total?2.10*echartCirData4.data[1].value/echartCirData4.total +'rem':0}">{{echartCirData4.data[1].value}}</div>
+                        <div class="numLines2" :style="{'width':echartCirData4.total?2.10*echartCirData4.data[1].value/echartCirData4.total +'rem':0}">{{echartCirData4.data[0].value}}</div>
                       </div>
                   </div>
                 </li>
                 <li>
-                  <label for="">未完成数</label>
+                  <label >未完成数</label>
                   <div class="numBox">
                     <div class="numFeals">
-                      <div class="numLines" :style="{'width':echartCirData4.total?2.10*echartCirData4.data[0].value/echartCirData4.total +'rem':0}">{{echartCirData4.data[0].value}}</div>
+                      <div class="numLines" :style="{'width':echartCirData4.total?2.10*echartCirData4.data[0].value/echartCirData4.total +'rem':0}">{{echartCirData4.data[1].value}}</div>
                     </div>
                   </div>
                 </li>
