@@ -603,7 +603,7 @@ mounted() {
 
 .examineTable{
    width: 95.6%;
-   height:5.48rem;
+   height:5.78rem;
    .tableHead{
        height:1rem;
        width: 100%;
@@ -648,7 +648,7 @@ mounted() {
             height:0.4rem;
             line-height:0.4rem;
             span{
-                font-size: 0.16rem;
+                font-size: 0.15rem;
                 padding-left: 0.5rem;
                 color: #b5d7ff;
                 span{
@@ -669,7 +669,7 @@ mounted() {
                 text-align: center;
                 padding: 0;
                 margin: 0;
-                font-size: 0.16rem;
+                font-size: 0.15rem;
             }
             .itemNr{
                 border-right:0;
@@ -731,7 +731,7 @@ mounted() {
                         text-align: center;
                         line-height: 0.35rem;
                         float: left;
-                        font-size: 0.16rem;
+                        font-size: 0.15rem;
                         &.noRight{
                             width: 0.34rem;
                             border-right: 0!important;
@@ -769,7 +769,7 @@ mounted() {
                             float: left;
                             width: 3.02%;
                             height: 0.33rem;
-                            font-size: 0.16rem;
+                            font-size: 0.15rem;
                             color: #439aff;
                             line-height: 0.33rem;
                             margin: 0.01rem;
@@ -811,7 +811,7 @@ mounted() {
                         i{
                             opacity: 0;
                             z-index: 89;
-                            font-size: 0.16rem;
+                            font-size: 0.15rem;
                             position: absolute;
                             left: 50%;
                             top: 50%;
@@ -886,7 +886,7 @@ mounted() {
                         height: 0.35rem;
                         line-height: 0.35rem;
                         color: #008aff;
-                        font-size: 0.16rem;
+                        font-size: 0.15rem;
                         &.noRight{
                             width: 0.31rem!important;
                             border-right: 0!important;
@@ -900,10 +900,18 @@ mounted() {
        height:1rem;
        width: 100%;
        display: flex;
+       font-size:0.15rem;
        align-items: center;
        justify-content: center;
        div{
-         margin-right:0.1rem;
+         height:0.44rem;
+         width:2.21rem;
+         line-height:0.44rem;
+         &:hover{
+            background:#3a84ed;
+            cursor:pointer;
+            color:#fff;
+         }
        }
        .btnBai2{
             background-color: #3a84ee;

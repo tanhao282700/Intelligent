@@ -292,8 +292,7 @@ export default {
   .sceBtn{
     position: absolute;
     right: 0.3rem;
-    top:0;
-    margin-top:0.3rem;
+    top:0.4rem;
     width: 9.81vw;
     background:#3A84EE;
     color:#fff;

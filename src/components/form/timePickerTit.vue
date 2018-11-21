@@ -140,7 +140,7 @@ export default {
         span{
             position: relative;
             z-index: 88;
-            font-size: 0.24rem;
+            font-size: 0.22rem;
             color: #fff;
             }            
         }     
