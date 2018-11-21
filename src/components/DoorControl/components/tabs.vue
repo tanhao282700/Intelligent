@@ -32,7 +32,7 @@
                     <el-table-column prop="card_type" label="卡类型"  align="cneter"></el-table-column>
                     <el-table-column prop="device_name" label="设备名称"  align="cneter"></el-table-column>
                     <el-table-column prop="door_name" label="门名称" align="cneter"></el-table-column>
-                    <el-table-column prop="open_datetime" label="开门时间"  align="cneter"></el-table-column>
+                    <el-table-column prop="open_datetime" label="开门时间" align="cneter"></el-table-column>
                     <el-table-column prop="tag" label="开门事件"> 
                         <template slot-scope="scope">
                             <a class="cursor" @click="handleEdit(scope.$index, scope.row)">{{scope.row.open_event}}</a>
@@ -86,10 +86,13 @@
         	}
         },
         mounted(){
+            this.floorId = sessionStorage.getItem("sentFloorIds");
             this.getData();
+            console.log(this.floorId);
         },
         methods:{
             getData(){
+                console.log(this.floorId);
                 var that = this;
                 var s = "";
                 var e = "";

@@ -100,7 +100,7 @@
 				floorNumber:"", //层号
                 floorNum:"",  //楼层
                 iList:[],
-				floorIds:0,
+				floorIds:147,
                 doorControlMsg:[],
         	}
         },
@@ -110,16 +110,24 @@
         },
         mounted(){
             this.getDoorData();
+            console.log(this.floorIds);
         },
         watch:{
             infoSta(newVal,oldVal){
                 this.infoSta = newVal;
+            },
+            floorIds(newVal,oldVal){
+                console.log(newVal);
+                console.log(oldVal);
+                sessionStorage.setItem("sentFloorIds", newVal);
             }
         },
         methods:{
             chooseLevels(selVal){
 
                 this.floorIds = selVal;
+                console.log(this.areaLevel);
+                console.log(selVal);
                 this.getDoorData();
                 var arrL=[];
                 $.each(this.areaLevel,function(item,key){
@@ -131,7 +139,6 @@
                 this.floorNum = "";
                 this.levels = arrL;
                 // this.getDoorData(selVal);
-
             },
             chooseLevelNum(selVal){
                 this.floorIds = selVal;
