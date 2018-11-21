@@ -552,12 +552,15 @@
         that.formData.floor_id = id;
         that.areaData.data2 = "";
         that.areaData2Array = that.areaData3Array = [];
-
           let datas = that.areaData1Array;
-        for(var i=0;i<datas.length;i++){
-          var temp = datas[i];
+        for(let i=0;i<datas.length;i++){
+          let temp = datas[i];
           if(temp.id == id){
-            that.areaData2Array = temp.child;
+              if(temp.child){
+                that.areaData2Array = temp.child;
+              }else{
+                that.areaData2Array = []
+              }
             that.areaCheckedTitle = temp.title;
           }
         }

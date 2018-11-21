@@ -23,6 +23,7 @@
 	        };
 	    },
       created(){
+            console.log(this.$store.state.sysList[17])
         if(this.$store.state.sysList[17].role_string[1]!='0' ||this.$store.state.sysList[17].role_string[2]!='0'||this.$store.state.sysList[17].role_string[3]!='0'||this.$store.state.sysList[17].role_string[4]!='0' ){
           this.sData.lists.push({id:1,name:'房单',route:'/HotelStatus/components/roomLists'})
         }

@@ -285,14 +285,17 @@
                       for(let i=0;i<item.child_data.length;i++){
                         //写入用量
                         this.tableData3.map((child,index)=>{
-                          child[item.child_data[i].id+'useage'] = item.child_data[i].detail_use_num[index]
+                          /*child[item.child_data[i].id+'useage'] = item.child_data[i].detail_use_num[index]*/
+                          this.$set(child,item.child_data[i].id+'useage',item.child_data[i].detail_use_num[index])
                         })
                         //写入费用
                         this.tableData3.map((child,index)=>{
-                          child[item.child_data[i].id+'cost'] = item.child_data[i].detail_cost[index]
+                          /*child[item.child_data[i].id+'cost'] = item.child_data[i].detail_cost[index]*/
+                          this.$set(child,item.child_data[i].id+'cost',item.child_data[i].detail_cost[index])
                         })
                       }
                     })
+                    console.log(this.tableData3)
 
 
                     //写入区域合计
