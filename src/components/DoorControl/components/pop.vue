@@ -3,11 +3,11 @@
         <div class="popBgBox">
             <div class="popHeadBox">{{info}} </div>
             <div class="popDoorStatus">
-                <span>门禁状态</span>
+                <span>{{infoStaTit}}</span>
                 <span>{{infoSta}}</span>
             </div>
             <div class="popDoorControl">
-                <span>门禁控制</span>
+                <span>{{infoControlTit}}</span>
                 <span @click.stop="openDoorByInt">{{controlDoorFun}}</span>
             </div>
         </div>
@@ -16,7 +16,7 @@
 </template>
 <script>
     export default {
-        props:["info","infoSta","controlDoorFun",'itemIndex','doorControlMsg'],
+        props:["info","infoSta","controlDoorFun",'itemIndex','doorControlMsg','infoStaTit','infoControlTit'],
         data () {
         	return {
                 inStatu:'',

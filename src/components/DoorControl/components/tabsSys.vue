@@ -60,7 +60,7 @@
                    @click.stop="doorInfoPanel(item.device_id,item.device_name,item)"
                    :style="{left:((item.position_x / 1326)*100 -4) + '%',top:((item.position_y / 580)*100 -3) + '%'}"
                 ><span v-html = "item.all_state_pic[item.device_state]" ></span>
-                    <pops v-on:doorInfoHide="doorInfoHide" :doorControlMsg = "doorControlMsg"  :info = "onMouseDoor" :infoSta = "infoSta" :controlDoorFun = "controlDoorFun" :itemIndex="index" @changeDoorStatus="changeDoorStatus"></pops>
+                    <pops v-on:doorInfoHide="doorInfoHide" :doorControlMsg = "doorControlMsg"  :info = "onMouseDoor" :infoSta = "infoSta" :controlDoorFun = "controlDoorFun" :itemIndex="index" :infoControlTit = "infoControlTit" :infoStaTit = 'infoStaTit' @changeDoorStatus="changeDoorStatus"></pops>
                 </i>
                 
             </div>
@@ -81,6 +81,8 @@
                 levels:[],  //楼层
                 areaLevel:[], //栋号
                 infoSta:'',
+                infoStaTit:'',
+                infoControlTit:'',
                 coefficientX:1, //定位系数
                 coefficientY:1, //定位系数
                 controlDoorFun:'',
@@ -167,22 +169,30 @@
                 this.xLeft = x;
                 this.yTop = y;
                 let handleMsgs = '';
+                let handleMsgsTit = '';
+                let inTitle = '';
                 let ss = [];
                 let staNew='';
                 $.each(handle,function(i,k){
                     if(k.is_command == 1){
                         handleMsgs = k.params.showvalue[0];
+                        handleMsgsTit = k.title;
                         ss.push({pointNow:k.params.value[0],pointId:k.point_id});
-                    }
-                    if(i == 2){
-                       $.each(k.params.value,function(i1,k1){
-                            if(k1 == k.params.type){
-                                staNew = k.params.showvalue[i1]
-                            }
-                       });
+
+                    }else{
+                        if(k.self_id != 14403){
+                            inTitle = k.title;
+                            $.each(k.params.value,function(i1,k1){
+                                if(k1 == k.params.type){
+                                    staNew = k.params.showvalue[i1]
+                                }
+                            });
+                        }
                     }
                 });
                 this.controlDoorFun = handleMsgs;
+                this.infoControlTit = handleMsgsTit;
+                this.infoStaTit = inTitle;
                 this.doorControlMsg = ss;
                 console.log(ss);
                 this.infoSta = staNew;
