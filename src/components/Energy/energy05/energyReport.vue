@@ -5,7 +5,7 @@
 		<div class="reportTabBox">
         	<span class="unitPriceBtn" @click="unitShowCli">单价预设</span>
 	        <nav class="tabNav">
-	            <span><a :class="isActive1==true?'on':''" @click="toggleTabs(first)">月报表</a></span>
+	            <span v-if="sysInfo.role_string[7]!=0"><a :class="isActive1==true?'on':''" @click="toggleTabs(first)">月报表</a></span>
 	            <span v-if="sysInfo.role_string[8]!=0"><a :class="isActive2==true?'on':''" @click="toggleTabs(second)">日报表</a></span>
 	            <span v-if="sysInfo.role_string[9]!=0"><a :class="isActive3==true?'on':''" @click="toggleTabs(third)">能源汇总账单 (领导)</a></span>
 	        </nav>
@@ -41,7 +41,7 @@
                 first:'first',
                 second:'second',
                 third:'third',
-                currentView:'first',
+                currentView:'',
                 isActive1:true,
                 isActive2:false,
                 isActive3:false,
@@ -49,6 +49,22 @@
 	    },
       created(){
             this.sysInfo = this.$store.state.sysList[2]
+        if(this.sysInfo.role_string[7]!=0){
+                this.currentView = 'first'
+          this.isActive2 = false;
+          this.isActive3 = false;
+          this.isActive1 = true;
+        }else if(this.sysInfo.role_string[7]==0&&this.sysInfo.role_string[8]!=0){
+          this.currentView = 'second'
+          this.isActive2 = true;
+          this.isActive3 = false;
+          this.isActive1 = false;
+        }else{
+          this.currentView = 'third'
+          this.isActive2 = false;
+          this.isActive3 = true;
+          this.isActive1 = false;
+        }
       },
         mounted(){
             this.getData();

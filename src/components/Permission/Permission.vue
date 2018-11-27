@@ -19,14 +19,15 @@
         return{
           routerData:{
             id:0,
-            lists:[
-              {id:0,name:'用户设置',route:'/permission/user'},
-            ]
+            lists:[]
           }
         }
       },
       created(){
           console.log(this.$store.state)
+        if(this.$store.state.userInfoTotal.permissions_manage.role_string[0]!='0'){
+          this.routerData.lists.push({id:0,name:'用户设置',route:'/permission/user'})
+        }
         if(this.$store.state.userInfoTotal.permissions_manage.role_string[1]!='0'){
               this.routerData.lists.push({id:1,name:'角色设置',route:'/permission/role'})
         }

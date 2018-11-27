@@ -10,7 +10,7 @@
         </div>
 		<div class="roomListsTabBox">
 	        <nav class="tabNav">
-	            <span><a :class="isActive1==true?'on':''" @click="toggleTabs(first)">全部房单 <i></i></a></span>
+	            <span v-if="sysInfo.role_string[2]!=0"><a :class="isActive1==true?'on':''" @click="toggleTabs(first)">全部房单 <i></i></a></span>
 	            <span v-if="sysInfo.role_string[3]!=0"><a :class="isActive2==true?'on':''" @click="toggleTabs(second)">宴会厅订单<i></i></a></span>
 	            <span v-if="sysInfo.role_string[4]!=0"><a :class="isActive3==true?'on':''" @click="toggleTabs(third)">今日已退房单<i></i></a></span>
 	        </nav>
@@ -47,7 +47,22 @@
 	    },
       created(){
             this.sysInfo = this.$store.state.sysList[17]
-        console.log(this.sysInfo)
+        if(this.sysInfo.role_string[2]!=0){
+                this.currentView = 'first'
+          this.isActive1 = true
+          this.isActive2 = false
+          this.isActive3 = false
+        }else if(this.sysInfo.role_string[3]==0&&this.sysInfo.role_string[4]!=0){
+          this.currentView = 'second'
+          this.isActive2 = true
+          this.isActive1 = false
+          this.isActive3 = false
+        }else{
+          this.currentView = 'third'
+          this.isActive3 = true
+          this.isActive1 = false
+          this.isActive2 = false
+        }
       },
 	    methods: {
             toggleTabs(tabText){

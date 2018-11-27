@@ -27,7 +27,7 @@
                 searchinput:"",
 		        sData:{
 		            lists:[
-		                {id:0,name:'系统平面',route:'/DoorControl/components/tabsSys'},
+
 
 		            ]
 		        }
@@ -36,6 +36,9 @@
 	    methods: {
 	    },
       created(){
+        if(this.$store.state.sysList[14].role_string[0]!=0){
+          this.sData.lists.push({id:0,name:'系统平面',route:'/DoorControl/components/tabsSys'})
+        }
             if(this.$store.state.sysList[14].role_string[1]!=0){
                 this.sData.lists.push({id:1,name:'门禁记录',route:'/DoorControl/components/tabs'})
             }

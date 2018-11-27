@@ -282,4 +282,71 @@
   /*.energyReport .el-table--border, .energyReport .el-table--group{
     width:auto!important;
   }*/
+  .thSearchBtn{
+    float:left;
+    padding: 0 15px;
+    border-radius: 2px;
+    background: #3a84ee;
+    border: 1px solid #1989fa;
+    height: 32px;
+    line-height: 32px;
+    cursor: pointer;
+    width: 88px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .thSearchBtn:hover{
+    cursor: pointer;
+  }
+  .thSearchBtn img{
+    width:18px;
+    height:18px;
+    display: inline-block;
+  }
+  .thSearchBtn button{
+    background:none!important;
+    border:none!important;
+    color: #fff!important;
+    font-size: 15px!important;
+    margin-left:4px;
+  }
+  .thSearchBtn button:hover{
+    cursor: pointer;
+  }
+  .thSearchBtn1{
+    margin-right:8px;
+    float:right;
+    padding: 0 15px;
+    border-radius: 2px;
+    background: #3a84ee;
+    border: 1px solid #1989fa;
+    height: 32px;
+    line-height: 32px;
+    cursor: pointer;
+    width: 88px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .thSearchBtn1:hover{
+    cursor: pointer;
+  }
+  .thSearchBtn1 img{
+    width:18px;
+    height:18px;
+    display: inline-block;
+  }
+  .thSearchBtn1 button{
+    background:none!important;
+    border:none!important;
+    color: #fff!important;
+    font-size: 15px!important;
+    margin-left:4px;
+  }
+  .thSearchBtn1 button:hover{
+    cursor: pointer;
+  }
 </style>

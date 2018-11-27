@@ -81,25 +81,44 @@ export default new Router({
     {
       path: '/permission',
       component: permission,
-      redirect:'/permission/user',
       children:[
         { path: '/permission/user', component: userSetting },
         { path: '/permission/role', component: roleSetting },
         { path: '/permission/loginLog', component: loginLog }
-      ]
+      ],
+      redirect: to => {
+        if(this.a.app.$store.state.userInfoTotal.permissions_manage.role_string[0]=='0'){
+          return '/permission/role'
+        }else if(this.a.app.$store.state.userInfoTotal.permissions_manage.role_string[0]=='0' && this.a.app.$store.state.userInfoTotal.permissions_manage.role_string[1]=='0'){
+          return '/permission/loginLog'
+        }else{
+          return '/permission/user'
+        }
+      }
     },
     {
       path: '/energy',
       component: energy,
-      redirect:'/energy/allViews',
       children:[
         { path: '/energy/allViews', component: allViews },
         { path: '/energy/analysis', component: energyAnalysis },
         { path: '/energy/metersRead', component: metersRead },
         { path: '/energy/preset', component: energyPreset },
         { path: '/energy/report', component: energyReport },
-      ]
-
+      ],
+      redirect: to => {
+        if(this.a.app.$store.state.sysList[2].role_string[0]!=0){
+          return '/energy/allViews'
+        }else if(this.a.app.$store.state.sysList[2].role_string[0]==0&&this.a.app.$store.state.sysList[2].role_string[1]!=0){
+          return '/energy/analysis'
+        }else if(this.a.app.$store.state.sysList[2].role_string[0]==0&&this.a.app.$store.state.sysList[2].role_string[1]==0&&(this.a.app.$store.state.sysList[2].role_string[2]!=0|| this.a.app.$store.state.sysList[2].role_string[5]!=0||this.a.app.$store.state.sysList[2].role_string[6]!=0)){
+          return '/energy/metersRead'
+        }else if(this.a.app.$store.state.sysList[2].role_string[0]==0&&this.a.app.$store.state.sysList[2].role_string[1]==0&&this.a.app.$store.state.sysList[2].role_string[2]==0&& this.a.app.$store.state.sysList[2].role_string[5]==0&&this.a.app.$store.state.sysList[2].role_string[6]==0&&this.a.app.$store.state.sysList[2].role_string[4]!=0){
+          return '/energy/preset'
+        }else{
+          return '/energy/report'
+        }
+      }
     },
     {
       path: '/AgentManage',
@@ -178,11 +197,17 @@ export default new Router({
     {
       path: '/DoorControl',
       component: DoorControl,
-      redirect: '/DoorControl/components/tabsSys',
       children:[
         { path: '/DoorControl/components/tabs',component: tabs},
         { path: '/DoorControl/components/tabsSys',component: tabsSys},
-      ]
+      ],
+      redirect: to => {
+        if(this.a.app.$store.state.sysList[14].role_string[0]!=0){
+          return '/DoorControl/components/tabsSys'
+        }else{
+          return '/DoorControl/components/tabs'
+        }
+      }
     },
     {
       path: '/VideoSurveillance',
@@ -191,12 +216,20 @@ export default new Router({
     {
       path: '/HotelStatus',
       component:HotelStatus,
-      redirect: '/HotelStatus/components/HotelRoomStatus',
       children:[
         { path: '/HotelStatus/components/HotelRoomStatus',component: HotelRoomStatus},
         { path: '/HotelStatus/components/roomLists',component: roomLists},
         { path: '/HotelStatus/components/roomCharts',component: roomCharts},
-      ]
+      ],
+      redirect: to => {
+        if(this.a.app.$store.state.sysList[17].role_string[0]!=0){
+          return '/HotelStatus/components/HotelRoomStatus'
+        }else if(this.a.app.$store.state.sysList[17].role_string[0]==0&&(this.a.app.$store.state.sysList[17].role_string[1]!=0||this.a.app.$store.state.sysList[17].role_string[2]!=0||this.a.app.$store.state.sysList[17].role_string[3]!=0||this.a.app.$store.state.sysList[17].role_string[4]!=0)){
+          return '/HotelStatus/components/roomLists'
+        }else{
+          return '/HotelStatus/components/roomCharts'
+        }
+      }
     },
     {
       path: '/airConditioner',
