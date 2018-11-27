@@ -87,9 +87,11 @@ export default new Router({
         { path: '/permission/loginLog', component: loginLog }
       ],
       redirect: to => {
-        if(this.a.app.$store.state.userInfoTotal.permissions_manage.role_string[0]=='0'){
+        let info = JSON.parse(sessionStorage.getItem('routerInfo'))
+        console.log(info)
+        if(info.userInfoTotal.permissions_manage.role_string[0]=='0'){
           return '/permission/role'
-        }else if(this.a.app.$store.state.userInfoTotal.permissions_manage.role_string[0]=='0' && this.a.app.$store.state.userInfoTotal.permissions_manage.role_string[1]=='0'){
+        }else if(info.userInfoTotal.permissions_manage.role_string[0]=='0' && info.userInfoTotal.permissions_manage.role_string[1]=='0'){
           return '/permission/loginLog'
         }else{
           return '/permission/user'
@@ -107,13 +109,14 @@ export default new Router({
         { path: '/energy/report', component: energyReport },
       ],
       redirect: to => {
-        if(this.a.app.$store.state.sysList[2].role_string[0]!=0){
+        let info = JSON.parse(sessionStorage.getItem('routerInfo'))
+        if(info.sysList[2].role_string[0]!=0){
           return '/energy/allViews'
-        }else if(this.a.app.$store.state.sysList[2].role_string[0]==0&&this.a.app.$store.state.sysList[2].role_string[1]!=0){
+        }else if(info.sysList[2].role_string[0]==0&&info.sysList[2].role_string[1]!=0){
           return '/energy/analysis'
-        }else if(this.a.app.$store.state.sysList[2].role_string[0]==0&&this.a.app.$store.state.sysList[2].role_string[1]==0&&(this.a.app.$store.state.sysList[2].role_string[2]!=0|| this.a.app.$store.state.sysList[2].role_string[5]!=0||this.a.app.$store.state.sysList[2].role_string[6]!=0)){
+        }else if(info.sysList[2].role_string[0]==0&&info.sysList[2].role_string[1]==0&&(info.sysList[2].role_string[2]!=0|| info.sysList[2].role_string[5]!=0||info.sysList[2].role_string[6]!=0)){
           return '/energy/metersRead'
-        }else if(this.a.app.$store.state.sysList[2].role_string[0]==0&&this.a.app.$store.state.sysList[2].role_string[1]==0&&this.a.app.$store.state.sysList[2].role_string[2]==0&& this.a.app.$store.state.sysList[2].role_string[5]==0&&this.a.app.$store.state.sysList[2].role_string[6]==0&&this.a.app.$store.state.sysList[2].role_string[4]!=0){
+        }else if(info.sysList[2].role_string[0]==0&&info.sysList[2].role_string[1]==0&&info.sysList[2].role_string[2]==0&& info.sysList[2].role_string[5]==0&&info.sysList[2].role_string[6]==0&&info.sysList[2].role_string[4]!=0){
           return '/energy/preset'
         }else{
           return '/energy/report'
@@ -202,7 +205,8 @@ export default new Router({
         { path: '/DoorControl/components/tabsSys',component: tabsSys},
       ],
       redirect: to => {
-        if(this.a.app.$store.state.sysList[14].role_string[0]!=0){
+        let info = JSON.parse(sessionStorage.getItem('routerInfo'))
+        if(info.sysList[14].role_string[0]!=0){
           return '/DoorControl/components/tabsSys'
         }else{
           return '/DoorControl/components/tabs'
@@ -222,9 +226,10 @@ export default new Router({
         { path: '/HotelStatus/components/roomCharts',component: roomCharts},
       ],
       redirect: to => {
-        if(this.a.app.$store.state.sysList[17].role_string[0]!=0){
+        let info = JSON.parse(sessionStorage.getItem('routerInfo'))
+        if(info.sysList[17].role_string[0]!=0){
           return '/HotelStatus/components/HotelRoomStatus'
-        }else if(this.a.app.$store.state.sysList[17].role_string[0]==0&&(this.a.app.$store.state.sysList[17].role_string[1]!=0||this.a.app.$store.state.sysList[17].role_string[2]!=0||this.a.app.$store.state.sysList[17].role_string[3]!=0||this.a.app.$store.state.sysList[17].role_string[4]!=0)){
+        }else if(info.sysList[17].role_string[0]==0&&(info.sysList[17].role_string[1]!=0||info.sysList[17].role_string[2]!=0||info.sysList[17].role_string[3]!=0||info.sysList[17].role_string[4]!=0)){
           return '/HotelStatus/components/roomLists'
         }else{
           return '/HotelStatus/components/roomCharts'

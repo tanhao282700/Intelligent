@@ -154,7 +154,7 @@
                 tempObj[id] = sysList[i];
                 i<listLen-1,that.$store.state.sysList = tempObj;
               }
-
+              sessionStorage.setItem('routerInfo',JSON.stringify(that.$store.state))
               that.$router.replace({ path: '/home', params: { isLogin: true} });
             }else {
               that.isError = true;
