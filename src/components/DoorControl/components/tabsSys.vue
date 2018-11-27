@@ -98,11 +98,11 @@
                 onMouseDoor:'', //当前滑过icon
                 xLeft:'', //x值
                 yTop:'', //y值
-                buildingNumber:"负一楼", //楼号
+                buildingNumber:"1", //楼号
 				floorNumber:"", //层号
                 floorNum:"",  //楼层
                 iList:[],
-				floorIds:147,
+				floorIds:0,
                 doorControlMsg:[],
         	}
         },
@@ -261,6 +261,14 @@
                     //获取联动数据
                     that.areaLevel = data.data.data.area_level;
                     console.log(that.areaLevel);
+                    that.floorIds = data.data.data.show_area_id;
+
+                    $.each(data.data.data.area_level,function(i,k){
+                        if(k.id == data.data.data.show_area_id){
+                            that.buildingNumber = k.title;
+                        }
+                    });
+                    // 
                 });
             }
         }
