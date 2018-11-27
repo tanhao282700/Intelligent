@@ -383,7 +383,11 @@ export default {
         })
       },
       agree(item){ //同意
-        //console.log(item);
+        console.log(item);
+        if(!item.user_id){
+          item.user_id=item.infos.user_id;
+          item.id = item.infos.id;
+        }
         this.detalrowdata = {
             infos:{
                 id:item.id,
@@ -399,8 +403,10 @@ export default {
             user_name:this.$store.state.userInfoTotal.userinfo.name,
             dispatch_user_id:this.$store.state.userInfoTotal.userinfo.id
           }
-        let state = item.now_state;
-        if(state==5){ //同意退单 type =6
+        if(!item.type){
+          item.type = Number(item.now_state)+1;
+        }
+        if((item.type-1)==5){ //同意退单 type =6
             this.dialogBoxs = {
                 item:item,
                 state0:1,
@@ -408,7 +414,7 @@ export default {
             };
             this.getStatus = 5;
             this.$refs.isRefult.show();
-        }else if(state==2){ //同意延期 type = 3
+        }else if((item.type-1)==2){ //同意延期 type = 3
             this.detalrowdata.type = 3;
             this.dialogBoxs = {
                 item:item,
@@ -421,7 +427,7 @@ export default {
         
       },
       refult(item){//拒绝
-        console.log(item);
+        //console.log(item);
         if(item.now_state==2){//拒绝延期 type=7
             this.detalrowdata = {
             infos:{
@@ -463,6 +469,7 @@ export default {
       submitOk(){ //处理工单 同意/拒绝退单/延期
           this.$refs.isRefult.hide();
           if(this.getStatus==5){
+              this.vName = '';
               this.$refs.sendWork2.show();
           }else{
             this.getDealResult(this.detalrowdata);
@@ -473,6 +480,15 @@ export default {
         this.$refs.isRefult.hide();
       },
       sendWork2(){ //重新选择工单处理人员
+        console.log(this.detalrowdata);
+        if(!this.vName || this.vName==''){
+          this.$message({
+            type:'error',
+            message:'请选择新工单处理人员',
+            duration:2000
+          })
+          return;
+        }
         this.$refs.sendWork2.hide();
         this.getDealResult(this.detalrowdata);
       },
@@ -600,7 +616,11 @@ export default {
         return res;
       },
       dealWork(param){//处理工单
-        this.getDealResult(param)
+        if(param.type==6 || param.type==3){
+          this.agree(param)
+        }else{
+          this.getDealResult(param)
+        }
       },
       getDealResult(param){
         let info ='';
@@ -610,6 +630,7 @@ export default {
         if(!this.vName || this.vName==''){
           this.vName = '';
         }
+        //console.log(param.infos);
         this.$http.post('/pc_ims/write_job',{
           id:param.infos.id,
           type:param.type,

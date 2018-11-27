@@ -40,7 +40,7 @@ export default {
   created() {
   },
   mounted() {
-       console.log(this.btnss)
+       //console.log(this.btnss)
   },
 }
 </script>

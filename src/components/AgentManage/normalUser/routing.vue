@@ -45,7 +45,7 @@
               <div class="infoHead">
                 <span class="infoName" v-text="'巡检详情'"></span>
                 <span class="infoState" v-if="newData.item.now_value==0">未接单
-                  <span class="infoBack" v-text="'退单'" @click="dealWork(newData,3,'d')"></span>
+                  <span class="infoBack" v-text="'退单'" @click="refult(newData,5)"></span>
                 </span>
                 <span class="infoState" v-else-if="newData.item.now_value==1">
                   处理中
@@ -120,6 +120,22 @@
               </div>
           </div>
       </Dialog>
+      <Dialog wid="564" hei="286" ref="isRefult2"><!-- 同意退单 -->
+          <div class="isRefTit">退单原因</div>
+          <div class="isRefDesc">
+            <el-input type="textarea" v-model="backExcu.info" placeholder="请输入退单原因"></el-input>
+          </div>
+          <div class="isRbtnBoxs2">
+              <span @click="submitBack">提交</span>
+          </div>
+      </Dialog>
+      <Dialog wid="364" hei="216" ref="isRefult"><!-- 同意退单 -->
+          <div v-text="dialogBoxs.txt" class="isRefTxt"></div>
+          <div class="isRbtnBoxs">
+              <span @click="submitOk">确定</span>
+              <span @click="submitNo">取消</span>
+          </div>
+      </Dialog>
   </div>
 </template>
 
@@ -156,6 +172,14 @@ export default {
     return {
         tempTitle:'新增',//弹框的标题
         currentPage:1,
+        backExcu:{
+          info:''
+        },
+        dialogBoxs:{
+            item:{name:''},
+            state0:0, //1 同意，0拒绝
+            txt:'是否确定退单'
+        },
         page:{totalDataNumber:0,currentPage:0,totalPageNum:0},
         activeName:'first',
         rowData:{},
@@ -164,6 +188,7 @@ export default {
         jobs:[],
         vJob:'',
         names:[],
+        Exitparam:{},//退单的参数
         newData:{
           desc:[],
           item:{},
@@ -362,8 +387,33 @@ export default {
       //console.log(item.item)
         this.dealWork(item,1)
     },
+
     refult(item,type){//拒绝
-       this.dealWork(item,3)
+       this.Exitparam = item;
+       this.Exitparam.two = 3;//退单的第二个参数
+       this.$refs.isRefult.show();
+    },
+    submitOk(){ //确认
+        this.$refs.isRefult.hide();
+        this.$refs.isRefult2.show();
+        this.backExcu.info = '';
+    },
+    submitBack(){
+      //console.log(this.backExcu.info)
+      if(!this.backExcu.info || this.backExcu.info==''){
+        this.$message({
+          type:'error',
+          message:'请输入退单原因',
+          duration:2000
+        })
+        return;
+      }
+      
+      this.dealWork(this.Exitparam,this.Exitparam.two);
+      this.$refs.isRefult2.hide();
+    },
+    submitNo(){ //取消
+      this.$refs.isRefult.hide();
     },
     dealWork(item,type,three){
       if(three){
@@ -882,5 +932,80 @@ export default {
   color:#fff;
   padding:0.1rem;
 }
+.isRefTxt{
+    height:2.16rem;
+    width: 3.64rem;
+    text-align: center;
+    font-size: 0.18rem;
+    color: #b5d7ff;
+    line-height:1.72rem;
 }
+.isRbtnBoxs{
+    width: 3.64rem;
+    height:0.44rem;
+    position:absolute;
+    bottom:0;
+    left:0;
+    border: 0.01rem solid #4a90e2;
+    border-bottom-left-radius: 0.08rem;
+    border-bottom-right-radius: 0.08rem;
+    span{
+        width:1.81rem;
+        float:left;
+        display:inline-block;
+        text-align: center;
+        line-height:0.44rem;
+        height:0.44rem;
+        font-size: 0.16rem;
+        color: #fff;
+        cursor: pointer;
+        &:nth-child(1){
+            border-right: 0.01rem solid #4a90e2;
+        }
+        &:hover{
+            background: #3b85ef;
+        }
+    }
+}
+.isRefTit{
+  text-align:left;
+  height:0.5rem;
+  line-height:0.5rem;
+  color:#fff;
+  padding:0 0.2rem;
+  font-size:0.16rem;
+}
+.isRefDesc{
+  padding:0.26rem 0.34rem 0.24rem;
+  color:#fff;
+  line-height:0.26rem;
+}
+.isRbtnBoxs2{
+    width: 100%;
+    height:0.32rem;
+    line-height:0.32rem;
+    display:flex;
+    width:17.94%;
+    overflow: hidden;
+    border: 0.01rem solid #4a90e2;
+    background:#3B85EF;
+    border-radius: 0.02rem;
+    margin:0.2rem auto 0;
+    span{
+        flex: 1;
+        text-align: center;
+        line-height:0.32rem;
+        font-size: 0.16rem;
+        color: #fff;
+        cursor: pointer;
+        &:nth-child(1){
+            border-right: 0.01rem solid #4a90e2;
+        }
+        &:active{
+            background: #3b85ef;
+        }
+    }
+}
+}
+
 </style>

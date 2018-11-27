@@ -125,12 +125,12 @@
                   </div>
                 </div>
                 <div class="btnsgroups" v-if="dtlObj.now_state==0">
-                  <span class="infoBusy" v-text="'退单'" @click="backWork(dtlObj,5)"></span>
+                  <span class="infoBusy" v-text="'退单'" @click="refult(dtlObj,5)"></span>
                   <span class="infoSend" v-text="'取消'" @click="backWork(dtlObj,0)"></span>
                   <span class="infoSubmit" v-text="'接单'" @click="backWork(dtlObj,1)"></span>
                 </div>
                 <div class="btnsgroups" v-else-if="dtlObj.now_state==1 || dtlObj.now_state==3">
-                  <span class="infoBusy" v-text="'退单'" @click="backWork(dtlObj,5)"></span>
+                  <span class="infoBusy" v-text="'退单'" @click="refult(dtlObj,5)"></span>
                   <span class="infoSend" v-text="'取消'" @click="backWork(dtlObj,0)"></span>
                   <span class="infoSubmit" v-text="'提交'" @click="backWork(dtlObj,4)"></span>
                 </div>
@@ -190,12 +190,12 @@
                   </el-input>
                 </div>
                 <div class="btnsgroups" v-if="dtlObj.now_state==0">
-                  <span class="infoBusy" v-text="'退单'" @click="backWork(dtlObj,5)"></span>
+                  <span class="infoBusy" v-text="'退单'" @click="refult(dtlObj,5)"></span>
                   <span class="infoSend" v-text="'取消'" @click="backWork(dtlObj,0)"></span>
                   <span class="infoSubmit" v-text="'接单'" @click="backWork(dtlObj,1)"></span>
                 </div>
                 <div class="btnsgroups" v-else-if="dtlObj.now_state==1 || dtlObj.now_state==3">
-                  <span class="infoBusy" v-text="'退单'" @click="backWork(dtlObj,5)"></span>
+                  <span class="infoBusy" v-text="'退单'" @click="refult(dtlObj,5)"></span>
                   <span class="infoSend" v-text="'取消'" @click="backWork(dtlObj,0)"></span>
                   <span class="infoSubmit" v-text="'提交'" @click="backWork(dtlObj,2)"></span>
                 </div>
@@ -211,6 +211,13 @@
           </div>
           <div class="isRbtnBoxs2">
               <span @click="submitBack">提交</span>
+          </div>
+      </Dialog>
+      <Dialog wid="364" hei="216" ref="isRefult"><!-- 同意退单 -->
+          <div v-text="dialogBoxs.txt" class="isRefTxt"></div>
+          <div class="isRbtnBoxs">
+              <span @click="submitOk">确定</span>
+              <span @click="submitNo">取消</span>
           </div>
       </Dialog>
       <Dialog wid="414" hei="256" ref="sendWork2"><!-- 重新选择工单处理人员 -->
@@ -235,13 +242,7 @@
               <span>确定</span>
           </div>
       </Dialog>
-      <Dialog wid="364" hei="216" ref="isRefult"><!-- 同意退单 -->
-          <div v-text="dialogBoxs.txt" class="isRefTxt"></div>
-          <div class="isRbtnBoxs">
-              <span @click="submitOk">确定</span>
-              <span @click="submitNo">取消</span>
-          </div>
-      </Dialog>
+      
   </div>
 </template>
 
@@ -479,14 +480,17 @@ export default {
         this.dealWork()
       },
       refult(item,type){//退单
-        let state = item.dealed;
-        if(state==0 || state==1 || state==2){ //退单
-            this.dialogBoxs2 = {
+        if(type==5){
+          this.dialogBoxs2 = {
                 item:item,
                 state0:0,
                 txt:'是否确定退单'
             };
         }
+        // let state = item.dealed;
+        // if(state==0 || state==1 || state==2){ //退单
+            
+        // }
         this.$refs.isRefult.show();
         this.dealWorkParam = item;
         this.dealWorkParam.type = type;
@@ -504,6 +508,12 @@ export default {
         if(!this.dealWorkParam.end_time){
           this.dealWorkParam.end_time = ''
         }
+        if(!this.dealWorkParam.item){
+          this.dealWorkParam.item = {};
+          this.dealWorkParam.item.id = this.dealWorkParam.id;
+          this.dealWorkParam.item.user_id = this.dealWorkParam.user_id;
+        }
+        console.log(this.dealWorkParam);
         this.$http.post('/pc_ims/write_job',{
           id:this.dealWorkParam.item.id,
           type:this.dealWorkParam.type,
@@ -580,10 +590,20 @@ export default {
         }
       },
       submitOk(){ //确认
-        this.$refs.isRefult.hide();
-        this.$refs.isRefult2.show();
+          this.$refs.isRefult.hide();
+          this.$refs.isRefult2.show();
+          this.dealWorkParam.info = '';
       },
       submitBack(){
+        if(!this.dealWorkParam.info || this.dealWorkParam.info==''){
+          this.$message({
+            type:'error',
+            message:'请输入退单原因',
+            duration:2000
+          })
+          return;
+        }
+        
         this.dealWork();
         this.$refs.isRefult2.hide();
       },

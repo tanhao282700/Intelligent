@@ -347,7 +347,14 @@ export default {
         this.getTableList();
     }, 
     dealWork(param){//处理工单
-      this.getDealResult(param)
+      //console.log(param);
+      if(param.type==4){
+        this.detalrowdata = param.infos;
+        this.detalrowdata.type = param.type;
+        this.$refs.isRefult.show();
+      }else{
+        this.getDealResult(param)
+      }
     },
     changeNew(val){
       this.queryModel.vName = val;
@@ -370,6 +377,8 @@ export default {
             message:res.data.msg,
             duration:2000
           })
+          this.$refs.tableInfos2.hide();
+          this.$refs.dialog.hide();
         }else{
           this.$message({
             type:'error',
@@ -386,7 +395,13 @@ export default {
       if(!type){
         type = item.type;
       }
-      let form = JSON.parse(item.form).list;
+      let form;
+      if(!item.form){
+        form = []
+      }else{
+        form = JSON.parse(item.form).list;
+      }
+      
       this.$http.post('/pc_ims/admin/write_inspectionlist',{
         id:item.id,
         type:type,
@@ -402,6 +417,8 @@ export default {
             duration:2000
           })
           this.rowClick(this.rowData)
+          this.$refs.tableInfos2.hide();
+          this.$refs.dialog.hide();
         }else{
           this.$message({
             type:'error',
@@ -651,14 +668,22 @@ export default {
     submitOk(){ //处理工单 同意/拒绝退单/延期
         this.$refs.isRefult.hide();
         this.$refs.sendWork2.show();
+        this.queryModel.vName  = '';
     },
     submitNo(){ //取消
       this.$refs.isRefult.hide();
     },
     sendWork2(){ //重新选择工单处理人员
+      if(this.queryModel.vName=='' || !this.queryModel.vName){
+          this.$message({
+            type:'error',
+            message:'请选择新工单处理人员',
+            duration:2000
+          })
+          return;
+      }
       this.$refs.sendWork2.hide();
       this.detalrowdata.newuser_id = this.queryModel.vName;
-      console.log(this.detalrowdata.newuser_id)
       this.dealWorks(this.detalrowdata);
     },
     tableInfos2Show(item){
@@ -1201,6 +1226,9 @@ export default {
               background: #3b85ef;
           }
       }
+  }
+  .btnBai1{
+      margin: 0 auto;
   }
 }
 </style>
