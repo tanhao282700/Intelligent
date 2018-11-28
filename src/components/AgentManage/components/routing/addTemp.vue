@@ -310,6 +310,7 @@
             this.$emit('cancelAdd')
          },
          saveAdd(){
+          //console.log(this.formval.data);
           if(this.formval.starttime){
             this.formval.starttime = utils.time(new Date(this.formval.starttime)/1000,1)
           }

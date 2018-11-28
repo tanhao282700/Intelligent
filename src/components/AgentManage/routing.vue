@@ -529,14 +529,14 @@ export default {
       .then(res=>{
          //console.log(res)
          if(res.data.code==0){
-            let list = JSON.parse(res.data.data.point_info);
-            //console.log(list)
+            let list = JSON.parse(res.data.data.point_info).list;
+            //console.log(list);
             let arr = [];
-            console.log(res.data.data);
             $.each(list,(n,k)=>{
-              arr.push(JSON.parse(k).point_id.cate_id);
+              //console.log(k);
+              arr.push(k.point_id);
             })
-            console.log(arr)
+            //console.log(arr)
             this.rowData = {
               exam:res.data.data.user_id,
               data:arr,
