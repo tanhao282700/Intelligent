@@ -206,7 +206,7 @@ export default {
           data:''
         },
         table2:{
-          hei:328, //table高度  设置后有滚动条
+          hei:'4.28rem', //table高度  设置后有滚动条
           len:0, //总条数
           data:[],
           th:[

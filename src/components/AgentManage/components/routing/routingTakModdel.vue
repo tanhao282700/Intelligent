@@ -50,7 +50,7 @@
             <span>新增</span>
           </div>
         </div> 
-        <Table style="width:100%" 
+        <Table style="width:100%;" 
               :table = "table"
               @rowClick = "rowClick"
             />
