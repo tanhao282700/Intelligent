@@ -59,6 +59,14 @@ export default {
       }else{
         this.vmultiple = false;
       }
+    },
+    value:{
+      handler(val){
+        if(val){
+          this.value0 = val;
+        }
+      },
+      deep:true
     }
   },
   created() {

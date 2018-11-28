@@ -413,16 +413,24 @@ export default {
     submitApply(){
       this.$http.post('/pc_ims/staff/send_work',{content:JSON.stringify({id:'',now_workusers_id:this.applyhbSelect.bTime, new_workusers_id:this.applyhbSelect.hbTime,description:this.dia.reason})})
       .then(res=>{
-        console.log(res);
+        //console.log(res);
          if(res.data.code==0){
             this.$message({
                 type:'success',
                 message:res.data.msg
               })
+            this.applyhbSelect.bTime = '';
+            this.applyhbSelect.hbTime = '';
+            this.applyhbSelect.vpeo = '';
+            this.getNoApply()
+            this.getPeosOptions()
+            this.getNoApply2();
+            this.dia.tel2 = '';
+            this.dia.reason = '';
          }else{
             this.$message({
                 type:'error',
-                message:res.data.msg
+                message:'换班失败！'
             })
          }
       })
@@ -487,7 +495,7 @@ export default {
       .then(res=>{
         if(res.data.code==0){
           let data = res.data.data;
-          let arr=[],arr2=[];
+          let arr=[{label:'请选择',value:''}],arr2=[];
           $.each(data,(n,k)=>{
             console.log(k);
             arr.push({label:k.workdate+' '+k.start_time+'~'+k.endt_ime,value:k.id});
@@ -507,7 +515,7 @@ export default {
       .then(res=>{
         if(res.data.code==0){
           let data = res.data.data;
-          let arr=[],arr2=[];
+          let arr=[{label:'请选择',value:''}],arr2=[{label:'请选择',value:''}];
           $.each(data,(n,k)=>{
             arr.push({label:k.workdate+' '+k.start_time+'~'+k.endt_ime,value:k.id});
           })
@@ -526,8 +534,8 @@ export default {
       .then(res=>{
         if(res.data.code==0){
           let data = res.data.data;
-          console.log(data);
-          let arr = []
+          //console.log(data);
+          let arr = [{label:'请选择',value:'',phone:''}]
           $.each(data,(n,k)=>{
               arr.push({label:k.truename,value:k.user_id,phone:k.phone})
           })
