@@ -495,7 +495,7 @@ export default {
       .then(res=>{
         if(res.data.code==0){
           let data = res.data.data;
-          let arr=[{label:'请选择',value:''}],arr2=[];
+          let arr=[],arr2=[];
           $.each(data,(n,k)=>{
             console.log(k);
             arr.push({label:k.workdate+' '+k.start_time+'~'+k.endt_ime,value:k.id});
@@ -515,7 +515,7 @@ export default {
       .then(res=>{
         if(res.data.code==0){
           let data = res.data.data;
-          let arr=[{label:'请选择',value:''}],arr2=[{label:'请选择',value:''}];
+          let arr=[],arr2=[];
           $.each(data,(n,k)=>{
             arr.push({label:k.workdate+' '+k.start_time+'~'+k.endt_ime,value:k.id});
           })
@@ -535,7 +535,7 @@ export default {
         if(res.data.code==0){
           let data = res.data.data;
           //console.log(data);
-          let arr = [{label:'请选择',value:'',phone:''}]
+          let arr = []
           $.each(data,(n,k)=>{
               arr.push({label:k.truename,value:k.user_id,phone:k.phone})
           })
