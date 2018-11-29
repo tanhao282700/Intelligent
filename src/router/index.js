@@ -185,7 +185,6 @@ export default new Router({
     {
       path: '/fireAlarm',
       component: fireAlarm,
-      redirect: '/fireAlarm/fireMonitor',
       children:[
         {
           path: '/fireAlarm/fireMonitor',
@@ -195,7 +194,15 @@ export default new Router({
           path: '/fireAlarm/fireHistory',
           component: fireHistory
         }
-      ]
+      ],
+      redirect: to => {
+        let info = JSON.parse(sessionStorage.getItem('routerInfo'))
+        if(info.sysList[16].role_string[0]!=0){
+          return '/fireAlarm/fireMonitor'
+        }else{
+          return '/fireAlarm/fireHistory'
+        }
+      }
     },
     {
       path: '/DoorControl',
@@ -239,7 +246,6 @@ export default new Router({
     {
       path: '/airConditioner',
       component: airConditioner,
-      redirect: '/airConditioner/components/telecontrol',
       children:[
         {
           path: '/airConditioner/components/telecontrol',
@@ -253,7 +259,17 @@ export default new Router({
           path: '/airConditioner/components/timerMode',
           component: timerMode
         }
-      ]
+      ],
+      redirect: to => {
+        let info = JSON.parse(sessionStorage.getItem('routerInfo'))
+        if(info.sysList[1].role_string[0]!=0 || info.sysList[1].role_string[3]!=0 || info.sysList[1].role_string[4]!=0){
+          return '/airConditioner/components/telecontrol'
+        }else if(info.sysList[1].role_string[0]==0 && info.sysList[1].role_string[3]==0 && info.sysList[1].role_string[4]==0&&(info.sysList[1].role_string[5]!=0||info.sysList[1].role_string[6]!=0||info.sysList[1].role_string[7]!=0)){
+          return '/airConditioner/components/sysMonitor'
+        }else{
+          return '/airConditioner/components/timerMode'
+        }
+      }
     },
 
   ]

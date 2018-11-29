@@ -462,6 +462,7 @@
     },
     methods: {
       updateModelState(){
+        console.log('我在这2',this.object_device)
         //setTimeout(() => {   //没有监测到模型是否加载完毕，只能用延时了,re:解决
         this.object_device.map((item, i) => {
           this.changeDeviceState(item.object_id, item.state)

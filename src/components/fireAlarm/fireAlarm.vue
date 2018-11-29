@@ -23,8 +23,6 @@
         sData:{
           active:'item0',
           lists:[
-            {id:0,name:'火警监测',route:'/fireAlarm/fireMonitor'},
-            {id:1,name:'历史记录',route:'/fireAlarm/fireHistory'},
           ]
         }
       }
@@ -35,6 +33,11 @@
     created() {
       //this.$router.push('/fireAlarm/floor3D')
       //this.$router.push('/fireAlarm/waterPump')
+      if(this.$store.state.sysList[16].role_string[0]!=0){
+        this.sData.lists.push({id:0,name:'火警监测',route:'/fireAlarm/fireMonitor'})
+      }else{
+        this.sData.lists.push({id:1,name:'历史记录',route:'/fireAlarm/fireHistory'})
+      }
     },
     mounted() {
 

@@ -227,6 +227,8 @@
           let data = res.data;
           console.log('能耗情况cop', config, res);
           if (data.code == 0) {
+            this.btnActiveId = floor_id;//有问题吗？
+            //this.getTitData(floor_id)
             let data2 = data.data;
             let conArr = [];
 
@@ -320,9 +322,9 @@
             //this.devTitLists = tempArr;
             //console.log(tempArr)
 
-            setTimeout(()=>{//先这样吧
-              this.getCOPData();
-            },500)
+            // setTimeout(()=>{//先这样吧
+            //   this.getCOPData();
+            // },500)
 
 
           } else {
@@ -453,6 +455,7 @@
       },
       tabClick(index,id){
         this.getCOPData(this.$store.state.sysList[1].son_list[0].sys_menu_id,id);
+        this.getTitData(id);
       },
       handleChange(val){
         this.getEnergy1(this.selectedOptions2[0]);
@@ -493,6 +496,7 @@
       })
 
       this.getTitData();
+      this.getCOPData()
       //console.log(this.$store.state.airFloorLists)
     },
     mounted(){

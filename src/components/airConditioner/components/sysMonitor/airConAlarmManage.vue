@@ -10,7 +10,7 @@
         <button @click="tabClick(i)" type="button" v-for="(v,i) in devTitLists" v-text="v.tit" :key="i" :class="['btn1',{active:i==btnActiveIndex}]"></button>
       </div>
       <div class="oneLevelBox">
-        <el-select v-model="v.value" placeholder="选择类型" v-for="(v,i) in devTitLists" v-show="i==btnActiveIndex" :key="i">
+        <el-select v-model="value" placeholder="选择类型" v-for="(v,i) in devTitLists" v-show="i==btnActiveIndex" :key="i">
           <el-option
             v-for="item in v.options"
             :key="item.value"
@@ -221,7 +221,10 @@
               obj.tit = item.title;
               obj.val = '';
               obj.options = [
-
+                {
+                  value:0,
+                  label:'全部'
+                }
               ];
 
               let data2 = item.floor;
