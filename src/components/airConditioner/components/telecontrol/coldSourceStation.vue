@@ -123,7 +123,7 @@
     </Dialog>
     <Dialog wid = "3.64rem" hei = "2.16rem" ref = "dialog2">
       <div class="dialog-in">
-        <p class="p-text">是否确认{{yijianNowVal == 0 ? '一键关闭' : yijianNowVal == 1 ? '一键开启' : '未知错误'}}？</p>
+        <p class="p-text">是否确认{{yijianNowVal == 0 ? '一键开启' : yijianNowVal == 1 ? '一键关闭' : '未知错误'}}？</p>
         <div class="btnWrap">
           <button @click="sureControl2" type="button">确定</button>
           <button @click="()=>{this.$refs.dialog2.hide();this.$message('取消操作！');}" type="button">取消</button>
@@ -854,8 +854,12 @@
         handleChange(value) {
           console.log(value);
           //console.log(this.selectedOptions2)
+          this.hide();
           this.getThreeDevice(this.$store.state.sysList[1].son_list[0].sys_menu_id,value[0]);
           this.$store.state.airFloorId = value[0];
+          setTimeout(()=>{
+            this.get3DFloor();
+          },200)
         },
         tempHandleChange() {
           this.$refs.dialog.show();
@@ -876,7 +880,7 @@
         },
         sureControl2() {
           this.requestOneKeyControl(this.yijianPointId,this.yijianNowVal == 0?1:0);
-          this.yijianNowVal = this.yijianNowVal == 0?1:0;
+          this.yijianNowVal = (this.yijianNowVal == 0?1:0);
           this.$refs.dialog2.hide();
         },
         oneKeySwitch(){

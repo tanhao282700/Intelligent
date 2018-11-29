@@ -15,7 +15,7 @@
           <mode-control lazy/>
         </el-tab-pane>
         <el-tab-pane name="second">
-          <span slot="label" class="tabItems">控制日志</span>
+          <span slot="label" class="tabItems">自动控制日志</span>
           <control-log lazy/>
         </el-tab-pane>
       </el-tabs>

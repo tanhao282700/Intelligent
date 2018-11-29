@@ -19,7 +19,7 @@
           <energy-situation lazy/>
         </el-tab-pane>
         <el-tab-pane name="third">
-          <span slot="label" class="tabItems">报警管理</span>
+          <span slot="label" class="tabItems">设备告警</span>
           <air-con-alarm-manage lazy/>
         </el-tab-pane>
       </el-tabs>

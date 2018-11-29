@@ -6,7 +6,7 @@
 
 <script>
   export default {
-    props:['datas'],
+    props:['datas','range'],
     name: "echartsL",
     data(){
       return{
@@ -29,6 +29,48 @@
         // 基于准备好的dom，初始化echarts实例
         let myChart = this.$echarts.init(document.getElementById(this.datas.id));
         let series=[],xAxis = [],legends=[];
+        let axisLabel = (this.range == 'month'?{
+          color: function (value, index) {
+            return value >= 0 ? '#f8fbff' : '#f8fbff';
+          },
+          fontSize:10,
+          formatter: function (value, index) {
+            // 格式化成月/日，只在第一个刻度显示年份
+
+            let date = new Date(value);
+            let year = date.getFullYear();
+            let month = (date.getMonth()+1)<10?('0'+(date.getMonth()+1)):(''+(date.getMonth()+1));
+            //let day = date.getDate()<10?('0'+date.getDate()):(''+date.getDate());
+            //let hours = date.getHours()<10?('0'+date.getHours()):(''+date.getHours());
+            //let minutes = date.getMinutes()<10?('0'+date.getMinutes()):(''+date.getMinutes());
+            //return year+'-'+month+'-'+day+' '+hours+':'+minutes;
+            return year+'-'+month
+          }
+        } : this.range == 'hours'?
+          {
+            color: function (value, index) {
+              return value >= 0 ? '#f8fbff' : '#f8fbff';
+            },
+            fontSize:10,
+            formatter: function (value, index) {
+              // 格式化成月/日，只在第一个刻度显示年份
+
+              let date = new Date(value);
+              let year = date.getFullYear();
+              let month = (date.getMonth()+1)<10?('0'+(date.getMonth()+1)):(''+(date.getMonth()+1));
+              let day = date.getDate()<10?('0'+date.getDate()):(''+date.getDate());
+              let hours = date.getHours()<10?('0'+date.getHours()):(''+date.getHours());
+              //let minutes = date.getMinutes()<10?('0'+date.getMinutes()):(''+date.getMinutes());
+              //return year+'-'+month+'-'+day+' '+hours+':'+minutes;
+              return year+'-'+month+'-'+day+' '+hours+':00'
+            }
+          } :
+          {
+            color: function (value, index) {
+              return value >= 0 ? '#f8fbff' : '#f8fbff';
+            },
+            fontSize:10,
+          });
         let datas = this.datas;
         let lens = datas.list.length;
         for(let i=0;i<lens;i++) {
@@ -149,22 +191,7 @@
             axisTick:{
               show:false
             },
-            axisLabel:{
-              color: function (value, index) {
-                return value >= 0 ? '#f8fbff' : '#f8fbff';
-              },
-              fontSize:10,
-              // formatter: function (value, index) {
-              //   // 格式化成月/日，只在第一个刻度显示年份
-              //   let date = new Date(value);
-              //   let year = date.getFullYear();
-              //   let month = (date.getMonth()+1)<10?('0'+(date.getMonth()+1)):(''+(date.getHours()+1));
-              //   let day = date.getDate()<10?('0'+date.getDate()):(''+date.getDate());
-              //   let hours = date.getHours()<10?('0'+date.getHours()):(''+date.getHours());
-              //   let minutes = date.getMinutes()<10?('0'+date.getMinutes()):(''+date.getMinutes());
-              //   return year+'-'+month+'-'+day+' '+hours+':'+minutes;
-              // }
-            }
+            axisLabel:axisLabel
           },
           yAxis: {
             show:true,

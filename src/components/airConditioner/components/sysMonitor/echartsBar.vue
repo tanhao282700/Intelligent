@@ -137,7 +137,7 @@
             top:datas.showLegends==true?'16%':'2%',
             left: '0%',
             right: '0%',
-            bottom: '6%',
+            bottom: '2%',
             containLabel: true
           },
           dataZoom: [{

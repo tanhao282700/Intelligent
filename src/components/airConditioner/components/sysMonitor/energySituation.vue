@@ -14,7 +14,7 @@
       <div class="copEchartBox">
         <div class="title">cop情况</div>
         <div class="content">
-          <echarts-l ref="myEcharts" v-if="true" v-for="(v,i) in devTitLists" :key="'ss'+i" :datas="v.tabData.datas" />
+          <echarts-l :range="'hours'" ref="myEcharts" v-if="true" v-for="(v,i) in devTitLists" :key="'ss'+i" :datas="v.tabData.datas" />
         </div>
       </div>
     </div>
@@ -33,7 +33,7 @@
         </div>
         <div class="content">
           <div class="left">
-            <echarts-l v-for="(v,i) in tabData2" :key="i" :datas="v.datas" />
+            <echarts-l :range="'month'" v-for="(v,i) in tabData2" :key="i" :datas="v.datas" />
           </div>
           <div class="right">
             <echarts-bar v-for="(v,i) in tabData3" :key="i" :datas="v.datas" />
@@ -370,7 +370,10 @@
             data2.map((item,i)=>{
               let obj2 = {};
               obj2.name = ''+item.year;
-              obj2.data = item.data;
+              obj2.data = item.data.map((item0,i0)=>{
+                item0.value[0] = item0.value[0]+':00';
+                return item0;
+              });
               obj.datas.list.push(obj2);
               conArr.push(obj);
             })
@@ -394,7 +397,7 @@
         let that = this;
         let config = {
           floor_id:floor_id,
-          type:1
+          type:2
         }
         let headers = {
           //'Content-Type': 'multipart/form-data'
