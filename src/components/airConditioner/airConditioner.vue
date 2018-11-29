@@ -29,9 +29,6 @@
         sData:{
           active:'item0',
           lists:[
-            {id:0,name:'远程控制',route:'/airConditioner/components/telecontrol'},
-            {id:1,name:'系统监测',route:'/airConditioner/components/sysMonitor'},
-            {id:2,name:'定时模式',route:'/airConditioner/components/timerMode'},
           ]
         },
         modeData:{
@@ -74,6 +71,15 @@
     created() {
       setInterval(this.getModeList(),5*60*1000);
       setInterval(this.scroll,2000);
+      if(this.$store.state.sysList[1].role_string[0]!=0 || this.$store.state.sysList[1].role_string[3]!=0 || this.$store.state.sysList[1].role_string[4]!=0){
+        this.sData.lists.push({id:0,name:'远程控制',route:'/airConditioner/components/telecontrol'})
+      }
+      if(this.$store.state.sysList[1].role_string[1]!=0 || this.$store.state.sysList[1].role_string[5]!=0 || this.$store.state.sysList[1].role_string[6]!=0 || this.$store.state.sysList[1].role_string[7]!=0){
+        this.sData.lists.push({id:1,name:'系统监测',route:'/airConditioner/components/sysMonitor'})
+      }
+      if(this.$store.state.sysList[1].role_string[2]!=0 || this.$store.state.sysList[1].role_string[8]!=0 || this.$store.state.sysList[1].role_string[9]!=0){
+        this.sData.lists.push({id:2,name:'定时模式',route:'/airConditioner/components/timerMode'})
+      }
     },
     mounted() {
 
