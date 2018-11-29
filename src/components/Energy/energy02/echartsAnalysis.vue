@@ -329,7 +329,7 @@
                         type: 'pie',
                         radius : '55%',
                         center: ['50%', '50%'],
-                        color:["#FD97AA","#008AFF","#F35E5E","#EEB66E","#EBF191","#C382EF","#95EDC5"],
+                        color:["#FD97AA","#008AFF","#F35E5E","#EEB66E","#EBF191","#C382EF","#95EDC5",'#B5D7FF','#F56C6C','#999'],
                         data:data.topPie,
                         itemStyle: {
                             emphasis: {

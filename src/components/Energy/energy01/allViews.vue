@@ -369,11 +369,11 @@
         var center= Number($(".percentageTextTip").width())/2;
         var winWidth = $("html").width();
         var r;
-        if(winWidth<1500){r = 78};
-        if(winWidth>1500 && winWidth <=1600){r = 80};
-        if(winWidth>1600 && winWidth <=1700){r = 85};
-        if(winWidth>1700 && winWidth <=1800){r = 90};
-        if(winWidth>1800){r = 100};
+        if(winWidth<1500){r = 80};
+        if(winWidth>1500 && winWidth <=1600){r = 90};
+        if(winWidth>1600 && winWidth <=1700){r = 95};
+        if(winWidth>1700 && winWidth <=1800){r = 100};
+        if(winWidth>1800){r = 110};
         var realA = (145 + 246 * (Number(a)/100));
         return {
           left: Math.round(center + Math.cos(realA *Math.PI/180) * r),
@@ -1196,6 +1196,21 @@
     height: 1.8rem;
     margin: 0 auto;
     position: relative;
+  }
+  .totalEnergyChartBox::after{
+    display: block;
+    content: "";
+    position: absolute;
+    width: 1.3rem;
+    height: 1.3rem;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-58%);
+    background: url("../../../assets/img/Energy/allViewsCircle.png") no-repeat center;
+    background-size: 100% auto;
+  }
+  .percentageRealVal{
+    font-size: .12rem;
   }
   #energyChart1{
     background: url("../../../assets/img/Energy/redBg.png") no-repeat center;
