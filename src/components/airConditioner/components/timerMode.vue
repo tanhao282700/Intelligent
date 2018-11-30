@@ -10,11 +10,11 @@
     </div>
     <div class="timeMode">
       <el-tabs class="tabBoxs" v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane name="first">
+        <el-tab-pane v-if="showFirst" name="first" lazy>
           <span slot="label" class="tabItems">模式控制</span>
           <mode-control lazy/>
         </el-tab-pane>
-        <el-tab-pane name="second">
+        <el-tab-pane v-if="showSecond" name="second" lazy>
           <span slot="label" class="tabItems">自动控制日志</span>
           <control-log lazy/>
         </el-tab-pane>
@@ -37,7 +37,9 @@
     name: "timeMode",
     data() {
       return {
-        activeName: 'first',
+        showFirst:false,
+        showSecond:false,
+        activeName: '',
       }
     },
     methods: {
@@ -51,6 +53,23 @@
       }
     },
     created() {
+      if(this.$store.state.sysList[1].role_string[8]!=0){
+        this.showFirst = true;
+      } else {
+        this.showFirst = false;
+      }
+      if(this.$store.state.sysList[1].role_string[9]!=0){
+        this.showSecond = true;
+      } else {
+        this.showSecond = false;
+      }
+
+
+      if (this.$store.state.sysList[1].role_string[8]!=0) {
+        this.activeName = 'first';
+      } else if (this.$store.state.sysList[1].role_string[8]==0 && this.$store.state.sysList[1].role_string[9]!=0) {
+        this.activeName = 'second';
+      }
     },
     mounted() {
 

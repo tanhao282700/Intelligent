@@ -212,8 +212,71 @@
       }
     },
     methods:{
+      get3DFloor(sysID=this.$store.state.sysList[1].son_list[0].sys_menu_id){
+        let that = this;
+        let config = {
+          sys_menu_id:sysID,
+        }
+        let headers = {
+          //'Content-Type': 'multipart/form-data'
+        }
+        this.$http.get('/hvac_pc/pc/floor', config, headers).then(res => {
+          let data = res.data;
+          console.log('获取机房3d模型，为了楼层,能耗情况', config, res);
+          if (data.code == 0) {
+            let floor_id = data.data[0].floor_id;
+            //机房列表
+            let floorList = data.data;
+
+            let tempArr0 = [];
+            floorList.map((item, i) => {
+              let obj0 = {};
+              obj0.id = item.floor_id;
+              obj0.tit = item.title;
+              tempArr0.push(obj0);
+            })
+            this.devTitLists =  tempArr0;
+            //let tempArr = [];
+            this.devTitLists.map((item,i)=>{
+              this.btnActiveId = item.id;
+              item.tabData = {
+                datas:{
+                  id:('selfEchart111'+item.id),
+                  style:{width:'12.76rem',height:244*100/728+'vh'},
+                  showMarkL:true,
+                  colorArr:[
+                    {color1:'rgba(229,81,80,1)',color3:'rgba(229,81,80,0.5)'},
+                    {color1:'rgba(45,240,224,1)',color3:'rgba(45,240,224,0.5)'},
+                    {color1:'rgba(229,81,80,1)',color3:'rgba(229,81,80,0.5)'},
+                    {color1:'rgba(45,240,224,1)',color3:'rgba(45,240,224,0.5)'},
+                    {color1:'rgba(229,81,80,1)',color3:'rgba(229,81,80,0.5)'},
+                    {color1:'rgba(45,240,224,1)',color3:'rgba(45,240,224,0.5)'},
+                  ],
+                  markLineVal:0,
+                  showLegends:true,
+                  list:[]
+
+                }
+              };
+            })
+
+
+            setTimeout(()=>{
+              this.floor_id = floor_id;
+              this.getTitData(floor_id);
+              this.getCOPData(this.$store.state.sysList[1].son_list[0].sys_menu_id,floor_id);
+            },200)
+
+          } else {
+
+            this.$message('网络问题！未获取到楼层！请重新进入空调模块！');
+          }
+        }).catch(err=>{
+          this.$message(err);
+        })
+      },
       //获取cop报表
-      getCOPData(sysID=this.$store.state.sysList[1].son_list[0].sys_menu_id,floor_id=this.$store.state.airFloorId){
+      getCOPData(sysID=this.$store.state.sysList[1].son_list[0].sys_menu_id,floor_id){
         this.loading = true;
         let that = this;
         let config = {
@@ -282,7 +345,7 @@
 
       },
       //获取能耗筛选tit
-      getTitData(floor_id=this.$store.state.airFloorId){
+      getTitData(floor_id){
         let that = this;
         let config = {
           floor_id:floor_id
@@ -464,40 +527,7 @@
       }
     },
     created(){
-      this.devTitLists =  this.$store.state.airFloorLists;
-      //let tempArr = [];
-      this.devTitLists.map((item,i)=>{
-        this.btnActiveId = item.id;
-        // let obj = {};
-        // obj.id = item.id;
-        // obj.tit = item.title;
-        //console.log(item)
-        item.tabData = {
-          datas:{
-            id:('selfEchart111'+item.id),
-            style:{width:'12.76rem',height:244*100/728+'vh'},
-            showMarkL:true,
-            colorArr:[
-              {color1:'rgba(229,81,80,1)',color3:'rgba(229,81,80,0.5)'},
-              {color1:'rgba(45,240,224,1)',color3:'rgba(45,240,224,0.5)'},
-              {color1:'rgba(229,81,80,1)',color3:'rgba(229,81,80,0.5)'},
-              {color1:'rgba(45,240,224,1)',color3:'rgba(45,240,224,0.5)'},
-              {color1:'rgba(229,81,80,1)',color3:'rgba(229,81,80,0.5)'},
-              {color1:'rgba(45,240,224,1)',color3:'rgba(45,240,224,0.5)'},
-            ],
-            markLineVal:0,
-            showLegends:true,
-            list:[]
-
-          }
-        };
-
-        //tempArr.push(obj);
-      })
-
-      this.getTitData();
-      this.getCOPData()
-      //console.log(this.$store.state.airFloorLists)
+      this.get3DFloor();
     },
     mounted(){
       //console.log(this.btnActiveId)

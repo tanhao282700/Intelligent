@@ -158,13 +158,40 @@
           {id:3,tit:'机房主管运行情况'},*/
         ],
         dateVal:[],
+        floor_id:undefined,
 
 
       }
     },
     methods:{
+      //获取机房3d模型:仅仅为了一个楼层
+      get3DFloor(sysID=this.$store.state.sysList[1].son_list[0].sys_menu_id){
+        let that = this;
+        let config = {
+          sys_menu_id:sysID,
+        }
+        let headers = {
+          //'Content-Type': 'multipart/form-data'
+        }
+        this.$http.get('/hvac_pc/pc/floor', config, headers).then(res => {
+          let data = res.data;
+          console.log('获取机房3d模型，为了楼层', config, res);
+          if (data.code == 0) {
+              let floor_id = data.data[0].floor_id;
+              //机房列表
+              this.floor_id = floor_id;
+            this.getChillerTitle(this.$store.state.sysList[1].son_list[0].sys_menu_id,floor_id);
+
+          } else {
+
+            this.$message('未获取到楼层！！！');
+          }
+        }).catch(err=>{
+          this.$message(err);
+        })
+      },
       //冷水机组的title数据
-      getChillerTitle(sysID=this.$store.state.sysList[1].son_list[0].sys_menu_id,floor_id=this.$store.state.airFloorId){
+      getChillerTitle(sysID=this.$store.state.sysList[1].son_list[0].sys_menu_id,floor_id){
         let that = this;
         let config = {
           sys_menu_id:sysID,
@@ -409,9 +436,10 @@
     },
     created(){
 
+      this.get3DFloor();
       this.tableHei = utils.hei(435);
 
-      this.getChillerTitle();
+
 
     }
   }

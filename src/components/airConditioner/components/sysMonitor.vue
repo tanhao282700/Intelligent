@@ -10,17 +10,17 @@
     </div>
     <div class="sysMonitor">
       <el-tabs class="tabBoxs" v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane name="first">
+        <el-tab-pane v-if="showFirst" name="first" lazy>
           <span slot="label" class="tabItems">冷水机组运行</span>
-          <chiller-running lazy/>
+          <chiller-running/>
         </el-tab-pane>
-        <el-tab-pane name="second">
+        <el-tab-pane v-if="showSecond" name="second" lazy>
           <span slot="label" class="tabItems">能耗情况</span>
-          <energy-situation lazy/>
+          <energy-situation/>
         </el-tab-pane>
-        <el-tab-pane name="third">
+        <el-tab-pane v-if="showThird" name="third" lazy>
           <span slot="label" class="tabItems">设备告警</span>
-          <air-con-alarm-manage lazy/>
+          <air-con-alarm-manage/>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -49,7 +49,10 @@
     name: "sysMonitor",
     data() {
       return {
-        activeName: 'first',
+        showFirst:false,
+        showSecond:false,
+        showThird:false,
+        activeName: '',
       }
     },
     methods: {
@@ -63,6 +66,30 @@
       }
     },
     created() {
+      if(this.$store.state.sysList[1].role_string[5]!=0){
+        this.showFirst = true;
+      } else {
+        this.showFirst = false;
+      }
+      if(this.$store.state.sysList[1].role_string[6]!=0){
+        this.showSecond = true;
+      } else {
+        this.showSecond = false;
+      }
+      if(this.$store.state.sysList[1].role_string[7]!=0){
+        this.showThird = true;
+      } else {
+        this.showThird = false;
+      }
+
+
+      if (this.$store.state.sysList[1].role_string[5]!=0) {
+        this.activeName = 'first';
+      } else if (this.$store.state.sysList[1].role_string[5]==0 && this.$store.state.sysList[1].role_string[6]!=0) {
+        this.activeName = 'second';
+      } else if (this.$store.state.sysList[1].role_string[5]==0 && this.$store.state.sysList[1].role_string[6]==0 && this.$store.state.sysList[1].role_string[7]!=0) {
+        this.activeName = 'third';
+      }
     },
     mounted() {
 

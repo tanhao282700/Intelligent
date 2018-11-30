@@ -10,11 +10,11 @@
     </div>
     <div class="telecontrol">
       <el-tabs class="tabBoxs" v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane name="first" lazy>
+        <el-tab-pane v-if="showFirst" name="first" lazy>
           <span slot="label" class="tabItems">{{first}}</span>
           <cold-source-station ref="first" />
         </el-tab-pane>
-        <el-tab-pane name="second" lazy>
+        <el-tab-pane v-if="showSecond" name="second" lazy>
           <span slot="label" class="tabItems">{{second}}</span>
           <air-conditioner-end ref="second" />
         </el-tab-pane>
@@ -40,62 +40,25 @@
     name: "telecontrol",
     data() {
       return {
-        activeName: 'first',
-        first:'冷源站',
-        second:'空调末端',
+        showFirst:false,
+        showSecond:false,
+        activeName: '',
+        first:this.$store.state.sysList[1].son_list[0].sys_menu_title,
+        second:this.$store.state.sysList[1].sys_menu_title,
       }
     },
     methods: {
-      //获取系统名称
-      getSysName(sys_id=2){
-        let that = this;
-        let config = {
-          sys_menu_id:sys_id
-        }
-        let headers = {
-          //'Content-Type': 'multipart/form-data'
-        }
-        this.$http.get('/hvac_pc/pc/index/sys', config, headers).then(res => {
-          let data = res.data;
-          console.log('获取系统名称', config, res);
-          if (data.code == 0) {
-            this.first = data.data[0].title;
-            this.second = data.data[1].title;
-            this.firstId = data.data[0].id;
-            this.secondId = data.data[1].id;
-
-          } else {
-            this.$message(data.message);
-          }
-        })
-        /*let obj = {
-          sys_menu_id:sys_id
-        };
-        utils.post('airConditioner/index/sys',obj).then(res=>{
-          console.log('获取系统名称',obj,res);
-          if (res.code==0){
-            this.first = res.data[0].title;
-            this.second = res.data[1].title;
-            this.firstId = res.data[0].id;
-            this.secondId = res.data[1].id;
-
-          } else {
-
-            this.$message(res.message);
-          }
-        }).catch(err=>{
-          this.$message(err);
-        })*/
-      },
 //tab选项卡切换
       handleClick(tab, event) {
         console.log(tab.index);
-        if (tab.index == 0){
-          this.$refs.second.removeMessageEvent();
-          this.$refs.first.addMessageEvent();
-        } else if (tab.index == 1) {
-          this.$refs.first.removeMessageEvent();
-          this.$refs.second.addMessageEvent();
+        if (this.showFirst && this.showSecond) {
+          if (tab.index == 0) {
+            this.$refs.second.removeMessageEvent();
+            this.$refs.first.addMessageEvent();
+          } else if (tab.index == 1) {
+            this.$refs.first.removeMessageEvent();
+            this.$refs.second.addMessageEvent();
+          }
         }
       },
       toHome(){
@@ -103,9 +66,23 @@
       }
     },
     created() {
-      //this.getSysName();
-      this.first = this.$store.state.sysList[1].son_list[0].sys_menu_title;
-      this.second = this.$store.state.sysList[1].sys_menu_title;
+      if(this.$store.state.sysList[1].role_string[3]!=0){
+        this.showFirst = true;
+      } else {
+        this.showFirst = false;
+      }
+      if(this.$store.state.sysList[1].role_string[4]!=0){
+        this.showSecond = true;
+      } else {
+        this.showSecond = false;
+      }
+
+
+      if (this.$store.state.sysList[1].role_string[3]!=0) {
+        this.activeName = 'first';
+      } else if (this.$store.state.sysList[1].role_string[3]==0 && this.$store.state.sysList[1].role_string[4]!=0) {
+        this.activeName = 'second';
+      }
     },
     mounted() {
 
