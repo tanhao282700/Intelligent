@@ -395,6 +395,7 @@
   }
   .alarm .exports i{
     background:url(../../assets/img/Alarm/export.png)!important;
+    background-size:100% 100% !important;
     margin-right:0.06rem;
   }
 </style>
