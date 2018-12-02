@@ -176,7 +176,7 @@ export default {
         left:0;
         top:0;
         width:100%;
-        height:50px;
+        height:0.5rem;
         display:flex;
         align-items: center;
         z-index: 300;
@@ -188,8 +188,8 @@ export default {
         }
 
         .userIcon{
-          width:30px;
-          height:30px;
+          width:0.3rem;
+          height:0.3rem;
           display: block;
           background:url(../../assets/img/home/usericon.png) no-repeat center center;
           background-size: cover;
@@ -198,21 +198,21 @@ export default {
           }
         }
         .dropdownlist{
-          height:50px;
-          line-height:50px;
+          height:0.5rem;
+          line-height:0.5rem;
           position:absolute;
           top:0;
           cursor:pointer;
           color:#fff;
           right:20px;
           img{
-            width:20px;
+            width:0.2rem;
           }
         }
         .navTabs{
           height:30px;line-height:30px;
           display: inline-flex;
-          margin-left: 60px;
+          margin-left: 0.6rem;
            .el-tabs__header{
              .el-tabs__nav-wrap{
                 height:0px;
@@ -222,28 +222,28 @@ export default {
         .logo{
           cursor:pointer;
           display: inline-flex;
-          height:40px;
-          margin-left:14px;
-          margin-right:20px;
+          height:0.4rem;
+          margin-left:0.14rem;
+          margin-right:0.2rem;
           span{
-            margin-top:9px;
-            height:18px;
+            margin-top:0.09rem;
+            height:0.18rem;
             color:#fff;
           }
           i{
               display: inline-block;
-              margin-right:8px;
-              margin-top:7px;
-              width:26px;
-              height:26px;
+              margin-right:0.08rem;
+              margin-top:0.07rem;
+              width:0.26rem;
+              height:0.26rem;
               background:url(../../assets/img/home/logo.png) no-repeat center center;
               background-size:cover;
             }
         }
         .searchBox{
-          width:362px;
-          height:40px;
-          line-height:40px;
+          width:3.62rem;
+          height:0.4rem;
+          line-height:0.4rem;
           background:rgba(0,24,56,1);
           box-shadow:0px 0px 1px 0px rgba(87,113,176,0.15),0px 1px 2px 0px rgba(0,0,0,0.5);
           display:flex;
@@ -254,7 +254,7 @@ export default {
               display:inline-flex;
               background: transparent;
               border:0;
-              width:298px;
+              width:2.98rem;
               text-indent: 0.1rem;
               color:#eee;
               font-size: 0.12rem;
@@ -264,18 +264,18 @@ export default {
           }
           .searchBtn{
               display:inline-flex;
-              width: 60px;
-              height:32px;
+              width: 0.6rem;
+              height:0.32rem;
               background:linear-gradient(360deg,rgba(39,114,227,1) 0%,rgba(75,148,249,1) 100%);
-              border-radius:4px;
-              line-height:32px;
+              border-radius:3px;
+              line-height:0.32rem;
               border-left: 0.01rem solid #3b89f9;
               cursor: pointer;
               i{
-                  padding:9px;
-                  margin:7px auto;
+                  padding:0.09rem;
+                  margin:0.07rem auto;
                   background:url('../../assets/img/AgentManage/search.png') no-repeat;
-                  background-size:18px;
+                  background-size:0.18rem;
               }
           }
         }

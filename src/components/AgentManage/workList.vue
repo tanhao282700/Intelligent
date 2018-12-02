@@ -191,7 +191,7 @@ export default {
             {prop:'devicename',label:'设备名称'},
             {prop:'addtime',label:'派发时间'},
             {prop:'description',label:'内容描述'},
-            {prop:'type_id',label:'派发类别'},
+            {prop:'sendtype',label:'派发类别'},
             {prop:'now_state',label:'状态',
               operate: true, 
                 render: (h, param)=> {
@@ -370,7 +370,19 @@ export default {
           //console.log(res);
           if(res.data.code==0){
             this.table2.len = res.data.count;
-            this.table2.data = res.data.data.info;
+            let data = res.data.data.info;
+            $.each(data,(i,k)=>{
+              if(data[i].type_id ==='0'){
+                data[i].sendtype='系统自动派发'
+              }else if(data[i].type_id=='1'){
+                data[i].sendtype = '手工派发'
+              }else if(data[i].type_id=='2'){
+                data[i].sendtype='投诉'
+              }else if(data[i].type_id=='3'){
+                data[i].sendtype = '维保工单'
+              }
+            })
+            this.table2.data = data;
             this.table2.tabs = [{'name':'今日工单总数',num:res.data.data.zong},
             {'name':'已完成',num:res.data.data.wan},
             {'name':'未完成',num:res.data.data.wei}];
