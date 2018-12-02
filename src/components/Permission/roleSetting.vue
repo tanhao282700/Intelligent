@@ -198,14 +198,17 @@
         },
         role_sys_list:'',
         checkedListItems:[],
-        disabledSelectedItems:{
+        /*disabledSelectedItems:{
           1:['3','4'],
           2:['1','2','3'],
           25:['2'],
           34:['3','4'],
           36:['2','3'],
           40:['2']
-        }
+        }*/
+        disabledSelectedItems:{
+
+      }
       }
     },
     methods:{
@@ -381,6 +384,23 @@
           if(res.data.code == 0){
             let checkedList = res.data.data.chk_data;
             that.$refs.tree.setCheckedKeys(checkedList);
+            let role_data = res.data.data.role_data
+            that.disabledSelectedItems = {}
+            role_data.map((item,index)=>{
+                if(item.child){
+                    item.child.map((list,index2)=>{
+                        if(list.child&&list.child.length>0){
+                            if(that.disabledSelectedItems[item.id]){
+                              that.disabledSelectedItems[item.id].push((index2+1).toString())
+                            }else{
+                              that.disabledSelectedItems[item.id] = []
+                              that.disabledSelectedItems[item.id].push((index2+1).toString())
+                            }
+                        }
+                    })
+                }
+            })
+            console.log(that.disabledSelectedItems)
           }
         }).catch(err=>{
 
