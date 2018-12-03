@@ -290,9 +290,11 @@
       flex:1;
       display:flex;
       flex-direction: row;
+      justify-content: space-around;
+      padding:0 0.16rem;
       .infoC{
         width:0.55rem;
-        margin-left:0.19rem;
+        /*margin-left:0.22rem;*/
         .category{
           width:100%;
           padding-bottom:100%;
