@@ -17,6 +17,7 @@
           </div>
           <div class="percent">
             <span v-text="finishData.dayPercent"></span>
+            <span></span>
             <span v-text="agentData.finish.day.finish+'/'+agentData.finish.day.count"></span>
             <span>今日完成率</span>
           </div>
@@ -27,6 +28,7 @@
           </div>
           <div class="percent">
             <span v-text="finishData.monthPercent"></span>
+            <span></span>
             <span v-text="agentData.finish.month.finish+'/'+agentData.finish.month.count"></span>
             <span>今月完成率</span>
           </div>
@@ -37,6 +39,7 @@
           </div>
           <div class="percent">
             <span v-text="finishData.yearPercent"></span>
+            <span></span>
             <span v-text="agentData.finish.year.finish+'/'+agentData.finish.year.count"></span>
             <span>今年完成率</span>
           </div>
@@ -120,9 +123,10 @@
           title : {
             text: '工单统计',
             top:'2',
+            left:'8%',
             textStyle:{
                 color:"#fff",
-                fontSize:"12",
+                fontSize:"12px",
                 fontWeight:"normal"
             }
           },
@@ -133,12 +137,16 @@
             data:[
               '未完成数','工单总数'
             ],
-            right:0,
+            itemWidth: 10,
+            itemHeight: 10, // 设置高度
+            marginRight:'8%',
             textStyle:{
-                color:"#858994"
+                color:"#858994",
+              fontSize:'10px'
             },
             align:"left",
-            left:"right"
+            right:"8%",
+            top:'2%'
           },
           calculable : true,
           xAxis : [
@@ -168,8 +176,15 @@
               type:'bar',
               itemStyle: {
                   normal: {
-                    color:'#c4752a',
-                    opacity:1,
+                    /*color:'#c4752a',*/
+                    barBorderRadius:[2, 2, 0, 0],
+                    color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                      offset: 0,
+                      color: '#FAD961'
+                    }, {
+                      offset: 1,
+                      color: '#F76B1C'
+                    }]),
                     label:{
                       show:true,
                       position:'top',
@@ -187,8 +202,15 @@
               type:'bar',
               itemStyle: {
                   normal: {
-                      color:'#264e8c',
-                      opacity:1,
+                      /*color:'#264e8c',*/
+                    barBorderRadius:[2, 2, 0, 0],
+                    color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                      offset: 0,
+                      color: '#519BEC'
+                    }, {
+                      offset: 1,
+                      color: '#214893'
+                    }]),
                       label:{
                           show:true,
                           position:'top',
@@ -230,11 +252,11 @@
       position:relative;
       img{
         position:absolute;
-        width:24px;
-        height:24px;
+        width:0.14rem;
+        height:0.14rem;
         right:10px;
         top:50%;
-        margin-top:-12px;
+        margin-top:-0.07rem;
         display: none;
       }
       &:hover{
@@ -269,46 +291,68 @@
       display:flex;
       flex-direction: row;
       .infoC{
-        width:27%;
-        margin-left:4.37%;
+        width:0.55rem;
+        margin-left:0.19rem;
         .category{
-          width:90%;
-          padding-bottom:90%;
+          width:100%;
+          padding-bottom:100%;
           position:relative;
-          margin-top:17.857%;
+          margin-top:0.1rem;
           span{
             width:100%;
             height:100%;
             border-radius:100%;
-            border:1px solid #2c69bc;
+            border:1px solid rgba(59,137,249,1);
             position:absolute;
-            color:#8aa5c3;
-            font-size:18px;
-            font-weight:600;
+            color:rgba(181,215,255,1);
+            font-size:0.24rem;
+            font-weight:500;
             display: flex;
             align-items: center;
             justify-content: center;
           }
         }
         .percent{
-          height:49.5%;
+          height:0.74rem;
           display: flex;
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          font-size:12px;
+          background:linear-gradient(180deg,rgba(0,0,0,0) 0%,rgba(0,0,0,0.36) 100%);
           span:nth-child(1){
-            color:#36a45d;
-            font-size:16px;
+            color:rgba(74,226,131,1);
+            font-size:0.16rem;
+            padding-bottom:0.04rem;
+            margin-top:0.04rem;
           }
           span:nth-child(2){
-            color:#2d5e96;
-            margin-top:2%;
+            width:0.15rem;
+            height:1px;
+            background:rgba(74,226,131,1);
+            box-shadow:0px 0px 4px 0px rgba(74,226,131,1);
+            border-radius:1px;
+            margin-bottom:0.08rem;
           }
           span:nth-child(3){
-            color:#62738d;
-            margin-top:2%;
+            color:rgba(73,152,240,1);
+            font-size:0.1rem;
           }
+          span:nth-child(4){
+            display: inline-block;
+            width:110%;
+            color:rgba(181,215,255,1);
+            font-size:0.12rem;
+            transform: scale(0.7,0.7);
+          }
+        }
+      }
+      .infoC:nth-child(2) .percent{
+        span:nth-child(1){
+          color:rgba(255,164,20,1);
+        }
+        span:nth-child(2){
+          background:rgba(255,164,20,1);
+          box-shadow:0px 0px 4px 0px rgba(255,164,20,1);
         }
       }
     }

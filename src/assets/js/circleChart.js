@@ -130,7 +130,7 @@
         ctx1.font= data.size + "px Arial";
         ctx1.textAlign="center";
         ctx1.fillText(data.text,halfWidth,height*0.5);
-        
+
         $(this).append(c1);
 
     }

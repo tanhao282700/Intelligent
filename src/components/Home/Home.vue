@@ -1,14 +1,14 @@
 <template>
   <div id="home">
     <div class="buildModel" >
-      <iframe
+      <!--<iframe
         ref="iframe"
         name="myFrame"
         frameborder="0"
         width="100%"
         height="100%"
         :src="url3d">
-      </iframe>
+      </iframe>-->
     </div>
     <div class="systemName">
       <div class="systemCon">泰立汇云智慧酒店管理系统</div>
@@ -46,7 +46,7 @@
           <span class="titleIcon"></span>
           <span class="txt">请添加系统</span>
         </div>
-        <div class="addIcon">+</div>
+        <div class="addIcon"><img src="../../assets/img/home/add.png" alt=""></div>
       </div>
       <component v-if="partsData[0].componentsName" @deletClick="deletModels" :is="partsData[0].componentsName" :isResize="isResize"></component>
     </div>
@@ -56,7 +56,7 @@
           <span class="titleIcon"></span>
           <span class="txt">请添加系统</span>
         </div>
-        <div class="addIcon">+</div>
+        <div class="addIcon"><img src="../../assets/img/home/add.png" alt=""></div>
       </div>
       <component v-if="partsData[1].componentsName" @deletClick="deletModels" :is="partsData[1].componentsName" :isResize="isResize"></component>
     </div>
@@ -66,7 +66,7 @@
           <span class="titleIcon"></span>
           <span class="txt">请添加系统</span>
         </div>
-        <div class="addIcon">+</div>
+        <div class="addIcon"><img src="../../assets/img/home/add.png" alt=""></div>
       </div>
       <component v-if="partsData[2].componentsName" @deletClick="deletModels" :is="partsData[2].componentsName" :isResize="isResize"></component>
     </div>
@@ -76,7 +76,7 @@
           <span class="titleIcon"></span>
           <span class="txt">请添加系统</span>
         </div>
-        <div class="addIcon">+</div>
+        <div class="addIcon"><img src="../../assets/img/home/add.png" alt=""></div>
       </div>
       <component v-if="partsData[3].componentsName" @deletClick="deletModels" :is="partsData[3].componentsName" :isResize="isResize"></component>
     </div>
@@ -758,8 +758,8 @@
         width:100%;
         height:100%;
       }
-      /*background:url(../../assets/img/home/1.png) no-repeat left top;
-      background-size:cover;*/
+      background:url(../../assets/img/home/1.png) no-repeat left top;
+      background-size:cover;
     }
     .systemName{
       position:absolute;
@@ -1030,8 +1030,8 @@
     }
     .modules{
       position:absolute;
-      background:#11213a;
-      opacity:.9;
+      background:rgba(1,21,48,0.9);
+      /*opacity:.9;*/
       display:flex;
       flex-direction:column;
       width:59.04%;
@@ -1048,13 +1048,13 @@
         flex-direction: row;
         align-items: center;
         justify-content: flex-end;
-        background:#041531;
+        background:rgba(0,12,39,0.4);
         a{
           background:url(../../assets/img/home/close.png) no-repeat center center;
           background-size:cover;
           display: inline-block;
-          width:26px;
-          height:26px;
+          width:0.14rem;
+          height:0.14rem;
           margin-right:12px;
         }
       }
@@ -1150,10 +1150,14 @@
       .addIcon{
         flex:1;
         display: flex;
-        font-size:60px;
-        color:white;
+        /*font-size:60px;
+        color:white;*/
         align-items: center;
         justify-content: center;
+        img{
+          width:0.3rem;
+          height:0.3rem;
+        }
       }
     }
 

@@ -148,7 +148,7 @@
               fontSize:10,
               color:'white',
             },
-            backgroundColor:'rgba(0, 12, 39, 0.4)'
+            backgroundColor:'rgba(113,166,241,1)'
           },
           tooltip : {
             trigger: 'axis',
@@ -160,7 +160,7 @@
             }
           },
           grid: {
-            top: 20,
+            top: 24,
             bottom: 20,
             left:10,
             right:10
@@ -269,11 +269,11 @@
       position:relative;
       img{
         position:absolute;
-        width:24px;
-        height:24px;
+        width:0.14rem;
+        height:0.14rem;
         right:10px;
         top:50%;
-        margin-top:-12px;
+        margin-top:-0.07rem;
         display: none;
       }
       &:hover{

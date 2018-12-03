@@ -41,7 +41,7 @@
           <div class="long" :class="{'anim':animate2}">
             <div class="item" v-for="item in broadTwoList">
               <span>{{item.name}}</span>
-              <span v-text="item.param.showvalue[item.value]"></span>
+              <span v-text="item.param.showvalue[item.value]" :class="{'gre':item.param.showvalue[item.value]=='运行','red':item.param.showvalue[item.value]=='停止'}" ></span>
             </div>
           </div>
         </div>
@@ -367,11 +367,11 @@
       position:relative;
       img{
         position:absolute;
-        width:24px;
-        height:24px;
+        width:0.14rem;
+        height:0.14rem;
         right:10px;
         top:50%;
-        margin-top:-12px;
+        margin-top:-0.07rem;
         display: none;
       }
       &:hover{
@@ -399,8 +399,8 @@
       padding:2.597% 6% 0 6%;
       .con-top{
         margin-top:1.623%;
-        background:rgba(0,0,0,0.15);
-        opacity:.8;
+        background:rgba(0,0,0,0.1);
+        /*opacity:.8;*/
         height: .74rem;
         flex:1;
         display: flex;
@@ -427,7 +427,7 @@
       }
       .conditionEcharts3{
         height:14.123%;
-        background:rgba(0,0,0,0.15);
+        background:rgba(0,0,0,0.1);
         margin-top:1.623%;
         display: flex;
         padding:0 2.272%;
@@ -472,9 +472,9 @@
         display: flex;
         flex-direction: row;
         .broadL{
-          background:rgba(0,0,0,0.3);
+          background:rgba(0,0,0,0.1);
           width:12.64%;
-          color:white;
+          color:rgba(181,215,255,1);
           font-size: 12px;
           display: flex;
           justify-content: center;
@@ -483,8 +483,8 @@
         }
         .broadR{
           flex:1;
-          background:rgba(0,0,0,0.3);
-          opacity: .8;
+          background:rgba(0,0,0,0.1);
+          /*opacity: .8;*/
           overflow:hidden;
           padding:0 4.6%;
           .item{
@@ -503,7 +503,13 @@
               text-overflow: ellipsis;
             }
             span:last-child{
-              color:#61b2b6;
+              color:rgba(45,240,224,1);
+            }
+            .red{
+              color:rgba(245,108,108,1)!important;
+            }
+            .gre{
+              color:rgba(74,226,131,1)!important;
             }
           }
           .anim{

@@ -100,7 +100,7 @@
             bgColor3:"#59FF16"
           },
           inCircleObj:{
-            lineWidth:14,
+            lineWidth:16,
             bgColor1:"#FAD961",
             bgColor2:"#F7A51C",
             bgColor3:"#FAD961",
@@ -111,7 +111,8 @@
           space:4, //内外环间隔
           title:{
             text:"维保评分",
-            color:"#fff",
+            color:"#ffffff",
+            opacity:1,
             size:"14"
           },
           dataValue:{
@@ -134,7 +135,7 @@
             bgColor3:"#59FF16"
           },
           inCircleObj:{
-            lineWidth:14,
+            lineWidth:16,
             bgColor1:"#FAD961",
             bgColor2:"#F7A51C",
             bgColor3:"#FAD961",
@@ -146,11 +147,12 @@
           title:{
             text:"健康度",
             color:"#ffffff",
+            opacity:1,
             size:"14"
           },
           dataValue:{
             text:this.data.health+'%',
-            color:"#F7A51C",
+            color:"#4AE283",
             size:"20"
           }
         }
@@ -242,11 +244,11 @@
       position:relative;
       img{
         position:absolute;
-        width:24px;
-        height:24px;
+        width:0.14rem;
+        height:0.14rem;
         right:10px;
         top:50%;
-        margin-top:-12px;
+        margin-top:-0.07rem;
         display: none;
       }
       &:hover{

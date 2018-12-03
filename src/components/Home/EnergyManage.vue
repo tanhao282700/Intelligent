@@ -74,18 +74,20 @@
                 }
               },
               grid:{
-                bottom:20
+                bottom:20,
+                top: 40,
               },
               legend: {
                 data:[
                   '当前','计划'
                 ],
-                right:0,
+                right:'7%',
+                itemWidth: 10,
+                itemHeight: 10, // 设置高度
                 textStyle:{
                   color:"#858994"
                 },
-                align:"left",
-                left:"right"
+                align:"left"
               },
               calculable : true,
               xAxis : [
@@ -115,7 +117,15 @@
                   type:'bar',
                   itemStyle: {
                     normal: {
-                      color:'#2a84c0',
+                      /*color:'#2a84c0',*/
+                      barBorderRadius:[2, 2, 0, 0],
+                      color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                        offset: 0,
+                        color: '#49BFFF'
+                      }, {
+                        offset: 1,
+                        color: '#2088DB'
+                      }]),
                       opacity:1,
                       label:{
                         show:true,
@@ -134,8 +144,15 @@
                   type:'bar',
                   itemStyle: {
                     normal: {
-                      color:'#1fb3a3',
-                      opacity:1,
+                      /*color:'#1fb3a3',*/
+                      barBorderRadius:[2, 2, 0, 0],
+                      color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                        offset: 0,
+                        color: '#32E2F0'
+                      }, {
+                        offset: 1,
+                        color: '#20DBB5'
+                      }]),
                       label:{
                         show:true,
                         position:'top',
@@ -538,11 +555,11 @@
       position:relative;
       img{
         position:absolute;
-        width:24px;
-        height:24px;
+        width:0.14rem;
+        height:0.14rem;
         right:10px;
         top:50%;
-        margin-top:-12px;
+        margin-top:-0.07rem;
         display: none;
       }
       &:hover{

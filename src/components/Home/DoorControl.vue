@@ -112,12 +112,12 @@
           series : [
             {//显示指示线
               type: 'pie',
-              /*radius: '55%',//饼图的半径大小*/
+              radius: '55%',//饼图的半径大小
               center: ['51%', '42%'],//饼图的位置
               labelLine:{
                 show:true,
-                length:6,
-                length2:6
+                length:18,
+                length2:14
               },
               data: [//此处传入两遍数组为关键处,百分比和指示线文字为两张饼图,叠加在一起显示效果
                 {value:serviceData.start, name: '开启数'},
@@ -169,11 +169,11 @@
       position:relative;
       img{
         position:absolute;
-        width:24px;
-        height:24px;
+        width:0.14rem;
+        height:0.14rem;
         right:10px;
         top:50%;
-        margin-top:-12px;
+        margin-top:-0.07rem;
         display: none;
       }
       &:hover{
@@ -218,12 +218,13 @@
           align-items: center;
           margin-left:4.545%;
           color:#91b3d9;
-          font-size:14px;
+          font-size:0.14rem;
         }
         span:last-child{
           display: flex;
           justify-content:flex-end;
-          font-size:20px;
+          font-size:0.24rem;
+          font-weight:bold;
           color:white;
           margin-right:4.545%;
           letter-spacing: 2px;
@@ -239,6 +240,7 @@
         height:13.567%;
         color:white;
         display: flex;
+        font-size:0.14rem;
         align-items: center;
       }
       .partCon{
