@@ -135,7 +135,7 @@
 	    	},
 	    	getChartData(){
                 var that = this;
-                var monthPa = '';
+                var monthPa = this.floorNumber;
                 if(Number(this.floorNumber) <= 9){
                 	monthPa = '0'+ Number(this.floorNumber);
                 }
