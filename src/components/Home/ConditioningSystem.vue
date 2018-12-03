@@ -458,8 +458,11 @@
               text-align: center;
             }
           }
-          .system .active{
+          &:nth-child(1) .system .active{
             background:#0089fd;
+          }
+          &:nth-child(2) .system .active{
+            background:rgba(245,108,108,1);
           }
           .host .active{
             background:#f56e6a;
