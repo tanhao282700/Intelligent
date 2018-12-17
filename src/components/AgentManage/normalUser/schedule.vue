@@ -612,11 +612,12 @@ export default {
   .tabBoxs{
     width:100%;
     padding:0 2.2%;
-    height :6rem;
+    height :6.5rem;
     overflow:hidden;
     .tabChilds{
+      height:6rem;
       overflow-y:scroll;
-      height:5.9rem;
+      margin-bottom:0.3rem;
     }
     .reason{
       padding:0.1rem 0.2rem;
@@ -724,6 +725,7 @@ export default {
     .tabLists{
       width:95%;
       margin:0 0.26rem;
+      margin-bottom:0.3rem;
       flex: 1;
       display: flex;
       flex-direction:column;

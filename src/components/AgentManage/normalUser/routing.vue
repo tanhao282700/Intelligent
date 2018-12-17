@@ -977,8 +977,8 @@ export default {
 }
 .isRbtnBoxs2{
     width: 100%;
-    height:0.4rem;
-    line-height:0.4rem;
+    height:0.32rem;
+    line-height:0.32rem;
     display:flex;
     width:17.94%;
     overflow: hidden;
@@ -989,7 +989,7 @@ export default {
     span{
         flex: 1;
         text-align: center;
-        line-height:0.4rem;
+        line-height:0.32rem;
         font-size: 0.16rem;
         color: #fff;
         cursor: pointer;
