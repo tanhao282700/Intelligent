@@ -87,6 +87,10 @@
     watch:{
       isResize(){
         /*this.revenueCharts1.resize()*/
+        $("#conditionEcharts1 canvas").remove()
+        $("#conditionEcharts2 canvas").remove()
+        clearInterval(this.conditionInterval);
+        this.initData()
       }
     },
     beforeDestroy() {

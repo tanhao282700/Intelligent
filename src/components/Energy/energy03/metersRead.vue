@@ -13,6 +13,7 @@
       <div class="meterNav">
         <span v-if="sysInfo.role_string[5]!=0" @click="changeView('ReadNumber')" :class="{'active':viewPath=='ReadNumber'}">实时读数</span>
         <span v-if="sysInfo.role_string[6]!=0" @click="changeView('History')" :class="{'active':viewPath=='History'}">历史记录录入</span>
+        <span @click="changeView('RecordHistory')" :class="{'active':viewPath=='RecordHistory'}">表具历史读数</span>
       </div>
       <div class="meterCon boxs">
         <component :is="viewPath"></component>
@@ -27,9 +28,10 @@
 <script>
   import ReadNumber from './ReadNumber.vue'
   import History from './History.vue'
+  import RecordHistory from './RecordHistory.vue'
   export default {
     name: 'meterCopy',
-    components: {ReadNumber,History},
+    components: {ReadNumber,History,RecordHistory},
     data () {
       return {
         viewPath:'',
@@ -74,8 +76,9 @@
           font-size:.16rem;
           display: flex;
           align-items: center;
-          &:last-child{
-            margin-left:24px;
+          margin-left:24px;
+          &:first-child{
+            margin-left:0;
           }
           &:hover{
             cursor: pointer;

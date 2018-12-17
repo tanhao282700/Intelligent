@@ -401,15 +401,15 @@
           }
         }
         .containerBor{
-          width:103px;
-          height:103px;
+          width:1.03rem;
+          height:1.03rem;
           border-radius:50%;
           border:2px solid #167cc4;
           position:absolute;
           left:50%;
           top:50%;
-          margin-left:-51px;
-          margin-top:-51px;
+          margin-left:-0.51rem;
+          margin-top:-0.51rem;
         }
         .container{
           width:100%;
@@ -428,8 +428,8 @@
           .wave::before,.wave::after{
             content:"";
             position:absolute;
-            width:200px;
-            height:200px;
+            width:2rem;
+            height:2rem;
             top:0;
             left:50%;
             background:rgba(1, 21, 48, 0.6);

@@ -27,6 +27,7 @@
           <span class="countsBg countsR"></span>
         </div>
       </div>
+      <div class="sparet"></div>
       <div class="chart" id="equipmentTwo" ref="equipmentTwo"></div>
       <div class="chart" id="equipmentThree" ref="equipmentThree"></div>
     </div>
@@ -113,7 +114,7 @@
             text:"维保评分",
             color:"#ffffff",
             opacity:1,
-            size:"14"
+            size:"0.14rem"
           },
           dataValue:{
             text:this.data.maintenance+'%',
@@ -148,7 +149,7 @@
             text:"健康度",
             color:"#ffffff",
             opacity:1,
-            size:"14"
+            size:"0.14rem"
           },
           dataValue:{
             text:this.data.health+'%',
@@ -284,6 +285,15 @@
     /*.chart{
       flex-basis: 33.333%;
     }*/
+    .sparet{
+      width:1px;
+      height:2.4rem;
+      background:linear-gradient(180deg,rgba(74,144,226,0) 0%,rgba(74,144,226,0.5) 50%,rgba(74,144,226,0) 100%);;
+      position:absolute;
+      left:47%;
+      top:24%;
+      transform: rotate(130deg);
+    }
     #equipmentTwo{
       padding-right:2%;
       height:34.985%;
