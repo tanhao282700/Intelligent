@@ -73,6 +73,7 @@ export default {
  .chooseBox2{
     display:inline-block;
     height:100%;
+    width:100%;
     position:relative;
     .chooseBoxIn{
       position:absolute;

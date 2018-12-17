@@ -53,11 +53,11 @@
            :icon="'el-icon-caret-top'"/>
         </div>
         <div class="selectX">
-          <div class = "inputbox">
+          <div class = "inputbox inputbox2">
               <span v-text="'设备地址'" ></span>
               <el-input
                 type="text"
-                class="selectdown selectdown1"
+                class="deviceaddr"
                 placeholder="请输入地址"
                 v-model="formvals.floor"
                 clearable>
@@ -69,7 +69,7 @@
               <span v-text="'任务描述'" ></span>
               <el-input
                 type="text"
-                class="selectdown"
+                class="taskdesc"
                 placeholder="请输入描述"
                 v-model="formvals.description"
                 clearable>
@@ -109,18 +109,11 @@ export default {
           floor:''
        },
        cssStyle:{
-          'width':'5.73vw',
-          'height':30*100/728+'vh',
+          'width':'0.9rem',
+          'height':'0.3rem',
           'color':'#4F648B',
-          'lineHeight':30*100/728+'vh',
-          'textAlign':'center',
-          'display':'inline-block'
-       },
-       cssStyle2:{
-          'width':'6.73vw',
-          'height':30*100/728+'vh',
-          'color':'#4F648B',
-          'verticalAlign':'top',
+          'float':'left',
+          'lineHeight':'0.3rem',
           'textAlign':'center',
           'display':'inline-block'
        },
@@ -175,7 +168,7 @@ export default {
 .sendWork{
     .infoTit{
         width: 100%;
-        .vh(46);
+        height:0.46rem;
         background: rgba(0, 0, 0, 0.2);
         display: flex;
         align-items: center;
@@ -184,64 +177,79 @@ export default {
         span{
             position: absolute;
             color: #fff;
-            font-size: 16*100/728vh;
+            font-size: 0.16rem;
             left: 0.2rem;
-            .vhTop(17);
-            .vh(16);
-            .vhLH(16);
+            top:0.17rem;
+            height:0.16rem;
+            line-height:0.16rem;
         }
     }
     .selectX1{
-      .vhMT(20);
+      margin-top:0.2rem;
     }
     .selectX,.inputBox{
-      .vhMB(16);
+      margin-bottom:0.16rem;
       height:0.32rem;
       span{
-        width:6.73vw;
+        width:0.9rem;
         color:#4F648B;
         text-align:center;
         display:inline-block;
       }
+      .deviceaddr{
+        width:4.1rem;
+        background:#001837;
+        -moz-box-shadow:0 3px 5px #000 inset;               
+        -webkit-box-shadow:0 4px 5px #000 inset;            
+        box-shadow:0 3px 5px #000 inset;               
+      }
       .selectdown{
         border:1px solid #1989FA;
-        width:14.64vw;
-        border-radius:3px;
+        width:2rem;
+        border-radius:0.03rem;
       }
     }
     .selectX3{
-      .vh(100);
-      .selectdown{
-        width:30vw;
+      height:1rem;
+      .taskdesc{
+        width:4.1rem;
+        background:#001837;
+        -moz-box-shadow:0 3px 5px #000 inset;               
+        -webkit-box-shadow:0 4px 5px #000 inset;            
+        box-shadow:0 3px 5px #000 inset;      
+      }
+      span{
+        float:left;
+        line-height:0.32rem;
+        width:0.92rem;
       }
     }
     .sendWork2Boxs{
         color:#fff;
         text-align:center;
         span{
-          width: 5.71vw;
-          .vh(32);
-          .vhLH(32);
+          width: 0.98rem;
+          position:absolute;
+          bottom:0.26rem;
+          left:2.25rem;
+          height:0.32rem;
+          line-height:0.32rem;
           display:inline-block;
-          padding-left:1.46vw;
+          padding-left:0.2rem;
           box-shadow:0px 2px 5px 0px rgba(74,144,226,0.4),1px 1px 1px 0px rgba(248,253,255,0.15),0px 0px 1px 0px rgba(74,144,226,1);
-          border-radius:2px;
+          border-radius:0.03rem;
           background:#3B85EF url('../../../../assets/img/AgentManage/eject-distribution.png')no-repeat 0.73vw center;
-          background-size:1.46vw;
+          background-size:0.2rem;
           &:hover{
             cursor:pointer;
           }
         }
     }
-    .inputbox{
-      .inputType{
-        display:inline-block;
-        width:31.92vw;
-        .vh(32);
-        border:1px solid #051732;
-        border-radius:2px;
-      }
-  }
+    .inputbox2 span{
+      float:left;
+      width:0.92rem;
+      line-height:0.32rem;
+    }
 }
     
 </style>

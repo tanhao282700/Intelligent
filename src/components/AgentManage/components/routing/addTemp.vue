@@ -161,6 +161,22 @@
           <el-col :span="8">
             <el-row>
               <el-col :span="6" class="addContLabel">
+                结束时间<i>*</i>
+              </el-col>
+              <el-col :span="18" class="addContInput">
+                <el-date-picker
+                  v-model="formval.endtime"
+                  type="date"
+                  format="yyyy-MM-dd"
+                  value-format="yyyy-MM-dd"
+                  placeholder="选择日期">
+                </el-date-picker>
+              </el-col>
+            </el-row>
+          </el-col>
+          <el-col :span="8">
+            <el-row>
+              <el-col :span="6" class="addContLabel">
                 巡检周期<i>*</i>
               </el-col>
               <el-col :span="18" class="addContInput" v-if="formvals1.periods">
@@ -183,6 +199,8 @@
               </el-col>
             </el-row>
           </el-col>
+        </el-row>
+        <el-row>
           <el-col :span="8">
             <el-row>
               <el-col :span="6" class="addContLabel">
@@ -208,8 +226,6 @@
               </el-col>
             </el-row>
           </el-col>
-        </el-row>
-        <el-row>
           <el-col :span="8">
             <el-row>
               <el-col :span="6" class="addContLabel">
@@ -314,6 +330,9 @@
           if(this.formval.starttime){
             this.formval.starttime = utils.time(new Date(this.formval.starttime)/1000,1)
           }
+          if(this.formval.endtime){
+            this.formval.endtime = utils.time(new Date(this.formval.endtime)/1000,1)
+          }
           let res = []
           if(this.formval.data){
             let data = this.formval.data;
@@ -324,6 +343,7 @@
           this.$emit('saveAdd',{
               id:this.formvals.id,
               start_date: this.formval.starttime,
+              end_date:this.formval.endtime,
               user_id: this.formval.exam,
               sys_id: this.formval.system,
               floor_id: this.formval.area,

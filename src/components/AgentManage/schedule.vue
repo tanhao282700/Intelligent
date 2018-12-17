@@ -92,8 +92,8 @@
             <span v-text="dia.addtime"></span>
           </div>
           <div class="examFlag">
-            <img class="rightBotm" v-show="dia.state==0" src="../../assets/img/generation/isno.png" alt="">
-            <img class="rightBotm" v-show="dia.state==1" src="../../assets/img/generation/isok.png" alt="">
+            <img class="rightBotm" v-show="dia.state==1" src="../../assets/img/AgentManage/approval.png" alt="">
+            <img class="rightBotm" v-show="dia.state==0" src="../../assets/img/AgentManage/refuse.png" alt="">
           </div>
           <div class="diaBtns" v-show="dia.state==-1">
             <div class="diabtn diabtn22" @click="isNo(dia,dia.index)">驳回</div>
@@ -171,7 +171,7 @@ export default {
         this.$refs.dialog.show();
       },
       showInfoed(item){
-        console.log(item);
+        //console.log(item);
         this.dia = item;
         this.$refs.dialog.show();
       },
@@ -325,8 +325,8 @@ export default {
   .examFlag{
     .rightBotm{
       position:absolute;
-      bottom:0;
-      right:0;
+      bottom:-0.1rem;
+      right:-0.1rem;
     }
   }
   .pBody{

@@ -44,7 +44,7 @@
 }
 .inputBox .el-input .el-input__inner{
   border: 1px solid #051732 !important;
-  box-shadow:0px 0px 1px 0px rgba(87,113,176,0.15),0px 1px 2px 0px rgba(0,0,0,0.5)
+  /*box-shadow:0px 0px 1px 0px rgba(87,113,176,0.15),0px 1px 2px 0px rgba(0,0,0,0.5)*/
 }
 .inputBox .el-textarea textarea{
   height:20.05vh;

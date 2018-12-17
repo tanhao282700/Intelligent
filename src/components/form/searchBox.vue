@@ -70,6 +70,18 @@ export default {
         color:#eee;
         font-size: 0.12rem;
     }
+    input::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+        color:#fff;
+    }
+    input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+       color:#fff;
+    }
+    input::-moz-placeholder { /* Mozilla Firefox 19+ */
+       color:#fff;
+    }
+    input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+       color:#fff;
+    }
     .searchBtn{
         width: 0.37rem;
         .vh(16);

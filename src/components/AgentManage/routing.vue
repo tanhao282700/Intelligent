@@ -546,6 +546,7 @@ export default {
               area:res.data.data.floor_id,
               device:res.data.data.device_id,
               starttime:res.data.data.addtime,
+              endtime:res.data.data.end_date,
               period:res.data.data.cycle,
               addr:res.data.data.ins_place,
               desc:res.data.data.remarks,

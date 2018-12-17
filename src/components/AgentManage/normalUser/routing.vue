@@ -933,37 +933,32 @@ export default {
   padding:0.1rem;
 }
 .isRefTxt{
-    height:2.16rem;
-    width: 3.64rem;
+    width: 100%;
     text-align: center;
     font-size: 0.18rem;
     color: #b5d7ff;
-    line-height:1.72rem;
+    margin:0.9rem auto 0.82rem;
 }
 .isRbtnBoxs{
-    width: 3.64rem;
-    height:0.44rem;
+    width: 100%;
+    height:0.42rem;
     position:absolute;
     bottom:0;
     left:0;
+    overflow: hidden;
     border: 0.01rem solid #4a90e2;
     border-bottom-left-radius: 0.08rem;
     border-bottom-right-radius: 0.08rem;
     span{
-        width:1.81rem;
-        float:left;
         display:inline-block;
+        width:1.791rem;
         text-align: center;
-        line-height:0.44rem;
-        height:0.44rem;
+        line-height:0.44rem;            
         font-size: 0.16rem;
         color: #fff;
         cursor: pointer;
         &:nth-child(1){
-            border-right: 0.01rem solid #4a90e2;
-        }
-        &:hover{
-            background: #3b85ef;
+            background:  #3b85ef;
         }
     }
 }
@@ -982,8 +977,8 @@ export default {
 }
 .isRbtnBoxs2{
     width: 100%;
-    height:0.32rem;
-    line-height:0.32rem;
+    height:0.4rem;
+    line-height:0.4rem;
     display:flex;
     width:17.94%;
     overflow: hidden;
@@ -994,7 +989,7 @@ export default {
     span{
         flex: 1;
         text-align: center;
-        line-height:0.32rem;
+        line-height:0.4rem;
         font-size: 0.16rem;
         color: #fff;
         cursor: pointer;

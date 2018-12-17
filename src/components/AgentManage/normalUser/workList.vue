@@ -237,10 +237,11 @@
                       />
                   </div>
               </div>
+              <div class="sendWork2Boxs btnBai1" @click="sendWork2">
+                  <span>确定</span>
+              </div>
           </div>
-          <div class="sendWork2Boxs btnBai1" @click="sendWork2">
-              <span>确定</span>
-          </div>
+          
       </Dialog>
       
   </div>
@@ -1013,17 +1014,15 @@ export default {
       }
   }
   .sendWork2{
-      .vh(197);
       width: 100%;
-      padding-top:0.13rem;
-      padding-left: 0.20rem;
+      height:100%;
+      padding:0.22rem;
       .oldName,.newName{
           width: 100%;
           font-size: 0.14rem;
           label{
-              height:0.32rem;
-              line-height:0.32rem;
-              color: #4f648b;
+              color: #4f648b;  
+              line-height:0.32rem; 
           }
           span.namess{
               color: #ffa414;
@@ -1039,47 +1038,45 @@ export default {
                   font-size: 0.14rem !important;
                   color: green!important;
               }
-          }
+          } 
       }
-    }
-    .sendWork2Boxs{
-        width: 3.84rem;
-        height:0.43rem;
-        margin-left: 0.15rem;
+      .sendWork2Boxs.btnBai1{
+          width:100%;
+          height:0.44rem;
+          line-height:0.44rem;
+          background:#3b85ef;
+          color:#fff;
+          margin-top:0.6rem;
+      } 
     }
 }
 .isRefTxt{
-    height:2.16rem;
-    width: 3.64rem;
+    width: 100%;
     text-align: center;
     font-size: 0.18rem;
     color: #b5d7ff;
-    line-height:1.72rem;
+    margin:0.9rem auto 0.82rem;
 }
 .isRbtnBoxs{
-    width: 3.64rem;
-    height:0.44rem;
+    width: 100%;
+    height:0.42rem;
     position:absolute;
     bottom:0;
     left:0;
+    overflow: hidden;
     border: 0.01rem solid #4a90e2;
     border-bottom-left-radius: 0.08rem;
     border-bottom-right-radius: 0.08rem;
     span{
-        width:1.81rem;
-        float:left;
         display:inline-block;
+        width:1.791rem;
         text-align: center;
-        line-height:0.44rem;
-        height:0.44rem;
+        line-height:0.44rem;            
         font-size: 0.16rem;
         color: #fff;
         cursor: pointer;
         &:nth-child(1){
-            border-right: 0.01rem solid #4a90e2;
-        }
-        &:hover{
-            background: #3b85ef;
+            background:  #3b85ef;
         }
     }
 }
@@ -1098,8 +1095,8 @@ export default {
 }
 .isRbtnBoxs2{
     width: 100%;
-    height:0.32rem;
-    line-height:0.32rem;
+    height:0.4rem;
+    line-height:0.4rem;
     display:flex;
     width:17.94%;
     overflow: hidden;
@@ -1110,16 +1107,11 @@ export default {
     span{
         flex: 1;
         text-align: center;
-        line-height:0.32rem;
+        line-height:0.4rem;
         font-size: 0.16rem;
         color: #fff;
         cursor: pointer;
-        &:nth-child(1){
-            border-right: 0.01rem solid #4a90e2;
-        }
-        &:active{
-            background: #3b85ef;
-        }
+        background: #3b85ef;
     }
 }
 </style>

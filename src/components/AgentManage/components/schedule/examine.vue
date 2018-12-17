@@ -83,14 +83,15 @@ export default {
     display: flex;
     flex-direction: column;
     .searchBox0{
-        .vh(70);
+        height:0.35rem;
         width: 100%;
-        .vhPT(20);
+        margin:0.18rem 0 0.15rem;
         padding-left: 0.2rem;
     }
     .listBoxs{
         height:5.08rem;
         padding-top:0.03rem;  
+        padding-bottom:0.3rem;
         .examBoxs{
             width: 3rem;
             background: rgba(0,0,0,0.25);

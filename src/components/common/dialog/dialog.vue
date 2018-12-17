@@ -4,7 +4,7 @@
             <div class="modalBg"></div>
             <transition name="moveTop">
                 <div class="modalBoxIn" :style = "{width:wids,height:heis}" v-if = "isShow">
-                    <i class="el-icon-circle-close colseBoxs" @click="hide"></i>
+                    <i class="colseBoxs" @click="hide"></i>
                     <div v-show="tits!=''" class="titBox" v-text = "tits"></div>
                     <slot></slot>
                 </div>
@@ -118,10 +118,12 @@ export default {
             8px 24px 50px 0px
             rgba(113, 166, 241, 0.1);
             border-radius: 0.08rem;
-            overflow: hidden;
+            
             .colseBoxs{
                 width: 0.2rem;
                 height:0.2rem;
+                background:url('../../../assets/img/AgentManage/close.png')no-repeat;
+                background-size:0.2rem 0.2rem;
                 position: absolute;
                 right:0.05rem;
                 top: 0.05rem;

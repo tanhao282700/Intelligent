@@ -62,7 +62,7 @@
           <i class="el-icon-third-feiji"></i>
         </div>
       </div>
-      <Dialog wid="526" hei="606" ref="send"> 
+      <Dialog wid="5.5rem" hei="6.1rem" ref="send"> 
         <SendWork @sendInfosShow="sendInfosShow" :query="query3" @getDevVal="getDevice"/> <!-- 派单 -->
       </Dialog> 
       <Dialog wid="1200" hei="600" ref="dialog">
@@ -86,16 +86,16 @@
           </div>
         </div>
       </Dialog>  
-      <Dialog wid="364" hei="216" ref="isRefult"><!-- 同意退单 -->
+      <Dialog wid="3.64rem" hei="2.16rem" ref="isRefult"><!-- 同意退单 -->
           <div v-text="dialogBoxs.txt" class="isRefTxt"></div>
           <div class="isRbtnBoxs">
               <span @click="submitOk">确定</span>
               <span @click="submitNo">取消</span>
           </div>
       </Dialog> 
-      <Dialog wid="414" hei="260" ref="sendWork2"><!-- 重新选择工单处理人员 -->
+      <Dialog wid="4.14rem" hei="2.6rem" ref="sendWork2"><!-- 重新选择工单处理人员 -->
           <div class="sendWork2">
-              <div class="oldName" style="padding-top:0.2rem">
+              <div class="oldName">
                   <label for="">原处理人员：{{detalrowdata.user_name}}</label>
                   <span class="namess" v-text="dialogBoxs.item.name"></span>
               </div>
@@ -110,9 +110,9 @@
                       />
                   </div>
               </div>
-          </div>
-          <div class="sendWork2Boxs btnBai1" @click="sendWork2">
-              <span>确定</span>
+              <div class="sendWork2Boxs btnBai1" @click="sendWork2">
+                  <span>确定</span>
+              </div>
           </div>
       </Dialog>    
   </div>
@@ -1035,17 +1035,15 @@ export default {
       }
   }
   .sendWork2{
-      height:1.97rem;
       width: 100%;
-      paddidng-top:0.13rem;
-      padding-left: 0.20rem;
+      height:100%;
+      padding:0.22rem;
       .oldName,.newName{
           width: 100%;
           font-size: 0.14rem;
           label{
-              height:0.32rem;
+              color: #4f648b;  
               line-height:0.32rem; 
-              color: #4f648b;   
           }
           span.namess{
               color: #ffa414;
@@ -1061,43 +1059,46 @@ export default {
                   font-size: 0.14rem !important;
                   color: green!important;
               }
-          }            
+          } 
       }
+      .sendWork2Boxs.btnBai1{
+          width:100%;
+          height:0.44rem;
+          line-height:0.44rem;
+          background:#3b85ef;
+          color:#fff;
+          margin-top:0.6rem;
+      } 
     }
-    .sendWork2Boxs{
-        width: 3.84rem;
-        height:0.43rem;
-        margin-left: 0.15rem;
-    }
+
 }
 .isRefTxt{
-    height:1.75rem;
     width: 100%;
     text-align: center;
     font-size: 0.18rem;
     color: #b5d7ff;
-    line-height:1.45rem;
+    margin:0.9rem auto 0.82rem;
 }
 .isRbtnBoxs{
     width: 100%;
-    height:0.45rem;
-    display:flex;
+    height:0.42rem;
+    position:absolute;
+    bottom:0;
+    left:0;
     overflow: hidden;
     border: 0.01rem solid #4a90e2;
     border-bottom-left-radius: 0.08rem;
     border-bottom-right-radius: 0.08rem;
     span{
-        flex: 1;
+        display:inline-block;
+        width:1.791rem;
         text-align: center;
-        line-height:0.45rem;            
+        line-height:0.44rem;            
         font-size: 0.16rem;
         color: #fff;
         cursor: pointer;
         &:nth-child(1){
-            border-right: 0.01rem solid #4a90e2;
-        }
-        &:active{
-            background: #3b85ef;
+            background:  #3b85ef;
         }
     }
 }
