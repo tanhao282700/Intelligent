@@ -58,8 +58,9 @@
         </div>
       </div>
       <div class="dispatch">
-        <div class="dispatchBtn" @click="sendWork">
-          <i class="el-icon-third-feiji"></i>
+        <div @click="sendWork">
+          <div class="dispatchBtn"><i class="el-icon-third-feiji"></i></div>
+          <div>工单派发</div>
         </div>
       </div>
       <Dialog wid="5.5rem" hei="6.1rem" ref="send"> 
@@ -940,12 +941,15 @@ export default {
   }
   .dispatch{
     width: 100%;
-    height:1rem;
+    height:1.14rem;
     display: flex;
     // align-items: center;
     justify-content: center;
+    color:#fff;
+    line-height:0.3rem;
+    text-align:center;
     .dispatchBtn{
-      margin-top:0.4rem;
+      margin-top:0.26rem;
       width: 0.6rem;
       height: 0.6rem;
       border-radius: 50%;
