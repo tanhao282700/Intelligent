@@ -13,10 +13,9 @@
       <el-table :data="tableData" style="width: 100%;" height="100%">
         <el-table-column prop="indexs" label="序号" align="cneter"></el-table-column>
         <el-table-column prop="time" label="操作时间" align="cneter"></el-table-column>
-        <el-table-column prop="user_name" label="操作人"  align="cneter"></el-table-column>
         <el-table-column prop="floor_name" label="位置"  align="cneter"></el-table-column>
         <el-table-column prop="device_name" label="操作设备"  align="cneter"></el-table-column>
-        <el-table-column prop="word" label="操作内容"  align="cneter"></el-table-column>
+        <el-table-column prop="reason" label="操作内容"  align="cneter"></el-table-column>
       </el-table>
       <!-- pages -->
       <div class="paginationBox">
@@ -63,7 +62,7 @@
     methods:{
       getData(){
         let that = this;
-        this.$http.get('hvac_pc/pc/manual/control/record',{
+        this.$http.get('hvac_pc/pc/auto/control/record',{
           pagenumber:this.currentPage,
           pagesize:this.pagesize
         }).then(function(res){
