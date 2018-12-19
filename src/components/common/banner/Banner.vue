@@ -50,7 +50,7 @@
               <span class="textPL">权限管理</span>
             </el-menu-item>
             <el-menu-item class="noChildModule" index="/operationLog">
-              <i class="el-icon-location noLog operationLog"></i>
+              <i class="el-icon-location noLog operationLogNav"></i>
               <span class="textPL">操作日志</span>
             </el-menu-item>
           </el-menu>
@@ -168,7 +168,7 @@
     background:url(../../../assets/img/home/Authoritymanagement.png) no-repeat center;
     background-size:100% 100%;
   }
-  .operationLog{
+  .operationLogNav{
     width:22px!important;
     height:20px!important;
     background:url(../../../assets/img/home/operationLog.png) no-repeat center;
