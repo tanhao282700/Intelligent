@@ -49,6 +49,10 @@
               <i class="el-icon-location noLog Authoritymanagement"></i>
               <span class="textPL">权限管理</span>
             </el-menu-item>
+            <el-menu-item class="noChildModule" index="/operationLog">
+              <i class="el-icon-location noLog Authoritymanagement"></i>
+              <span class="textPL">操作日志</span>
+            </el-menu-item>
           </el-menu>
         </el-col>
       </el-row>

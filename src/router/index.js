@@ -9,6 +9,10 @@ import metersRead from '@/components/Energy/energy03/metersRead';  //三表远�
 import energyPreset from '@/components/Energy/energy04/energyPreset';  //用能预设子组件
 import energyReport from '@/components/Energy/energy05/energyReport';  //用能报表子组件
 
+//操作日志
+import operationLog from '@/components/operationLog/operationLog';
+import autoOperation from '@/components/operationLog/components/autoOperation';
+import manualOperation from '@/components/operationLog/components/manualOperation';
 
 //代维系统管理端
 import generationMIndex0 from '@/components/AgentManage/index0';
@@ -271,6 +275,16 @@ export default new Router({
         }
       }
     },
-
+    {
+      path: '/operationLog',
+      component: operationLog,
+      children: [
+        {path: '/operationLog/components/autoOperation', component: autoOperation},
+        {path: '/operationLog/components/manualOperation', component: manualOperation},
+      ],
+      redirect: to => {
+        return '/operationLog/components/autoOperation'
+      }
+    },
   ]
 })
