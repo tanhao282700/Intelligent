@@ -16,7 +16,7 @@ nav.tabNav span a.on{color:#008aff;}
 .borderShadow{width:100%;height:100%;position: relative;padding-top: 0.5rem;padding-bottom: 10px;-webkit-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);-moz-box-shadow:0 0 10px rgba(74, 144, 226, 0.22);box-shadow:0 0 10px rgba(74, 144, 226, 0.22);}
 .tabsDomBox{padding-top: 0.85rem;position: relative;width:100%;height:100%;}
 .tableBox{width:100%;height:100%;position:relative;box-sizing:border-box;padding-bottom:50px;}
-.navCrumbs{position: absolute;top:50px;left:0;display: block;height:30px;line-height: 30px;color:#4d5d76;font-size: 0.12rem;}
+.navCrumbs{position: absolute;top:0.5rem;left:0;display: block;height:30px;line-height: 30px;color:#4d5d76;font-size: 0.12rem;}
 .navCrumbs>span{color:#008aff;}
 .tabsDomBox .searchConditionBox{position: absolute;left:0;top:0px;height:0.5rem;display: flex;align-items:center;width:100%;padding-left:15px;}
 .searchConditionBox .dateBox{height:0.32rem;padding-right:20px;float: left;}
