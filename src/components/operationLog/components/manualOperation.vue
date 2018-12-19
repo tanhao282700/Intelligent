@@ -71,7 +71,7 @@
                 console.log(res);
                 that.tableData = res.data.data;
                 $.each(that.tableData,(i,k)=>{
-                    that.tableData[i].indexs = (that.currentPage-1)*that.pagesize+1+i;
+                    k.indexs = (that.currentPage-1)*that.pagesize+1+i;
                 })
                 that.totalPageNum = Math.ceil(res.data.data.length / that.pagesize);
               }, function(response){
