@@ -3,6 +3,15 @@
        element-loading-background="rgba(0, 0, 0, 0.5)"
        element-loading-spinner="el-icon-loading">
     <div class="head">
+      <div class="timeSercher">
+        <el-date-picker
+          v-model="value6"
+          type="daterange"
+          range-separator="-"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期">
+        </el-date-picker>
+      </div>
       <div class="type">
         <span @click="changeType(1)" :class="{'active':currentType==1}">区域
           <div class="spacing">
@@ -116,6 +125,7 @@
     name:'ReadNumber',
     data(){
       return{
+        value6:'',
         recordType:1,
         typeName:'电表名',
         tableData: [],
@@ -150,122 +160,6 @@
     mounted(){
       setTimeout(()=>{
         this.loading = false;
-        this.tableData = [{
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        }, {
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        }, {
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        }, {
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        }, {
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        }, {
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        }, {
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        },{
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        },{
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        },{
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        },{
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        },{
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        },{
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        },{
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        },{
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        },{
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        },{
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        },{
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        },{
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        },{
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        },{
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        },{
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        },{
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        }]
       },100)
     },
     beforeDestroy(){
@@ -359,6 +253,17 @@
     width:578px!important;
     height:536px!important;
   }
+  .timeSercher .el-date-editor .el-range-input{
+    height: 90%!important;
+    background: none!important;
+    border-bottom: 1px solid #1989fa!important;
+    color: #ffffff!important;
+    font-size:0.12rem;
+  }
+  .timeSercher .el-date-editor .el-range-separator{
+    color: #ffffff!important;
+    line-height: 0.2rem!important;
+  }
 </style>
 <style lang="less" rel="stylesheet/less" scoped>
   @import '../../../assets/css/comon.less';
@@ -375,6 +280,13 @@
       justify-content: center;
       align-items: center;
       position:relative;
+      .timeSercher{
+        width:2.4rem;
+        height:55.17%;
+        position:absolute;
+        left:0;
+        top:22.4%;
+      }
       .type{
         width:30%;
         height:55.17%;

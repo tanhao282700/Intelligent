@@ -283,7 +283,7 @@ export default new Router({
         {path: '/operationLog/components/manualOperation', component: manualOperation},
       ],
       redirect: to => {
-        return '/operationLog/components/autoOperation'
+        return '/operationLog/components/manualoperation'
       }
     },
   ]
