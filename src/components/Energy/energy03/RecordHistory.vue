@@ -3,6 +3,16 @@
        element-loading-background="rgba(0, 0, 0, 0.5)"
        element-loading-spinner="el-icon-loading">
     <div class="head">
+      <div class="timeSercher">
+        <el-date-picker
+          v-model="timeModel"
+          type="daterange"
+          value-format="yyyyMMdd"
+          range-separator="-"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期">
+        </el-date-picker>
+      </div>
       <div class="type">
         <span @click="changeType(1)" :class="{'active':currentType==1}">区域
           <div class="spacing">
@@ -92,15 +102,15 @@
               :label="typeName">
             </el-table-column>
             <el-table-column
-              prop="startRecord"
+              prop="start_read"
               label="起始读数">
             </el-table-column>
             <el-table-column
-              prop="endRecord"
+              prop="end_read"
               label="截止读数">
             </el-table-column>
             <el-table-column
-              prop="useage"
+              prop="use_value"
               label="使用值">
             </el-table-column>
           </el-table>
@@ -116,6 +126,7 @@
     name:'ReadNumber',
     data(){
       return{
+        timeModel:[],
         recordType:1,
         typeName:'电表名',
         tableData: [],
@@ -126,10 +137,15 @@
         areaData3:[],
         sysData1:[],
         sysData2:[],
+        dianData:[],
+        shuiData:[],
+        qiData:[],
         areaForm:{// 区域筛选条件
           project_id:1,
           floor_id:0,
-          sys_menu_id:0
+          sys_menu_id:0,
+          start_date:'',
+          end_date:'',
         },
         sysForm:{// 系统筛选条件
           project_id:1,
@@ -139,147 +155,82 @@
         },
       }
     },
-    created(){
-      this.areaForm.sys_menu_id = this.$store.state.sysList[2].sys_menu_id;
-      this.areaForm.project_id = this.$store.state.projectId;
-      this.sysForm.project_id = this.$store.state.projectId;
-    },
     watch:{
 
     },
-    mounted(){
-      setTimeout(()=>{
-        this.loading = false;
-        this.tableData = [{
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        }, {
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        }, {
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        }, {
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        }, {
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        }, {
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        }, {
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        },{
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        },{
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        },{
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        },{
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        },{
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        },{
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        },{
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        },{
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        },{
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        },{
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        },{
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        },{
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        },{
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        },{
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        },{
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        },{
-          startRecord: '2999KW/H',
-          name: '1号电表位置',
-          endRecord: '4999KW/H',
-          useage: '2000KKW/H'
-        }]
-      },100)
-    },
-    beforeDestroy(){
-
-    },
-    destroyed(){
-
-    },
     methods:{
+        initAreaData(type){
+          this.dianData = []
+          this.shuiData = []
+          this.qiData = []
+          this.$http.post('/hotel_energy/history_read',this.areaForm).then((res)=>{
+            if(res.data.message==='success'){
+              this.areaData1 = res.data.data.area_level;
+              res.data.data.history_read.map((item)=>{
+                  res.data.data.type_map.map((parent)=>{
+                      parent.arr.map((child)=>{
+                          if(item.category_id===child){
+                            item.start_read += parent.unit
+                            item.end_read += parent.unit
+                            item.use_value += parent.unit
+                              switch (parent.type){
+                                case '电':
+                                  this.dianData.push(item)
+                                  break;
+                                case '水':
+                                  this.shuiData.push(item)
+                                  break;
+                                default:
+                                  this.qiData.push(item)
+                              }
+                              return
+                          }
+                      })
+                  })
+              })
+              this.changeRecordType(type)
+              this.loading = false;
+            }else{
+
+            }
+          })
+        },
       changeRecordType(type){
           this.recordType = type;
+          switch (type) {
+            case 1:
+                this.tableData = this.dianData;
+                break;
+            case 2:
+                this.tableData = this.shuiData;
+                break;
+            default:
+                this.tableData = this.qiData;
+          }
       },
       query(){
+          this.loading = true
+        if(this.currentType===1) {   //区域查询
+          console.log(this.timeModel)
+          if(this.timeModel){
+            this.areaForm.start_date = this.timeModel[0]
+            this.areaForm.end_date = this.timeModel[1]
+          }
+          if(this.areaForm.id1){
+            this.areaForm.floor_id = this.areaForm.id1
+          }else{
+            this.areaForm.floor_id = 0
+          }
+          if(this.areaForm.id2){
+            this.areaForm.floor_id = this.areaForm.id2
+          }
+          if(this.areaForm.id3){
+            this.areaForm.floor_id = this.areaForm.id3
+          }
+          this.initAreaData(this.recordType)
+        }else{
 
+        }
       },
       choseQuery1(){
 
@@ -291,10 +242,28 @@
 
       },
       changeType(type){
-
+        this.currentType = type
       },
 
-    }
+    },
+    created(){
+      this.areaForm.sys_menu_id = this.$store.state.sysList[2].sys_menu_id;
+      this.areaForm.project_id = this.$store.state.projectId;
+      let curDate = new Date();
+      var preDate = new Date(curDate.getTime() - 24*60*60*1000); //前一天
+      this.areaForm.start_date = preDate.getFullYear().toString()+(preDate.getMonth()+1).toString()+preDate.getDate()
+      this.areaForm.end_date = this.areaForm.start_date
+      this.sysForm.project_id = this.$store.state.projectId;
+    },
+    mounted(){
+      this.initAreaData(1)
+    },
+    beforeDestroy(){
+
+    },
+    destroyed(){
+
+    },
   }
 </script>
 <style>
@@ -359,6 +328,17 @@
     width:578px!important;
     height:536px!important;
   }
+  .timeSercher .el-date-editor .el-range-input{
+    height: 90%!important;
+    background: none!important;
+    border-bottom: 1px solid #1989fa!important;
+    color: #ffffff!important;
+    font-size:0.12rem;
+  }
+  .timeSercher .el-date-editor .el-range-separator{
+    color: #ffffff!important;
+    line-height: 0.2rem!important;
+  }
 </style>
 <style lang="less" rel="stylesheet/less" scoped>
   @import '../../../assets/css/comon.less';
@@ -375,6 +355,13 @@
       justify-content: center;
       align-items: center;
       position:relative;
+      .timeSercher{
+        width:2.4rem;
+        height:55.17%;
+        position:absolute;
+        left:0;
+        top:22.4%;
+      }
       .type{
         width:30%;
         height:55.17%;

@@ -76,7 +76,7 @@
           font-size:.16rem;
           display: flex;
           align-items: center;
-          margin-left:24px;
+          margin-left:0.44rem;
           &:first-child{
             margin-left:0;
           }
