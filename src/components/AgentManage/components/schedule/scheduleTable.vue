@@ -21,6 +21,7 @@
         <div class="tableBox">
             <div class="tableTit">
                 <span v-for="(item,index) in tableT">{{item.label}}<span v-text="item.timearea"></span></span>
+                <span class="editFont" v-show="isShowBtns=='yes'?true:false" @click="editSchedule"><i class="edit"></i>自定义班次</span>
             </div>
             <div class="tableBody">
                 <div class="tableH">
@@ -193,6 +194,9 @@ export default {
             this.backOrCurr = false;
         }
         this.$emit('getPaibanData',val)
+    },
+    editSchedule(){//自定义班次
+        this.$emit('editSchedule');
     },
     deletes(){//月份减少
         let attrs = this.value7.split('-');
@@ -654,6 +658,20 @@ mounted() {
                 span{
                     padding-left: 0.08rem;
                 }
+            }
+            .edit{
+                padding:0.15rem;
+                background:url('../../../../assets/img/AgentManage/edit.png') no-repeat center;
+                background-size:0.15rem;
+            }
+            .editFont{
+                color:#439aff;
+                float:right;
+                margin-right:0.2rem;
+                cursor:pointer;
+                &:hover{
+                    color:#538aff;
+                }   
             }
         }
         .tableBody{

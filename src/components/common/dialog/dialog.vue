@@ -90,7 +90,7 @@ export default {
       position: fixed;
       left: 0;
       top: 0;
-      z-index: 299;
+      z-index: 301;
       width: 100vw;
       height: 100vh;
       display: flex;
@@ -125,8 +125,8 @@ export default {
                 background:url('../../../assets/img/AgentManage/close.png')no-repeat;
                 background-size:0.2rem 0.2rem;
                 position: absolute;
-                right:0.05rem;
-                top: 0.05rem;
+                right:-0.1rem;
+                top: -0.1rem;
                 color:#00265b;
                 font-size: 0.2rem;
                 cursor: pointer;

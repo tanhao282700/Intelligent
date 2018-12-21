@@ -261,3 +261,25 @@
 .reportPages .paginationBox{
   width:96% !important;
 }
+.editBox .el-input{
+  width:1.5rem;
+  height:0.4rem;
+  border-radius: 0.04rem;
+}
+.editBox .el-select{
+  width: 2.24rem;
+  margin-left: 0.05rem;
+}
+.editBox .el-select .el-input{
+  width: 100%;
+}
+.editBox .el-select::after{
+  background: url("../img/AgentManage/down.png") no-repeat center;
+  background-size: 10px auto;
+}
+.editBox .el-button+.el-button{
+  margin-left: 0;
+}
+.editBox .el-button{
+  padding:0;
+}

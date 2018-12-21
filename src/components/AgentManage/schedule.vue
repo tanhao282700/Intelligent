@@ -10,7 +10,7 @@
                   <span slot="label" class="tabItems">
                       排班表
                   </span>
-                  <ScheduleTable :isShowBtns="'yes'" :data="paibanList" @getPaibanData="getPaiBanData" @saveAddPaiBan='saveAddPaiBan'/>
+                  <ScheduleTable :isShowBtns="'yes'" :data="paibanList" @getPaibanData="getPaiBanData" @saveAddPaiBan='saveAddPaiBan' @editSchedule="editSchedule"/>
               </el-tab-pane>
               <el-tab-pane name="second" >
                   <span slot="label" class="tabItems">
@@ -100,6 +100,25 @@
             <div class="diabtn"  @click="isOk(dia,dia.index)">同意</div>
           </div>
         </Dialog>
+        <Dialog ref="edit" wid="4.16rem" hei="4.27rem" class="dialog" >
+          <div class="editBox">
+            <ul>
+              <li v-for="item in editDatas">
+                <el-input v-model="item.label" placeholder="请输入班次名"></el-input>
+                <el-select v-model="item.timearea" placeholder="请选择">
+                  <el-option
+                    v-for="item in options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+              </li>
+            </ul>
+            <el-button class="addEdit" @click="addSchedule">新增</el-button>
+            <el-button class="submitEdit">确定</el-button>
+          </div>
+        </Dialog>
   </div>
 </template>
 
@@ -129,12 +148,20 @@ export default {
         examData2:[],
         indexNow:-1,
         dia:{},
+        editDatas:[{}],
+        options:[],
         paibanList:[],
         exportTable:'',
         topDate:''
     }
   },
   methods:{
+    addSchedule(){
+      this.editDatas.push({});
+    },
+    editSchedule(){//自定义班次
+      this.$refs.edit.show();
+    },
     handleClick(tab, event) {
         let activeName = this.activeName;
         this.$router.replace({ path: `/AgentManage/schedule/${activeName}`});     
@@ -436,6 +463,30 @@ export default {
           margin-right: 0.12rem;
         }
       }
+    }
+    .editBox{
+      padding:0.2rem 0.16rem;
+      li{
+        margin-bottom:0.07rem;
+      }
+    }
+    .addEdit,.submitEdit{
+      width:100%;
+      height:0.3rem;
+      font-size:0.14rem;
+      background:transparent;
+      border-color:#1989fa;
+      color:#fff;
+      line-height:0.3rem;
+    }
+    .submitEdit{
+      width:3.86rem;
+      position:absolute;
+      bottom:0.15rem;
+      left:0.15rem;
+      height:0.44rem;
+      line-height:0.44rem;
+      background:#1989fa;
     }
 }
 </style>
