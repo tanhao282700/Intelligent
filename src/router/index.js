@@ -118,9 +118,9 @@ export default new Router({
           return '/energy/allViews'
         }else if(info.sysList[2].role_string[0]==0&&info.sysList[2].role_string[1]!=0){
           return '/energy/analysis'
-        }else if(info.sysList[2].role_string[0]==0&&info.sysList[2].role_string[1]==0&&(info.sysList[2].role_string[2]!=0|| info.sysList[2].role_string[5]!=0||info.sysList[2].role_string[6]!=0)){
+        }else if(info.sysList[2].role_string[0]==0&&info.sysList[2].role_string[1]==0&&(info.sysList[2].role_string[2]!=0|| info.sysList[2].role_string[5]!=0||info.sysList[2].role_string[6]!=0||info.sysList[2].role_string[10]!=0)){
           return '/energy/metersRead'
-        }else if(info.sysList[2].role_string[0]==0&&info.sysList[2].role_string[1]==0&&info.sysList[2].role_string[2]==0&& info.sysList[2].role_string[5]==0&&info.sysList[2].role_string[6]==0&&info.sysList[2].role_string[4]!=0){
+        }else if(info.sysList[2].role_string[0]==0&&info.sysList[2].role_string[1]==0&&info.sysList[2].role_string[2]==0&& info.sysList[2].role_string[5]==0&&info.sysList[2].role_string[6]==0&&info.sysList[2].role_string[10]==0&&info.sysList[2].role_string[4]!=0){
           return '/energy/preset'
         }else{
           return '/energy/report'

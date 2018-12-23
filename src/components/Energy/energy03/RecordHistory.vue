@@ -149,7 +149,10 @@
         },
         sysForm:{// 系统筛选条件
           project_id:1,
-          system_id:1,
+          system_id:0,
+          sys_menu_id:'',
+          start_date:'',
+          end_date:'',
           id1:'',
           id2:'',
         },
@@ -160,34 +163,66 @@
     },
     methods:{
         initAreaData(type){
+            let formData = {}
+          if(this.currentType===1){
+              formData = this.areaForm
+          }else{
+            formData = this.sysForm
+          }
           this.dianData = []
           this.shuiData = []
           this.qiData = []
-          this.$http.post('/hotel_energy/history_read',this.areaForm).then((res)=>{
+          this.$http.post('/hotel_energy/history_read',formData).then((res)=>{
             if(res.data.message==='success'){
-              this.areaData1 = res.data.data.area_level;
-              res.data.data.history_read.map((item)=>{
+              if(this.currentType === 1){
+                this.areaData1 = res.data.data.area_level;
+                res.data.data.history_read.map((item)=>{
                   res.data.data.type_map.map((parent)=>{
-                      parent.arr.map((child)=>{
-                          if(item.category_id===child){
-                            item.start_read += parent.unit
-                            item.end_read += parent.unit
-                            item.use_value += parent.unit
-                              switch (parent.type){
-                                case '电':
-                                  this.dianData.push(item)
-                                  break;
-                                case '水':
-                                  this.shuiData.push(item)
-                                  break;
-                                default:
-                                  this.qiData.push(item)
-                              }
-                              return
-                          }
-                      })
+                    parent.arr.map((child)=>{
+                      if(item.category_id===child){
+                        item.start_read += parent.unit
+                        item.end_read += parent.unit
+                        item.use_value += parent.unit
+                        switch (parent.type){
+                          case '电':
+                            this.dianData.push(item)
+                            break;
+                          case '水':
+                            this.shuiData.push(item)
+                            break;
+                          default:
+                            this.qiData.push(item)
+                        }
+                        return
+                      }
+                    })
                   })
-              })
+                })
+              }else{
+                this.sysData1 = res.data.data.sys_level;
+                res.data.data.history_read.map((item)=>{
+                  res.data.data.type_map.map((parent)=>{
+                    parent.arr.map((child)=>{
+                      if(item.category_id===child){
+                        item.start_read += parent.unit
+                        item.end_read += parent.unit
+                        item.use_value += parent.unit
+                        switch (parent.type){
+                          case '电':
+                            this.dianData.push(item)
+                            break;
+                          case '水':
+                            this.shuiData.push(item)
+                            break;
+                          default:
+                            this.qiData.push(item)
+                        }
+                        return
+                      }
+                    })
+                  })
+                })
+              }
               this.changeRecordType(type)
               this.loading = false;
             }else{
@@ -197,6 +232,15 @@
         },
       changeRecordType(type){
           this.recordType = type;
+          if(type === 1){
+              this.typeName = '电表名'
+          }
+        if(type === 2){
+          this.typeName = '水表名'
+        }
+        if(type === 3){
+          this.typeName = '气表名'
+        }
           switch (type) {
             case 1:
                 this.tableData = this.dianData;
@@ -215,6 +259,8 @@
           if(this.timeModel){
             this.areaForm.start_date = this.timeModel[0]
             this.areaForm.end_date = this.timeModel[1]
+          }else{
+            this.areaForm.start_date = this.areaForm.end_date = ''
           }
           if(this.areaForm.id1){
             this.areaForm.floor_id = this.areaForm.id1
@@ -227,22 +273,75 @@
           if(this.areaForm.id3){
             this.areaForm.floor_id = this.areaForm.id3
           }
-          this.initAreaData(this.recordType)
         }else{
-
+          if(this.timeModel){
+            this.sysForm.start_date = this.timeModel[0]
+            this.sysForm.end_date = this.timeModel[1]
+          }else{
+            this.areaForm.start_date = this.areaForm.end_date = ''
+          }
+          if(this.sysForm.id1){
+            this.sysForm.system_id = this.sysForm.id1
+          }else{
+            this.sysForm.system_id = 0
+          }
+          if(this.sysForm.id2){
+            this.sysForm.system_id = this.sysForm.id2
+          }
         }
+        this.initAreaData(this.recordType)
       },
       choseQuery1(){
-
+        if(!this.areaForm.id1){
+          this.areaForm.id2 = ''
+          this.areaForm.id3 = ''
+          this.areaData2 = []
+        }else{
+          this.areaData1.map((item,index)=>{
+            if(item.id == this.areaForm.id1){
+              this.areaData2 = item.child
+              this.areaForm.id2 = ''
+              this.areaForm.id3 = ''
+            }
+          })
+        }
       },
       choseQuery2(){
-
+        this.areaData2.map((item,index)=>{
+          if(!this.areaForm.id2){
+            this.areaForm.id3 = ''
+            this.areaData3 = []
+          }else{
+            if(item.id == this.areaForm.id2){
+              this.areaData3 = item.child
+              this.areaForm.id3 = ''
+            }
+          }
+        })
       },
       choseQuery4(){
+        this.sysData1.map((item)=>{
+          if(!this.sysForm.id1){
+            this.sysForm.id2 = ''
+            this.sysData2 = []
+          }else{
+            if(item.id==this.sysForm.id1){
+              this.sysData2 = item.child
+              this.sysForm.id2 = ''
+            }
+          }
 
+        })
       },
       changeType(type){
+          this.loading = true
         this.currentType = type
+        let curDate = new Date();
+        var preDate = new Date(curDate.getTime() - 24*60*60*1000); //前一天
+        this.areaForm.start_date = this.sysForm.start_date = preDate.getFullYear().toString()+(preDate.getMonth()+1).toString()+preDate.getDate()
+        this.areaForm.end_date = this.sysForm.end_date = this.areaForm.start_date
+        this.timeModel = [this.areaForm.start_date,this.areaForm.end_date]
+        this.initAreaData(1)
       },
 
     },
@@ -254,6 +353,10 @@
       this.areaForm.start_date = preDate.getFullYear().toString()+(preDate.getMonth()+1).toString()+preDate.getDate()
       this.areaForm.end_date = this.areaForm.start_date
       this.sysForm.project_id = this.$store.state.projectId;
+      this.sysForm.sys_menu_id = this.$store.state.sysList[2].sys_menu_id;
+
+
+      this.timeModel = [this.areaForm.start_date,this.areaForm.end_date]
     },
     mounted(){
       this.initAreaData(1)

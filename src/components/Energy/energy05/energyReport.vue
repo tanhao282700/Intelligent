@@ -3,7 +3,7 @@
     <div class="energyReport">
     	<div class="navCrumbs"><i class="homeTxt" @click="goHome" >首页</i>  > 能源管理系统 > <span>用能报表</span></div>
 		<div class="reportTabBox">
-        	<span class="unitPriceBtn" @click="unitShowCli">单价预设</span>
+        	<span v-if="sysInfo.role_string[11]!=0" class="unitPriceBtn" @click="unitShowCli">单价预设</span>
 	        <nav class="tabNav">
 	            <span v-if="sysInfo.role_string[7]!=0"><a :class="isActive1==true?'on':''" @click="toggleTabs(first)">月报表</a></span>
 	            <span v-if="sysInfo.role_string[8]!=0"><a :class="isActive2==true?'on':''" @click="toggleTabs(second)">日报表</a></span>

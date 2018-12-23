@@ -13,7 +13,7 @@
       <div class="meterNav">
         <span v-if="sysInfo.role_string[5]!=0" @click="changeView('ReadNumber')" :class="{'active':viewPath=='ReadNumber'}">实时读数</span>
         <span v-if="sysInfo.role_string[6]!=0" @click="changeView('History')" :class="{'active':viewPath=='History'}">历史记录录入</span>
-        <span @click="changeView('RecordHistory')" :class="{'active':viewPath=='RecordHistory'}">表具历史读数</span>
+        <span v-if="sysInfo.role_string[10]!=0"  @click="changeView('RecordHistory')" :class="{'active':viewPath=='RecordHistory'}">表具历史读数</span>
       </div>
       <div class="meterCon boxs">
         <component :is="viewPath"></component>
@@ -47,8 +47,10 @@
       this.sysInfo = this.$store.state.sysList[2]
       if(this.sysInfo.role_string[5]!=0){
           this.viewPath = 'ReadNumber'
-      }else{
+      }else if(this.sysInfo.role_string[6]!=0){
         this.viewPath = 'History'
+      }else{
+        this.viewPath = 'RecordHistory'
       }
     },
     mounted() {
