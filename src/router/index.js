@@ -21,6 +21,9 @@ import generationMSchedule from '@/components/AgentManage/schedule';
 import generationMWorkList from '@/components/AgentManage/workList';
 import generationMRouting from '@/components/AgentManage/routing';
 import generationMReport from '@/components/AgentManage/report';
+import generationMOther from '@/components/AgentManage/otherDepartment/manage/otherDeManage';
+import generationMOtherWork from '@/components/AgentManage/otherDepartment/manage/workOrder';
+import generationMOtherApprove from '@/components/AgentManage/otherDepartment/manage/approvalList';
 
 //代维系统普通端
 import normalIndex from '@/components/AgentManage/normalUser/index';
@@ -28,6 +31,8 @@ import normalSchedule from '@/components/AgentManage/normalUser/schedule';
 import normalWorkList from '@/components/AgentManage/normalUser/workList';
 import normalRouting from '@/components/AgentManage/normalUser/routing';
 import normalReport from '@/components/AgentManage/normalUser/report';
+import normalOtherDep from '../components/AgentManage/otherDepartment/normal/otherDeNormal';
+import normalOtherWork from '../components/AgentManage/otherDepartment/normal/workOrder';
 
 //告警
 import alarm from '@/components/Alarm/fireAlarm';
@@ -286,5 +291,27 @@ export default new Router({
         return '/operationLog/components/manualoperation'
       }
     },
+    {
+      path: '/AgentManage/otherDep',
+      component: generationMOther,
+      children:[
+        { path: '/AgentManage/otherDep/workOrder', component: generationMOtherWork },
+        { path: '/AgentManage/otherDep/approvalList', component: generationMOtherApprove }
+      ],
+      redirect: to => {
+        return '/AgentManage/otherDep/workOrder'
+      }
+    },
+    {
+      path: '/AgentManage/normal/otherDep',
+      component: normalOtherDep,
+      children:[
+        { path: '/AgentManage/normal/otherDep/workOrder', component: normalOtherWork },
+      ],
+      redirect: to => {
+        return '/AgentManage/normal/otherDep/workOrder'
+      }
+    },
+
   ]
 })
