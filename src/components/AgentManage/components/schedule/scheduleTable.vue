@@ -429,7 +429,8 @@ export default {
                     // }
                 })
                 _this.tableT = arr;
-                console.log(data);
+                console.log(arr);
+                _this.$emit('getBancis',arr);
                 _this.wOptions =  data;
             }else{
               _this.$message({

@@ -8,7 +8,7 @@
             <el-breadcrumb-item>手动操作日志</el-breadcrumb-item>
           </el-breadcrumb>
         </div>
-        <div class="tableBox">
+        <div class="tableBox  borderShadow paddingTp0">
             <!-- 日志表格 -->
             <el-table :data="tableData" style="width: 100%;" height="100%">
               <el-table-column prop="indexs" label="序号" align="cneter"></el-table-column>

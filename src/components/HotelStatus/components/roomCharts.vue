@@ -89,6 +89,9 @@
 	    },
 	    methods: {
 	    	selDateLinkage(){
+	    		let myDate = new Date();
+	    		this.floorNumber = myDate.getMonth() + 1;
+	    		console.log(this.floorNumber);
 	    		if(this.floorNumber == 2){
 				    //如果是闰年
 				    if((this.floorNumber1 % 4 === 0 && this.floorNumber1 % 100 !== 0)  || this.floorNumber1 % 400 === 0){

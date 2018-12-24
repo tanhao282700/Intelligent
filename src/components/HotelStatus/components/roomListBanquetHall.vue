@@ -56,12 +56,7 @@
 	        	datetimerange:'',
 	        	roomListAllSta:'',
 	        	roomListAllNumber:'',
-	        	roomListAllNumbers:[
-	        		{num:'水浒厅',},
-	        		{num:'流星厅',},
-	        		{num:'三国厅',},
-	        		{num:'西游记厅',},
-	        	],
+	        	roomListAllNumbers:[],
 				tableData: [],
                 pagesize:20,
                 currentPage:1,
@@ -69,9 +64,35 @@
 	        };
 	    },
         mounted(){
-            this.getData()
+            this.getData();
+            this.getSele();
         },
 	    methods: {
+            getSele(){
+                var that = this;
+                var s;
+                if(that.datetimerange == ""){
+                    s="";
+                }else{
+                    s = that.format(this.datetimerange, 'yyyy-MM-dd');
+                }
+                this.$http.post('/hotel/singe_room',{
+                    page:that.currentPage,
+                    num:that.pagesize,
+                    descript:that.roomListAllNumber,
+                    biz_date:s,
+                }).then(function(data){
+                    //响应成功回调
+                    var roomsDescript = [];
+                    $.each(data.data.data,function(i,k){
+                        roomsDescript.push({num:k.descript});
+                    }); 
+                    that.unique(roomsDescript);
+                    that.roomListAllNumbers = roomsDescript;
+                }, function(data){
+                    // 响应错误回调
+                });
+            },
             getData(){
                 var that = this;
 
@@ -99,8 +120,8 @@
                         roomsDescript.push({num:k.descript});
                         that.tableData[i].indexs = (that.currentPage-1)*that.pagesize+1+i
                     }); 
-                    that.unique(roomsDescript);
-                    that.roomListAllNumbers = roomsDescript;
+                    // that.unique(roomsDescript);
+                    // that.roomListAllNumbers = roomsDescript;
                 }, function(data){
                     // 响应错误回调
                 });

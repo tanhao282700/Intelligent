@@ -1,5 +1,5 @@
 <template>
-  <div class="operationLog" style="width:100%;height:100%;">
+  <div class="operationLog" style="width:100%;height:100%;padding: 0 20px 20px 20px;">
     <sys-head :datas = "sData"></sys-head>
     <router-view></router-view>
   </div>

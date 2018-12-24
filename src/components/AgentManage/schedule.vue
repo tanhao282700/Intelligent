@@ -10,7 +10,7 @@
                   <span slot="label" class="tabItems">
                       排班表
                   </span>
-                  <ScheduleTable :isShowBtns="'yes'" :data="paibanList" @getPaibanData="getPaiBanData" @saveAddPaiBan='saveAddPaiBan' @editSchedule="editSchedule"/>
+                  <ScheduleTable :isShowBtns="'yes'" :data="paibanList" @getPaibanData="getPaiBanData" @saveAddPaiBan='saveAddPaiBan' @editSchedule="editSchedule" @getBancis="getBancis"/>
               </el-tab-pane>
               <el-tab-pane name="second" >
                   <span slot="label" class="tabItems">
@@ -102,20 +102,22 @@
         </Dialog>
         <Dialog ref="edit" wid="4.16rem" hei="4.27rem" class="dialog" >
           <div class="editBox">
-            <ul>
-              <li v-for="item in editDatas">
-                <el-input v-model="item.label" placeholder="请输入班次名"></el-input>
-                <el-select v-model="item.timearea" placeholder="请选择">
-                  <el-option
-                    v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
-              </li>
-            </ul>
-            <el-button class="addEdit" @click="addSchedule">新增</el-button>
+            <div class="addBanci">
+              <ul>
+                <li v-for="item in editDatas">
+                  <el-input v-model="item.label" placeholder="请输入班次名"></el-input>
+                  <el-select v-model="item.timearea" placeholder="请选择">
+                    <el-option
+                      v-for="item in options"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
+                </li>
+              </ul>
+              <el-button class="addEdit" @click="addSchedule">新增</el-button>
+            </div>
             <el-button class="submitEdit">确定</el-button>
           </div>
         </Dialog>
@@ -156,6 +158,9 @@ export default {
     }
   },
   methods:{
+    getBancis(arr){
+        this.editDatas = arr;
+    },
     addSchedule(){
       this.editDatas.push({});
     },
@@ -302,6 +307,7 @@ export default {
     this.getNoData();
     this.getYesData();
     this.getPaiBanData();
+    this.getBancis();
   },
 }
 </script>
@@ -468,6 +474,11 @@ export default {
       padding:0.2rem 0.16rem;
       li{
         margin-bottom:0.07rem;
+      }
+      .addBanci{
+        height:3.33rem;
+        width:100%;
+        overflow:overlay;
       }
     }
     .addEdit,.submitEdit{
