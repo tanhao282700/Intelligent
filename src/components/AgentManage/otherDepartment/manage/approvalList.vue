@@ -100,13 +100,13 @@
             value:'-1',label:'全部'
           },
           {
-            value:'0',label:'待审批'
+            value:'10',label:'待审批'
           },
           {
-            value:'3',label:'已同意'
+            value:'11',label:'已同意'
           },
           {
-            value:'4',label:'已驳回'
+            value:'12',label:'已驳回'
           }
         ],
         crumbs:['代维系统','我的审批列表'],
@@ -179,10 +179,10 @@
           data:[],
           th:[
             {prop:'serial',label:'序号'},
-            {prop:'type',label:'类别'},
-            {prop:'user_name',label:'工程部审批人',wid:180},
-            {prop:'dispatch_user_name',label:'工单处理人'},
-            {prop:'dispatch_user_phone',label:'电话'},
+            {prop:'title',label:'类别'},
+            {prop:'dispatch_user_name',label:'工单派发人',wid:180},
+            {prop:'user_name',label:'工单处理人'},
+            {prop:'user_phone',label:'电话'},
             {prop:'addtime',label:'派发时间'},
             {prop:'description',label:'内容描述'},
             {prop:'now_state',label:'状态'},

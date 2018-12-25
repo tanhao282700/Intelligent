@@ -238,7 +238,7 @@
           data:[],
           th:[
             {prop:'serial',label:'序号'},
-            {prop:'type',label:'类别'},
+            {prop:'sys_name',label:'类别'},
             {prop:'approve_name',label:'工程部审批人',wid:180},
             {prop:'user_name',label:'工单处理人'},
             {prop:'approve_phone',label:'电话'},

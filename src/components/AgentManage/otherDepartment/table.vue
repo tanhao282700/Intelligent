@@ -69,13 +69,15 @@ rowClick(row){
                 <span v-if=" scope.row[v.prop] == '9' " class="otherDepColor1">审批中</span>
                 <span v-if=" scope.row[v.prop] == '0' " class="otherDepColor3">未接单</span>
                 <span v-if=" scope.row[v.prop] == '4' " class="otherDepColor2">完成</span>
-                <span v-if=" scope.row[v.prop] == '-1' ">处理中</span>
+                <span v-if=" scope.row[v.prop] == '15' " class="otherDepColor3">审批驳回</span>
+                <span v-if=" scope.row[v.prop] != '9' && scope.row[v.prop] != '0' && scope.row[v.prop] != '4' && scope.row[v.prop] != '15' "  >处理中</span>
               </div>
 
               <div v-else>
                 <my-render v-if="v.operate" :row="scope.row" :render="v.render"></my-render>
                 <span v-else>
-                  {{scope.row[v.prop]}}
+                  <span v-if=" scope.row[v.prop]"> {{scope.row[v.prop]}} </span>
+                  <span v-else>-</span>
                 </span>
               </div>
 

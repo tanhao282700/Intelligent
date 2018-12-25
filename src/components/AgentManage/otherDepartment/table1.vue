@@ -66,7 +66,7 @@ rowClick(row){
         <template slot-scope="scope" >
 
           <div v-if="v.prop == 'id' ">
-            <div v-if=" scope.row.now_state == '0' " class="btnsBox">
+            <div v-if=" scope.row.now_state == '10' " class="btnsBox">
               <span class="agreeBtn" @click="agree(scope.row)">同意</span>
               <span class="refuseBtn" @click="refuse(scope.row)">驳回</span>
             </div>
@@ -74,10 +74,12 @@ rowClick(row){
           </div>
 
           <div v-if="v.prop == 'now_state' ">
-            <span v-if=" scope.row[v.prop] == '0' " class="otherDepColor1">待审批</span>
-            <span v-if=" scope.row[v.prop] == '4' " class="otherDepColor3">已驳回</span>
-            <span v-if=" scope.row[v.prop] == '3' " class="otherDepColor2">已同意</span>
-            <span v-if=" scope.row[v.prop] !='0' && scope.row[v.prop] !='3' && scope.row[v.prop] !='4' " class="otherDepColor3">处理中</span>
+            <span v-if=" scope.row[v.prop] == '10' " class="otherDepColor1">待审批</span>
+            <span v-if=" scope.row[v.prop] == '15' " class="otherDepColor3">已驳回</span>
+            <span v-if=" scope.row[v.prop] == '11' " class="otherDepColor2">已同意</span>
+            <span v-if=" scope.row[v.prop] == '1' " class="otherDepColor2">已接单</span>
+            <span v-if=" scope.row[v.prop] == '0' " class="otherDepColor3">未接单</span>
+            <span v-if=" scope.row[v.prop] !='0' && scope.row[v.prop] !='1' && scope.row[v.prop] !='11' && scope.row[v.prop] !='15' && scope.row[v.prop] !='10' " class="otherDepColor3">处理中</span>
           </div>
 
           <div v-if="v.prop != 'id' && v.prop != 'now_state' ">
