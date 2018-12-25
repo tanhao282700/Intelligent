@@ -118,7 +118,7 @@
               </ul>
               <el-button class="addEdit" @click="addSchedule">新增</el-button>
             </div>
-            <el-button class="submitEdit">确定</el-button>
+            <el-button class="submitEdit" @click="sure">确定</el-button>
           </div>
         </Dialog>
   </div>
@@ -154,17 +154,43 @@ export default {
         options:[],
         paibanList:[],
         exportTable:'',
-        topDate:''
+        topDate:'',
     }
   },
   methods:{
-    getBancis(arr){
+    //自定义班次下拉列表怎么取值
+    sure(){
+      this.$http.post('/app_ims/set_worklist',{'content':[this.editDatas]})
+      .then(res=>{
+          if(res.data.code==1){
+            this.$message({
+              type:'error',
+              message:res.data.msg,
+              duration:2000
+            })
+          }else{
+            this.$message({
+              type:'error',
+              message:'班次新增成功',
+              duration:2000
+            })
+          }
+      })
+    },
+    getBancis(arr){//获取现有班次
         this.editDatas = arr;
     },
-    addSchedule(){
+    addSchedule(){//点击自定义班次-新增
       this.editDatas.push({});
     },
-    editSchedule(){//自定义班次
+    editSchedule(){//编辑自定义班次
+      let arr = [];
+      $.each(this.editDatas,(n,k)=>{
+        if(k.label && k.label!=''){
+          arr.push({label:k.label,timearea:k.timearea})
+        }
+      })
+      this.editDatas = arr;
       this.$refs.edit.show();
     },
     handleClick(tab, event) {

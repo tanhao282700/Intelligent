@@ -192,6 +192,7 @@ export default {
             {prop:'devicename',label:'设备名称'},
             {prop:'addtime',label:'派发时间'},
             {prop:'description',label:'内容描述'},
+            {prop:'',label:'物料使用'},
             {prop:'sendtype',label:'派发类别'},
             {prop:'now_state',label:'状态',
               operate: true, 
