@@ -86,7 +86,7 @@
         	}
         },
         mounted(){
-            this.floorId = sessionStorage.getItem("sentFloorIds");
+            // this.floorId = sessionStorage.getItem("sentFloorIds");
             this.getData();
             console.log(this.floorId);
         },
