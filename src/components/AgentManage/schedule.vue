@@ -105,15 +105,25 @@
             <div class="addBanci">
               <ul>
                 <li v-for="item in editDatas">
-                  <el-input v-model="item.label" placeholder="请输入班次名"></el-input>
-                  <el-select v-model="item.timearea" placeholder="请选择">
+                  <el-input v-model="item.title" placeholder="请输入班次名"></el-input>
+                  <!-- <el-select v-model="item.timearea" placeholder="请选择">
                     <el-option
                       v-for="item in options"
                       :key="item.value"
                       :label="item.label"
                       :value="item.value">
                     </el-option>
-                  </el-select>
+                  </el-select> -->
+                  <el-time-picker
+                    is-range
+                    v-model="item.timearea"
+                    format="HH:mm"
+                    :disabled="item.isDisabled"
+                    range-separator="至"
+                    start-placeholder="开始时间"
+                    end-placeholder="结束时间"
+                    placeholder="选择时间范围">
+                  </el-time-picker>
                 </li>
               </ul>
               <el-button class="addEdit" @click="addSchedule">新增</el-button>
@@ -160,7 +170,15 @@ export default {
   methods:{
     //自定义班次下拉列表怎么取值
     sure(){
-      this.$http.post('/app_ims/set_worklist',{'content':[this.editDatas]})
+      let content = [];
+      $.each(this.editDatas,(n,k)=>{
+        if(!k.isDisabled){
+          if(k.title != '' && k.title){//班次名称有值的时候
+            content.push({title:k.title,starttime:utils.time(k.timearea[0],11),endtime:utils.time(k.timearea[1],11)});
+          }
+        }
+      })
+      this.$http.post('/app_ims/set_worklist',{'content':JSON.stringify(content)})
       .then(res=>{
           if(res.data.code==1){
             this.$message({
@@ -181,13 +199,31 @@ export default {
         this.editDatas = arr;
     },
     addSchedule(){//点击自定义班次-新增
-      this.editDatas.push({});
+      this.editDatas.push({isDisabled:false});
     },
     editSchedule(){//编辑自定义班次
       let arr = [];
+      var date = new Date();
+      var year = date.getFullYear();
+      var month = date.getMonth() + 1;
+      var day = date.getDate();
+      if (month < 10) {
+          month = "0" + month;
+      }
+      if (day < 10) {
+          day = "0" + day;
+      }
+      var nowDate = year + "-" + month + "-" + day;
+
       $.each(this.editDatas,(n,k)=>{
         if(k.label && k.label!=''){
-          arr.push({label:k.label,timearea:k.timearea})
+          let time = '';
+          if(k.timearea){
+            time = k.timearea.split('~')
+          }
+          console.log(nowDate+time[0],nowDate+time[1])
+          arr.push({title:k.label,timearea:[nowDate+' '+time[0],nowDate+' '+time[1]],isDisabled:true})
+
         }
       })
       this.editDatas = arr;

@@ -283,3 +283,26 @@
 .editBox .el-button{
   padding:0;
 }
+.addBanci .el-date-editor.el-input__inner{
+  width:2.26rem !important;
+  height: 0.38rem !important;
+  margin-left: .03rem;
+}
+.addBanci input{
+   background-color: transparent !important;
+}
+.addBanci .el-icon-time:before{
+  content:'';
+}
+.el-time-range-picker__body{
+  border:none !important;
+}
+.addBanci .el-date-editor .el-range-input{
+  color:#fff !important;
+}
+.addBanci .el-range-editor.is-disabled{
+  border-color: #1989fa;
+}
+.el-time-range-picker{
+  width:2.24rem !important;
+}

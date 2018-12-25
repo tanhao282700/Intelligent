@@ -229,6 +229,7 @@ export default {
             margin-top:0.09rem;
             height:0.18rem;
             color:#fff;
+            font-weight:600;
           }
           i{
               display: inline-block;
