@@ -5,13 +5,13 @@
 -->
 <template>
   <div class="airConditioner">
-    <sys-head :datas = "sData"></sys-head>
-    <div class="modeBox" v-if="modeData.show">
+    <sys-head ref="sysHead" :datas = "sData"></sys-head>
+    <div ref="modeBox" class="modeBox" v-if="modeData.show">
       <div :class="['mode',{anim:animate==true}]" id="con1">
         <p v-for="(item,i) in modeData.list" :key="i" class="text rowHei" v-text="item"></p>
       </div>
     </div>
-    <router-view></router-view>
+    <router-view ref="Shishi"></router-view>
   </div>
 </template>
 
@@ -82,7 +82,10 @@
       }
     },
     mounted() {
-
+      //console.log(this.$refs.sysHead.$el.children[0].offsetHeight)
+      //this.$refs.Shishi.$el.children[0].style.paddingTop = this.$refs.sysHead.$el.children[0].offsetHeight+30+'px';
+      this.$refs.modeBox.style.top = this.$refs.sysHead.$el.children[0].offsetHeight+15+'px';
+      //console.log(this.$refs.Shishi.$el.children[0].offsetHeight)
     },
   }
 </script>
@@ -109,7 +112,6 @@
       padding-bottom: 0!important;
     }
     .modeBox{
-
       position: absolute;
       left: 50%;
       .vhTop(65);
@@ -144,8 +146,10 @@
       }
     }
     .h-paddingTop{
-      padding-top: 70px!important;
+      padding-top: 70px;
       .navCrumbs{
+        top: auto;
+        bottom: 0;
         p{
           display: inline;
           padding: 0;

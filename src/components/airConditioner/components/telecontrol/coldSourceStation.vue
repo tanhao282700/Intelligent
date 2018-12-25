@@ -137,7 +137,7 @@
     import SelfProgress2 from "../../../common/selfProgress2";
     import SelfSwitch from "../../../common/selfSwitch";
     import SelfPopover2 from "./selfPopover2";
-    import LineEcharts4 from "../../../common/lineEcharts4";
+    import LineEcharts4 from "./lineEcharts4";
     import utils from "../../../../assets/js/utils";
 
     export default {

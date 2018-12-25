@@ -5,7 +5,7 @@
 -->
 <template>
   <div>
-    <div class="tabsDomBox0 h-paddingTop">
+    <div ref="HpadTop" class="tabsDomBox0 h-paddingTop">
       <div class="navCrumbs"><p @click="toHome">首页</p> > 消防系统 > <span>火警监测</span></div>
     </div>
     <div :style="fireState!=0?{boxShadow:'none'}:null" class="fireMonitor">
@@ -23,22 +23,9 @@
       </div>
       <div class="radarBoxBg" :style="isDetail?{top:'0.46rem'}:null"></div>
       <div v-if="fireState!=0" class="haveFire">
-        <div class="infoCardBox" v-show="fireWarnLists.length!==0">
-          <el-scrollbar style="height:100%">
-            <!--<div v-for="(item,i) in fireWarnLists" class="infoCard" :key="item.key">
-              <div class="head">
-                <span v-text="item.class"></span>
-                <span v-text="item.time"></span>
-              </div>
-              <div class="body">
-                <p v-text="item.devicename+item.message" class="content"></p>
-                <div class="btnBox">
-                  <button @click="showSure(item.key,item.key,'1')" type="button">解除报警</button>
-                  <button @click="showSure(item.key,item.key,'2')" type="button">误报处理</button>
-                </div>
-              </div>
-            </div>-->
-            <div class="infoCard" @mouseenter="toggleCir(v.id,1)" @mouseleave="toggleCir(v.id,0)" v-for="(v,i) in fireWarnLists" :key="i">
+        <div class="infoCardBox">
+          <el-scrollbar v-show="fireWarnLists.length!==0" style="height:100%">
+            <div class="infoCard" @mouseenter="toggleCir(v.device_id,1)" @mouseleave="toggleCir(v.device_id,0)" v-for="(v,i) in fireWarnLists" :key="i">
               <div class="type" v-text="v.class"></div>
               <div class="content">
                 <div class="top">
@@ -52,8 +39,10 @@
               </div>
             </div>
           </el-scrollbar>
+          <div class="infoCardBoxIn" style="width: 100%;height: 100%;" v-show="fireWarnLists.length===0">无告警信息</div>
         </div>
-        <div class="buildingBox" :style="fireWarnLists.length===0?{width: '100%'}:null">
+        <!--<div class="buildingBox" :style="fireWarnLists.length===0?{width: '100%'}:null">-->
+        <div class="buildingBox">
           <div v-show="!isDetail" class="floors">
               <div style="position: absolute;z-index: 1;width:604px;height:583px;">
                 <div style="position: relative;width: 100%;height: 100%;">
@@ -81,36 +70,18 @@
                 </div>
               </div>
               <img src="../../assets/img/fireAlarm/floors.png" style="width:604px;height:583px;" />
-              <div class="img_red"></div>
-
-
-            <!--<el-popover
-              class="self-popover"
-              popper-class="self-popper"
-              placement="bottom"
-              width="281"
-              v-model="showTip"
-              trigger="manual"
-              >
-              <div class="popover-btn isPointer no-select" slot="reference">
-                按钮
+              <div v-if="false" class="img_red"></div>
+            <div v-if="false" v-show="showTip" class="self-tip" style="left:-1.6rem;top:3.43vh;">
+              <div class="tit">
+                2018/09/11 14:35
               </div>
-
-              啦啦啦
-            </el-popover>-->
-
-
-
+              <div class="con">
+                酒楼7层消防设备发生火灾报警情况，请火速处理
+              </div>
+              <div class="sjx"></div>
             </div>
-          <div v-show="showTip" class="self-tip">
-            <div class="tit">
-              2018/09/11 14:35
-            </div>
-            <div class="con">
-              酒楼7层消防设备发生火灾报警情况，请火速处理
-            </div>
-            <div class="sjx"></div>
           </div>
+
           <div v-show="isDetail" class="floorDetail">
             <i class="el-icon-circle-close colseBoxs" style="position: absolute;right: -5px;top: -5px" @click="hide"></i>
             <div class="title">{{floorTit}}</div>
@@ -149,21 +120,17 @@
             </div>
           </div>
         </div>
-        <div class="videoBoxWrap" v-if="isShowVideo">
+        <div class="videoBoxWrap" v-show="isShowVideo">
           <i class="el-icon-circle-close colseBoxs" style="position: absolute;right: -5px;top: -5px" @click="hideVideo"></i>
           <div class="title" v-text="videoTit"></div>
           <div class="videoBox">
-            <!--<video-player  class="video-player vjs-custom-skin"
-                           ref="videoPlayer"
-                           :playsinline="true"
-                           :options="playerOptions"
-            ></video-player>-->
             <iframe
+              ref="fireVideo"
               name="myFrame22"
               frameborder="0"
               width="100%"
               height="100%"
-              :src="videoUrl">
+              src="/static/fireVideo/fireVideo.html">
 
             </iframe>
             <div class="videoList">
@@ -197,6 +164,7 @@
     name:'fireMonitor',
     data () {
       return {
+        iframeWin:{},
         videoUrl:'',
         floorTit:'',
         cirStateArr:[false,false,false,false,false],
@@ -208,61 +176,24 @@
         warnId:'',
         warnIndex:'',
         fireWarnLists:[
-          {
-            "id":"1",
+          /*{
             "class": "烟感报警",
-            "devicename": "酒楼7层-点型光电感烟火灾探测器-22205083",
-            "floor_id": "88",
-            "floor_title": "消防报警酒楼四层",
-            "key": "1536647719alarm22d173job0",
-            "message": "测试，消防报警了报警了！",
-            "time": "2018-09-11 14:35",
-            "type": "0"
+            "device_id": "113",
+            "devicename": "酒楼4层-点型光电感烟火灾探测器-22204004",
+            "key": "1543802817alarm22d0job0",
+            "location": "消防报警酒楼四层",
+            "message": "测试一下",
+            "time": "2018-12-3 09:36:55"
           },
           {
-            "id":"2",
-            "class": "烟感报警",
-            "devicename": "酒楼7层-点型光电感烟火灾探测器-22205084",
-            "floor_id": "88",
-            "floor_title": "消防报警酒楼四层",
-            "key": "1536647719alarm22d174job0",
-            "message": "测试，消防报警了报警了！",
-            "time": "2018-09-11 14:34",
-            "type": "0"
-          },
-          {
-            "id":"3",
-            "class": "烟感报警",
-            "devicename": "酒楼7层-点型光电感烟火灾探测器-22205085",
-            "floor_id": "88",
-            "floor_title": "消防报警酒楼四层",
-            "key": "1536647719alarm22d175job0",
-            "message": "测试，消防报警了报警了！",
-            "time": "2018-09-11 14:34",
-            "type": "0"
-          },
-          {
-            "id":"4",
-            "class": "烟感报警",
-            "devicename": "酒楼7层-点型光电感烟火灾探测器-22205086",
-            "floor_id": "88",
-            "floor_title": "消防报警酒楼四层",
-            "key": "1536647719alarm22d176job0",
-            "message": "测试，消防报警了报警了！",
-            "time": "2018-09-11 14:33",
-            "type": "0"
-          },
-          {
-            "id":"5",
-            "class": "烟感报警",
-            "devicename": "酒楼7层-点型光电感烟火灾探测器-22205087",
-            "floor_id": "88",
-            "floor_title": "消防报警酒楼四层",
-            "key": "1536647719alarm22d177job0",
-            "message": "测试，消防报警了报警了！",
-            "time": "2018-09-11 14:33",
-            "type": "0"
-          },
+            "class": "烟感报警2",
+            "device_id": "114",
+            "devicename": "酒楼4层-点型光电感烟火灾探测器-22204004",
+            "key": "1543802817alarm22d0job01",
+            "location": "消防报警酒楼四层",
+            "message": "测试一下",
+            "time": "2018-12-3 09:36:56"
+          }*/
         ],
 
         isDetail:false,
@@ -274,42 +205,11 @@
         emptyInputs:true,
         //视频部分
         videoTit:'',
-        playerOptions : {
-          playbackRates: [0.7, 1.0, 1.5, 2.0], //播放速度
-          autoplay: false, //如果true,浏览器准备好时开始回放。
-          muted: false, // 默认情况下将会消除任何音频。
-          loop: false, // 导致视频一结束就重新开始。
-          preload: 'auto', // 建议浏览器在<video>加载元素后是否应该开始下载视频数据。auto浏览器选择最佳行为,立即开始加载视频（如果浏览器支持）
-          language: 'zh-CN',
-          aspectRatio: '16:9', // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
-          fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
-          sources: [{
-            type: "",
-            src: "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4" //url地址
-          }],
-          poster: "https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1536198298&di=a980cc1553e2bec11ddef063aeba25d9&src=http://pic.58pic.com/58pic/15/33/18/13A58PICi3r_1024.jpg", //你的封面地址
-          // width: document.documentElement.clientWidth,
-          notSupportedMessage: '此视频暂无法播放，请稍后再试', //允许覆盖Video.js无法播放媒体源时显示的默认信息。
-          controlBar: {
-            timeDivider: true,
-            durationDisplay: true,
-            remainingTimeDisplay: false,
-            fullscreenToggle: true  //全屏按钮
-          }
-        },
         isShowVideo:false,
         videoBtnActive:0,
-        /*videoList:[
-          {id:1,url:'http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4',poster:'https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1536198298&di=a980cc1553e2bec11ddef063aeba25d9&src=http://pic.58pic.com/58pic/15/33/18/13A58PICi3r_1024.jpg'},
-          {id:2,url:'http://221.228.226.23/11/t/j/v/b/tjvbwspwhqdmgouolposcsfafpedmb/sh.yinyuetai.com/691201536EE4912BF7E4F1E2C67B8119.mp4',poster:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1541311886121&di=4844f0b21c6a53dfb0870fc825e4cf71&imgtype=0&src=http%3A%2F%2Fpic.58pic.com%2F58pic%2F14%2F45%2F78%2F02j58PICEVZ_1024.jpg'},
-          {id:3,url:'http://221.228.226.5/14/z/w/y/y/zwyyobhyqvmwslabxyoaixvyubmekc/sh.yinyuetai.com/4599015ED06F94848EBF877EAAE13886.mp4',poster:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1541311969570&di=b9adee174d91efa6b4871668423626e8&imgtype=0&src=http%3A%2F%2Fpic.xtuan.com%2Fupload%2FcasePictures%2F20131218%2F09565524262_w.gif'},
-          {id:4,url:'http://221.228.226.5/15/t/s/h/v/tshvhsxwkbjlipfohhamjkraxuknsc/sh.yinyuetai.com/88DC015DB03C829C2126EEBBB5A887CB.mp4',poster:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1541311994921&di=cc3192752c3d864644e618ff51f239ca&imgtype=0&src=http%3A%2F%2Fpic.qiantucdn.com%2F58pic%2F17%2F92%2F61%2F55ad624dd33e8_1024.jpg'},
-        ],*/
+
         videoList:[
-          {id:1,url:'/static/testVideo/test1.html',poster:'https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1536198298&di=a980cc1553e2bec11ddef063aeba25d9&src=http://pic.58pic.com/58pic/15/33/18/13A58PICi3r_1024.jpg'},
-          {id:2,url:'/static/testVideo/test2.html',poster:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1541311886121&di=4844f0b21c6a53dfb0870fc825e4cf71&imgtype=0&src=http%3A%2F%2Fpic.58pic.com%2F58pic%2F14%2F45%2F78%2F02j58PICEVZ_1024.jpg'},
-          {id:3,url:'/static/testVideo/test3.html',poster:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1541311969570&di=b9adee174d91efa6b4871668423626e8&imgtype=0&src=http%3A%2F%2Fpic.xtuan.com%2Fupload%2FcasePictures%2F20131218%2F09565524262_w.gif'},
-          {id:4,url:'/static/testVideo/test4.html',poster:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1541311994921&di=cc3192752c3d864644e618ff51f239ca&imgtype=0&src=http%3A%2F%2Fpic.qiantucdn.com%2F58pic%2F17%2F92%2F61%2F55ad624dd33e8_1024.jpg'},
+
         ]
 
       }
@@ -340,117 +240,102 @@
       },
       selVideo(item,index){
         this.videoBtnActive = index;
-        this.videoUrl = item.url;
-        // this.playerOptions.poster = item.poster;
-        // this.playerOptions.sources[0].src = item.url;
+        //console.log(item)
+        this.iframeWin.postMessage({
+          cmd: 'changeUrl',
+          params: {
+            url:item.now_value
+          }
+        }, '*')
       },
-      showVideo(url,index){
-        this.videoTit = url.time;
-        if (index !==4 ) {
-          this.videoUrl = this.videoList[index].url;
-          // this.playerOptions.poster = this.videoList[index].poster;
-          // this.playerOptions.sources[0].src = this.videoList[index].url;
-        } else {
-          this.videoUrl = this.videoList[0].url;
-          // this.playerOptions.poster = this.videoList[0].poster;
-          // this.playerOptions.sources[0].src = this.videoList[0].url;
-        }
-        this.isShowVideo = true;
-        //alert(url)
-      },
-      hideVideo(){
-        this.isShowVideo = false;
-      },
-      showErr(msg){
-        this.errorTipShow = this.emptyInputs = true;
-        this.errMsg = msg;
-      },
-      closeErr(){
-        this.errorTipShow = this.codeError = this.isError = false;
-        this.errMsg = "";
-      },
-      //消防报警监测信息列表请求
-      getMonitorData(){
-
+      showVideo(item,index){
+        this.videoBtnActive = 0;
+        this.destroyVideo();
         let that = this;
         let config = {
-          sys_menu_id:this.$store.state.sysList[16].sys_menu_id
+          device_id:item.device_id,
+          key:item.key,
         }
         let headers = {
           //'Content-Type': 'multipart/form-data'
         }
-        this.$http.post('/firealarm/firealarm_monitoring',config,headers).then(res=>{
+        this.$http.post('app_firealarm/firealarm_videos',config,headers).then(res=>{
+          let data = res.data;
+          console.log('查看视频数据',config,res);
+          if (data.code==0){
+            this.isShowVideo = true;
+            let videoData = data.data;
+            /*videoData = [
+              {
+                "class": "烟感报警",
+                "location": "消防报警酒楼四层",
+                "now_value": "ws://120.76.20.236:8081/action=stream,project=14,camera=25??",
+                "time": "2018-12-3 09:36:55"
+              },
+              {
+                "class": "烟感报警2",
+                "location": "消防报警酒楼四层2",
+                "now_value": "ws://120.76.20.236:8081/action=stream,project=14,camera=20??",
+                "time": "2018-12-3 09:36:56"
+              }
+            ];*/
+            this.videoList = videoData;
+
+            if (videoData.length !== 0) {
+              this.iframeWin.postMessage({
+                cmd: 'changeUrl',
+                params: {
+                  url: videoData[0].now_value
+                }
+              }, '*')
+            }
+
+          } else {
+            this.isShowVideo = false;
+            this.$message(data.message);
+          }
+        }).catch(err=>{
+          this.isShowVideo = false;
+          console.log(err);
+        })
+        this.videoTit = item.time;
+
+      },
+      hideVideo(){
+        this.videoBtnActive = 0;
+        this.isShowVideo = false;
+        this.destroyVideo();
+      },
+      //销毁视频
+      destroyVideo(){
+        this.iframeWin.postMessage({
+          cmd: 'destroyVideo',
+          params: {
+          }
+        }, '*')
+      },
+
+      //消防报警监测信息列表请求
+      getMonitorData(){
+        let that = this;
+        let config = {
+        }
+        let headers = {
+          //'Content-Type': 'multipart/form-data'
+        }
+        this.$http.post('app_firealarm/firealarm_monitoring',config,headers).then(res=>{
           let data = res.data;
           console.log('消防监测信息列表',config,res);
           if (data.code==0){
-            if (data.data.length===0){
-              this.fireState = 1;
-            } else {
-              this.fireState = 1;
-            }
-            //this.fireWarnLists = data.data
-          } else {
 
+            this.fireWarnLists = data.data
+          } else {
             this.$message(data.message);
           }
-          /*if(data.code=='0'){
-            that.closeErr();
-
-            var dataObj = that.$store.state.userInfoTotal = data.data;
-            var projeceId = that.$store.state.projectId = dataObj.projectInfo[0].project_id;
-            var userId = that.$store.state.userId = dataObj.userinfo.id
-            var AUTH_TOKEN = dataObj.userinfo.password + "_" + projeceId + "_" + userId;
-            axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
-
-            var sysList = data.data.usergrouprolesyslist[0].syslist;
-            var listLen = sysList.length;
-            var tempObj = {};
-            for(var i=0;i<listLen;i++){
-              var id = sysList[i].self_id;
-              tempObj[id] = sysList[i];
-              i<listLen-1,that.$store.state.sysList = tempObj;
-            }
-
-            that.$router.replace({ path: '/home', params: { isLogin: true} });
-          }else {
-            that.isError = true;
-            that.refrenshCode();
-            that.showErr(data.message);
-          }*/
         }).catch(err=>{
           console.log(err);
-          that.showErr("服务器请求失败");
         })
 
-      },
-
-      //消防监测控制请求
-
-      getMonitorControl(key, value){
-        let obj = {
-          sys_menu_id:this.$store.state.sysList[16].sys_menu_id,
-          key:key,
-          value:value
-        };
-        utils.post('fireAlarm/control',obj).then(res=>{
-          console.log('消防监测控制',obj,res);
-          if (res.code==0){
-            //this.fireWarnLists.splice(this.warnIndex,1);
-            this.fireWarnLists.map((item,i)=>{
-              if (item.key == key) {
-                this.fireWarnLists.splice(i,1);
-              }
-            })
-            this.$message({
-              type: 'success',
-              message: res.message
-            });
-          } else {
-            this.$message(res.message);
-          }
-        }).catch(err=>{
-          this.$message(err);
-        })
       },
       //隐藏楼层内页
       hide(){
@@ -463,7 +348,7 @@
         this.showTip = false;
         this.isDetail = true;
         if (floor == 1) {
-          this.showCir = true;
+          //this.showCir = true;
           this.floorTit = '酒店7楼'
         } else if (floor == 3) {
           this.floorTit = '酒店3楼'
@@ -526,13 +411,6 @@
         this.warnIndex = index;
         this.$refs.dialog.show();
       },
-      //处理报警操作
-      dealWarn(id,index,type){
-        console.log('处理报警',id,index,type)
-        this.getMonitorControl(id,type);
-
-        this.$refs.dialog.hide();
-      },
       toHome(){
         this.$router.replace({ path: '/home', params: { isLogin: true} });
       }
@@ -542,12 +420,9 @@
     },
     mounted() {
       //this.init();
-
-      /*setTimeout(()=>{
-        this.fireState = 1;
-      },10000)*/
+      this.$refs.HpadTop.style.paddingTop = Number(this.$parent.$children[0].$el.children[0].offsetHeight)+30+'px';
       this.getMonitorData();
-
+      this.iframeWin = this.$refs.fireVideo.contentWindow;
 
 
 
@@ -738,7 +613,7 @@
   }
   .fireMonitor{
     margin: 0 auto;
-    margin-top: 0.16rem;
+    margin-top: 0.1rem;
     width: 13.06rem;
     .vh(610);
     /*height: 6.10rem;*/
@@ -763,6 +638,18 @@
       width: 100%;
       height: 100%;
       .infoCardBox{
+        .infoCardBoxIn{
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          box-shadow: 0px 4px 10px 0px
+          rgba(73, 143, 226, 0.22),
+          inset 1px 1px 2px 0px
+          rgba(248, 253, 255, 0.15),
+          inset 0px -1px 1px 0px
+          #498fe2;
+          border-radius: 4px;
+        }
         width: 3.12rem;
         height: 100%;
         overflow: hidden;
@@ -978,8 +865,6 @@
             transform: rotate(45deg);
           }
           position: absolute;
-          left: 0.3rem;
-          .vhTop(32);
           background-color: #04152c;
           width: 2.85rem;
           height: 1.18rem;
@@ -1267,7 +1152,7 @@
         transform: rotate(360deg);
       }
     }
-    @keyframes blips {
+    /*@keyframes blips {
       14% {
         background: radial-gradient(2vmin circle at 75% 70%, #ff2600 10%, #ff2600 30%, rgba(255, 255, 255, 0) 100%);
       }
@@ -1285,7 +1170,7 @@
         background: radial-gradient(2vmin circle at 75% 70%, #ff2600 10%, #ff2600 30%, rgba(255, 255, 255, 0) 100%);
         opacity: 0;
       }
-    }
+    }*/
 
   }
 

@@ -5,7 +5,7 @@
 -->
 <template>
   <div>
-    <div class="tabsDomBox0 h-paddingTop">
+    <div ref="HpadTop" class="tabsDomBox0 h-paddingTop">
       <div class="navCrumbs"><p @click="toHome">首页</p> > 消防系统 > <span>历史记录</span></div>
     </div>
     <div
@@ -66,12 +66,12 @@
           </el-input>
         </div>
         <div class="exportBox">
-          <a
-            href="https://tesing.china-tillage.com/firealarm/firealarm_record_excel?sys_menu_id=22&project_id=101&pagesize=500&pagenumber=1"
+          <button
+            @click="exportExcel()"
             type="button" class="self-button">
             <span class="icon-export"></span>
             <span>导出</span>
-          </a>
+          </button>
         </div>
       </div>
 
@@ -160,8 +160,8 @@
           pageSize:20, //每页的条数 。默认为20
           page:1,  //当前页码
           data:[
-            {num:'01',time:'2018/06/02  16:55',position:'青羊工业园区A区17栋7楼1号消防设备区域',type:'烟感报警',device:'001号消防设备',state:0},
-            {num:'02',time:'2018/06/02  16:55',position:'青羊工业园区A区17栋7楼1号消防设备区域',type:'温感报警',device:'001号消防设备',state:1},
+            /*{num:'01',time:'2018/06/02  16:55',position:'青羊工业园区A区17栋7楼1号消防设备区域',type:'烟感报警',device:'001号消防设备',state:0},
+            {num:'02',time:'2018/06/02  16:55',position:'青羊工业园区A区17栋7楼1号消防设备区域',type:'温感报警',device:'001号消防设备',state:1},*/
           ],
           th:[
             {prop:'num',label:'编号',wid:93},
@@ -197,18 +197,19 @@
         this.loading = true;
         let that = this;
         let config = {
+          project:this.$store.state.projectId,
           sys_menu_id:this.$store.state.sysList[16].sys_menu_id,
           pagesize:20,
           pagenumber:num,
           date:date,
-          state:state,
+          //state:state,
           cont:cont,
           type:type,
         }
         let headers = {
           //'Content-Type': 'multipart/form-data'
         }
-        this.$http.post('/firealarm/firealarm_record',config,headers).then(res=>{
+        this.$http.post('firealarm/firealarm_record',config,headers).then(res=>{
           let data = res.data;
           console.log('消防历史记录',config,res);
           if (data.code==0){
@@ -218,7 +219,7 @@
               let arr = [];
               let data2 = data.data;
               data2.map((item,i)=>{
-                let num = (i+1);
+                let num = (i+1)+(num-1)*20;
                 let tempObj = {};
                 tempObj.num = (num<10?'0'+num:num);
                 tempObj.time = item.time;
@@ -237,72 +238,10 @@
             this.loading = false;
             this.$message(data.message);
           }
-          /*if(data.code=='0'){
-            that.closeErr();
-
-            var dataObj = that.$store.state.userInfoTotal = data.data;
-            var projeceId = that.$store.state.projectId = dataObj.projectInfo[0].project_id;
-            var userId = that.$store.state.userId = dataObj.userinfo.id
-            var AUTH_TOKEN = dataObj.userinfo.password + "_" + projeceId + "_" + userId;
-            axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
-
-            var sysList = data.data.usergrouprolesyslist[0].syslist;
-            var listLen = sysList.length;
-            var tempObj = {};
-            for(var i=0;i<listLen;i++){
-              var id = sysList[i].self_id;
-              tempObj[id] = sysList[i];
-              i<listLen-1,that.$store.state.sysList = tempObj;
-            }
-
-            that.$router.replace({ path: '/home', params: { isLogin: true} });
-          }else {
-            that.isError = true;
-            that.refrenshCode();
-            that.showErr(data.message);
-          }*/
         }).catch(err=>{
           this.loading = false;
           this.$message(err);
         })
-        /*let obj = {
-          sys_menu_id:'22',
-          pagesize:20,
-          pagenumber:num,
-          date:date,
-          state:state,
-          cont:cont
-        };
-        utils.post('fireAlarm/record',obj).then(res=>{
-          console.log('消防历史记录',obj,res);
-          if (res.code==0){
-            //总共多少条数据
-            this.table.len = res.paging.count;
-            //数据结构重组
-            let arr = [];
-            let data = res.data;
-            data.map((item,i)=>{
-              let num = (i+1);
-              let tempObj = {};
-              tempObj.num = (num<10?'0'+num:num);
-              tempObj.time = item.time;
-              tempObj.position = item.floor_title;
-              tempObj.type = item.class;
-              tempObj.device = item.devicename;
-              tempObj.state = (item.schedule==2?1:0);
-              arr.push(tempObj)
-            })
-
-            //赋值渲染
-            this.table.data = arr;
-
-          } else {
-
-            this.$message(res.message);
-          }
-        }).catch(err=>{
-          this.$message(err);
-        })*/
       },
 
       //选择页码查询
@@ -314,6 +253,10 @@
       //选择查询条件后查询
       search(){
         this.getHistory(1,this.dateVal==''?'':utils.time(this.dateVal/1000),'',this.value,this.posInput)
+      },
+
+      exportExcel(){
+        window.location.href = "https://tesing.china-tillage.com/firealarm/firealarm_record_excel?sys_menu_id="+this.$store.state.sysList[16].sys_menu_id+"&project_id="+this.$store.state.projectId+"&pagesize=500&pagenumber=1"
       },
 
       toHome(){
@@ -330,6 +273,7 @@
 
     },
     mounted() {
+      this.$refs.HpadTop.style.paddingTop = Number(this.$parent.$children[0].$el.children[0].offsetHeight)+30+'px';
     },
   }
 </script>
@@ -350,7 +294,7 @@
   }
   .fireHistory{
     margin: 0 auto;
-    margin-top: 0.16rem;
+    margin-top: 0.1rem;
     width: 13.06rem;
     .vh(610);
     /*background-color: #000000;*/

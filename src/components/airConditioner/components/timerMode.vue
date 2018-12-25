@@ -5,7 +5,7 @@
 -->
 <template>
   <div>
-    <div class="tabsDomBox0 h-paddingTop">
+    <div ref="HpadTop" class="tabsDomBox0 h-paddingTop">
       <div class="navCrumbs"><p @click="toHome">首页</p> > 空调系统 > <span>定时模式</span></div>
     </div>
     <div class="timeMode">
@@ -72,7 +72,7 @@
       }
     },
     mounted() {
-
+      this.$refs.HpadTop.style.paddingTop = Number(this.$parent.$children[0].$el.children[0].offsetHeight)+30+'px';
     },
   }
 </script>

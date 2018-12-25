@@ -170,7 +170,7 @@
   import LoopRender from "./components/loopRender";
   import utils from "../../../../assets/js/utils";
   import Table from "../../../common/table2";
-  import LineEcharts4 from "../../../common/lineEcharts4";
+  import LineEcharts4 from "./lineEcharts4";
   export default {
     components: {
       LineEcharts4,

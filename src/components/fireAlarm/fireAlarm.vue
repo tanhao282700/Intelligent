@@ -15,7 +15,6 @@
   export default {
     components: {
       'sys-head':sysHead,
-
     },
     name: "fireAlarm",
     data() {
@@ -35,12 +34,12 @@
       //this.$router.push('/fireAlarm/waterPump')
       if(this.$store.state.sysList[16].role_string[0]!=0){
         this.sData.lists.push({id:0,name:'火警监测',route:'/fireAlarm/fireMonitor'})
-      }else{
+      }
+      if(this.$store.state.sysList[16].role_string[1]!=0) {
         this.sData.lists.push({id:1,name:'历史记录',route:'/fireAlarm/fireHistory'})
       }
     },
     mounted() {
-
     },
   }
 </script>
@@ -50,8 +49,10 @@
 
   .fireAlarm{
     .h-paddingTop{
-      padding-top: 70px!important;
+      padding-top: 70px;
       .navCrumbs{
+        top: auto;
+        bottom: 0;
         p{
           display: inline;
           padding: 0;

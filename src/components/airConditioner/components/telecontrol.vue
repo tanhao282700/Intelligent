@@ -5,7 +5,7 @@
 -->
 <template>
   <div>
-    <div class="tabsDomBox0 h-paddingTop">
+    <div ref="HpadTop" class="tabsDomBox0 h-paddingTop">
       <div class="navCrumbs"><p @click="toHome">首页</p> > 空调系统 > <span>远程控制</span></div>
     </div>
     <div class="telecontrol">
@@ -85,7 +85,9 @@
       }
     },
     mounted() {
-
+      //console.log(this.$parent.$children[0].$el.children[0].offsetHeight)
+      this.$refs.HpadTop.style.paddingTop = Number(this.$parent.$children[0].$el.children[0].offsetHeight)+30+'px';
+      //console.log(this.$refs.HpadTop.style.paddingTop)
     },
   }
 </script>

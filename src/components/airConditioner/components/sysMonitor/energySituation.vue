@@ -33,11 +33,11 @@
         </div>
         <div class="content">
           <div class="left">
-            <echarts-l :range="'month'" v-for="(v,i) in tabData2" :key="i" :datas="v.datas" />
+            <echarts-l2 :data="tabData2" />
           </div>
-          <div class="right">
+          <!--<div class="right">
             <echarts-bar v-for="(v,i) in tabData3" :key="i" :datas="v.datas" />
-          </div>
+          </div>-->
         </div>
       </div>
     </div>
@@ -48,9 +48,11 @@
   import EchartsL from "./echartsL";
   import EchartsBar from "./echartsBar";
   import utils from '../../../../assets/js/utils';
+  import EchartsL2 from "./echartsL2";
   export default {
     name: "energySituation",
     components: {
+      EchartsL2,
       EchartsBar,
       EchartsL
 
@@ -87,58 +89,14 @@
         ],
 
         tabData2:[
-          /*{
-            id:1,
-            title:'能耗',
-            unit:['℃'],
-            datas:{
-              id:'selfEchart12',
-              style:{width:'6.3rem',height:244*100/728+'vh'},
-              showLegends:true,
-              legendsC:true,
-              colorArr:[
-                {color1:'rgba(255,159,6,1)',color3:'rgba(255,159,6,0.5'},
-                {color1:'rgba(74,144,226,1)',color3:'rgba(74,144,226,0.5)'},
-              ],
-              list:[
-                {
-                  name:'2017',
-                  data:[
-                    {
-                      "value": [
-                        "2018-09-25 09:00",
-                        4
-                      ]
-                    },
-                    {
-                      "value": [
-                        "2018-09-25 09:30",
-                        15
-                      ]
-                    }
-                  ],
-                },
-                {
-                  name:'2018',
-                  data:[
-                    {
-                      "value": [
-                        "2018-09-25 09:00",
-                        12
-                      ]
-                    },
-                    {
-                      "value": [
-                        "2018-09-25 09:30",
-                        8
-                      ]
-                    }
-                  ],
-                }
-              ]
-
-            }
-          },*/
+          {
+            year:'',
+            data:[]
+          },
+          {
+            year:'',
+            data:[]
+          }
         ],
         tabData3:[
           /*{
@@ -369,7 +327,7 @@
                   this.btnActiveIndex = i;
 
                   this.getEnergy1(item.id);
-                  this.getEnergy2(item.id);
+                  //this.getEnergy2(item.id);
                 }
 
 
@@ -413,7 +371,7 @@
           let data = res.data;
           console.log('能耗报表1', config, res);
           if (data.code == 0) {
-            let data2 = data.data.reverse();
+            /*let data2 = data.data.reverse();
             let conArr = [];
 
             let obj = {};
@@ -441,9 +399,9 @@
               });
               obj.datas.list.push(obj2);
               conArr.push(obj);
-            })
+            })*/
 
-            this.tabData2 = conArr;
+            this.tabData2 = data.data.reverse();
             this.loading = false;
 
           } else {
@@ -457,7 +415,7 @@
 
       },
       //获取能耗报表2
-      getEnergy2(floor_id){
+      getEnergy2(floor_id){//暂屏蔽
         this.loading = true;
         let that = this;
         let config = {
@@ -522,7 +480,7 @@
       },
       handleChange(val){
         this.getEnergy1(this.selectedOptions2[0]);
-        this.getEnergy2(this.selectedOptions2[0]);
+        //this.getEnergy2(this.selectedOptions2[0]);
         //console.log(val,this.selectedOptions2)
       }
     },
@@ -670,7 +628,7 @@
           display: flex;
           justify-content: space-between;
           .left{
-            width: 6.30rem;
+            width: 12.75rem;
 
           }
           .right{

@@ -5,15 +5,14 @@
 </template>
 
 <script>
-  // import echarts from 'echarts'
   export default {
     props:['datas'],
-    name: "echartsBar",
+    name: "lineEcharts4",
     data(){
       return{
         color:[
-          {color1:'rgba(229,81,80,1)',color3:'rgba(229,81,80,0.5)'},
-          {color1:'rgba(45,240,224,1)',color3:'rgba(45,240,224,0.5)'},
+          {color1:'rgba(253,153,27,1)',color2:'rgba(253,153,27,0)',color3:'rgba(253,153,27,0.35)'},
+          {color1:'rgba(45,240,224,1)',color2:'rgba(45,240,224,0)',color3:'rgba(45,240,224,0.35)'},
         ],
 
       }
@@ -30,37 +29,43 @@
           let obj = {
             name: datas.list[i].name,
             data: datas.list[i].data,
-            type: 'bar',
+            type: 'line',
             smooth: true,
             symbol: 'circle',
             symbolSize: 9,
             showSymbol: false,
-            barMinHeight:1,
-            // itemStyle:{
-            //   color:datas.colorArr[i].color1,
-            //   // shadowColor: datas.colorArr[i].color1,
-            //   // shadowBlur: 1,
-            // },
-            itemStyle: {
-              normal: {
-                color: new this.$echarts.graphic.LinearGradient(
-                  0, 0, 0, 1,
-                  [
-                    {offset: 0, color: datas.colorArr[i].color2},
-                    {offset: 1, color: datas.colorArr[i].color1}
-                  ]
-                )
+            itemStyle:{
+              color:this.color[i].color1,
+              shadowColor: this.color[i].color1,
+              shadowBlur: 1,
+            },
+            lineStyle:{
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [
+                  {
+                    offset: 0, color: this.color[i].color2 // 0% 处的颜色
+                  },
+                  {
+                    offset: 0.2, color: this.color[i].color1 // 25% 处的颜色
+                  },
+                  {
+                    offset: 0.8, color: this.color[i].color1 // 25% 处的颜色
+                  },
+                  {
+                    offset: 1, color: this.color[i].color2 // 100% 处的颜色
+                  }
+                ],
+                globalCoord: false // 缺省为 false
               },
-              // emphasis: {
-              //   color: new this.$echarts.graphic.LinearGradient(
-              //     0, 0, 0, 1,
-              //     [
-              //       {offset: 0, color: '#2378f7'},
-              //       {offset: 0.7, color: '#2378f7'},
-              //       {offset: 1, color: '#83bff6'}
-              //     ]
-              //   )
-              // }
+              shadowColor: this.color[i].color3,
+              shadowBlur: 5,
+              shadowOffsetX:2,
+              shadowOffsetY:6
             },
 
           }
@@ -77,15 +82,15 @@
               lineStyle: {
                 width: 1,
                 type:'solid',
-                color: '#8ebbff',
+                color: '#2df0e0',
                 //opacity:0
               },
               data: [
                 {
                   symbol: 'none',
                   name: 'Y 轴值为 x 的水平线',
-                  yAxis: 5,
-                  x: '1.5%'
+                  yAxis: datas.markLineVal,
+                  x: '4.5%'
                 },
               ]
             }
@@ -102,24 +107,23 @@
               color:'#f8fbff',
               fontSize:10,
             },
-            itemWidth:12,
-            itemHeight:12,
-            top:'3%',
-            right:datas.legendsC==true?'auto':'3%',
           },
           tooltip:{
             trigger: 'axis',
             axisPointer: {
-              type: 'shadow'
+              snap: true,
+              lineStyle:{
+                opacity:1,
+                color:'#fff'
+              }
             },
             backgroundColor: "#fff",
             formatter:function(params){
-              //console.log(params)
               let attrs = params;
               let span0 = ``;
               let lens = attrs.length;
               for(let i = 0 ;i<lens;i++){
-                let span = `<span style = "padding:0 4px;color:${params[i].color.colorStops[1].color}">${params[i].value}</span>`;
+                let span = `<span style = "padding:0 4px;color:${params[i].color}">${params[i].value[1]}</span>`;
                 span0 += span;
               }
 
@@ -136,8 +140,8 @@
           },
           grid: {
             top:datas.showLegends==true?'16%':'2%',
-            left: '0%',
-            right: '0%',
+            left: '3%',
+            right: '4%',
             bottom: '2%',
             containLabel: true
           },
@@ -147,8 +151,7 @@
             end: 100
           }],
           xAxis: {
-            type: 'category',
-            data:datas.time,
+            type: 'time',
             splitLine: {
               show: false
             },
@@ -163,13 +166,13 @@
                 return value >= 0 ? '#f8fbff' : '#f8fbff';
               },
               fontSize:10,
-              // formatter: function (value, index) {
-              //   // 格式化成月/日，只在第一个刻度显示年份
-              //   let date = new Date(value);
-              //   let hours = date.getHours()<10?('0'+date.getHours()):(''+date.getHours());
-              //   let minutes = date.getMinutes()<10?('0'+date.getMinutes()):(''+date.getMinutes());
-              //   return hours+':'+minutes;
-              // }
+              formatter: function (value, index) {
+                // 格式化成月/日，只在第一个刻度显示年份
+                let date = new Date(value);
+                let hours = date.getHours()<10?('0'+date.getHours()):(''+date.getHours());
+                let minutes = date.getMinutes()<10?('0'+date.getMinutes()):(''+date.getMinutes());
+                return hours+':'+minutes;
+              }
             }
           },
           yAxis: {
@@ -184,14 +187,10 @@
             axisLabel:{
               show:false
             },
-            splitArea:{
-              show:true,
-              areaStyle:{
-                color:['rgba(142,187,255,0.05)','rgba(142,187,255,0.08)'],
-              }
-            },
             splitLine:{
-              show:false
+              lineStyle:{
+                color:['rgba(45,240,224,0.1)'],
+              }
             }
           },
           series: series
@@ -207,6 +206,14 @@
     updated(){
       this.drawLine();
     }
+    /*watch:{
+      datas:{
+        handler: function(){
+          this.drawLine();
+        },
+        deep:true,
+      }
+    }*/
   }
 </script>
 
