@@ -49,7 +49,7 @@
               <i class="el-icon-location noLog Authoritymanagement"></i>
               <span class="textPL">权限管理</span>
             </el-menu-item>
-            <el-menu-item class="noChildModule" index="/operationLog">
+            <el-menu-item v-if="isoperationLog" class="noChildModule" index="/operationLog">
               <i class="el-icon-location noLog operationLogNav"></i>
               <span class="textPL">操作日志</span>
             </el-menu-item>
@@ -72,7 +72,8 @@
         isUserRouter:true,
         userRouterInfo:{},
         agentPath:'',
-        isPermissionPath:false
+        isPermissionPath:false,
+        isoperationLog:false
       }
     },
     components:{
@@ -82,10 +83,20 @@
       this.userRouterInfo = this.$store.state.sysList
       if(this.userRouterInfo[12]){
         if(this.userRouterInfo[12].role_string[0] == 1){
-          //有代维管理权限
+          //工程部管理权限
           this.agentPath = '/AgentManage'
-        }else{
+        }
+        if(this.userRouterInfo[12].role_string[1] == 1){
+          //工程部普通权限
           this.agentPath = '/AgentManage/normalUser'
+        }
+        if(this.userRouterInfo[12].role_string[2] == 1){
+          //其他部门管理权限
+          this.agentPath = '/AgentManage/otherDep'
+        }
+        if(this.userRouterInfo[12].role_string[3] == 1){
+          //其他部门普通权限
+          this.agentPath = '/AgentManage/normal/otherDep'
         }
       }
       //权限管理
@@ -93,6 +104,11 @@
         this.isPermissionPath = false  //没有管理权限
       }else{
         this.isPermissionPath = true
+      }
+
+      //操作日志
+      if(this.$store.state.userInfoTotal.handle_dairy.role_string){
+          this.isoperationLog = true
       }
 
       $(document).on('click', () => {
