@@ -118,7 +118,6 @@
                     is-range
                     v-model="item.timearea"
                     format="HH:mm"
-                    :disabled="item.isDisabled"
                     range-separator="至"
                     start-placeholder="开始时间"
                     end-placeholder="结束时间"
@@ -172,11 +171,9 @@ export default {
     sure(){
       let content = [];
       $.each(this.editDatas,(n,k)=>{
-        if(!k.isDisabled){
           if(k.title != '' && k.title){//班次名称有值的时候
-            content.push({title:k.title,starttime:utils.time(new Date(k.timearea[0]/1000),11),endtime:utils.time(new Date(k.timearea[1]/1000),11)});
+            content.push({title:k.title,starttime:utils.time(new Date(k.timearea[0])/1000,11),endtime:utils.time(new Date(k.timearea[1])/1000,11),id:k.id});
           }
-        }
       })
       this.$http.post('/app_ims/set_worklist',{'content':JSON.stringify(content)})
       .then(res=>{
@@ -188,7 +185,7 @@ export default {
             })
           }else{
             this.$message({
-              type:'error',
+              type:'success',
               message:'班次新增成功',
               duration:2000
             })
@@ -199,7 +196,7 @@ export default {
         this.editDatas = arr;
     },
     addSchedule(){//点击自定义班次-新增
-      this.editDatas.push({isDisabled:false});
+      this.editDatas.push({id:0});
     },
     editSchedule(){//编辑自定义班次
       let arr = [];
@@ -220,9 +217,9 @@ export default {
           let time = '';
           if(k.timearea){
             time = k.timearea.split('~')
+            //console.log(time)
           }
-          console.log(nowDate+time[0],nowDate+time[1])
-          arr.push({title:k.label,timearea:[nowDate+' '+time[0],nowDate+' '+time[1]],isDisabled:true})
+          arr.push({title:k.label,timearea:[nowDate+' '+time[0],nowDate+' '+time[1]],id:k.id})
 
         }
       })

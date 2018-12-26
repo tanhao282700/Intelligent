@@ -415,6 +415,7 @@ export default {
         let _this = this;
         this.$http.post('/pc_ims/work_type')
         .then(function(res){
+            console.log(res)
             let arr = [];
             if(res.data.code==0){
                 let data = res.data.data;
@@ -422,7 +423,7 @@ export default {
                     data[n].value = data[n].id;
                     data[n].label = data[n].title;
                     if(data[n].label!='休'){
-                        arr.push({label:data[n].label+'班',timearea:data[n].starttime+'~'+data[n].endtime});
+                        arr.push({label:data[n].label,timearea:data[n].starttime+'~'+data[n].endtime,id:data[n].id});
                     }
                     // else{
                     //     _this.xiuworkid = data[n].worklist_id;
