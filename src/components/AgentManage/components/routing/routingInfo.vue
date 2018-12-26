@@ -42,6 +42,16 @@
           v-model="newData.localDesc2.value">
         </el-input>
       </div>
+      <div v-if="newData.vuename=='worklist' && newData.now_state=='4'">
+        <div class="contLabel">物料使用情况</div>
+        <el-input
+          type="textarea"
+          :rows="1"
+          class="controlCont"
+          placeholder="请输入内容"
+          v-model="newData.wuliao">
+        </el-input>
+      </div>
       <div class="dealimg" v-if="(newData.pic1 && newData.pic1!=='') && (newData.pic2 && newData.pic2!=='')">
         <el-row :gutter="20">
           <el-col :span="12">
@@ -198,7 +208,12 @@
       color:#4F648B;
   }
   .controlCont{
-      padding:0 1.464vw;
+      padding:0 0.1rem;
+      -moz-box-shadow:0px 2px 3px #000 inset;              
+     -webkit-box-shadow:0px 2px 3px #000 inset;          
+     box-shadow:0px 2px 3px #000 inset;   
+     width:95.6%;
+    margin-left:2%;
   }
   .controlCont1{
     height:0.5rem;
@@ -206,7 +221,6 @@
   }
   .controlCont2{
     height:0.7rem;
-    box-shadow:0px 0px 1px 0px rgba(87,113,176,0.15),0px 1px 2px 0px rgba(0,0,0,0.5);
     border-radius:1px;
   }
   .rightHead{

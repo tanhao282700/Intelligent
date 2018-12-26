@@ -49,7 +49,7 @@
           <Page @changeCurrentPage="changeCurrentPage" :pages = "page"/>
         </div>
       </div>
-      <Dialog wid="910" hei="600" ref="tableInfos2">
+      <Dialog wid="9.1rem" hei="6.4rem" ref="tableInfos2">
         <div class="tableInfos">
           <div class="infoHead">
             <span class="infoState" v-text="dtlObj.sendSrc"></span>
@@ -81,6 +81,7 @@
                     type="textarea"
                     class="controlCont controlCont1"
                     :rows="2"
+                    :disabled="dtlObj.now_state==4"
                     placeholder="请输入内容"
                     v-model="dtlObj.description">
                   </el-input>
@@ -95,11 +96,26 @@
                     <span class="taskCont">{{dtlObj.dispatch_user_phone}}</span>
                   </li>
                 </ul>
+                <div style="clear:both" v-show="dtlObj.now_state!=0">
+                  <div class="contLabel">使用物料</div>
+                  <div>
+                    <el-input
+                      type="text"
+                      class="wuliao"
+                      :disabled="dtlObj.now_state==4"
+                      placeholder="请输入内容"
+                      @focus="showDialog"
+                      suffix-icon="el-icon-caret-bottom"
+                      v-model="dtlObj.wuliao">
+                    </el-input>
+                  </div>
+                </div>
                 <div style="clear:both" v-show="dtlObj.dtlIsShow">
                   <div class="contLabel">现场处理情况</div>
                   <el-input
                     type="textarea"
                     :rows="2"
+                    :disabled="dtlObj.now_state==4"
                     class="controlCont controlCont2"
                     placeholder="请输入内容"
                     v-model="dtlObj.complete_info">
@@ -241,9 +257,10 @@
                   <span>确定</span>
               </div>
           </div>
-          
       </Dialog>
-      
+      <Dialog wid="6.9rem" hei="5.36rem" ref="selectWuliaoDialog" bgcolor="#031e47">
+        <WuLiao></WuLiao>
+      </Dialog>
   </div>
 </template>
 
@@ -257,15 +274,19 @@ import State from './state';
 import deal from './deal';
 import Table from '@/components/common/table';
 import Page from '@/components/AgentManage/components/index/pages'
+import wuliaoSelect from './demo';
+
 export default {
   components:{
     'Table':Table,
     'SelectBox':SelectBox,
     'Header':Header,
-    'Page':Page
+    'Page':Page,
+    'WuLiao':wuliaoSelect
   },
   data () {
     return {
+        selectWuliaoDialog:true,//选择物料的弹框显示与否
         value1:'',
         currentPage:1,
         value2:'',
@@ -370,6 +391,9 @@ export default {
     }
   },
   methods:{
+    showDialog(){
+      this.$refs.selectWuliaoDialog.show();
+    },
     changeCurrentPage(val){
       this.currentPage = val;
       this.getTableList();
@@ -972,13 +996,17 @@ export default {
           }
           .controlCont1{
             background:rgba(0,24,56,1);
-            box-shadow:0px 0px 1px 0px rgba(87,113,176,0.15),0px 1px 2px 0px rgba(0,0,0,0.5);
+            -moz-box-shadow:0px 2px 3px #000 inset;              
+             -webkit-box-shadow:0px 2px 3px #000 inset;          
+             box-shadow:0px 2px 3px #000 inset;   
             border-radius:1px;
             height:0.5rem;
           }
           .controlCont2{
             background:rgba(0,36,85,1);
-            box-shadow:0px 0px 1px 0px rgba(87,113,176,0.15),0px 1px 2px 0px rgba(0,0,0,0.5);
+            -moz-box-shadow:0px 2px 3px #000 inset;              
+             -webkit-box-shadow:0px 2px 3px #000 inset;          
+             box-shadow:0px 2px 3px #000 inset;   
             border-radius:1px;
             height:0.7rem;
             border:1px solid rgba(0,47,132,1);
@@ -1113,5 +1141,9 @@ export default {
         cursor: pointer;
         background: #3b85ef;
     }
+}
+.wuliao{
+  width: 2.3rem;
+  float: left;
 }
 </style>

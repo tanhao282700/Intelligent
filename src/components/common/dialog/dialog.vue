@@ -3,7 +3,7 @@
         <div class="modalBox" v-if = "isShow">
             <div class="modalBg"></div>
             <transition name="moveTop">
-                <div class="modalBoxIn" :style = "{width:wids,height:heis}" v-if = "isShow">
+                <div class="modalBoxIn" :style = "{width:wids,height:heis,background:bgcolor}" v-if = "isShow">
                     <i class="colseBoxs" @click="hide"></i>
                     <div v-show="tits!=''" class="titBox" v-text = "tits"></div>
                     <slot></slot>
@@ -18,7 +18,7 @@
 import utils from '../../../assets/js/utils';
 
 export default {
-  props:['wid','hei','tit','color','align'],
+  props:['wid','hei','tit','color','align','bgcolor'],
   data () {
     return {
         isShow:false,
