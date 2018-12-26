@@ -81,6 +81,7 @@
     },
     created(){
       this.userRouterInfo = this.$store.state.sysList
+      console.log(this.userRouterInfo[12])
       if(this.userRouterInfo[12]){
         if(this.userRouterInfo[12].role_string[0] == 1){
           //工程部管理权限

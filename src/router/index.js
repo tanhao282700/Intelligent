@@ -295,9 +295,9 @@ export default new Router({
         let info = JSON.parse(sessionStorage.getItem('routerInfo'))
         console.log(info)
         if(info.userInfoTotal.handle_dairy.role_string[0]!=0){
-          return '/operationLog/components/autoOperation'
-        }else{
           return '/operationLog/components/manualoperation'
+        }else{
+          return '/operationLog/components/autoOperation'
         }
       }
     },
