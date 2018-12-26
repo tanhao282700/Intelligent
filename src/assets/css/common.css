@@ -689,3 +689,7 @@ background-color: #65a3fa!important;
   border: none;
   border-bottom: 1px solid #1989fa;
 }
+.operationLog{
+  background:url('../../assets/img/common/componentCommonBg.jpg') no-repeat center;
+  background-size:110% 110%;
+}
