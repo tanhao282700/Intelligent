@@ -170,6 +170,23 @@ export default {
     //自定义班次下拉列表怎么取值
     sure(){
       let content = [];
+      let ary = [];
+      $.each(this.editDatas,(n,k)=>{
+          if(k.title && k.title!=''){
+            ary.push(k.title);
+          }
+      })
+      let nary=ary.slice().sort();
+        for(let i=0;i<ary.length;i++){
+            if (nary[i]==nary[i+1]){
+                this.$message({
+                  type:'error',
+                  message:'不能输入相同的班次名称',
+                  duration:2000
+                })
+                return;
+            }
+        }    
       $.each(this.editDatas,(n,k)=>{
           if(k.title != '' && k.title){//班次名称有值的时候
             content.push({title:k.title,starttime:utils.time(new Date(k.timearea[0])/1000,11),endtime:utils.time(new Date(k.timearea[1])/1000,11),id:k.id});
@@ -189,6 +206,7 @@ export default {
               message:'班次新增成功',
               duration:2000
             })
+            this.$refs.edit.hide();
           }
       })
     },
