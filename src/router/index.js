@@ -21,6 +21,7 @@ import generationMSchedule from '@/components/AgentManage/schedule';
 import generationMWorkList from '@/components/AgentManage/workList';
 import generationMRouting from '@/components/AgentManage/routing';
 import generationMReport from '@/components/AgentManage/report';
+import generationApply from '@/components/AgentManage/otherDepartment/engineDep/approvalList'
 import generationMOther from '@/components/AgentManage/otherDepartment/manage/otherDeManage';
 import generationMOtherWork from '@/components/AgentManage/otherDepartment/manage/workOrder';
 import generationMOtherApprove from '@/components/AgentManage/otherDepartment/manage/approvalList';
@@ -165,7 +166,10 @@ export default new Router({
         {
           path: '/AgentManage/report',
           component:generationMReport
-        },
+        },{
+          path:'/AgentManage/otherDepartment/engineDep/approvalList',
+          component:generationApply
+        }
       ]
     },{//代维普通端
       path: '/AgentManage/normalUser',

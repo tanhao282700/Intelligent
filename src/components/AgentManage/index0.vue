@@ -27,6 +27,7 @@ export default {
                 {id:2,name:'工单',route:'/AgentManage/workList'},
                 {id:3,name:'巡检',route:'/AgentManage/routing'},
                 {id:4,name:'统计报表',route:'/AgentManage/report'},
+                {id:5,name:'外报审批列表',route:'/AgentManage/otherDepartment/engineDep/approvalList'}
             ]
         }
     }

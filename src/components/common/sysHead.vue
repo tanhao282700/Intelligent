@@ -20,7 +20,7 @@
         <el-tab-pane v-for="(item,index) in datas.lists" :key="item.id" :label="item.name" :name="'item'+index" :route="item.route" :stretch="true">
         </el-tab-pane>
       </el-tabs>
-      <el-row class="block-col-2 userCenter" style="position: absolute;right: .8rem;top: 10px;">
+      <el-row class="block-col-2 userCenter" style="position: absolute;right: 1.5rem;top: 10px;">
         <el-col :span="12">
           <el-dropdown trigger="hover" @command="handleCommand" >
             <span class="el-dropdown-link">
