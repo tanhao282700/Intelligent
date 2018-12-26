@@ -20,11 +20,12 @@
         <el-tab-pane v-for="(item,index) in datas.lists" :key="item.id" :label="item.name" :name="'item'+index" :route="item.route" :stretch="true">
         </el-tab-pane>
       </el-tabs>
-      <el-row class="block-col-2 userCenter" style="position: absolute;right: .2rem;top: 10px;">
+      <el-row class="block-col-2 userCenter" style="position: absolute;right: .8rem;top: 10px;">
         <el-col :span="12">
           <el-dropdown trigger="hover" @command="handleCommand" >
             <span class="el-dropdown-link">
               <span @click="showPersonInfo" class="userIcon"></span>
+              <span style="position: absolute;top: 0;left: 0.4rem;width: 1rem;line-height: 0.3rem;color: #fff;">{{username}}</span>
             </span>
             <el-dropdown-menu class="homeDropDown" slot="dropdown" style="background: #061733;border: 1px solid #4a90e2">
               <el-dropdown-item command="personInfo" class="homeDropdownItem" style="text-align:center;color:#f6f6f6">个人信息</el-dropdown-item>
@@ -78,6 +79,7 @@ export default {
       inputs:'',
       showBannerParam:false,
       activeName:'item0',
+      usernname:'',
       menus:[
           {label:'个人信息',value:1},
           {label:'密码修改',value:2}],
@@ -152,6 +154,7 @@ export default {
     sessionStorage.setItem('activeItem',null);
   },
   mounted(){
+    this.username = this.$store.state.userInfoTotal.userinfo.name;
     if(this.datas.active){
       this.activeName = this.datas.active;
     }else{

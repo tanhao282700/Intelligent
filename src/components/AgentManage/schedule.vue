@@ -174,7 +174,7 @@ export default {
       $.each(this.editDatas,(n,k)=>{
         if(!k.isDisabled){
           if(k.title != '' && k.title){//班次名称有值的时候
-            content.push({title:k.title,starttime:utils.time(k.timearea[0],11),endtime:utils.time(k.timearea[1],11)});
+            content.push({title:k.title,starttime:utils.time(new Date(k.timearea[0]/1000),11),endtime:utils.time(new Date(k.timearea[1]/1000),11)});
           }
         }
       })
