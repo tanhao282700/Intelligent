@@ -3,7 +3,7 @@
         <!--面包屑--> 
         <div class="navCrumbs">
             <el-breadcrumb separator-class="el-icon-arrow-right">
-              <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+              <el-breadcrumb-item :to="{ path: '/home' } ">首页</el-breadcrumb-item>
               <el-breadcrumb-item>门禁系统</el-breadcrumb-item>
               <el-breadcrumb-item>门禁记录</el-breadcrumb-item>
             </el-breadcrumb>

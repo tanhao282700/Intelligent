@@ -80,6 +80,8 @@
 	        };
 	    },
         mounted(){
+    		let myDate = new Date();
+    		this.floorNumber = myDate.getMonth() + 1;
 	  	 	this.selDateLinkage();  // 日期联动
 	        this.getChartData();    // 图表
             this.getSelesData();    // 下拉框数据
@@ -89,8 +91,6 @@
 	    },
 	    methods: {
 	    	selDateLinkage(){
-	    		let myDate = new Date();
-	    		this.floorNumber = myDate.getMonth() + 1;
 	    		console.log(this.floorNumber);
 	    		if(this.floorNumber == 2){
 				    //如果是闰年
