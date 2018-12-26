@@ -1,20 +1,11 @@
 
 <template>
-  <div class="workBox otherOrderListCotainer"  v-loading="loading"
+  <div class="workBox approvaListCotainer" v-loading="loading"
        element-loading-text=""
        element-loading-spinner="el-icon-loading"
        element-loading-background="rgba(0, 0, 0, 0.5)">
     <Crumbs :data ='crumbs'/>
-    <div class="workHead boxs">
-      <div class="numBox" v-for="(v,i) in workH">
-        <div class="numBoxIn">
-          <p v-text="v.val" :style="{'color':v.color}"></p>
-          <span v-text="v.tit"></span>
-        </div>
-        <Lines :hei="60" :top="20" v-if="i!=3"/>
-      </div>
-    </div>
-    <div class="tableBoxs boxs ">
+    <div class="tableBoxs boxs otherDepApproListBox">
       <div class="tabHead">
         <div class="jobBoxs">
           <SelectBox
@@ -25,7 +16,6 @@
             @change = "change1"
           />
         </div>
-
         <div class="searchBoxs" @click="getTableList">
           <i class="el-icon-search"></i>
           <span>筛选</span>
@@ -41,28 +31,22 @@
           />
         </div>
       </div>
-      <div class="tableIn">
+      <div class="tableIn" >
         <Table
           style="width:100%"
           :table = "table"
+          :dialogHeadTitle = 'agreeDialogTitle'
+          :submitBtn = 'submitBtnText'
+          :isOtherDep = 'isOtherDeps'
           @rowClick = "rowClick"
         />
       </div>
     </div>
-    <div class="dispatch">
-      <div @click="sendWork">
-        <div class="dispatchBtn"><i class="el-icon-third-feiji"></i></div>
-      </div>
-    </div>
-
-    <!--派单模块-->
-    <Dialog wid="5.5rem" hei="6.1rem" ref="send">
-      <SendWork @sendInfosShow="sendInfosShow" :query="query3" @getDevVal="getDevice"/> <!-- 派单 -->
-    </Dialog>
 
     <Dialog wid="1200" hei="600" ref="dialog">
       <WorkInfo @tableInfos2Show="tableInfos2Show" :table="table2" :query="query2" @getUserList="rowClick" @getDetailTime="getDetailTime" :dtltime="value7"/>
     </Dialog>
+
     <Dialog wid="910" hei="626" ref="tableInfos2">
       <div class="tableInfos">
         <div class="infoHead">
@@ -81,35 +65,7 @@
         </div>
       </div>
     </Dialog>
-    <Dialog wid="3.64rem" hei="2.16rem" ref="isRefult"><!-- 同意退单 -->
-      <div v-text="dialogBoxs.txt" class="isRefTxt"></div>
-      <div class="isRbtnBoxs">
-        <span @click="submitOk">确定</span>
-        <span @click="submitNo">取消</span>
-      </div>
-    </Dialog>
-    <Dialog wid="4.14rem" hei="2.6rem" ref="sendWork2"><!-- 重新选择工单处理人员 -->
-      <div class="sendWork2">
-        <div class="oldName">
-          <label>原处理人员：{{detalrowdata.user_name}}</label>
-          <span class="namess" v-text="dialogBoxs.item.name"></span>
-        </div>
-        <div class="newName">
-          <label>新工单处理人员：</label>
-          <div class="ChooseBox">
-            <SelectBox
-              :options = 'names'
-              :value = "vName"
-              placeholder='选择人员'
-              @change = 'changeNew'
-            />
-          </div>
-        </div>
-        <div class="sendWork2Boxs btnBai1" @click="sendWork2">
-          <span>确定</span>
-        </div>
-      </div>
-    </Dialog>
+
   </div>
 </template>
 
@@ -120,12 +76,12 @@
   import TimePickerT from '../../components/work/timePickerTit2';
   import Percentage from '../../components/work/Percentage';
   import WorkInfo from '../../components/work/workInfo';
-  import SendWork from '../sendWork';
+  import SendWork from '../../components/work/sendWork';
   import State from '../../components/work/state';
   import deal from '../../components/work/deal';
-  import Table from '../table';
-  import RoutingTask from '../../components/routing/routingTask';
-  import RoutingInfo from '../routingInfo';
+  import Table from '../table1';
+  import RoutingTask from '../../components/routing/routingTask'
+  import RoutingInfo from '../../components/routing/routingInfo'
   export default {
     components:{
       'Table':Table,
@@ -138,26 +94,29 @@
     },
     data () {
       return {
+        isOtherDeps:false,
         loading:true,
-        approveStatus:'',
-        crumbs:['代维系统','工单'],
+        submitBtnText: "确定",
+        agreeDialogTitle:"选择工单处理人",
+        isDealWork:false,
+        approveStatus:"-1",
+        approveStatusArray:[
+          {
+            value:'-1',label:'全部'
+          },
+          {
+            value:'10',label:'待审批'
+          },
+          {
+            value:'11',label:'已同意'
+          },
+          {
+            value:'12',label:'已驳回'
+          }
+        ],
+        crumbs:['代维系统','外报审批列表'],
         workH:[],//上半部分数据
-        query:{//查询条件
-          department:'',
-          name:''
-        },
         getStatus:'',
-        query3:{//工单详情的查询条件
-          types:[],
-          type:'',
-          time:'10-29',
-          devices:[],
-          names:[],
-          priority:[{label:'一般',value:1},{label:'普通',value:2},{label:'严重',value:3}],
-          type_id:[{label:'维保工单',value:3}],
-          takePhoto:[{label:'拍照',value:1},{label:'不拍照',value:0}],
-        },
-
         query2:{//工单详情的查询条件
           types:[],
           type:'',
@@ -167,23 +126,7 @@
           priority:[{label:'一般',value:1},{label:'普通',value:2},{label:'严重',value:3}],
           type_id:[{label:'系统自动派发',value:0},{label:'手工派发',value:1},{label:'投诉工单',value:2},{label:'维保工单',value:3}]
         },
-        approveStatusArray:[
-          {
-            value:'',label:'全部'
-          },
-          {
-            value:'9',label:'审批中'
-          },
-          {
-            value:'0',label:'未接单'
-          },
-          {
-            value:'-1',label:'处理中'
-          },
-          {
-            value:'4',label:'已完成'
-          }
-        ],//专业下拉框
+        departments:[],//专业下拉框
         names:[{
           value:'',label:'请选择'
         }],//姓名下拉框
@@ -207,7 +150,7 @@
             {prop:'description',label:'内容描述'},
             {prop:'sendtype',label:'派发类别'},
             {prop:'now_state',label:'状态',
-              /*operate: true,
+              operate: true,
               render: (h, param)=> {
                 //console.log(param.row.now_state)
                 const btnss = {
@@ -217,10 +160,9 @@
                   props: { state:btnss},
                   on:{}
                 });
-              }*/
-            },
+              }},
             {prop:'fill',label:'操作',
-              /*operate: true,
+              operate: true,
               render: (h, param)=> {
                 const btnss = {
                   item:param.row,
@@ -229,7 +171,7 @@
                   props: { btnss:btnss},
                   on:{agree:this.agree,refult:this.refult}
                 });
-              }*/
+              }
             }]
         },
         vName:'',
@@ -241,14 +183,15 @@
           hei:328, //table高度  设置后有滚动条
           data:[],
           th:[
-            {prop:'serial',label:'序号'},
-            {prop:'sys_name',label:'类别'},
-            {prop:'approve_name',label:'工程部审批人',wid:180},
+            {prop:'serial',label:'序号',wid:90},
+            {prop:'title',label:'类别'},
+            {prop:'dispatch_user_name',label:'工单派发人'},
             {prop:'user_name',label:'工单处理人'},
-            {prop:'approve_phone',label:'电话'},
-            {prop:'addtime',label:'派发时间'},
-            {prop:'description',label:'内容描述'},
+            {prop:'user_phone',label:'电话'},
+            {prop:'addtime',label:'派发时间',wid:200},
+            {prop:'description',label:'内容描述',wid:180},
             {prop:'now_state',label:'状态'},
+            {prop:'id',label:'操作',wid:170,},
           ]
         },
         detalrowdata:{
@@ -274,9 +217,6 @@
       },
       change1(val){ //选择
         this.approveStatus = val;
-      },
-      change2(val){ //选择
-        this.query.name = val;
       },
       changes(val){
         this.value7 = val;
@@ -354,184 +294,8 @@
         this.getTableList();
       },
       rowClick(row){
-        if(row.user_id){
-          this.infoItem.user_id  = row.user_id;
-        }
 
         this.tableInfos2Show(row);
-        return;
-
-        this.$refs.dialog.show();
-        if(!row.type){
-          row.type = ''
-        }
-        if(!row.time || row.time.split('-')[0].length>2){
-          row.time = this.value7;
-        }
-        this.$http.post('/pc_ims/admin/user_jobs',{
-          sys_name:row.type,
-          date:row.time,
-          user_id:this.infoItem.user_id
-        }).then(res=>{
-          //console.log(res);
-          if(res.data.code==0){
-            this.table2.len = res.data.count;
-            let data = res.data.data.info;
-            $.each(data,(i,k)=>{
-              if(data[i].type_id ==='0'){
-                data[i].sendtype='系统自动派发'
-              }else if(data[i].type_id=='1'){
-                data[i].sendtype = '手工派发'
-              }else if(data[i].type_id=='2'){
-                data[i].sendtype='投诉'
-              }else if(data[i].type_id=='3'){
-                data[i].sendtype = '维保工单'
-              }
-            })
-            this.table2.data = data;
-            this.table2.tabs = [{'name':'今日工单总数',num:res.data.data.zong},
-              {'name':'已完成',num:res.data.data.wan},
-              {'name':'未完成',num:res.data.data.wei}];
-          }else{
-            this.$message({
-              type:'error',
-              message:res.data.msg
-            })
-          }
-        })
-      },
-      agree(item){ //同意
-        console.log(item);
-        if(!item.user_id){
-          item.user_id=item.infos.user_id;
-          item.id = item.infos.id;
-        }
-        this.detalrowdata = {
-          infos:{
-            id:item.id,
-            pic1:[],
-            pic2:[],
-            user_id:item.user_id,
-            localDesc:{
-              info:item.description
-            }
-          },
-          type:6,
-          end_time:'',
-          user_name:this.$store.state.userInfoTotal.userinfo.name,
-          dispatch_user_id:this.$store.state.userInfoTotal.userinfo.id
-        }
-        if(!item.type){
-          item.type = Number(item.now_state)+1;
-        }
-        if((item.type-1)==5){ //同意退单 type =6
-          this.dialogBoxs = {
-            item:item,
-            state0:1,
-            txt:'是否允许退单'
-          };
-          this.getStatus = 5;
-          this.$refs.isRefult.show();
-        }else if((item.type-1)==2){ //同意延期 type = 3
-          this.detalrowdata.type = 3;
-          this.dialogBoxs = {
-            item:item,
-            state0:1,
-            txt:'是否允许延期处理'
-          };
-          this.getStatus =2;
-          this.$refs.isRefult.show();
-        }
-
-      },
-      refult(item){
-        //拒绝
-        if(item.now_state==2){//拒绝延期 type=7
-          this.detalrowdata = {
-            infos:{
-              id:item.id,
-              pic1:[],
-              pic2:[],
-              user_id:item.user_id,
-              localDesc:{
-                info:item.description
-              }
-            },
-            end_time:'',
-            type:7,
-            user_name:this.$store.state.userInfoTotal.userinfo.name,
-            dispatch_user_id:this.$store.state.userInfoTotal.userinfo.id
-          }
-        }else{//拒绝退单 type=8
-          this.detalrowdata = {
-            infos:{
-              id:item.id,
-              pic1:[],
-              pic2:[],
-              user_id:item.user_id,
-              localDesc:{
-                info:item.description
-              }
-            },
-            end_time:'',
-            type:8,
-            user_name:this.$store.state.userInfoTotal.userinfo.name,
-            dispatch_user_id:this.$store.state.userInfoTotal.userinfo.id
-          }
-        }
-
-        this.infoItem = item;
-        let state = item.now_state;
-        this.getDealResult(this.detalrowdata);
-      },
-      submitOk(){ //处理工单 同意/拒绝退单/延期
-        this.$refs.isRefult.hide();
-        if(this.getStatus==5){
-          this.vName = '';
-          this.$refs.sendWork2.show();
-        }else{
-          this.getDealResult(this.detalrowdata);
-        }
-
-      },
-      submitNo(){ //取消
-        this.$refs.isRefult.hide();
-      },
-      sendWork2(){ //重新选择工单处理人员
-        console.log(this.detalrowdata);
-        if(!this.vName || this.vName==''){
-          this.$message({
-            type:'error',
-            message:'请选择新工单处理人员',
-            duration:2000
-          })
-          return;
-        }
-        this.$refs.sendWork2.hide();
-        this.getDealResult(this.detalrowdata);
-      },
-      sendWork(){
-        this.$refs.send.show();
-      },
-      sendInfosShow(form){
-        // console.log(form)
-        delete form.operator;
-
-        this.$http.post('/app_ims/other_send_joblist',form).then(res=>{
-          if(res.data.code==0){
-            this.$message({
-              type:'success',
-              message:res.data.msg
-            })
-            this.$refs.send.hide();
-            this.getTableList();
-          }else{
-            this.$message({
-              type:'error',
-              message:'派发失败！'
-            })
-          }
-        })
       },
       tableInfos2Show(item){
         this.$refs.tableInfos2.show();
@@ -684,57 +448,17 @@
           })
       },
       getNameList(){
-        let that = this;
-       /* this.names = [{value:'',label:'全部'}]*/
-        that.$http.post('/app_ims/get_admin').then(res=>{
-          console.log(res);
+        this.names = [{value:'',label:'全部'}]
+        this.$http.post('/pc_ims/get_user').then(res=>{
           if(res.data.code==0){
             let data = res.data.data;
             $.each(data,(n,k)=>{
               data[n].value = data[n].user_id;
-              data[n].label = data[n].user_name;
-              /*that.names.push({value:data[n].user_id,label:data[n].truename})*/
+              data[n].label = data[n].truename;
+              this.names.push({value:data[n].user_id,label:data[n].truename})
             })
-           /* that.query2.names = data;*/
-            that.query3.names = data;
-          }else{
-            this.$message({
-              type:'error',
-              message:res.data.msg
-            })
-          }
-        });
-      },
-      getDepartList(){
-        this.departments = [{
-          value:'',label:'全部'
-        }];
-        this.$http.post('/pc_ims/get_description').then(res=>{
-          if(res.data.code==0){
-            let data = res.data.data;
-            $.each(data,(n,k)=>{
-              data[n].value = data[n].id;
-              data[n].label = data[n].title;
-              this.departments.push({value:data[n].id,label:data[n].title})
-            })
-
-          }else{
-            this.$message({
-              type:'error',
-              message:res.data.msg
-            })
-          }
-        });
-      },
-      getSystemId(){
-        this.$http.post('/pc_ims/get_sysmenu').then(res=>{
-          if(res.data.code==0){
-            let data = res.data.data;
-            $.each(data,(n,k)=>{
-              data[n].value = data[n].id;
-              data[n].label = data[n].title;
-            })
-            this.query3.types = data;
+            this.query2.names = data;
+            this.query3.names = data;
           }else{
             this.$message({
               type:'error',
@@ -752,24 +476,6 @@
               data[n].label = data[n].title;
             })
             this.query2.types = data;
-          }else{
-            this.$message({
-              type:'error',
-              message:res.data.msg
-            })
-          }
-        });
-      },
-      getDevice(val){
-        this.$http.post('/pc_ims/get_device',{sys_id:val}).then(res=>{
-          console.log(res);
-          if(res.data.code==0){
-            let data = res.data.data;
-            $.each(data,(n,k)=>{
-              data[n].value = data[n].id;
-              data[n].label = data[n].title;
-            })
-            this.query3.devices = data;
           }else{
             this.$message({
               type:'error',
@@ -797,15 +503,23 @@
           }
         });
       },
-      getTopData(){
-        this.$http.post('/pc_ims/admin/job_data').then(res=>{
+      getTableList(){
+        let that = this;
+        that.loading = true;
+        that.$http.post('/app_ims/approve_joblist',{
+          state: that.approveStatus,
+          date: that.value7,//this.value7
+        }).then(res=>{
+          console.log(res);
           if(res.data.code==0){
-            let data = res.data.data;
-            this.workH = [
-              /*{id:1,tit:'今日在岗人数',val:data.zaiban,color:'#b5d7ff'},*/
-              {id:2,tit:'今日工单总数',val:data.count,color:'#b5d7ff'},
-              {id:3,tit:'已完成数量',val:data.complete,color:'#f38a00'},
-              {id:4,tit:'今日工单完成率',val:data.percent+'%',color:'#4ae283'}];
+            $.each(res.data.data,(n,k)=>{
+              let data = res.data.data;
+              data[n].serial = n+1;
+              if(n<9){
+                data[n].serial = '0' + data[n].serial;
+              }
+            })
+            that.table.data = res.data.data;
 
           }else{
             this.$message({
@@ -813,54 +527,18 @@
               message:res.data.msg
             })
           }
-        })
-      },
-      getTableList(){
-        let that = this;
-        that.loading = true;
-        that.$http.post('/app_ims/get_other_joblist',{
-          state : that.approveStatus,
-          date : that.value7,
-        }).then(res=>{
-          console.log(res);
-
-          if(res.data.code==0){
-            let data = res.data.data;
-            that.workH = [
-              {id:2,tit:'今日工单总数',val:data.header.count,color:'#b5d7ff'},
-              {id:3,tit:'已完成数量',val:data.header.finish,color:'#f38a00'},
-              {id:4,tit:'今日工单完成率',val:data.header.percentage+'%',color:'#4ae283'}];
-            $.each(data.info,(n,k)=>{
-              data.info[n].serial = n+1;
-              if(n<9){
-                data.info[n].serial = '0' + data.info[n].serial;
-              }
-            })
-            that.table.data = data.info;
-          }else{
-            that.$message({
-              type:'error',
-              message:res.data.msg
-            })
-          }
           that.loading = false;
         })
-
-      }
+      },
     },
     created() {
 
     },
     mounted() {
-      /*this.getTopData();*/
-      /*this.getDepartList();*/
-
-      this.getNameList();
-      this.getSystemList();
-      this.getSystemId();
-
       this.getTableList();
-      $(".el-tabs__item").removeClass('is-active').eq(1).addClass('is-active');
+
+     /* this.getSystemList();*/
+
     }
   }
 </script>
@@ -910,6 +588,7 @@
         position: relative;
         height:0.59rem;
         margin-top:0.1rem;
+        paddidng-top:0.2rem;
         .jobBoxs{
           float: left;
           width: 1.15rem;

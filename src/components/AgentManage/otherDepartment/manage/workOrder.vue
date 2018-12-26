@@ -1,6 +1,9 @@
 
 <template>
-  <div class="workBox otherOrderListCotainer">
+  <div class="workBox otherOrderListCotainer" v-loading="loading"
+       element-loading-text=""
+       element-loading-spinner="el-icon-loading"
+       element-loading-background="rgba(0, 0, 0, 0.5)">
     <Crumbs :data ='crumbs'/>
     <div class="workHead boxs">
       <div class="numBox" v-for="(v,i) in workH">
@@ -135,6 +138,7 @@
     },
     data () {
       return {
+        loading:true,
         approveStatus:'',
         crumbs:['代维系统','工单'],
         workH:[],//上半部分数据
@@ -350,12 +354,12 @@
         this.getTableList();
       },
       rowClick(row){
+        this.tableInfos2Show(row);
+        return;
+
         if(row.user_id){
           this.infoItem.user_id  = row.user_id;
         }
-
-        this.tableInfos2Show(row);
-        return;
 
         this.$refs.dialog.show();
         if(!row.type){
@@ -813,7 +817,7 @@
       },
       getTableList(){
         let that = this;
-
+        that.loading = true;
         that.$http.post('/app_ims/get_other_joblist',{
           state : that.approveStatus,
           date : that.value7,
@@ -839,6 +843,7 @@
               message:res.data.msg
             })
           }
+          that.loading = false;
         })
 
       }

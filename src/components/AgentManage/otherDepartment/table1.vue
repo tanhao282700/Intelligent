@@ -95,8 +95,8 @@ rowClick(row){
 
     </el-table>
 
-    <el-dialog title="选择工程部审批人" :visible.sync="approveDialog" class="dialogBox approveListDialogBox" :close-on-click-modal="false">
-      <el-select v-model="apporvePerson" placeholder="选择人员">
+    <el-dialog :title="dialogTitle" :visible.sync="approveDialog" class="dialogBox approveListDialogBox" :close-on-click-modal="false" :closed="closeDialog" :before-close="beforeCloseDialog">
+      <el-select v-model="apporvePerson" placeholder="选择人员" v-if="isOtherDepart">
         <el-option
           v-for="item in adminData"
           :key="item.user_id"
@@ -104,7 +104,16 @@ rowClick(row){
           :value="item.user_id">
         </el-option>
       </el-select>
-        <el-button type="primary" @click="agree" class="submitBtn">提交</el-button>
+      <el-select v-model="apporvePerson" placeholder="选择人员" v-else>
+        <el-option
+          v-for="item in adminData"
+          :key="item.user_id"
+          :label="item.truename"
+          :value="item.user_id">
+        </el-option>
+      </el-select>
+
+        <el-button type="primary" @click="agree" class="submitBtn">{{submitBtnText}}</el-button>
     </el-dialog>
 
   </div>
@@ -114,13 +123,17 @@ rowClick(row){
   import utils from '../../../assets/js/utils';
   import MyRender from "../../common/MyRender";
   export default {
-    props:['table'], //,'data','th','hei','currentPage'
+    props:['table','dialogHeadTitle','submitBtn','isOtherDep'], //,'data','th','hei','currentPage'
     components: {
       MyRender
     },
 
     data () {
       return {
+        isOtherDepart:true,
+        submitBtnText:"",
+        dialogTitle:"",
+        isDealWork:false,
         curApproveData:{},
         apporvePerson:"",
         approveDialog:false,
@@ -147,7 +160,13 @@ rowClick(row){
         //   console.log(`当前页: ${val}`);
       },
       rowClick(row, event, column){ //当前行点击
-        this.$emit('rowClick',row);
+        let that = this;
+        setTimeout(function () {
+          if(!that.isDealWork){
+            that.$emit('rowClick',row);
+          }
+        },100)
+
       },
       rowEnter(row, column, cell, event){
         this.$emit('rowEnter',row);
@@ -156,8 +175,16 @@ rowClick(row){
         this.$emit('rowLeave',row);
       },
       openDialog(item){
+        this.isDealWork = true;
         this.approveDialog =  true;
         this.curApproveData = item;
+      },
+      closeDialog(){
+        this.isDealWork = false;
+      },
+      beforeCloseDialog(done){
+        this.isDealWork = false;
+        this.approveDialog =  false;
       },
       agree(){ //同意
         let that = this;
@@ -181,12 +208,16 @@ rowClick(row){
           }
           that.curApproveData = {};
           that.approveDialog = false;
+          setTimeout(function () {
+            that.isDealWork = false;
+          },150)
         })
 
       },
       refuse(item){
         //console.log(item);
         let that = this;
+        that.isDealWork = true;
         that.$http.post('/app_ims/dewith_approve',{
           job_id: item.id,
           user_id: "",
@@ -204,6 +235,9 @@ rowClick(row){
               message:res.data.msg
             })
           }
+          setTimeout(function () {
+            that.isDealWork = false;
+          },150)
         })
 
       },
@@ -243,13 +277,38 @@ rowClick(row){
             })
           }
         })
+      },
+      getUser(){
+        let that = this;
+        that.$http.post('/app_ims/get_user').then(res=>{
+          console.log(res);
+          if(res.data.code==0){
+            that.adminData = res.data.data;
+          }else{
+            that.$message({
+              type:'error',
+              message:res.data.msg
+            })
+          }
+        })
       }
     },
     created() {
-      this.getAdmins();
+      this.isOtherDepart = this.isOtherDep;
+      this.tableData = this.table;
+      this.dialogTitle = this.dialogHeadTitle;
+      this.submitBtnText = this.submitBtn;
     },
     mounted(){
-      this.tableData = this.table;
+      let that = this;
+      if(that.isOtherDepart){
+        console.log('s1');
+        that.getAdmins();
+      }else {
+        console.log('s2');
+        that.getUser();
+      }
+
     }
   }
 </script>
