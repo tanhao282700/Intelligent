@@ -11,6 +11,7 @@
         <div class="tableBox  borderShadow paddingTp0">
             <!-- 日志表格 -->
             <el-table :data="tableData" style="width: 100%;" height="100%">
+              <el-table-column prop="x" label="" width="50"></el-table-column>
               <el-table-column prop="indexs" label="序号" align="cneter"></el-table-column>
               <el-table-column prop="time" label="操作时间" align="cneter"></el-table-column>
               <el-table-column prop="user_name" label="操作人"  align="cneter"></el-table-column>

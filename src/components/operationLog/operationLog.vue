@@ -34,6 +34,6 @@
 <style>
 
   @import '../../assets/css/doorControl.css' ;
-
+  .operationLog .el-table .cell{text-align:left!important;}
 
 </style>
