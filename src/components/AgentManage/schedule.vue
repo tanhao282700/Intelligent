@@ -10,7 +10,7 @@
                   <span slot="label" class="tabItems">
                       排班表
                   </span>
-                  <ScheduleTable :isShowBtns="'yes'" :data="paibanList" @getPaibanData="getPaiBanData" @saveAddPaiBan='saveAddPaiBan' @editSchedule="editSchedule" @getBancis="getBancis"/>
+                  <ScheduleTable :isShowBtns="'yes'" :data="paibanList" @getPaibanData="getPaiBanData" @saveAddPaiBan='saveAddPaiBan' @editSchedule="editSchedule" @getBancis="getBancis" ref="ref"/>
               </el-tab-pane>
               <el-tab-pane name="second" >
                   <span slot="label" class="tabItems">
@@ -206,6 +206,7 @@ export default {
               message:'班次新增成功',
               duration:2000
             })
+            this.$refs.ref.getWOptions(); 
             this.$refs.edit.hide();
           }
       })
