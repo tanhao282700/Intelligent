@@ -79,7 +79,7 @@ export default {
       inputs:'',
       showBannerParam:false,
       activeName:'item0',
-      usernname:'',
+      username:'',
       menus:[
           {label:'个人信息',value:1},
           {label:'密码修改',value:2}],
