@@ -281,7 +281,6 @@ rowClick(row){
       getUser(){
         let that = this;
         that.$http.post('/app_ims/get_user').then(res=>{
-          console.log(res);
           if(res.data.code==0){
             that.adminData = res.data.data;
           }else{
@@ -302,10 +301,8 @@ rowClick(row){
     mounted(){
       let that = this;
       if(that.isOtherDepart){
-        console.log('s1');
         that.getAdmins();
       }else {
-        console.log('s2');
         that.getUser();
       }
 

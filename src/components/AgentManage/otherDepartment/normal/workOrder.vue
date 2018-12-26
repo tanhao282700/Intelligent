@@ -41,7 +41,7 @@
           />
         </div>
       </div>
-      <div class="tableIn">
+      <div class="tableIn otherDepTable">
         <Table
           style="width:100%"
           :table = "table"
@@ -565,9 +565,15 @@
             }else{
               this.infoItem.sendInfos = []
             }
-            this.infoItem.job_list = res.data.data.job_list;
-            this.infoItem.pic1 = res.data.data.pic1
-            this.infoItem.pic2 = res.data.data.pic2
+            let job_list = res.data.data.job_list;
+            $.each(job_list,(n,k)=>{
+              k.label = k.info;
+              k.time = k.addtime;
+            })
+            this.infoItem.job_list = job_list;
+
+            this.infoItem.pic1 = res.data.data.pic1;
+            this.infoItem.pic2 = res.data.data.pic2;
           }else{
             this.$message({
               type:'error',
@@ -596,28 +602,16 @@
       } ,
       infoTit2(state){
         let res = '';
-        switch(state){
-          case 0:
-            res = '未接单';
-            break;
-          case 1:
-            res = '已接单';
-            break;
-          case 2:
-            res = '延期申请';
-            break;
-          case 3:
-            res = '延期审请通过'
-            break;
-          case 4:
-            res = '已完成'
-            break;
-          case 5:
-            res = '申请退单'
-            break;
-          case 6:
-            res = '完成退单'
-            break;
+        if(state==0){
+          res = '未接单';
+        }else if(state==9){
+          res = '审批中';
+        }else if(state==4){
+          res = '已完成';
+        }else if(state==15){
+          res = "审批驳回";
+        }else{
+          res = '处理中'
         }
         return res;
       },
@@ -902,7 +896,7 @@
     }
     .tableBoxs{
       width: 95.6%;
-      height:4rem;
+      height:4.4rem;
       margin-top:0.2rem;
       margin-left: 0.3rem;
       .tabHead{

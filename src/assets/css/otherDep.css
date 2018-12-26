@@ -78,3 +78,6 @@
 .approveListDialogBox.dialogBox .el-select .el-input__inner::-webkit-input-placeholder{
   color: #fff!important;
 }
+.otherDepTable .el-table{
+  height: calc(100% - .1rem) !important;
+}
