@@ -593,7 +593,7 @@
           let time1 = new Date(data[i].addtime).getTime();
           let time2 = new Date(data[i+1].addtime).getTime();
           let intervlaTime = time2 - time1;
-          data[i].intervals = that.calcIntervalTime(intervlaTime);
+          data[i].interval = that.calcIntervalTime(intervlaTime);
         }
       },
       calcIntervalTime(time){

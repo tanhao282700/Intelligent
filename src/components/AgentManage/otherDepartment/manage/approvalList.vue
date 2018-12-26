@@ -330,10 +330,18 @@
               this.infoItem.sendInfos = []
             }
             let job_list = res.data.data.job_list;
+            let len = job_list.length;
+            for(var i=0;i<len-1;i++){
+              let time1 = new Date(job_list[i].addtime).getTime();
+              let time2 = new Date(job_list[i+1].addtime).getTime();
+              let intervlaTime = time2 - time1;
+              job_list[i].interval = this.calcIntervalTime(intervlaTime);
+            }
             $.each(job_list,(n,k)=>{
               k.label = k.info;
               k.time = k.addtime;
             })
+            console.log(job_list)
             this.infoItem.job_list = job_list;
 
             this.infoItem.pic1 = res.data.data.pic1
@@ -345,6 +353,31 @@
             })
           }
         })
+      },
+      calcIntervalTime(time){
+
+        let space = time;
+        let intervalTime = '';
+
+        //计算出相差天数
+        var days = Math.floor(space/(24*3600*1000))
+        if(days>0){
+          intervalTime = days+"d";
+        }
+
+        //计算出小时数
+        var leave1 = space % (24*3600*1000)    //计算天数后剩余的毫秒数
+        var hours = Math.floor(leave1/(3600*1000));
+        if(hours>0){
+          intervalTime = hours+"h";
+        }
+
+        //计算相差分钟数
+        var leave2 = leave1 % (3600*1000)        //计算小时数后剩余的毫秒数
+        var minutes = Math.floor(leave2/(60*1000));
+        intervalTime = minutes+"min";
+
+        return intervalTime;
       },
       infoTit(state){
         let res = '';

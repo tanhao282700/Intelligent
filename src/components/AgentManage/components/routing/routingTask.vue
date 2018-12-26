@@ -64,17 +64,21 @@
       watch:{
         data:{
           handler(newval){
+            //console.log(newval.job_list)
             this.intervals = [];
             if(newval){
                this.newData = newval;
                if(this.newData.job_list.length==0){
                   this.newData.job_list = [];
                }
+               //console.log(newval);
                $.each(this.newData.job_list,(n,k)=>{
-                  if(n!=0){
+
+                  if(k.interval && k.interval!=''){
                     this.intervals.push(k);
                   }
                })
+               //console.log(this.intervals)
                if(this.newData.now_state==0){
                 this.isZero = true;
                }else{
