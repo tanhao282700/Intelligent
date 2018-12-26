@@ -52,6 +52,7 @@
     <div class="dispatch">
       <div @click="sendWork">
         <div class="dispatchBtn"><i class="el-icon-third-feiji"></i></div>
+        <div>工单派发</div>
       </div>
     </div>
 
@@ -935,7 +936,7 @@
     }
     .tableBoxs{
       width: 95.6%;
-      height: 4.4rem;
+      height: 4.2rem;
       margin-top:0.2rem;
       margin-left: 0.3rem;
       .tabHead{
