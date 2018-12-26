@@ -67,7 +67,7 @@ rowClick(row){
 
           <div v-if="v.prop == 'id' ">
             <div v-if=" scope.row.now_state == '10' " class="btnsBox">
-              <span class="agreeBtn" @click="agree(scope.row)">同意</span>
+              <span class="agreeBtn" @click="openDialog(scope.row)">同意</span>
               <span class="refuseBtn" @click="refuse(scope.row)">驳回</span>
             </div>
             <div v-else>-</div>
@@ -95,6 +95,18 @@ rowClick(row){
 
     </el-table>
 
+    <el-dialog title="选择工程部审批人" :visible.sync="approveDialog" class="dialogBox approveListDialogBox" :close-on-click-modal="false">
+      <el-select v-model="apporvePerson" placeholder="选择人员">
+        <el-option
+          v-for="item in adminData"
+          :key="item.user_id"
+          :label="item.user_name"
+          :value="item.user_id">
+        </el-option>
+      </el-select>
+        <el-button type="primary" @click="agree" class="submitBtn">提交</el-button>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -109,7 +121,11 @@ rowClick(row){
 
     data () {
       return {
-        tableData:{}
+        curApproveData:{},
+        apporvePerson:"",
+        approveDialog:false,
+        tableData:{},
+        adminData:[],
       }
     },
     watch:{
@@ -139,13 +155,17 @@ rowClick(row){
       rowLeave(row, column, cell, event){
         this.$emit('rowLeave',row);
       },
-      agree(item){ //同意
+      openDialog(item){
+        this.approveDialog =  true;
+        this.curApproveData = item;
+      },
+      agree(){ //同意
         let that = this;
-
+        let item = that.curApproveData;
         that.$http.post('/app_ims/dewith_approve',{
           job_id: item.id,
-          user_id: item.user_id,
-          now_state: "3"
+          user_id: that.apporvePerson,
+          now_state: "11"
         }).then(res=>{
           if(res.data.code==0){
             that.$message({
@@ -159,6 +179,8 @@ rowClick(row){
               message:res.data.msg
             })
           }
+          that.curApproveData = {};
+          that.approveDialog = false;
         })
 
       },
@@ -167,8 +189,8 @@ rowClick(row){
         let that = this;
         that.$http.post('/app_ims/dewith_approve',{
           job_id: item.id,
-          user_id: item.user_id,
-          now_state: "4"
+          user_id: "",
+          now_state: "12"
         }).then(res=>{
           if(res.data.code==0){
             that.$message({
@@ -208,20 +230,38 @@ rowClick(row){
             })
           }
         })
+      },
+      getAdmins(){
+        let that = this;
+        that.$http.post('/app_ims/get_admin').then(res=>{
+          if(res.data.code==0){
+            that.adminData = res.data.data;
+          }else{
+            that.$message({
+              type:'error',
+              message:res.data.msg
+            })
+          }
+        })
       }
     },
     created() {
-
+      this.getAdmins();
     },
     mounted(){
       this.tableData = this.table;
-
     }
   }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="less" scoped="" type="text/less">
+  .submitBtn{
+    display: block;
+    width: 100%;
+    margin-top: .8rem;
+    border-radius: 4px!important;
+  }
   .tableBox{
     height: 100%;
     width: 100%;

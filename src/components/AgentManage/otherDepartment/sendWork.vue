@@ -80,14 +80,14 @@
                 resize="none"
                 type="textarea"
                 :rows="3"
-                class="taskdesc"
+                class="otherDepSendWorkWin"
                 placeholder="请输入描述"
                 v-model="formvals.description"
                 clearable>
               </el-input>           
           </div>
         </div>
-        <div class="selectX">
+        <div class="selectX otherDepSendWorkSelectX4">
           <InputBox 
           inputType="text" 
           :cssStyle="cssStyle"
@@ -179,6 +179,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="less" scoped="" type="text/less"> 
 @import '../../../assets/css/comon.less';
+
 .sendWork{
     .infoTit{
         width: 100%;
@@ -200,6 +201,10 @@ export default {
     }
     .selectX1{
       margin-top:0.2rem;
+    }
+    .selectX{
+      display: flex;
+      align-items: center;
     }
     .selectX,.inputBox{
       margin-bottom:0.16rem;
@@ -224,7 +229,7 @@ export default {
       }
     }
     .selectX3{
-      height:1rem;
+      height: auto;
       .taskdesc{
         width:4.1rem;
         background:#001837;

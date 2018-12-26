@@ -1,3 +1,22 @@
+.sendWork .selectX3 .otherDepSendWorkWin {
+  width: 4.1rem;
+  background: #001837;
+  -webkit-box-shadow: 0 4px 5px #000 inset;
+  box-shadow: 0 3px 5px #000 inset;
+}
+.otherDepSendWorkWin .el-textarea__inner{
+  border:none;
+  background: transparent;
+  color: #fff;
+  line-height: .2rem;
+}
+.otherDepSendWorkWin .el-textarea__inner::-webkit-input-placeholder{
+  font-size: .12rem;
+  color: #4d5d76;
+}
+.otherDepSendWorkSelectX4 .el-input--suffix .el-input__inner{
+  padding: 0!important;
+}
 .otherDepMaContainer .navTabs .el-tabs__item{
   width: auto;
   min-width: 80px;
@@ -35,4 +54,27 @@
 }
 .otherDepColor4{
   color: #9BBAE0;
+}
+.approveListDialogBox.dialogBox .el-dialog {
+  height: 2.2rem;
+  width: 3.5rem;
+  margin: 0!important;
+}
+.approveListDialogBox.dialogBox .el-dialog__header{
+  text-align: left;
+  background-color: #02132A;
+  padding-left: .2rem;
+}
+.approveListDialogBox.dialogBox .el-dialog__header .el-dialog__title{
+  font-size: .14rem;
+  color: #4d5d76;
+}
+.approveListDialogBox.dialogBox .el-dialog__body{
+  padding: 0 .2rem;
+}
+.approveListDialogBox.dialogBox .el-select .el-input__inner{
+  width: 2rem;
+}
+.approveListDialogBox.dialogBox .el-select .el-input__inner::-webkit-input-placeholder{
+  color: #fff!important;
 }

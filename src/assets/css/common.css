@@ -689,13 +689,3 @@ background-color: #65a3fa!important;
   border: none;
   border-bottom: 1px solid #1989fa;
 }
-
-.taskdesc .el-textarea__inner{
-  border:none;
-  background: transparent;
-  color: #fff;
-}
-.taskdesc .el-textarea__inner::-webkit-input-placeholder{
-  font-size: .12rem;
-  color: #4d5d76;
-}

@@ -178,13 +178,13 @@
           hei:328, //table高度  设置后有滚动条
           data:[],
           th:[
-            {prop:'serial',label:'序号'},
+            {prop:'serial',label:'序号',wid:90},
             {prop:'title',label:'类别'},
-            {prop:'dispatch_user_name',label:'工单派发人',wid:180},
+            {prop:'dispatch_user_name',label:'工单派发人'},
             {prop:'user_name',label:'工单处理人'},
             {prop:'user_phone',label:'电话'},
-            {prop:'addtime',label:'派发时间'},
-            {prop:'description',label:'内容描述'},
+            {prop:'addtime',label:'派发时间',wid:200},
+            {prop:'description',label:'内容描述',wid:180},
             {prop:'now_state',label:'状态'},
             {prop:'id',label:'操作',wid:170,},
           ]
@@ -476,7 +476,7 @@
       },
       getTableList(){
         let that = this;
-        this.$http.post('/app_ims/approve_joblist',{
+        that.$http.post('/app_ims/approve_joblist',{
           state: that.approveStatus,
           date: that.value7,//this.value7
         }).then(res=>{
@@ -490,7 +490,8 @@
                 data[n].serial = '0' + data[n].serial;
               }
             })
-            this.table.data = res.data.data;
+            that.table.data = res.data.data;
+            console.log(that.table.data);
           }else{
             this.$message({
               type:'error',
@@ -498,15 +499,15 @@
             })
           }
         })
-      }
+      },
     },
     created() {
 
     },
     mounted() {
       this.getTableList();
-      this.getSystemList();
-      this.getDepartList();
+      /*this.getSystemList();
+      this.getDepartList();*/
 
     }
   }
