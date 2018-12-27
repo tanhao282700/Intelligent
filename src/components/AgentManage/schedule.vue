@@ -188,9 +188,12 @@ export default {
             }
         }    
       $.each(this.editDatas,(n,k)=>{
-          if(k.title != '' && k.title){//班次名称有值的时候
-            content.push({title:k.title,starttime:utils.time(new Date(k.timearea[0])/1000,11),endtime:utils.time(new Date(k.timearea[1])/1000,11),id:k.id});
-          }
+            if(k.timearea && k.timearea.length>0){
+              content.push({title:k.title,starttime:utils.time(new Date(k.timearea[0])/1000,11),endtime:utils.time(new Date(k.timearea[1])/1000,11),id:k.id});
+            }else{
+              content.push({title:k.title,starttime:'',endtime:'',id:k.id});
+            }
+            
       })
       this.$http.post('/app_ims/set_worklist',{'content':JSON.stringify(content)})
       .then(res=>{
