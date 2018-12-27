@@ -25,6 +25,8 @@
                 <el-menu-item v-if="userRouterInfo[5]" index="/VideoSurveillance"><span class="textPL">视频监控系统</span></el-menu-item>
                 <el-menu-item v-if="userRouterInfo[16]" index="/fireAlarm"><span class="textPL">消防系统</span></el-menu-item>
                 <el-menu-item v-if="userRouterInfo[1]" index="/airConditioner"><span class="textPL">中央空调系统</span></el-menu-item>
+                <el-menu-item v-if="userRouterInfo[3]" index="/power"><span class="textPL">变配电系统</span></el-menu-item>
+                <el-menu-item v-if="userRouterInfo[6]" index="/WaterSupplyAndDrainage"><span class="textPL">给排水系统</span></el-menu-item>
               </el-menu-item-group>
             </el-submenu>
             <el-submenu index="2" v-if="userRouterInfo[2]||userRouterInfo[17]">
@@ -34,6 +36,7 @@
               </template>
               <el-menu-item-group>
                 <el-menu-item v-if="userRouterInfo[2]" index="/energy"><span class="textPL">能源管理系统</span></el-menu-item>
+                <el-menu-item v-if="userRouterInfo[18]" index="/energy000"><span class="textPL">能源管理系统</span></el-menu-item>
                 <el-menu-item v-if="userRouterInfo[17]" index="/HotelStatus"><span class="textPL">营收数据分析</span></el-menu-item>
               </el-menu-item-group>
             </el-submenu>
@@ -86,14 +89,16 @@
         if(this.userRouterInfo[12].role_string[0] == 1){
           //工程部管理权限
           this.agentPath = '/AgentManage'
-        }
-        if(this.userRouterInfo[12].role_string[1] == 1){
-          //工程部普通权限
-          this.agentPath = '/AgentManage/normalUser'
+          return
         }
         if(this.userRouterInfo[12].role_string[2] == 1){
           //其他部门管理权限
           this.agentPath = '/AgentManage/otherDep'
+          return
+        }
+        if(this.userRouterInfo[12].role_string[1] == 1){
+          //工程部普通权限
+          this.agentPath = '/AgentManage/normalUser'
         }
         if(this.userRouterInfo[12].role_string[3] == 1){
           //其他部门普通权限

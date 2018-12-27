@@ -24,11 +24,12 @@
         <span v-text="wetherInfo.weather"></span>
         <span v-text="wetherInfo.temperature"></span>
         <img v-if="wetherInfo.code" class="wetherIcon" :src="wetherInfo.code" ></img>
-        <el-row class="block-col-2">
+        <el-row class="block-col-2" style="height:0.54rem;">
           <el-col :span="12">
             <el-dropdown trigger="hover" @command="handleCommand" >
-              <span class="el-dropdown-link">
+              <span style="display: flex;" class="el-dropdown-link th_info_box">
                 <span @click="showPersonInfo" class="userIcon"></span>
+                <span v-text="userInfo.name" class="userIconName" style="color:#ffffff;line-height: 0.54rem;font-size:0.14rem;"></span>
               </span>
               <el-dropdown-menu class="homeDropDown" placement="top-right" slot="dropdown" >
                 <el-dropdown-item command="personInfo" class="homeDropdownItem" style="text-align:center;color:#f6f6f6">个人信息</el-dropdown-item>
@@ -269,11 +270,13 @@
           temperature:'',
           code:'',
         },
-        jiuli:''
+        jiuli:'',
+        userInfo:{}
       }
     },
     created(){
         console.log(this.$store.state)
+      this.userInfo = this.$store.state.userInfoTotal.userinfo
       this.routerInfo = this.$store.state.sysList
       this.coordinate = this.$store.state.userInfoTotal.projectInfo[0].coordinate.split(',')
       this.dateInfoInit()
@@ -849,7 +852,7 @@
           height:26px;
         }
         .userIcon{
-          margin-top: 22px;
+          margin-top: 0.14rem;
           width:31px;
           height:31px;
           display: inline-block;
@@ -858,6 +861,9 @@
           &:hover{
             cursor: pointer;
           }
+        }
+        .userIconName:hover{
+          cursor: pointer;
         }
       }
     }

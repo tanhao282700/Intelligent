@@ -74,6 +74,27 @@ import airConditioner from '@/components/airConditioner/airConditioner'
 import telecontrol from '@/components/airConditioner/components/telecontrol'
 import sysMonitor from '@/components/airConditioner/components/sysMonitor'
 import timerMode from '@/components/airConditioner/components/timerMode'
+
+//变配电
+import power from '@/components/power/power'
+import envirCond from '@/components/power/components/envirCond'
+import monitorCond from '@/components/power/components/monitorCond'
+
+//给排水
+import WaterSupplyAndDrainage from '@/components/WaterSupplyAndDrainage/WaterSupplyAndDrainage'
+import floor3D from '@/components/WaterSupplyAndDrainage/components/floor3D'
+import waterPump from '@/components/WaterSupplyAndDrainage/components/waterPump'
+import highWaterTank from '@/components/WaterSupplyAndDrainage/components/highWaterTank'
+import cistern from '@/components/WaterSupplyAndDrainage/components/cistern'
+import submersibleSewagePump from '@/components/WaterSupplyAndDrainage/components/submersibleSewagePump'
+import sewagePond from '@/components/WaterSupplyAndDrainage/components/sewagePond'
+
+//2.0能源
+import energy000 from '@/components/energy000/energy0'         //能源组件
+import energyFullLook from '@/components/energy000/energy'  //全景查看子组件
+import RunMsg from '@/components/energy000/runMsg'          //运行情况子组件
+import Alarm from '@/components/energy000/alarm'
+
 Vue.use(Router);
 
 export default new Router({
@@ -320,6 +341,110 @@ export default new Router({
       ],
       redirect: to => {
         return '/AgentManage/normal/otherDep/workOrder'
+      }
+    },
+    //变配电
+    {
+      path: '/power',
+      component: power,
+      children:[
+        {
+          path: '/power/components/envirCond',
+          component:envirCond
+        },
+        {
+          path: '/power/components/monitorCond',
+          component: monitorCond
+        },
+      ],
+      redirect: to => {
+        let info = JSON.parse(sessionStorage.getItem('routerInfo'))
+        if(info.sysList[3].role_string[0]!=0 || info.sysList[3].role_string[2]!=0 || info.sysList[1].role_string[3]!=0){
+          return '/power/components/envirCond'
+        }else if(info.sysList[3].role_string[0]==0 && info.sysList[3].role_string[2]==0 && info.sysList[1].role_string[3]==0){
+          return '/power/components/monitorCond'
+        }
+      }
+    },
+    //给排水
+    {
+      path: '/WaterSupplyAndDrainage',
+      component: WaterSupplyAndDrainage,
+      children:[
+        {
+          path: '/WaterSupplyAndDrainage/components/floor3D',
+          component:floor3D
+        },
+        {
+          path: '/WaterSupplyAndDrainage/components/waterPump',
+          component: waterPump
+        },
+        {
+          path: '/WaterSupplyAndDrainage/components/highWaterTank',
+          component:highWaterTank
+        },
+        {
+          path: '/WaterSupplyAndDrainage/components/cistern',
+          component: cistern
+        },
+        {
+          path: '/WaterSupplyAndDrainage/components/submersibleSewagePump',
+          component:submersibleSewagePump
+        },
+        {
+          path: '/WaterSupplyAndDrainage/components/sewagePond',
+          component: sewagePond
+        },
+      ],
+      redirect: to => {
+        let info = JSON.parse(sessionStorage.getItem('routerInfo'))
+        if(info.sysList[6].role_string[0]!=0){
+          return '/WaterSupplyAndDrainage/components/floor3D'
+        }else if(info.sysList[6].role_string[0]==0 && info.sysList[6].role_string[1]!=0){
+          return '/WaterSupplyAndDrainage/components/waterPump'
+        } else if(info.sysList[6].role_string[0]==0 && info.sysList[6].role_string[1]==0 && info.sysList[6].role_string[2]!=0){
+          return '/WaterSupplyAndDrainage/components/highWaterTank'
+        } else if(info.sysList[6].role_string[0]==0 && info.sysList[6].role_string[1]==0 && info.sysList[6].role_string[2]==0 && info.sysList[6].role_string[3]!=0){
+          return '/WaterSupplyAndDrainage/components/cistern'
+        } else if(info.sysList[6].role_string[0]==0 && info.sysList[6].role_string[1]==0 && info.sysList[6].role_string[2]==0 && info.sysList[6].role_string[3]==0 && info.sysList[6].role_string[4]!=0){
+          return '/WaterSupplyAndDrainage/components/submersibleSewagePump'
+        } else if(info.sysList[6].role_string[0]==0 && info.sysList[6].role_string[1]==0 && info.sysList[6].role_string[2]==0 && info.sysList[6].role_string[3]==0 && info.sysList[6].role_string[4]==0 && info.sysList[6].role_string[5]!=0){
+          return '/WaterSupplyAndDrainage/components/sewagePond'
+        }
+      }
+    },
+    //2.0能源
+    {
+      path: '/energy000',
+      component: energy000,
+      children:[
+        { path: '/energy000/fullLook', component: energyFullLook,
+          children:[
+            { path: '/energy000/fullLook/first'},
+            { path: '/energy000/fullLook/second'},
+            { path: '/energy000/fullLook/thrid'},
+          ]
+        },
+        { path: '/energy000/runMsg', component: RunMsg,
+          children:[
+            { path: '/energy000/runMsg/first'},
+            { path: '/energy000/runMsg/second'},
+            { path: '/energy000/runMsg/thrid'},
+          ]
+        },
+        { path: '/energy000/alarm', component: Alarm}
+      ],
+      redirect: to => {
+        let info = JSON.parse(sessionStorage.getItem('routerInfo'));
+        if (info.sysList[18].role_string[0] != 0 || info.sysList[18].role_string[4] != 0 || info.sysList[18].role_string[5] != 0 || info.sysList[18].role_string[6] != 0) {
+          return '/energy000/fullLook'
+        } else if (info.sysList[18].role_string[0] == 0 && info.sysList[18].role_string[4] == 0 && info.sysList[18].role_string[5] == 0 && info.sysList[18].role_string[6] == 0 && (info.sysList[18].role_string[1] != 0 || info.sysList[18].role_string[7] != 0 || info.sysList[18].role_string[8] != 0 || info.sysList[18].role_string[9] != 0 || info.sysList[18].role_string[10] != 0 || info.sysList[18].role_string[11] != 0 || info.sysList[18].role_string[12] != 0)) {
+          return '/energy000/runMsg'
+        } else if (info.sysList[18].role_string[0] == 0 && info.sysList[18].role_string[4] == 0 && info.sysList[18].role_string[5] == 0 && info.sysList[18].role_string[6] == 0 && info.sysList[18].role_string[1] == 0 && info.sysList[18].role_string[7] == 0 && info.sysList[18].role_string[8] == 0 && info.sysList[18].role_string[9] == 0 && info.sysList[18].role_string[10] == 0 && info.sysList[18].role_string[11] == 0 && info.sysList[18].role_string[12] == 0 && (info.sysList[18].role_string[2] != 0)) {
+          return '/energy000/alarm'
+        } else if (info.sysList[18].role_string[3] != 0) {
+          return '/energy000/alarm'
+        }
       }
     },
 
