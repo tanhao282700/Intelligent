@@ -339,5 +339,5 @@ input::-ms-input-placeholder {font-size: 0.12rem!important;}
 
 .operationLog .navTabs .el-tabs__item{width:100px!important;}
 
-.el-input__inner:hover {border-color: #1989fa!important;}
+.doorControl .el-input__inner:hover {border-color: #1989fa!important;}
 
