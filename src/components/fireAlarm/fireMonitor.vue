@@ -130,7 +130,7 @@
               frameborder="0"
               width="100%"
               height="100%"
-              src="/static/fireVideo/fireVideo.html">
+              :src="iframeSrc">
 
             </iframe>
             <div class="videoList">
@@ -164,6 +164,7 @@
     name:'fireMonitor',
     data () {
       return {
+        iframeSrc:'',
         iframeWin:{},
         videoUrl:'',
         floorTit:'',
@@ -240,13 +241,14 @@
       },
       selVideo(item,index){
         this.videoBtnActive = index;
+        this.iframeSrc = item.now_value;
         //console.log(item)
-        this.iframeWin.postMessage({
+        /*this.iframeWin.postMessage({
           cmd: 'changeUrl',
           params: {
             url:item.now_value
           }
-        }, '*')
+        }, '*')*/
       },
       showVideo(item,index){
         this.videoBtnActive = 0;
@@ -282,12 +284,13 @@
             this.videoList = videoData;
 
             if (videoData.length !== 0) {
-              this.iframeWin.postMessage({
+              this.iframeSrc = videoData[0].now_value;
+              /*this.iframeWin.postMessage({
                 cmd: 'changeUrl',
                 params: {
                   url: videoData[0].now_value
                 }
-              }, '*')
+              }, '*')*/
             }
 
           } else {
@@ -308,11 +311,11 @@
       },
       //销毁视频
       destroyVideo(){
-        this.iframeWin.postMessage({
+        /*this.iframeWin.postMessage({
           cmd: 'destroyVideo',
           params: {
           }
-        }, '*')
+        }, '*')*/
       },
 
       //消防报警监测信息列表请求
@@ -422,10 +425,13 @@
       //this.init();
       this.$refs.HpadTop.style.paddingTop = Number(this.$parent.$children[0].$el.children[0].offsetHeight)+30+'px';
       this.getMonitorData();
-      this.iframeWin = this.$refs.fireVideo.contentWindow;
+      //this.iframeWin = this.$refs.fireVideo.contentWindow;
 
 
 
+    },
+    destroyed(){
+      this.iframeSrc = '';
     },
     watch:{
       /*fireWarnLists:function (newVal,oldVal) {

@@ -194,7 +194,7 @@
             datas.map((item, i) => {
               let obj = {};
               obj.self_id = item.self_id;
-              obj.label = (item.self_id==1206?('高压-'+item.title):item.self_id==1207?('低压-'+item.title):'点位变化');
+              obj.label = (item.self_id==1206?(item.title):item.self_id==1207?(item.title):'点位变化');
               obj.value = item.id;
               tempArr.push(obj);
             })
@@ -242,7 +242,7 @@
         let that = this;
         let config = {
           'sys_menu_id':this.$store.state.sysList[3].sys_menu_id,
-          'floor_id':'3',
+          'floor_id':this.value,
           'pagesize':'20',
           'pagenumber':num,
           'date_s':date_s,

@@ -27,6 +27,7 @@
                 <el-menu-item v-if="userRouterInfo[1]" index="/airConditioner"><span class="textPL">中央空调系统</span></el-menu-item>
                 <el-menu-item v-if="userRouterInfo[3]" index="/power"><span class="textPL">变配电系统</span></el-menu-item>
                 <el-menu-item v-if="userRouterInfo[6]" index="/WaterSupplyAndDrainage"><span class="textPL">给排水系统</span></el-menu-item>
+                <el-menu-item v-if="userRouterInfo[9]" index="/elevator"><span class="textPL">电梯监测系统</span></el-menu-item>
               </el-menu-item-group>
             </el-submenu>
             <el-submenu index="2" v-if="userRouterInfo[2]||userRouterInfo[17]">
@@ -84,7 +85,22 @@
     },
     created(){
       this.userRouterInfo = this.$store.state.sysList
-      console.log(this.userRouterInfo[12])
+      console.log(this.$store.state)
+      //权限管理
+      if(this.$store.state.userInfoTotal.permissions_manage.per_id==0){
+        this.isPermissionPath = false  //没有管理权限
+      }else{
+        this.isPermissionPath = true
+      }
+
+      //操作日志
+      if(this.$store.state.userInfoTotal.handle_dairy.role_string){
+        this.isoperationLog = true
+      }
+
+      $(document).on('click', () => {
+        this.$emit('changeBannerParam', false);
+      })
       if(this.userRouterInfo[12]){
         if(this.userRouterInfo[12].role_string[0] == 1){
           //工程部管理权限
@@ -105,21 +121,7 @@
           this.agentPath = '/AgentManage/normal/otherDep'
         }
       }
-      //权限管理
-      if(this.$store.state.userInfoTotal.permissions_manage.per_id==0){
-        this.isPermissionPath = false  //没有管理权限
-      }else{
-        this.isPermissionPath = true
-      }
 
-      //操作日志
-      if(this.$store.state.userInfoTotal.handle_dairy.role_string){
-          this.isoperationLog = true
-      }
-
-      $(document).on('click', () => {
-        this.$emit('changeBannerParam', false);
-      })
     },
     methods:{
       stopPropa(){
@@ -235,6 +237,7 @@
     .banerCon{
       flex:1;
       margin-top:5px;
+      overflow:auto;
     }
   }
   .showBaner{

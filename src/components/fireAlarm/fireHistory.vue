@@ -219,9 +219,9 @@
               let arr = [];
               let data2 = data.data;
               data2.map((item,i)=>{
-                let num = (i+1)+(num-1)*20;
+                let num2 = (i+1)+(num-1)*20;
                 let tempObj = {};
-                tempObj.num = (num<10?'0'+num:num);
+                tempObj.num = (num2<10?('0'+num2):num2);
                 tempObj.time = item.time;
                 tempObj.position = item.floor_title;
                 tempObj.type = item.class;

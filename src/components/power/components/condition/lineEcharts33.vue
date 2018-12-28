@@ -11,7 +11,7 @@
 
 <script>
   export default {
-    props:['id','title','unit','style','data','hei','wid'],
+    props:['id','title','unit','data','hei','wid'],
     computed:{
 
     },

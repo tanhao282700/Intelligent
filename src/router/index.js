@@ -95,6 +95,13 @@ import energyFullLook from '@/components/energy000/energy'  //全景查看子组
 import RunMsg from '@/components/energy000/runMsg'          //运行情况子组件
 import Alarm from '@/components/energy000/alarm'
 
+//电梯
+import elevator from '@/components/elevator/index';
+import runTimeMonitor from '@/components/elevator/components/runTimeMonitor';
+import wbHistory from '@/components/elevator/components/wbHistory';
+import breakdownManagement from '@/components/elevator/components/breakdownManagement';
+import dataHistory from '@/components/elevator/components/dataHistory';
+
 Vue.use(Router);
 
 export default new Router({
@@ -447,6 +454,42 @@ export default new Router({
         }
       }
     },
-
+    {
+      path: '/elevator',
+      component: elevator,
+      children:[
+        {
+          path: 'runTimeMonitor',
+          name:'runTimeMonitor',
+          component:runTimeMonitor
+        },
+        {
+          path: 'wbHistory',
+          name:'wbHistory',
+          component: wbHistory
+        },
+        {
+          path: 'breakdownManagement',
+          name:'breakdownManagement',
+          component: breakdownManagement
+        },{
+          path: 'dataHistory',
+          name:'dataHistory',
+          component: dataHistory
+        },
+      ],
+      redirect: to => {
+        let info = JSON.parse(sessionStorage.getItem('routerInfo'));
+        if (info.sysList[9].role_string[0] != 0) {
+          return '/elevator/runTimeMonitor'
+        } else if (info.sysList[9].role_string[0] == 0 && info.sysList[9].role_string[1] != 0) {
+          return '/elevator/dataHistory'
+        } else if (info.sysList[9].role_string[0] == 0 && info.sysList[9].role_string[1] == 0 && info.sysList[9].role_string[2] != 0) {
+          return '/elevator/wbHistory'
+        } else if (info.sysList[9].role_string[0] == 0 && info.sysList[9].role_string[1] == 0 && info.sysList[9].role_string[2] == 0 && info.sysList[9].role_string[3] != 0) {
+          return '/elevator/breakdownManagement'
+        }
+      }
+    },
   ]
 })

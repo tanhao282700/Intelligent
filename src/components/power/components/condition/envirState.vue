@@ -155,7 +155,7 @@
       return {
         big:true,
         small:false,
-        self_id:'',
+        self_id:1206,
         loading:false,
         deviceLists:[
           /*{
@@ -281,6 +281,11 @@
             this.deviceLists = datas;
             let tempArr = [];
             datas.map((item,i)=>{
+              if (i===0){
+                this.value2 = item.id;
+                this.getEnvironmentData(item.id);
+                this.selChange2(item.id);
+              }
               let obj = {};
               obj.label = item.title;
               obj.value = item.id;
@@ -486,10 +491,10 @@
       },
       selChange2(val){
         this.getEnvironmentData(val);
-        if (this.self_id === 1206) {//高压侧
+        if (this.self_id == 1206) {//高压侧
           this.options3 = [];
 
-        } else if (this.self_id === 1207) {
+        } else if (this.self_id == 1207) {
 
           this.options3 = [];
           this.deviceLists.some((item,i)=>{
@@ -516,6 +521,7 @@
       }
     },
     created() {
+      this.getDeviceLists(this.value);
     },
     mounted() {
       //this.$refs.lineEchartssss[0].drawLine();

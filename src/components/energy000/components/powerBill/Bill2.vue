@@ -351,7 +351,7 @@
           time_start:this.time_start,
           time_end:this.time_end,
           pagesize:20,
-          pagenumber:this.table.page,
+          page_number:this.table.page,
         };
         this.loading = true;
         let that = this;
