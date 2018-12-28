@@ -18,7 +18,7 @@
         </div>
         <div class="selectX">
           <span>设备名称</span>
-          <SelectBox :options="query.devices"
+          <SelectBox :options="query.devicess"
            :value="formvals.device_name"
            class="selectdown"
            @change="change2"
@@ -149,7 +149,7 @@ export default {
         this.$emit('getDevVal',val)
       },
       change2(val){
-        $.each(this.query.devices,(n,k)=>{
+        $.each(this.query.devicess,(n,k)=>{
           if(val==k.value){
             this.formvals.device_name = k.label;
             this.formvals.device_id = k.value;

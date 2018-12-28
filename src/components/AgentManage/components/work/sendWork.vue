@@ -18,7 +18,7 @@
         </div>
         <div class="selectX">
           <span>设备名称</span>
-          <SelectBox :options="query.devices"
+          <SelectBox :options="query.devicess"
            :value="formvals.device_name"
            class="selectdown"
            @change="change2"
@@ -49,6 +49,15 @@
            :value="formvals.priority"
            :placeholder="'任务优先级'"
            @change="change5"
+           class="selectdown"
+           :icon="'el-icon-caret-top'"/>
+        </div>
+        <div class="selectX">
+          <span>拍照需求</span>
+          <SelectBox :options="query.takePhoto"
+           :value="formvals.take_photo"
+           :placeholder="'是否需要拍照'"
+           @change="change6"
            class="selectdown"
            :icon="'el-icon-caret-top'"/>
         </div>
@@ -138,13 +147,13 @@ export default {
         this.$emit('getDevVal',val)
       },
       change2(val){
-        $.each(this.query.devices,(n,k)=>{
+        $.each(this.query.devicess,(n,k)=>{
           if(val==k.value){
             this.formvals.device_name = k.label;
             this.formvals.device_id = k.value;
           }
         })
-        //this.formvals.device_name = val;
+        this.formvals.device_name = val;
       },
       change3(val){
         this.formvals.user_id = val;
@@ -154,10 +163,18 @@ export default {
       },
       change5(val){
         this.formvals.priority= val;
+      },
+      change6(val){
+        this.formvals.take_photo = val;
       }
   },
-  mounted() {
-       
+  watch:{
+       query:{
+          deep:true,
+          hanlder(val){
+            console.log(val)
+          }
+       }
   },
 }
 </script>

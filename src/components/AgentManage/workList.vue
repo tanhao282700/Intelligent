@@ -156,10 +156,11 @@ export default {
           types:[],
           type:'',
           time:'10-29',
-          devices:[],
+          devicess:[],
           names:[],
           priority:[{label:'一般',value:1},{label:'普通',value:2},{label:'严重',value:3}],
-          type_id:[{label:'手工派发',value:1},{label:'投诉工单',value:2},{label:'维保工单',value:3}]
+          type_id:[{label:'手工派发',value:1},{label:'投诉工单',value:2},{label:'维保工单',value:3}],
+          takePhoto:[{label:'拍照',value:1},{label:'不拍照',value:0}]
         },
         query2:{//工单详情的查询条件
           types:[],
@@ -760,7 +761,7 @@ export default {
               data[n].value = data[n].id;
               data[n].label = data[n].title;
             })
-            this.query3.devices = data;
+            this.query3.devicess = data;
           }else{
             this.$message({
               type:'error',

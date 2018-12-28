@@ -152,7 +152,7 @@
           types:[],
           type:'',
           time:'10-29',
-          devices:[],
+          devicess:[],
           names:[],
           priority:[{label:'一般',value:1},{label:'普通',value:2},{label:'严重',value:3}],
           type_id:[{label:'维保工单',value:3}],
@@ -803,7 +803,7 @@
               data[n].value = data[n].id;
               data[n].label = data[n].title;
             })
-            this.query3.devices = data;
+            this.query3.devicess = data;
           }else{
             this.$message({
               type:'error',
