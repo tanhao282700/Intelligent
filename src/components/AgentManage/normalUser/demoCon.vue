@@ -40,7 +40,7 @@
         <span class="wujianshu">已选物件（{{number}}样）</span>
         <span class="wujianshow">{{shows}}</span>
       </div>
-      <el-button class="save">确定</el-button>
+      <el-button class="save" @click="saveWujian">确定</el-button>
     </div>
   </div>
 </template>
@@ -65,7 +65,6 @@
         conHeight: [],
         number:0,
         shows:'',
-        calcNum:[]
       }
     },
     watch: {
@@ -77,7 +76,12 @@
         })
       }
     },
+
     methods: {
+      saveWujian(){
+        //关掉选择框
+        this.$emit('closeWuJian');
+      },
       _initConScroll() {
         this.conscroller = new BScroll(this.$refs.conWrapper, {
           probeType: 3,
@@ -92,25 +96,25 @@
         })
       },
       getWujians(num,name){
-        let arr = [];
-        let str = '';
-        this.calcNum.push({num:num,name:name})
-        // let length = this.calcNum.length;
-        // for(var i=0;i<length;i++){
-        //   if(this.calcNum[i] && this.calcNum[i+1].name){
-        //     if(this.calcNum[i].name==this.calcNum[i+1].name){
-        //       arr.push({num:this.calcNum[i].num+this.calcNum[i+1].num,name:this.calcNum[i].name})
-        //       str += this.calcNum[i].name+'*'+(this.calcNum[i].num+this.calcNum[i+1].num)+',';
-        //     }else{
-        //       arr.push({num:this.calcNum[i].num,name:this.calcNum[i].name});
-        //       str += this.calcNum[i].name+'*'+this.calcNum[i].num+',';
-        //     }
-        //   }else{
-        //     str+=this.calcNum[i].name+'*'+this.calcNum[i].num+',';
-        //   }
-        //}
-        console.log(arr);
-        console.log(str);
+        let str1 = '';
+        let str2 = [];
+        $.each(this.dataList,(n,k)=>{
+          $.each(k.equipment,(n1,k1)=>{
+            if(k1.value && k1.value!=0){
+              str1 +=k1.name+'*'+k1.value;
+              str2.push(k1.id);
+            }
+          })
+        })
+
+        let temp = []; //一个新的临时数组
+        $.each(str2,(n,k)=>{
+            if(temp.indexOf(k) == -1){
+              temp.push(k);
+            }
+        })
+        this.shows = str1;
+        this.number = temp.length;
       },
       _initNavScroll() {
         this.navscroller = new BScroll(this.$refs.navWrapper, {

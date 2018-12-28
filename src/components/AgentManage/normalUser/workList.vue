@@ -258,8 +258,8 @@
               </div>
           </div>
       </Dialog>
-      <Dialog wid="6.9rem" hei="5.36rem" ref="selectWuliaoDialog" bgcolor="#031e47">
-        <WuLiao></WuLiao>
+      <Dialog wid="6.9rem" hei="5.36rem" ref="selectWuliaoDialog" bgcolor="#031e47" >
+        <WuLiao @closeWuJian="closeWuJian"></WuLiao>
       </Dialog>
   </div>
 </template>
@@ -391,6 +391,9 @@ export default {
     }
   },
   methods:{
+    closeWuJian(){
+      this.$refs.selectWuliaoDialog.hide();
+    },
     showDialog(){
       this.$refs.selectWuliaoDialog.show();
     },

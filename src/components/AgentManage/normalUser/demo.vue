@@ -1,7 +1,7 @@
 <template>
   <div class="demo">
     <div class="con">
-      <components is="demoCon" :dataList="list"></components>
+      <components is="demoCon" :dataList="list" @closeWuJian="closeWuJian"></components>
     </div>
   </div>
 </template>
@@ -225,6 +225,11 @@
             value:0
           }]
         }]
+      }
+    },
+    methods:{
+      closeWuJian(){
+        this.$emit('closeWuJian');
       }
     }
   }
