@@ -130,6 +130,8 @@ rowClick(row){
 
     data () {
       return {
+        refuseState:"",
+        agreeState:"",
         isOtherDepart:true,
         submitBtnText:"",
         dialogTitle:"",
@@ -192,7 +194,7 @@ rowClick(row){
         that.$http.post('/app_ims/dewith_approve',{
           job_id: item.id,
           user_id: that.apporvePerson,
-          now_state: "11"
+          now_state: that.agreeState
         }).then(res=>{
           if(res.data.code==0){
             that.$message({
@@ -221,7 +223,7 @@ rowClick(row){
         that.$http.post('/app_ims/dewith_approve',{
           job_id: item.id,
           user_id: "",
-          now_state: "12"
+          now_state: that.refuseState
         }).then(res=>{
           if(res.data.code==0){
             that.$message({
@@ -302,8 +304,12 @@ rowClick(row){
       let that = this;
       if(that.isOtherDepart){
         that.getAdmins();
+        that.agreeState = "11";
+        that.refuseState = "12";
       }else {
         that.getUser();
+        that.agreeState = "13";
+        that.refuseState = "14";
       }
 
     }
