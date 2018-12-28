@@ -25,7 +25,7 @@
         <span v-text="wetherInfo.temperature"></span>
         <img v-if="wetherInfo.code" class="wetherIcon" :src="wetherInfo.code" ></img>
         <el-row class="block-col-2" style="height:0.54rem;">
-          <el-col :span="12">
+          <el-col>
             <el-dropdown trigger="hover" @command="handleCommand" >
               <span style="display: flex;" class="el-dropdown-link th_info_box">
                 <span @click="showPersonInfo" class="userIcon"></span>
