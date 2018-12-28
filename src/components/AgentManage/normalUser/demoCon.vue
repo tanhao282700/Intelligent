@@ -28,14 +28,20 @@
             </div>
             <div class="equipment_amount">
               <template>
-                <el-input-number v-model="num1" size="mini" :min="0" :max="999" label="描述文字"></el-input-number>
+                <el-input-number v-model="part.value" size="mini" :min="0" :max="999" label="描述文字" @change="getWujians(part.value,part.name)"></el-input-number>
               </template>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="total"></div>
+    <div class="total">
+      <div>
+        <span class="wujianshu">已选物件（{{number}}样）</span>
+        <span class="wujianshow">{{shows}}</span>
+      </div>
+      <el-button class="save">确定</el-button>
+    </div>
   </div>
 </template>
 
@@ -57,6 +63,9 @@
         currentIndex: 0,
         scrollY: 0,
         conHeight: [],
+        number:0,
+        shows:'',
+        calcNum:[]
       }
     },
     watch: {
@@ -81,6 +90,27 @@
             this.scrollY = Math.abs(Math.round(pos.y))
           }
         })
+      },
+      getWujians(num,name){
+        let arr = [];
+        let str = '';
+        this.calcNum.push({num:num,name:name})
+        // let length = this.calcNum.length;
+        // for(var i=0;i<length;i++){
+        //   if(this.calcNum[i] && this.calcNum[i+1].name){
+        //     if(this.calcNum[i].name==this.calcNum[i+1].name){
+        //       arr.push({num:this.calcNum[i].num+this.calcNum[i+1].num,name:this.calcNum[i].name})
+        //       str += this.calcNum[i].name+'*'+(this.calcNum[i].num+this.calcNum[i+1].num)+',';
+        //     }else{
+        //       arr.push({num:this.calcNum[i].num,name:this.calcNum[i].name});
+        //       str += this.calcNum[i].name+'*'+this.calcNum[i].num+',';
+        //     }
+        //   }else{
+        //     str+=this.calcNum[i].name+'*'+this.calcNum[i].num+',';
+        //   }
+        //}
+        console.log(arr);
+        console.log(str);
       },
       _initNavScroll() {
         this.navscroller = new BScroll(this.$refs.navWrapper, {
@@ -176,7 +206,26 @@
     align-items: center;
     justify-content: space-between;
   }
-
+  .wujianshow,.wujianshu{
+    float: left;
+    line-height: 0.26rem;
+    font-size: 0.1rem;
+    color: #71a5f0;
+  }
+  .wujianshu{
+    margin: 0 0.18rem;
+    line-height: 0.52rem;
+    color: #9f9f9f;
+  }
+  .save{
+    width: 0.89rem;
+    height:0.52rem;
+    background-color: #3a84ee;
+    border-radius: 4px;
+    border: none;
+    color: #fff;
+    float: right;
+  }
   .nav_con_part_title span:first-child {
     padding-right: 10px;
   }
@@ -188,10 +237,10 @@
   }
 
   .nav_con_part_equipments {
-    height: 80px;
-    padding: 10px 0;
+    height: 0.6rem;
     display: flex;
     justify-content: space-between;
+    border-bottom: 1px solid #094d9d;
   }
 
   .equipment_description {
@@ -202,11 +251,8 @@
   }
 
   .prodimg{
+    margin: 0.07rem 0.05rem;
     width:0.46rem;height:0.46rem;border-radius:0.04rem;margin-right:0.08rem
-  }
-  .equipment_description img {
-    width: 60px;
-    height: 60px;
   }
   .equipment_txt{
     color: #9f9f9f;
@@ -216,6 +262,7 @@
     flex: 1;
     height: 100%;
     display: flex;
+    line-height: 0.3rem;
     flex-direction: column;
     justify-content: space-between;
   }

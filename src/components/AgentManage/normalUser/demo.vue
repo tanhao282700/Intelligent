@@ -21,23 +21,28 @@
             name: '电脑1',
             description: '吊袜带挖到挖到奥万大奥万大',
             img: 'cc',
-            id: '1-1'
+            id: '1-1',
+            value:0
           }, {
             name: '电脑2',
             description: '吊袜带挖到挖到奥万大奥万大',
-            id: '1-2'
+            id: '1-2',
+            value:0
           }, {
             name: '电脑3',
             description: '吊袜带挖到挖到奥万大奥万大',
-            id: '1-3'
+            id: '1-3',
+            value:0
           }, {
             name: '电脑4',
             description: '吊袜带挖到挖到奥万大奥万大',
-            id: '1-4'
+            id: '1-4',
+            value:0
           }, {
             name: '电脑5',
             description: '吊袜带挖到挖到奥万大奥万大',
-            id: '1-5'
+            id: '1-5',
+            value:0
           }]
         }, {
           type: '空调类',
@@ -46,23 +51,28 @@
           equipment: [{
             name: '办公桌1',
             description: '吊袜带挖到挖到奥万大奥万大',
-            id: '2-1'
+            id: '2-1',
+            value:0
           }, {
             name: '办公桌2',
             description: '吊袜带挖到挖到奥万大奥万大',
-            id: '2-2'
+            id: '2-2',
+            value:0
           }, {
             name: '办公桌3',
             description: '吊袜带挖到挖到奥万大奥万大',
-            id: '2-3'
+            id: '2-3',
+            value:0
           }, {
             name: '办公桌4',
             description: '吊袜带挖到挖到奥万大奥万大',
-            id: '2-4'
+            id: '2-4',
+            value:0
           }, {
             name: '办公桌5',
             description: '吊袜带挖到挖到奥万大奥万大',
-            id: '2-5'
+            id: '2-5',
+            value:0
           }]
         }, {
           type: '机修类',
@@ -71,23 +81,28 @@
           equipment: [{
             name: '打印机1',
             description: '吊袜带挖到挖到奥万大奥万大',
-            id: '3-1'
+            id: '3-1',
+            value:0
           }, {
             name: '打印机2',
             description: '吊袜带挖到挖到奥万大奥万大',
-            id: '3-2'
+            id: '3-2',
+            value:0
           }, {
             name: '打印机3',
             description: '吊袜带挖到挖到奥万大奥万大',
-            id: '3-3'
+            id: '3-3',
+            value:0
           }, {
             name: '打印机4',
             description: '吊袜带挖到挖到奥万大奥万大',
-            id: '3-4'
+            id: '3-4',
+            value:0
           }, {
             name: '打印机5',
             description: '吊袜带挖到挖到奥万大奥万大',
-            id: '3-5'
+            id: '3-5',
+            value:0
           }]
         }, {
           type: 'XX类',
@@ -96,23 +111,28 @@
           equipment: [{
             name: '打印机1',
             description: '吊袜带挖到挖到奥万大奥万大',
-            id: '4-1'
+            id: '4-1',
+            value:0
           }, {
             name: '打印机2',
             description: '吊袜带挖到挖到奥万大奥万大',
-            id: '4-2'
+            id: '4-2',
+            value:0
           }, {
             name: '打印机3',
             description: '吊袜带挖到挖到奥万大奥万大',
-            id: '4-3'
+            id: '4-3',
+            value:0
           }, {
             name: '打印机4',
             description: '吊袜带挖到挖到奥万大奥万大',
-            id: '4-4'
+            id: '4-4',
+            value:0
           }, {
             name: '打印机5',
             description: '吊袜带挖到挖到奥万大奥万大',
-            id: '4-5'
+            id: '4-5',
+            value:0
           }]
         }, {
           type: 'XX类',
@@ -121,23 +141,28 @@
           equipment: [{
             name: '打印机1',
             description: '吊袜带挖到挖到奥万大奥万大',
-            id: '5-1'
+            id: '5-1',
+            value:0
           }, {
             name: '打印机2',
             description: '吊袜带挖到挖到奥万大奥万大',
-            id: '5-2'
+            id: '5-2',
+            value:0
           }, {
             name: '打印机3',
             description: '吊袜带挖到挖到奥万大奥万大',
-            id: '5-3'
+            id: '5-3',
+            value:0
           }, {
             name: '打印机4',
             description: '吊袜带挖到挖到奥万大奥万大',
-            id: '5-4'
+            id: '5-4',
+            value:0
           }, {
             name: '打印机5',
             description: '吊袜带挖到挖到奥万大奥万大',
-            id: '5-5'
+            id: '5-5',
+            value:0
           }]
         }, {
           type: 'XX类',
@@ -146,23 +171,28 @@
           equipment: [{
             name: '打印机1',
             description: '吊袜带挖到挖到奥万大奥万大',
-            id: '6-1'
+            id: '6-1',
+            value:0
           }, {
             name: '打印机2',
             description: '吊袜带挖到挖到奥万大奥万大',
-            id: '6-2'
+            id: '6-2',
+            value:0
           }, {
             name: '打印机3',
             description: '吊袜带挖到挖到奥万大奥万大',
-            id: '6-3'
+            id: '6-3',
+            value:0
           }, {
             name: '打印机4',
             description: '吊袜带挖到挖到奥万大奥万大',
-            id: '6-4'
+            id: '6-4',
+            value:0
           }, {
             name: '打印机5',
             description: '吊袜带挖到挖到奥万大奥万大',
-            id: '6-5'
+            id: '6-5',
+            value:0
           }]
         }, {
           type: 'XX类',
@@ -171,123 +201,28 @@
           equipment: [{
             name: '打印机1',
             description: '吊袜带挖到挖到奥万大奥万大',
-            id: '7-1'
+            id: '7-1',
+            value:0
           }, {
             name: '打印机2',
             description: '吊袜带挖到挖到奥万大奥万大',
-            id: '7-2'
+            id: '7-2',
+            value:0
           }, {
             name: '打印机3',
             description: '吊袜带挖到挖到奥万大奥万大',
-            id: '7-3'
+            id: '7-3',
+            value:0
           }, {
             name: '打印机4',
             description: '吊袜带挖到挖到奥万大奥万大',
-            id: '7-4'
+            id: '7-4',
+            value:0
           }, {
             name: '打印机5',
             description: '吊袜带挖到挖到奥万大奥万大',
-            id: '7-5'
-          }]
-        }, {
-          type: 'XX类',
-          description: '吊袜带挖到挖到奥万大奥万大',
-          id: '8',
-          equipment: [{
-            name: '打印机1',
-            description: '吊袜带挖到挖到奥万大奥万大',
-            id: '8-1'
-          }, {
-            name: '打印机2',
-            description: '吊袜带挖到挖到奥万大奥万大',
-            id: '8-2'
-          }, {
-            name: '打印机3',
-            description: '吊袜带挖到挖到奥万大奥万大',
-            id: '8-3'
-          }, {
-            name: '打印机4',
-            description: '吊袜带挖到挖到奥万大奥万大',
-            id: '8-4'
-          }, {
-            name: '打印机5',
-            description: '吊袜带挖到挖到奥万大奥万大',
-            id: '8-5'
-          }]
-        }, {
-          type: 'XX类',
-          description: '吊袜带挖到挖到奥万大奥万大',
-          id: '9',
-          equipment: [{
-            name: '打印机1',
-            description: '吊袜带挖到挖到奥万大奥万大',
-            id: '9-1'
-          }, {
-            name: '打印机2',
-            description: '吊袜带挖到挖到奥万大奥万大',
-            id: '9-2'
-          }, {
-            name: '打印机3',
-            description: '吊袜带挖到挖到奥万大奥万大',
-            id: '9-3'
-          }, {
-            name: '打印机4',
-            description: '吊袜带挖到挖到奥万大奥万大',
-            id: '9-4'
-          }, {
-            name: '打印机5',
-            description: '吊袜带挖到挖到奥万大奥万大',
-            id: '9-5'
-          }]
-        }, {
-          type: 'XX类',
-          description: '吊袜带挖到挖到奥万大奥万大',
-          id: '10',
-          equipment: [{
-            name: '打印机1',
-            description: '吊袜带挖到挖到奥万大奥万大',
-            id: '10-1'
-          }, {
-            name: '打印机2',
-            description: '吊袜带挖到挖到奥万大奥万大',
-            id: '10-2'
-          }, {
-            name: '打印机3',
-            description: '吊袜带挖到挖到奥万大奥万大',
-            id: '10-3'
-          }, {
-            name: '打印机4',
-            description: '吊袜带挖到挖到奥万大奥万大',
-            id: '10-4'
-          }, {
-            name: '打印机5',
-            description: '吊袜带挖到挖到奥万大奥万大',
-            id: '10-5'
-          }]
-        }, {
-          type: 'XX类',
-          description: '吊袜带挖到挖到奥万大奥万大',
-          id: '11',
-          equipment: [{
-            name: '打印机1',
-            description: '吊袜带挖到挖到奥万大奥万大',
-            id: '11-1'
-          }, {
-            name: '打印机2',
-            description: '吊袜带挖到挖到奥万大奥万大',
-            id: '11-2'
-          }, {
-            name: '打印机3',
-            description: '吊袜带挖到挖到奥万大奥万大',
-            id: '11-3'
-          }, {
-            name: '打印机4',
-            description: '吊袜带挖到挖到奥万大奥万大',
-            id: '11-4'
-          }, {
-            name: '打印机5',
-            description: '吊袜带挖到挖到奥万大奥万大',
-            id: '11-5'
+            id: '7-5',
+            value:0
           }]
         }]
       }
