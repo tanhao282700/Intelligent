@@ -36,6 +36,7 @@
                     :current-page="currentPage"
                     :page-size="pagesize"
                     :page-count="totalPageNum"
+                    :total = "total"
                     layout="prev, pager, next"
                     >
                   </el-pagination>
@@ -51,41 +52,44 @@
         data () {
         	return {
                 toPageNum:1,
-                totalPageNum:3,
-                total:0,
+                totalPageNum:1,
+                total:1,
                 tableData: [],
                 pagesize:20,
                 currentPage:1,
-                currPage:''
         	}
         },
         watch:{
             doorInfomation(newval,oldval){
                 this.tableData = newval;
+                this.total = newval.length;
+                this.totalPageNum = Math.ceil(newval.length / 20);;
             }
         },
         mounted(){
            
         },
         methods:{
-            getData(){
+            // getData(){
 
-                var that = this;
-                this.$http.post('/entrance/record',{
-                    sys_menu_id:this.$store.state.sysList['14'].sys_menu_id,
-                    project_id:this.$store.state.projectId,
-                    floor_id:that.floorIds,
-                    device_id:that.doorDeviceId
-                }).then(function(response){
-                    // 响应成功回调
-                    console.log(response.data.data);
-                    that.tableData = response.data.data.entrance_guard_record;
-                }, function(response){
-                    // 响应错误回调
-                });
+            //     var that = this;
+            //     this.$http.post('/entrance/record',{
+            //         sys_menu_id:this.$store.state.sysList['14'].sys_menu_id,
+            //         project_id:this.$store.state.projectId,
+            //         floor_id:that.floorIds,
+            //         device_id:that.doorDeviceId
+            //     }).then(function(response){
+            //         // 响应成功回调
+            //         console.log(response.data.data);
+            //         that.tableData = response.data.data.entrance_guard_record;
+            //         that.total = response.data.record_num_total;
+            //         that.totalPageNum = response.data.page_num_total;
+            //     }, function(response){
+            //         // 响应错误回调
+            //     });
             
             
-            },
+            // },
             exportTable(){
                 var that = this;
                 this.$http.post('/entrance/record',{
@@ -107,8 +111,8 @@
             },
             toInputPage(){
               /*显示输入页表格数据*/
-              this.currentPage = Number(this.currPage);
-              this.getData();
+              this.currentPage = Number(this.toPageNum);
+              // this.getData();
             },
             doSearch(){},
             addPolicy(){},
@@ -118,8 +122,8 @@
             },
             handleCurrentChange: function(currentPage){
                 this.currentPage =  Number(currentPage);
-                this.currPage = this.currentPage;
-                this.getData()
+                this.toPageNum = this.currentPage;
+                // this.getData()
             },
             doorInfoHide(){
                 this.$emit("doorInfoHide",false);
@@ -128,6 +132,6 @@
     }
 </script>
 
-<style type="text/css">
+<style>
 
 </style>
