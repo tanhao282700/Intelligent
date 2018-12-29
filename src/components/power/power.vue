@@ -55,8 +55,10 @@
 <style lang="less" type="text/less">
   .power{
     .h-paddingTop{
-      padding-top: 70px;
+      padding-top: 80px;
       .navCrumbs{
+        top: auto;
+        bottom: 0;
         p{
           display: inline;
           padding: 0;

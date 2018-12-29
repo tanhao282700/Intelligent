@@ -283,8 +283,8 @@
             let dataArr = [];
             data2.map((item,i)=>{
               let obj = {};
-              let num = (i+1)+(this.table.page-1)*20;
-              obj.number11 = (num<10?('0'+num):(''+num));
+              let num2 = (i+1)+(this.table.page-1)*20;
+              obj.number11 = (num2<10?('0'+num2):(''+num2));
               obj.time = item.time;
               obj.floor = item.device_location;
               obj.position = item.device_name;

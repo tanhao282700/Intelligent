@@ -25,7 +25,7 @@
       <div class="floorImg" v-html="floorImg">
 
       </div>
-      <div class="part" :style="{left:v.x+'px',top:v.y+'px'}" v-for="(v,i) in device" :key="'devItem'+i">
+      <div class="part" :style="{left:(v.x/2)+'px',top:(v.y/2)+'px'}" v-for="(v,i) in device" :key="'devItem'+i">
         <div v-show="v.now_state == v2.type" class="partInPart" v-for="(v2,i2) in v.device_pic" v-html="v2.codes" :key="'inPart'+i2"></div>
       </div>
       <!--<div class="stateWrap">
