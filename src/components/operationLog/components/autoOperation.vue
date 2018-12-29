@@ -3,7 +3,7 @@
     <!--面包屑-->
     <div class="navCrumbs">
       <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/home' }""">首页</el-breadcrumb-item>
         <el-breadcrumb-item>操作日志</el-breadcrumb-item>
         <el-breadcrumb-item>自动操作日志</el-breadcrumb-item>
       </el-breadcrumb>
@@ -73,7 +73,8 @@
           $.each(that.tableData,(i,k)=>{
               k.indexs = (that.currentPage-1)*that.pagesize+1+i;
           })
-          that.totalPageNum = Math.ceil(res.data.data.length / that.pagesize);
+          that.total = res.data.paging;
+          that.totalPageNum = Math.ceil(res.data.paging / 20);
         }, function(response){
           // 响应错误回调
         });
