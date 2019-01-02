@@ -1229,7 +1229,6 @@
     }
 
     .deviceDetailBox{
-      /*.vhMT(2);*/
       .vhMT(0);
       .vh(0);
       display: flex;
@@ -1259,12 +1258,6 @@
           display: flex;
           justify-content: center;
           align-items: center;
-          /*transform: scale(1.5,1.5);*/
-          /*img{
-            display: block;
-            width: 100%;
-            height: 100%;
-          }*/
         }
         .btnBox{
           margin-left: 0.1rem;

@@ -1,6 +1,6 @@
 <template>
   <el-popover
-    class="self-popover2"
+    class="self-popover-elevator"
     popper-class="self-popper"
     placement="right-start"
     :disabled="false"
@@ -26,7 +26,7 @@
     props: ['info'],
     data () {
       return {
-        
+
       }
     },
     methods:{
@@ -70,7 +70,7 @@
     border: solid 0px #4789d6 !important;
     padding: 0.15rem 0.1rem !important;
   }
-  .self-popover2 {
+  .self-popover-elevator {
     z-index: 999;
     .imgBox{
       width: 2.83rem;

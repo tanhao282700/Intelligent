@@ -49,7 +49,7 @@
 
   .fireAlarm{
     .h-paddingTop{
-      padding-top: 70px;
+      padding-top: 80px;
       .navCrumbs{
         top: auto;
         bottom: 0;

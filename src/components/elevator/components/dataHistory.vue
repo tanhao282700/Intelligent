@@ -201,19 +201,127 @@
     margin: 0 auto;
     width: 13.06rem;
     .vh(610);
-    .vhMT(16);
 
     .selectBox{
+      /*#04152c*/
       width: 100%;
+      .vh(72);;
       display: flex;
-      .tRBrnBox {
+      align-items: center;
+      position: relative;
 
+      .dateBox{
+        width: 2.15rem;
+        position:relative;
+        .el-range-editor .el-range-input{
+          text-align: left;
+          width: 0.88rem;
+          .vh(24);
+          font-family: PingFangSC-Regular;
+          font-size: 0.12rem;
+          font-weight: normal;
+          font-stretch: normal;
+          line-height: 1;
+          letter-spacing: 0px;
+          color: #ffffff;
+          background-color: transparent;
+          border-bottom: solid 1px #1989fa;
+        }
+        .el-range-editor.el-input__inner{
+          padding: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          &:hover{
+            border-color: #1989fa;
+          }
+          &::before {
+            content: "";
+            pointer-events: none;
+            display: block;
+            width: 0;
+            height: 0;
+            border-width: 4px 4px 0;
+            border-style: solid;
+            border-color: #008aff transparent transparent; /*黄 透明 透明 */
+            position: absolute;
+            top: 50%-4px;
+            left: 0.88rem;
+          }
+          &::after {
+            content: "";
+            pointer-events: none;
+            display: block;
+            width: 0;
+            height: 0;
+            border-width: 4px 4px 0;
+            border-style: solid;
+            border-color: #008aff transparent transparent; /*黄 透明 透明 */
+            position: absolute;
+            top: 50%-4px;
+            right: 0.1rem;
+          }
+        }
+        .el-date-editor .el-range__close-icon{
+          display: none;
+        }
+        .el-date-editor .el-range__icon{
+          display: none;
+        }
+        .el-date-editor .el-range-separator {
+          padding: 0 0.1rem;
+          .vhLineH(32);
+          width: 5%;
+          color: #fff;
+        }
+      }
+      .el-select{
+        width: 100%;
+        height: 100%;
+      }
+      .el-select>.el-input{
+        height: 100%;
+        font-family: PingFangSC-Medium;
+        font-size: 0.14rem;
+        font-weight: normal;
+        font-stretch: normal;
+        line-height: 1;
+        letter-spacing: 0px;
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+      }
+      .el-select .el-input__inner{
+        width: 100%;
+        padding: 0 0.1rem;
+      }
+      .el-select::after {
+        content: "";
+        pointer-events: none;
+        display: block;
+        width: 0;
+        height: 0;
+        border-width: 4px 4px 0;
+        border-style: solid;
+        border-color: #008aff transparent transparent; /*黄 透明 透明 */
+        position: absolute;
+        top: 50%-4px;
+        right: 0.2rem;
+      }
+      .tRBrnBox {
+        padding: 0 0.1rem;
+        width: 100%;
+        height: 100%;
+        border: 1px solid #1989fa;
+        display: flex;
+        align-items: center;
         .el-cascader{
           .vhLineH(32);
           font-size: 0.12rem;
         }
         .el-cascader__label{
           color: #fff;
+          padding: 0;
         }
         .el-cascader .el-icon-arrow-down.is-reverse{
           transform: rotateZ(0deg);
@@ -242,7 +350,7 @@
           border-color:#008aff transparent transparent;/*黄 透明 透明 */
           position:absolute;
           top:50%-4px;
-          left:-0.05rem;
+          right:0.1rem;
           &::before{
             content: "";
             /*pointer-events: none;
@@ -263,6 +371,7 @@
           display: none;
         }
         .el-date-editor.el-input, .el-date-editor.el-input__inner{
+
           &::after {
             content: "";
             pointer-events: none;
@@ -290,10 +399,10 @@
           top: 50%-4px;
           right: 0;
         }
-        margin-left: 0.17rem;
-        width: 0.88rem;
         .el-input {
           background-color: transparent !important;
+          display: flex;
+          align-items: center;
         }
         .el-input--suffix .el-input__inner {
           .vh(24);
@@ -304,23 +413,44 @@
         }
       }
       .oneLevelBox{
+        &:first-of-type{
+          margin-left: 0;
+        }
+        margin-left: 0.12rem;
         .vh(32);
+        display: inline-block;
         width: 1.15rem;
-        border-radius: 2px;
-        border: solid 1px #1989fa;
       }
       .searchBox{
-        .dateBox{
-          width: 2.11rem;
-          .vh(32);
-        }
-        margin-left: 0.2rem;
+        margin-left: 0.12rem;
+        width: 3.02rem;
         display: flex;
         .vh(32);
+        .el-input-group__append{
+          background-color: #3a84ed!important;
+          vertical-align: middle;
+          display: table-cell;
+          position: relative;
+          border: 0!important;
+          border-radius: 2px!important;
+          border-top-left-radius: 0!important;
+          border-bottom-left-radius: 0!important;
+          padding: 0 0.2rem!important;
+          width: 1px;
+          white-space: nowrap;
+
+          font-family: PingFangSC-Medium;
+          font-size: 0.14rem;
+          font-weight: normal;
+          font-stretch: normal;
+          line-height: 1;
+          letter-spacing: 0px;
+          color: #ffffff!important;
+        }
         .sltbtn{
-          margin-left: 0.2rem;
           width: 0.87rem;
           display:inline-block;
+          margin-left: -.02rem;
           .vh(32);
           .el-button--primary{
             width: 100%;
@@ -331,12 +461,45 @@
           }
         }
       }
+      .exportBox{
+        position: absolute;
+        right: 0.2rem;
+        .vhTop(20);
+        width: 0.88rem;
+        .vh(32);
+        .self-button{
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          width: 0.88rem;
+          .vh(32);
+          background-color: #3a84ed;
+          color: #fff;
+          border: 0;
+          outline: none;
+          border-radius: 2px;
+          padding: 0;
+          font-size: 0.14rem;
+          font-weight: normal;
+          font-stretch: normal;
+          line-height: 1;
+          letter-spacing: 0px;
+          .icon-export{
+            display: inline-block;
+            width: 0.14rem;
+            height: 0.14rem;
+            background: url("../../../assets/img/fireAlarm/icon_export.png") no-repeat center;
+            background-size: 100% 100%;
+            margin-right: 0.08rem;
+          }
+        }
+      }
     }
 
     .self-table{
       width: 13.06rem;
       margin: 0 auto;
-      .vhMT(20);
       .el-table__header-wrapper{
         background-color: rgba(0,0,0,0.25)!important;
       }

@@ -97,11 +97,7 @@
       <Dialog wid = "9.39rem" hei = "6.18rem" tit="视频监控情况" ref = "dialog">
         <div class="dialog-in">
           <div class="videoBox">
-            <video-player  class="video-player vjs-custom-skin"
-                           ref="videoPlayer"
-                           :playsinline="true"
-                           :options="playerOptions"
-            ></video-player>
+
           </div>
         </div>
       </Dialog>
@@ -139,87 +135,7 @@
 
             }
           },
-          {
-            title:'一号楼二号客梯',
-            status:'2',
-            error:0,
-            position:3,
-            direct:0,
-            hasp:0,
-            open:0,
-            player:{
-              videoUrl:'http://221.228.226.23/11/t/j/v/b/tjvbwspwhqdmgouolposcsfafpedmb/sh.yinyuetai.com/691201536EE4912BF7E4F1E2C67B8119.mp4',
-              imgUrl:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1536210152930&di=a71791e897b3b3cd1b8930eeff469d34&imgtype=0&src=http%3A%2F%2Fa1.att.hudong.com%2F47%2F59%2F300001072552129204590160225_950.jpg'
-
-            }
-          },
-          {
-            title:'一号楼三号客梯',
-            status:'1',
-            error:15,
-            position:3,
-            direct:1,
-            hasp:1,
-            open:1,
-            player:{
-              videoUrl:'http://221.228.226.23/11/t/j/v/b/tjvbwspwhqdmgouolposcsfafpedmb/sh.yinyuetai.com/691201536EE4912BF7E4F1E2C67B8119.mp4',
-              imgUrl:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1536210152930&di=a71791e897b3b3cd1b8930eeff469d34&imgtype=0&src=http%3A%2F%2Fa1.att.hudong.com%2F47%2F59%2F300001072552129204590160225_950.jpg'
-
-            }
-          },
-          {
-            title:'一号楼四号客梯',
-            status:'1',
-            error:0,
-            position:6,
-            direct:1,
-            hasp:1,
-            open:1,
-            player:{
-              videoUrl:'http://221.228.226.23/11/t/j/v/b/tjvbwspwhqdmgouolposcsfafpedmb/sh.yinyuetai.com/691201536EE4912BF7E4F1E2C67B8119.mp4',
-              imgUrl:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1536210152930&di=a71791e897b3b3cd1b8930eeff469d34&imgtype=0&src=http%3A%2F%2Fa1.att.hudong.com%2F47%2F59%2F300001072552129204590160225_950.jpg'
-
-            }
-          },
-          {
-            title:'一22号楼四号客梯',
-            status:'1',
-            error:0,
-            position:6,
-            direct:1,
-            hasp:1,
-            open:1,
-            player:{
-              videoUrl:'http://221.228.226.23/11/t/j/v/b/tjvbwspwhqdmgouolposcsfafpedmb/sh.yinyuetai.com/691201536EE4912BF7E4F1E2C67B8119.mp4',
-              imgUrl:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1536210152930&di=a71791e897b3b3cd1b8930eeff469d34&imgtype=0&src=http%3A%2F%2Fa1.att.hudong.com%2F47%2F59%2F300001072552129204590160225_950.jpg'
-
-            }
-          }
         ],
-        //视频部分
-        playerOptions : {
-          playbackRates: [0.7, 1.0, 1.5, 2.0], //播放速度
-          autoplay: false, //如果true,浏览器准备好时开始回放。
-          muted: false, // 默认情况下将会消除任何音频。
-          loop: false, // 导致视频一结束就重新开始。
-          preload: 'auto', // 建议浏览器在<video>加载元素后是否应该开始下载视频数据。auto浏览器选择最佳行为,立即开始加载视频（如果浏览器支持）
-          language: 'zh-CN',
-          aspectRatio: '4:3', // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
-          fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
-          sources: [{
-            type: "",
-            src: "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4" //url地址
-          }],
-          poster: "https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1536198298&di=a980cc1553e2bec11ddef063aeba25d9&src=http://pic.58pic.com/58pic/15/33/18/13A58PICi3r_1024.jpg", //你的封面地址
-          // width: document.documentElement.clientWidth,
-          notSupportedMessage: '此视频暂无法播放，请稍后再试', //允许覆盖Video.js无法播放媒体源时显示的默认信息。
-          controlBar: {
-            timeDivider: true,
-            durationDisplay: true,
-            remainingTimeDisplay: false,
-            fullscreenToggle: true  //全屏按钮
-          }
-        },
       }
     },
     methods:{
@@ -234,8 +150,6 @@
       },
        //展示视频监控弹框
       showVideo(item){
-        this.playerOptions.sources[0].src = item.videoUrl;
-        this.playerOptions.poster = item.imgUrl;
         this.$refs.dialog.show();
       }
     },
@@ -377,7 +291,7 @@
         border-radius: 0.02rem;
         border: solid 0.01rem #1989fa;
         text-align: center;
-        margin-left: 0.2rem;
+        margin-left: 0.1rem;
       }
       .sltbtn{
         margin-left: 0.12rem;
@@ -448,7 +362,7 @@
       display: flex;
       justify-content: flex-start;
       flex-wrap: wrap;
-      overflow-y: scroll;
+      overflow-y: auto;
       .lousub{
         margin-left: 0.1rem;
         margin-right: 0.1rem;

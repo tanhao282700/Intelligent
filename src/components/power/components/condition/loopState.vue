@@ -238,13 +238,13 @@
 
 
             var imgaaa = new Image();
-            imgaaa.src = '/static/xlt1.png';
+            imgaaa.src = datas.floor;
             imgaaa.onload = function() {
               let wid = imgaaa.width;
               let hei = imgaaa.height;
               if (wid>1306 || hei>578){
-                wid = wid/2;
-                hei = hei/2;
+                wid = wid/4;
+                hei = hei/4;
                 console.log(that.$refs)
                 that.$refs.imgBox.style.width = wid;
                 that.$refs.imgBox.style.height = wid;

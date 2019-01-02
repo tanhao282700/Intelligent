@@ -43,26 +43,31 @@
       let headers = {
         //'Content-Type': 'multipart/form-data'
       }
-      this.$http.get('/currency/device/info', config, headers).then(res => {
+      this.$http.get('hvac_pc/pc/device_info', config, headers).then(res => {
         let data = res.data;
         console.log('获取图例设备信息', config, res);
 
         if (data.code == 0) {
+          let dataArr = data.data;
           let tempArr = [];
-          //let content = '[{"设备名称":"卧式离心水泵"},{"品牌":"凯泉"},{"编号":"DB466225S"}]';
-          if (data.data.length !== 0) {
-            let content = data.data[0].content;
-            //console.log('转',eval('('+content+')'))
-            let dataArr = eval(content);
-            dataArr.map((item, i) => {
-              for (var i2 in item) {
-                let obj = {};
-                obj.tit = i2;
-                obj.content = item[i2]
-                tempArr.push(obj)
-              }
-            })
-          }
+          dataArr.map((item,i)=>{
+            let obj = {};
+            obj.tit = item.title;
+            if (item.params !== ''){
+              let paramsObj = eval('('+item.params+')');
+              let showvalueIndex;
+              paramsObj.value.some((item0,i0)=>{
+                if (item.now_value == item0){
+                  showvalueIndex = i0;
+                  return true;
+                }
+              })
+              obj.content = paramsObj.showvalue[showvalueIndex];
+            } else {
+              obj.content = item.now_value+item.unit;
+            }
+            tempArr.push(obj)
+          })
           this.info = tempArr;
         } else {
           this.$message(data.message);
@@ -158,7 +163,7 @@
   .popover-item{
     .title{
       display: inline-block;
-      width: 0.56rem;
+      width: 0.88rem;
       font-family: PingFangSC-Regular;
       font-size: 0.14rem;
       font-weight: normal;

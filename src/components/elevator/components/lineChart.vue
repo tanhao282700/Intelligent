@@ -7,11 +7,11 @@
   export default {
     props:["datas"],
     computed:{
-     
+
     },
     data () {
       return {
-               
+
       }
     },
     methods:{
@@ -39,22 +39,28 @@
                     type : 'category',
                     boundaryGap : false,
                     data : this.datas.x,
-                    axisLine:{                           
-                        lineStyle:{                          
-                            color:'#ffffff',                    
-                            width:1,                      
+                    axisLine:{
+                        lineStyle:{
+                            color:'rgba(45,240,224,0.21)',
+                            width:1,
                         }
                     },
+                  axisTick:{
+                    show:false
+                  },
+                  axisLabel:{
+                    color:'#fff'
+                  },
                     nameTextStyle: {
                       color: ['#0087ED']
                     },
                 }
             ],
             yAxis : [
-                {  axisLine:{                           
-                        lineStyle:{                          
-                            color:'#ffffff',                    
-                            width:0,                      
+                {  axisLine:{
+                        lineStyle:{
+                            color:'#ffffff',
+                            width:0,
                         }
                     },
                     axisTick: {
@@ -66,7 +72,7 @@
                     splitLine: {
                       show: true,
                       lineStyle:{
-                        color:'#2df0e0',
+                        color:'rgba(45,240,224,0.21)',
                         width:0.5
                       }
                     }
@@ -99,22 +105,22 @@
                          type:'solid',
                      },
                      data: [
-                     
+
                       [{name: '标线1起点',value:this.datas.average, x: '10%', yAxis: this.datas.average
-                       ,label:{show:true,position:'start'}        
+                       ,label:{show:true,position:'start'}
                       },{
                            symbol: 'none',
                            x: '95%',
                            yAxis: this.datas.average
                        }
                        ]
-                      
+
                     ]
                   }
                 }
             ]
         };
-                            
+
         let _this = this;
         // 绘制图表
         myChart.setOption(option);
@@ -135,7 +141,7 @@
   .myChartBox{
     width: 100%;
     height:100%;
-    
+
   }
 
 </style>
