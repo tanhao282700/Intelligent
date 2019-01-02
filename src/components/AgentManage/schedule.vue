@@ -106,7 +106,7 @@
               <ul>
                 <li v-for="item in editDatas">
                   <el-input v-model="item.title" placeholder="请输入班次名"></el-input>
-                  <span style="display:inline-block;border:1px solid #1989fa;height:0.38rem">
+                  <span class="bancigroup">
                     <el-time-picker
                       v-model="item.timearea[0]"
                       format="HH:mm"
@@ -233,7 +233,7 @@ export default {
         this.editDatas = arr;
     },
     addSchedule(){//点击自定义班次-新增
-      this.editDatas.push({id:0});
+      this.editDatas.push({id:0,timearea:['','']});
     },
     editSchedule(val){//编辑自定义班次
       let arr = [];
@@ -575,6 +575,13 @@ export default {
         height:3.33rem;
         width:100%;
         overflow:overlay;
+        .bancigroup{
+          display:inline-block;
+          border:0.01rem solid #1989fa;
+          height:0.38rem;
+          border-radius:3px;
+          vertical-align: top;
+        }
       }
     }
     .addEdit,.submitEdit{
