@@ -340,6 +340,8 @@
 	        },
           areaQueryData(){
             let that = this;
+            console.log(that.areaDate);
+
             that.loading1 = true;
 
             let config = {
@@ -516,8 +518,11 @@
         created(){
           this.data.config.sys_menu_id = this.sys_menu_id = this.$store.state.sysList[2].sys_menu_id;
           this.data.config.project_id = this.project_id = this.$store.state.projectId;
-          let curMonth = new Date().getFullYear().toString() + (new Date().getMonth() +1);
-          this.areaDate = curMonth;
+          let month = new Date().getMonth()+1;
+          if(month<10){
+            month="0"+month;
+          }
+          this.areaDate = new Date().getFullYear().toString() + month;
         },
         mounted(){
           let that = this;

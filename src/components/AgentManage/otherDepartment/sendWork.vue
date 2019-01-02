@@ -18,7 +18,7 @@
         </div>
         <div class="selectX">
           <span>设备名称</span>
-          <SelectBox :options="query.devicess"
+          <SelectBox :options="query.devices"
            :value="formvals.device_name"
            class="selectdown"
            @change="change2"

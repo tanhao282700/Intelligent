@@ -256,6 +256,7 @@
     name: "all-views",
     data(){
       return{
+        energyTrendYear:[],
         viewsLoading:false,
         energyArea2Type:"0",
         energyTrend0:{
@@ -271,8 +272,8 @@
             },
             xDate:['01','02','03','04','05','06','07','08','09','10','11','12'],
             list:[
-              {name:"2018",data:[]},
-              {name:"2017",data:[]},
+              {name:"",data:[]},
+              {name:"",data:[]},
               {name:"今年计划",data:[]},
             ]
           }
@@ -290,8 +291,8 @@
             },
             xDate:['01','02','03','04','05','06','07','08','09','10','11','12'],
             list:[
-              {name:"2018",data:[]},
-              {name:"2017",data:[]},
+              {name:"",data:[]},
+              {name:"",data:[]},
               {name:"今年计划",data:[]},
             ]
           }
@@ -309,8 +310,8 @@
             },
             xDate:['01','02','03','04','05','06','07','08','09','10','11','12'],
             list:[
-              {name:"2018",data:[]},
-              {name:"2017",data:[]},
+              {name:"",data:[]},
+              {name:"",data:[]},
               {name:"今年计划",data:[]}
             ]
           }
@@ -1047,8 +1048,8 @@
             },
             xDate:['01','02','03','04','05','06','07','08','09','10','11','12'],
             list:[
-              {name:"2018",data:data['2018']},
-              {name:"2017",data:data['2017']},
+              {name: that.energyTrendYear[0],data:data['2018']},
+              {name: that.energyTrendYear[1],data:data['2017']},
               {name:"今年计划",data:data['this_year_plan']},
             ]
           }
@@ -1087,11 +1088,18 @@
         that.$echarts.init(document.getElementById('energyArea4Chart5')).resize();
         that.$echarts.init(document.getElementById('energyArea4Chart6')).resize();
         that.$echarts.init(document.getElementById('energyArea4Chart7')).resize();
-      }
+      },
     },
     created(){
-      let dates = new Date()
-      this.dateRangeValue = dates.getFullYear().toString()+(dates.getMonth()+1)
+      let dates = new Date();
+      let year = dates.getFullYear();
+      let month = dates.getMonth()+1;
+      if(month<10){
+        month="0"+month;
+      }
+      this.dateRangeValue = year.toString()+ month;
+      this.energyTrendYear[0] = year;
+      this.energyTrendYear[1] = year - 1;
     },
     mounted(){
       let that = this;
