@@ -288,6 +288,12 @@
   height: 0.38rem !important;
   margin-left: .03rem;
 }
+.addBanci .el-date-editor.el-input{
+  width:1.12rem !important;
+}
+.addBanci .el-date-editor .el-input__inner{
+  border: none !important;
+}
 .addBanci input{
    background-color: transparent !important;
 }

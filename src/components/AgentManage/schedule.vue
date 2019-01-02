@@ -106,24 +106,35 @@
               <ul>
                 <li v-for="item in editDatas">
                   <el-input v-model="item.title" placeholder="请输入班次名"></el-input>
-                  <!-- <el-select v-model="item.timearea" placeholder="请选择">
-                    <el-option
-                      v-for="item in options"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value">
-                    </el-option>
-                  </el-select> -->
-                  <el-time-picker
+                  <span style="display:inline-block;border:1px solid #1989fa;height:0.38rem">
+                    <el-time-picker
+                      v-model="item.timearea[0]"
+                      format="HH:mm"
+                      :picker-options="{
+                        selectableRange: '00:00:00 - 23:59:00'
+                      }"
+                      placeholder="开始时间">
+                    </el-time-picker>
+                    <el-time-picker
+                      format="HH:mm"
+                      v-model="item.timearea[1]"
+                      :picker-options="{
+                        selectableRange: '00:00:00 - 23:59:00'
+                      }"
+                      placeholder="结束时间">
+                    </el-time-picker>
+                  </span>
+                  
+                  <!-- <el-time-picker
                     is-range
                     v-model="item.timearea"
                     format="HH:mm"
+                    @change="getNewTime"
                     range-separator="至"
-                    :value="['00:00','23:59']"
                     start-placeholder="开始时间"
                     end-placeholder="结束时间"
                     placeholder="选择时间范围">
-                  </el-time-picker>
+                  </el-time-picker> -->
                 </li>
               </ul>
               <el-button class="addEdit" @click="addSchedule">新增</el-button>
@@ -168,6 +179,9 @@ export default {
     }
   },
   methods:{
+    getNewTime(val){
+      console.log(val)
+    },
     //自定义班次下拉列表怎么取值
     sure(){
       let content = [];
