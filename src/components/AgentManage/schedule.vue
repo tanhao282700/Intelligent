@@ -16,8 +16,8 @@
                   <span slot="label" class="tabItems">
                       未审核
                   </span>
-                  <Examine 
-                    :data = 'examData1' 
+                  <Examine
+                    :data = 'examData1'
                     @search = "(val)=>search(val,1)"
                     @showInfo = "showInfo"
                     @isNo = "isNo"
@@ -28,16 +28,16 @@
                   <span slot="label" class="tabItems">
                       已审核
                   </span>
-                  <Examine 
-                    :data = 'examData2'  
-                    @search = "(val)=>search(val,2)" 
+                  <Examine
+                    :data = 'examData2'
+                    @search = "(val)=>search(val,2)"
                     @showInfo = "showInfoed"/>
               </el-tab-pane>
           </el-tabs>
           <transition name="fade">
             <div class="sceBtn btnBai1" v-show="activeName=='first'" @click="exportTableList">
               <img src="../../assets/img/AgentManage/export.png">
-              <span>导出排班表</span>  
+              <span>导出排班表</span>
             </div>
           </transition>
         <Dialog ref="dialog" wid="910" hei="536" class="dialog">
@@ -103,9 +103,9 @@
         <Dialog ref="edit" wid="4.16rem" hei="4.27rem" class="dialog" >
           <div class="editBox">
             <div class="addBanci">
-              <ul>
+              <ul class="th_schedule_input">
                 <li v-for="item in editDatas">
-                  <el-input v-model="item.title" placeholder="请输入班次名"></el-input>
+                  <el-input class="th_schedule_input" v-model="item.title" placeholder="请输入班次名"></el-input>
                   <span class="bancigroup">
                     <el-time-picker
                       v-model="item.timearea[0]"
@@ -124,7 +124,7 @@
                       placeholder="结束时间">
                     </el-time-picker>
                   </span>
-                  
+
                   <!-- <el-time-picker
                     is-range
                     v-model="item.timearea"
@@ -201,14 +201,14 @@ export default {
                 })
                 return;
             }
-        }    
+        }
       $.each(this.editDatas,(n,k)=>{
             if(k.timearea && k.timearea.length>0){
               content.push({title:k.title,starttime:utils.time(new Date(k.timearea[0])/1000,11),endtime:utils.time(new Date(k.timearea[1])/1000,11),id:k.id});
             }else{
               content.push({title:k.title,starttime:'',endtime:'',id:k.id});
             }
-            
+
       })
       this.$http.post('/app_ims/set_worklist',{'content':JSON.stringify(content)})
       .then(res=>{
@@ -224,7 +224,7 @@ export default {
               message:'班次新增成功',
               duration:2000
             })
-            this.$refs.ref.getWOptions(); 
+            this.$refs.ref.getWOptions();
             this.$refs.edit.hide();
           }
       })
@@ -265,7 +265,7 @@ export default {
     },
     handleClick(tab, event) {
         let activeName = this.activeName;
-        this.$router.replace({ path: `/AgentManage/schedule/${activeName}`});     
+        this.$router.replace({ path: `/AgentManage/schedule/${activeName}`});
       },
       search(val,type){
         if(type==1){
@@ -339,7 +339,7 @@ export default {
               $.each(data,(n,k)=>{
                   data[n].state= -1;
                   data[n].olde_workdate = data[n].oldworkdate;
-                  data[n].new_workdate = data[n].newworkdate; 
+                  data[n].new_workdate = data[n].newworkdate;
               })
               this.examData1 = data;
            }else{
@@ -500,7 +500,7 @@ export default {
            }
          }
       }
-    }   
+    }
   }
   .diaTit2{
       font-size: 0.14rem;
@@ -515,9 +515,9 @@ export default {
         width:8.75rem;
         margin-left: 0.2rem;
         background-color: #001838;
-        box-shadow: 0px 0px 2px 0px 
-          rgba(87, 113, 176, 0.15), 
-          inset 0px 1px 3px 0px 
+        box-shadow: 0px 0px 2px 0px
+          rgba(87, 113, 176, 0.15),
+          inset 0px 1px 3px 0px
           rgba(0, 0, 0, 0.5);
           padding: 0 0.1rem;
           color: #ffa414;
@@ -548,9 +548,9 @@ export default {
       .diabtn{
         float: left;
         text-align: center;
-        line-height:0.32rem;       
+        line-height:0.32rem;
         width: 0.9rem;
-        height:0.32rem; 
+        height:0.32rem;
         border-radius: 0.04rem;
         border: solid 0.01rem ;
         color: #fff;
@@ -603,4 +603,9 @@ export default {
       background:#1989fa;
     }
 }
+</style>
+<style>
+  .th_schedule_input .el-input__inner{
+    height:0.38rem!important;
+  }
 </style>
