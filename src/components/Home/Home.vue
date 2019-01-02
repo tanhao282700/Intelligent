@@ -1287,7 +1287,7 @@
     border: 1px solid #4a90e2!important;
     margin-right:20px!important;
     left:inherit!important;
-    right:0!important;
+    right:0.60rem!important;
   }
   .homeDropDown .popper__arrow{
     left:68px!important;

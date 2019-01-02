@@ -25,14 +25,14 @@
           <el-dropdown trigger="hover" @command="handleCommand" >
             <span class="el-dropdown-link">
               <span @click="showPersonInfo" class="userIcon"></span>
-              <span style="position: absolute;top: 0;left: 0.4rem;width: 1rem;line-height: 0.3rem;color: #fff;">{{username}}</span>
             </span>
-            <el-dropdown-menu class="homeDropDown" slot="dropdown" style="background: #061733;border: 1px solid #4a90e2">
+            <el-dropdown-menu class="homeDropDown" slot="dropdown" style="background: #061733;border: 1px solid #4a90e2;right:1.1rem !important;">
               <el-dropdown-item command="personInfo" class="homeDropdownItem" style="text-align:center;color:#f6f6f6">个人信息</el-dropdown-item>
               <el-dropdown-item command="changePassword" class="homeDropdownItem" style="text-align:center;color:#f6f6f6">修改密码</el-dropdown-item>
               <el-dropdown-item command="loginOut" class="homeDropdownItem" style="text-align:center;color:#f6f6f6">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
+          <span style="position: absolute;top: 0;left: 0.4rem;width: 1rem;line-height: 0.3rem;color: #fff;">{{username}}</span>
         </el-col>
       </el-row>
       <!-- <div class="dropdownlist" >
@@ -170,7 +170,6 @@ export default {
 }
 
 </script>
-
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="less" scoped="" type="text/less" scoped>
 @import '../../assets/css/comon.less';
@@ -283,6 +282,7 @@ export default {
               }
           }
         }
+        
     }
 
 </style>
