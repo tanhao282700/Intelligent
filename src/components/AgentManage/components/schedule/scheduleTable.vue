@@ -196,7 +196,7 @@ export default {
         this.$emit('getPaibanData',val)
     },
     editSchedule(){//自定义班次
-        this.$emit('editSchedule');
+        this.$emit('editSchedule',this.tableT);
     },
     deletes(){//月份减少
         let attrs = this.value7.split('-');

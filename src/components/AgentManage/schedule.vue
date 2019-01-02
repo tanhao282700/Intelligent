@@ -119,6 +119,7 @@
                     v-model="item.timearea"
                     format="HH:mm"
                     range-separator="至"
+                    :value="['00:00','23:59']"
                     start-placeholder="开始时间"
                     end-placeholder="结束时间"
                     placeholder="选择时间范围">
@@ -159,7 +160,7 @@ export default {
         examData2:[],
         indexNow:-1,
         dia:{},
-        editDatas:[{}],
+        editDatas:[],
         options:[],
         paibanList:[],
         exportTable:'',
@@ -220,7 +221,7 @@ export default {
     addSchedule(){//点击自定义班次-新增
       this.editDatas.push({id:0});
     },
-    editSchedule(){//编辑自定义班次
+    editSchedule(val){//编辑自定义班次
       let arr = [];
       var date = new Date();
       var year = date.getFullYear();
@@ -234,7 +235,7 @@ export default {
       }
       var nowDate = year + "-" + month + "-" + day;
 
-      $.each(this.editDatas,(n,k)=>{
+      $.each(val,(n,k)=>{
         if(k.label && k.label!=''){
           let time = '';
           if(k.timearea){
