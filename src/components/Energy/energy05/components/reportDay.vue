@@ -101,7 +101,11 @@
     mounted(){
         console.log(this.$store.state)
       let day = new Date()
-      this.formData.query_date = String(day.getFullYear())+(day.getMonth()+1)
+      let mon = day.getMonth()+1
+      if(mon<10){
+            mon = '0'+ mon
+      }
+      this.formData.query_date = String(day.getFullYear())+mon
       this.formData.project_id = this.$store.state.projectId;
       this.formData.sys_menu_id = this.$store.state.sysList[2].sys_menu_id;
       this.setWidth();
@@ -116,7 +120,11 @@
           date = this.formData.query_date
         }else{
           let time = new Date()
-          date = String(time.getFullYear())+(time.getMonth()+1)
+          let mon = day.getMonth()+1
+          /*if(mon<10){
+            mon = '0'+ mon
+          }*/
+          date = String(time.getFullYear())+mon
         }
         let data = {
           project_id:this.formData.project_id,
