@@ -20,19 +20,19 @@
         <el-tab-pane v-for="(item,index) in datas.lists" :key="item.id" :label="item.name" :name="'item'+index" :route="item.route" :stretch="true">
         </el-tab-pane>
       </el-tabs>
-      <el-row class="block-col-2 userCenter" style="position: absolute;right: 1.5rem;top: 10px;">
-        <el-col :span="12">
-          <el-dropdown trigger="hover" @command="handleCommand" >
+      <el-row class="block-col-2 userCenter">
+        <el-col class="userCenterBox">
+          <el-dropdown trigger="hover" @command="handleCommand"  class="dropdown">
             <span class="el-dropdown-link">
               <span @click="showPersonInfo" class="userIcon"></span>
             </span>
-            <el-dropdown-menu class="homeDropDown" slot="dropdown" style="background: #061733;border: 1px solid #4a90e2;right:1.1rem !important;">
+            <el-dropdown-menu class="homeDropDown" slot="dropdown" >
               <el-dropdown-item command="personInfo" class="homeDropdownItem" style="text-align:center;color:#f6f6f6">个人信息</el-dropdown-item>
               <el-dropdown-item command="changePassword" class="homeDropdownItem" style="text-align:center;color:#f6f6f6">修改密码</el-dropdown-item>
               <el-dropdown-item command="loginOut" class="homeDropdownItem" style="text-align:center;color:#f6f6f6">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
-          <span style="position: absolute;top: 0;left: 0.4rem;width: 1rem;line-height: 0.3rem;color: #fff;">{{username}}</span>
+          <span class="sysheadUserName">{{username}}</span>
         </el-col>
       </el-row>
       <!-- <div class="dropdownlist" >
@@ -212,7 +212,7 @@ export default {
           }
         }
         .navTabs{
-          height:30px;line-height:30px;
+          height: .3rem;
           display: inline-flex;
           margin-left: 0.6rem;
            .el-tabs__header{
@@ -223,20 +223,19 @@ export default {
         }
         .logo{
           cursor:pointer;
-          display: inline-flex;
-          height:0.4rem;
+          display: flex;
+          align-items: center;
+          height: 100%;
           margin-left:0.14rem;
           margin-right:0.2rem;
           span{
-            margin-top:0.09rem;
             height:0.18rem;
             color:#fff;
             font-weight:600;
           }
           i{
-              display: inline-block;
+              display: block;
               margin-right:0.08rem;
-              margin-top:0.07rem;
               width:0.26rem;
               height:0.26rem;
               background:url(../../assets/img/home/logo.png) no-repeat center center;
@@ -283,6 +282,33 @@ export default {
           }
         }
         
+    }
+    .userCenter{
+      position: absolute;
+      right: .3rem;
+      top: 50%;
+      transform: translate(0,-50%);
+
+      .userCenterBox{
+        display: flex;
+      }
+      .sysheadUserName{
+        line-height: 0.3rem;
+        margin-left: .1rem;
+        color: #fff;
+      }
+      .dropdown{
+        display: block;
+      }
+    }
+    .homeDropDown{
+      background: #061733;
+      border: 1px solid #4a90e2;
+      right:.3rem !important;
+      top: .53rem!important;
+      padding: 5px 0;
+      height: auto!important;
+      margin-right: 0!important;
     }
 
 </style>

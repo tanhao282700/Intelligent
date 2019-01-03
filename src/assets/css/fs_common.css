@@ -27,8 +27,9 @@
 }
 .navTabs .el-tabs__item{
   height:0.28rem !important;
-  text-align: center;
-  line-height: 0.26rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 0.85rem;
   border: 1px solid transparent;
 }
