@@ -8,7 +8,12 @@
     <div ref="HpadTop" class="tabsDomBox0 h-paddingTop">
       <div class="navCrumbs"><p @click="toHome">首页</p> > 电梯监测系统 > <span>实时监控</span></div>
     </div>
-    <div class="runtimeMonitor">
+    <div class="runtimeMonitor"
+         v-loading="loading"
+         element-loading-background="rgba(0, 0, 0, 0.5)"
+         element-loading-spinner="el-icon-loading"
+         element-loading-text="拼命加载中"
+    >
       <div class="sltcontainer">
         <div class="jobBoxs">
           <div class="tRBrnBox">
@@ -27,77 +32,69 @@
       <div class="tipscontainer">
         <div class="tipsub">
           <div class="tipsubin">
-            <span class="color1">11</span>
+            <span class="color1" v-text="zong"></span>
             <div class="tiptitle">电梯总数</div>
           </div>
         </div>
         <div class="tipsub color2">
           <div class="tipsubin">
-            <span class="color2">22</span>
+            <span class="color2" v-text="healthy"></span>
             <div class="tiptitle">电梯正常运行个数</div>
           </div>
           </div>
         <div class="tipsub color3">
           <div class="tipsubin">
-            <span class="color3">33</span>
+            <span class="color3" v-text="not_healthy"></span>
             <div class="tiptitle">电梯故障个数</div>
           </div>
         </div>
       </div>
       <div class="louticontainer">
-        <div class="lousub" v-for="(v,k) in dianti">
+        <div class="lousub" v-for="(v,k) in diantiData" :key="v.device_id">
           <div class="header">
-            {{v.title}}
+            {{v.device_title}}
           </div>
           <div class="content">
-            <img :src="v.status==1?img.blue:img.red" class="img"/>
+            <img :src="v.state==0?img.blue:img.red" class="img"/>
 
-            <popover :info="[
-          {id:1,tit:'设备名称',content:'设备名称'},
-          {id:1,tit:'设备类型',content:'空调机房主机'},
-          {id:1,tit:'设备品牌',content:'格力'},
-          {id:1,tit:'设备型号',content:'xxxxxxxx'},
-          {id:1,tit:'厂商',content:'xxxxxxxx'},
-          {id:1,tit:'启用时间',content:'xxxxxxxx'},
-          {id:1,tit:'维保名称',content:'xxxxxxxx'},
-          {id:1,tit:'维保电话',content:'xxxxxxxx'},
-        ]"><div class="title">设备信息</div></popover>
-            <div class="title">维保历史</div>
-            <div class="title" @click="showVideo(v.player)">视频监测</div>
-            <div class="title">数据监测</div>
+            <popover :device_id="v.device_id"><div class="title">设备信息</div></popover>
+            <div v-if="showWbHistory" class="title" @click="toWbHistory">维保历史</div>
+            <div v-if="showVideoMonitor" class="title" @click="showVideo(v.device_id)">视频监测</div>
+            <div v-if="showDataHistory" class="title" @click="toDataHistory">数据监测</div>
             <div class="title2 title2First">
               <div class="title2in">
-                <span v-bind:class="['tipsTop',v.status==1?'normalC':'errorC2']">{{v.status==1 ?'正常':'异常'}}</span>
+                <span v-bind:class="['tipsTop',v.state==0?'normalC':'errorC2']">{{v.state==0 ?'正常':'异常'}}</span>
                 <span class="tips">状态</span>
               </div>
             </div>
             <div class="title2">
               <div class="title2in">
-                <span class="tipsTop colorred">{{v.error}}</span>
+                <span class="tipsTop colorred">{{v.xiu_count}}</span>
                 <span class="tips">故障次数</span>
               </div>
             </div>
             <div class="detailcontainer">
-              <div class="left">
-                <span class="tit">楼层位置</span>
-                <span class="tit">运行方向</span>
-                <span class="tit">是否有人</span>
-                <span class="tit">电梯状态</span>
-              </div>
-              <div class="right">
-                <span class="dd"><span class="line"></span><span class="title1">{{v.position}}</span><span class="line2"></span></span>
-                <span class="dd"><span class="line"></span><span class="title1">{{v.direct==1?'上行':'下行'}}</span><span class="line2"></span></span>
-                <span class="dd"><span class="line"></span><span class="title1">{{v.hasp==1?'有人':'无人'}}</span><span class="line2"></span></span>
-                <span class="dd"><span class="line"></span><span class="title1" v-bind:class="{ errorC: v.open!==1}">{{v.open==1?'开启':'关闭'}}</span><span class="line2"></span></span>
-              </div>
+              <table>
+                <tr class="part" v-for="(v2,i2) in v.device_info" :key="'p'+i2">
+                  <td><span class="tit">{{v2.label}}</span></td>
+                  <td><span class="dd"><span class="line"></span><span class="title1">{{v2.value}}</span><span class="line2"></span></span></td>
+                </tr>
+              </table>
             </div>
           </div>
         </div>
       </div>
-      <Dialog wid = "9.39rem" hei = "6.18rem" tit="视频监控情况" ref = "dialog">
+      <Dialog wid = "9.39rem" hei = "618" tit="视频监控情况" ref = "dialog">
         <div class="dialog-in">
           <div class="videoBox">
-
+            <iframe
+              ref="elVideoIframe"
+              name="elVideoIframe"
+              frameborder="0"
+              width="100%"
+              height="100%"
+              :src="nowVideoUrl">
+            </iframe>
           </div>
         </div>
       </Dialog>
@@ -114,47 +111,312 @@
     },
     data () {
       return {
-        floorSelectedOptions:[],
+        showWbHistory:(this.$store.state.sysList[9].role_string.length != 0?(this.$store.state.sysList[9].role_string[2] != 0):true),
+        showVideoMonitor:(this.$store.state.sysList[9].role_string.length != 0?(this.$store.state.sysList[9].role_string[4] != 0):true),
+        showDataHistory:(this.$store.state.sysList[9].role_string.length != 0?(this.$store.state.sysList[9].role_string[1] != 0):true),
+
+        loading:false,
+        zong:'-',
+        healthy:'-',
+        not_healthy:'-',
+        floor_id:0,
+        nowVideoUrl:'',
+        floorSelectedOptions:[0],
         floorOptions: [],
         img:{
           red:redpng,
           blue:bluepng
         },
-        dianti:[
-          {
-            title:'一号楼一号客梯',
-            status:'1',
-            error:5,
-            position:3,
-            direct:1,
-            hasp:1,
-            open:1,
-            player:{
-              videoUrl:'http://221.228.226.23/11/t/j/v/b/tjvbwspwhqdmgouolposcsfafpedmb/sh.yinyuetai.com/691201536EE4912BF7E4F1E2C67B8119.mp4',
-              imgUrl:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1536210152930&di=a71791e897b3b3cd1b8930eeff469d34&imgtype=0&src=http%3A%2F%2Fa1.att.hudong.com%2F47%2F59%2F300001072552129204590160225_950.jpg'
-
-            }
+        diantiData:[
+          /*{
+            "device_id": 4339,
+            "device_info": [
+              {
+                "label": "楼层位置",
+                "value": "0"
+              },
+              {
+                "label": "运行方向",
+                "value": "0"
+              },
+              {
+                "label": "是否有人",
+                "value": "0"
+              },
+              {
+                "label": "电梯状态",
+                "value": "0"
+              },
+              {
+                "label": "视频",
+                "value": "0"
+              },
+              {
+                "label": "温度",
+                "value": "0"
+              },
+              {
+                "label": "湿度",
+                "value": "0"
+              },
+              {
+                "label": "积水",
+                "value": "0"
+              },
+              {
+                "label": "积水",
+                "value": "0"
+              },
+              {
+                "label": "电流",
+                "value": "0"
+              },
+              {
+                "label": "电压",
+                "value": "0"
+              },
+              {
+                "label": "湿度",
+                "value": "0"
+              }
+            ],
+            "device_title": "2号楼1号客梯",
+            "state": "0",
+            "xiu_count": 0
           },
+          {
+            "device_id": 4340,
+            "device_info": [
+              {
+                "label": "楼层位置",
+                "value": "0"
+              },
+              {
+                "label": "运行方向",
+                "value": "0"
+              },
+              {
+                "label": "是否有人",
+                "value": "0"
+              },
+              {
+                "label": "电梯门开关状态",
+                "value": "0我就是长长我就是长长"
+              },
+              {
+                "label": "电梯状态",
+                "value": "0"
+              },
+              {
+                "label": "冲顶",
+                "value": "0"
+              },
+              {
+                "label": "蹲底",
+                "value": "0"
+              },
+              {
+                "label": "非平层停车",
+                "value": "0"
+              },
+              {
+                "label": "运行中开门",
+                "value": "0"
+              },
+              {
+                "label": "开门走车",
+                "value": "0"
+              },
+              {
+                "label": "超车",
+                "value": "0"
+              },
+              {
+                "label": "平层困人",
+                "value": "0"
+              },
+              {
+                "label": "非平层困人",
+                "value": "0"
+              },
+              {
+                "label": "积水",
+                "value": "0"
+              },
+              {
+                "label": "湿度",
+                "value": "0"
+              },
+              {
+                "label": "温度",
+                "value": "0"
+              },
+              {
+                "label": "湿度",
+                "value": "0"
+              },
+              {
+                "label": "视频",
+                "value": "0"
+              },
+              {
+                "label": "电压",
+                "value": "0"
+              },
+              {
+                "label": "电流",
+                "value": "0"
+              },
+              {
+                "label": "湿度",
+                "value": "0"
+              }
+            ],
+            "device_title": "1号电梯",
+            "state": "0",
+            "xiu_count": 9
+          }*/
         ],
+
+      }
+    },
+    watch:{
+      floorSelectedOptions(newVal){
+        if (newVal.length ===0){
+          this.floor_id = 0
+        } else {
+          this.floor_id = newVal[newVal.length-1];
+        }
       }
     },
     methods:{
+      requestFloorData(){
+        let that = this;
+        let config = {
+        }
+        let headers = {
+          //'Content-Type': 'multipart/form-data'
+        }
+        this.$http.post('pc_ims/elevator/get_floor', config, headers).then(res => {
+          let data0 = res.data;
+          console.log('获取电梯楼层数据', config, res);
+          if (data0.code == 0) {
+            //楼层数据
+            let area_level = data0.data;
+            let dealedFloor = JSON.parse(JSON.stringify(area_level).replace(/title/g,'label').replace(/floor_id/g,'value').replace(/child/g,'children').replace(/\"children\"\:\[\]\,/g,''));
+            this.floorOptions = dealedFloor;
+            this.floorOptions.unshift({
+              label:'全部区域',
+              value:0,
+            });
+          } else {
+            this.$message(data0.msg);
+          }
+        }).catch(err => {
+          console.log(err);
+        })
+      },
+      requestTopData(){
+        let that = this;
+        let config = {
+          floor_id:this.floor_id
+        }
+        let headers = {
+          //'Content-Type': 'multipart/form-data'
+        }
+        this.$http.post('pc_ims/elevator/monitor_up', config, headers).then(res => {
+          let data0 = res.data;
+          console.log('获取实时监控上半层数据', config, res);
+          if (data0.code == 0) {
+            let data = data0.data;
+            this.zong = data.zong;
+            this.not_healthy = data.not_healthy;
+            this.healthy = data.healthy;
+          } else {
+            this.$message(data0.msg);
+          }
+        }).catch(err => {
+          console.log(err);
+        })
+      },
+      requestBottomData(){
+        this.loading = true;
+        let that = this;
+        let config = {
+          floor_id:this.floor_id
+        }
+        let headers = {
+          //'Content-Type': 'multipart/form-data'
+        }
+        this.$http.post('pc_ims/elevator/monitor_low', config, headers).then(res => {
+          let data0 = res.data;
+          console.log('获取实时监控下半层数据', config, res);
+          if (data0.code == 0) {
+            let data = data0.data;
+            this.diantiData = data;
+            this.loading = false;
+          } else {
+            this.loading = false;
+            this.$message(data0.msg);
+          }
+        }).catch(err => {
+          this.loading = false;
+          console.log(err);
+        })
+      },
       floorChange(val){
         console.log(val,this.floorSelectedOptions)
       },
       toHome(){
         this.$router.replace({ path: '/home', params: { isLogin: true} });
       },
+      toWbHistory(){
+        this.$parent.sData.lists.some((item,i)=>{
+          if (item.name == '维保历史'){
+            this.$router.replace({ path: (item.route)});
+            this.$parent.$children[0].activeName=('item'+i);
+          }
+        })
+      },
+      toDataHistory(){
+        this.$parent.sData.lists.some((item,i)=>{
+          if (item.name == '数据监测'){
+            this.$router.replace({ path: (item.route)});
+            this.$parent.$children[0].activeName=('item'+i);
+          }
+        })
+      },
       searchData(){
-        //alert('查')
+        this.requestTopData();
+        this.requestBottomData();
       },
        //展示视频监控弹框
-      showVideo(item){
-        this.$refs.dialog.show();
+      showVideo(device_id){
+        let that = this;
+        let config = {
+          device_id:device_id
+        }
+        let headers = {
+          //'Content-Type': 'multipart/form-data'
+        }
+        this.$http.post('pc_ims/elevator/video', config, headers).then(res => {
+          let data0 = res.data;
+          console.log('获取实时监控视频连接', config, res);
+          if (data0.code == 0) {
+            this.nowVideoUrl = data0.data.url;
+            this.$refs.dialog.show();
+          } else {
+            this.$message(data0.msg);
+          }
+        }).catch(err => {
+          console.log(err);
+        })
       }
     },
     created() {
-
+      this.requestFloorData();
+      this.requestTopData();
+      this.requestBottomData();
     },
     mounted() {
       this.$refs.HpadTop.style.paddingTop = Number(this.$parent.$children[0].$el.children[0].offsetHeight)+30+'px';
@@ -188,7 +450,9 @@
       z-index:100;
       .tRBrnBox {
         margin: auto;
+        height: 100%;
         .el-cascader{
+          height: 100%;
           .vhLineH(32);
           font-size: 0.12rem;
         }
@@ -273,7 +537,10 @@
         }
         width: 0.88rem;
         .el-input {
+          height: 100%;
           background-color: transparent !important;
+          display: flex;
+          align-items: center;
         }
         .el-input--suffix .el-input__inner {
           .vh(24);
@@ -418,6 +685,7 @@
             font-stretch: normal;
             letter-spacing: 0px;
             color: #ffffff;
+            cursor: pointer;
             &:hover{
               background-color: #3a84ee;
             }
@@ -469,37 +737,40 @@
             .vh(105);
             background-color: rgba(0, 0, 0, 0.15);
             border-radius: 4px;
-            .left{
-              width: .79rem;
-              float: left;
-              .vh(105);
-              background-color: rgba(0, 0, 0, 0.15);
-              border-top-left-radius: 4px;
-              border-bottom-left-radius: 4px;
-              .tit{
-                display: flex;
-                width: 100%;
-                height: 25%;
-                justify-content: center;
-                align-items: center;
-              }
+            overflow: auto;
+            table{
+              width: 100%;
+              border-collapse: collapse;
             }
-            .right{
-              .vh(105);
-              float: right;
-              text-align: left;
-              position: relative;
-              width: 1.92rem;
-              padding: 0 0.1rem;
+            table td,th{
+              border: 0;text-align: center;
+            }
+            .part{
+              .tit{
+                font-family: PingFangSC-Light;
+                font-size: 0.14rem;
+                font-weight: normal;
+                font-stretch: normal;
+                line-height: 1.1;
+                letter-spacing: 0px;
+                color: #b5d7ff;
+                width: 0.79rem;
+                display: block;
+                padding: 0 0.05rem;
+                background-color: rgba(0, 0, 0, 0.15);
+                border-top-left-radius: 4px;
+                border-bottom-left-radius: 4px;
+                .vhPT(5);
+                .vhPB(5);
+              }
               .dd{
-                position:relative;
-                width: 100%;
-                height: 25%;
                 display: flex;
+                position:relative;
                 align-items: center;
                 justify-content: space-between;
               }
               .title1{
+                min-width: .4rem;
                 font-family: PingFangSC-Light;
                 font-size: .12rem;
                 font-weight: normal;
@@ -535,6 +806,14 @@
       .errorC2{
         color: #f56c6c !important;
         text-shadow: 4px 4px 2px rgba(245, 108, 108, 0.4);
+      }
+    }
+    .dialog-in{
+      width: 100%;
+      height: 100%;
+      .videoBox{
+        width: 100%;
+        height: 100%;
       }
     }
   }

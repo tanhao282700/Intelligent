@@ -243,7 +243,7 @@
           data: [],
           th: [
             {prop: 'number', label: '编号', wid: 68},
-            {prop: 'info', label: '告警详情', wid: 280},
+            {prop: 'info', label: '告警详情', wid: 260},
             {prop: 'time', label: '告警时间', wid: 200},
             {
               prop: 'level',
@@ -1059,6 +1059,9 @@
         .tableBox {
           .vh(312);
           padding-left: 0.08rem;
+          .el-table__header{
+            background:transparent;
+          }
         }
       }
     }

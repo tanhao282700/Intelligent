@@ -22,10 +22,6 @@
         sData:{
           active:'item0',
           lists:[
-            {id:0,name:'实时监控',route:'/elevator/runTimeMonitor'},
-            {id:1,name:'数据监测',route:'/elevator/dataHistory'},
-            {id:2,name:'维保历史',route:'/elevator/wbHistory'},
-            {id:3,name:'故障管理',route:'/elevator/breakdownManagement'},
           ]
         },
       }
@@ -33,6 +29,25 @@
     methods: {
     },
     created() {
+      if(this.$store.state.sysList[9].role_string.length != 0) {
+        if (this.$store.state.sysList[9].role_string[0] != 0) {
+          this.sData.lists.push({id:0,name:'实时监控',route:'/elevator/runTimeMonitor'})
+        }
+        if (this.$store.state.sysList[9].role_string[1] != 0) {
+          this.sData.lists.push({id:1,name:'数据监测',route:'/elevator/dataHistory'})
+        }
+        if (this.$store.state.sysList[9].role_string[2] != 0) {
+          this.sData.lists.push({id:2,name:'维保历史',route:'/elevator/wbHistory'})
+        }
+        if (this.$store.state.sysList[9].role_string[3] != 0) {
+          this.sData.lists.push({id:3,name:'故障管理',route:'/elevator/breakdownManagement'})
+        }
+      }else {
+        this.sData.lists.push({id:0,name:'实时监控',route:'/elevator/runTimeMonitor'})
+        this.sData.lists.push({id:1,name:'数据监测',route:'/elevator/dataHistory'})
+        this.sData.lists.push({id:2,name:'维保历史',route:'/elevator/wbHistory'})
+        this.sData.lists.push({id:3,name:'故障管理',route:'/elevator/breakdownManagement'})
+      }
     },
     mounted() {
     },

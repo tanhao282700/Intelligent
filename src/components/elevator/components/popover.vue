@@ -1,11 +1,12 @@
 <template>
   <el-popover
     class="self-popover-elevator"
-    popper-class="self-popper"
+    popper-class="dianti-self-popper"
     placement="right-start"
     :disabled="false"
     width="281"
-    trigger="hover">
+    @show="getInfo"
+    trigger="click">
     <slot slot="reference"></slot>
     <el-scrollbar style="height:100%">
       <div v-for="(item,i) in info" class="popover-item" :style="{marginTop:i==0?0:'0.15rem'}" :key="i">
@@ -23,14 +24,52 @@
 
     },
     name: "popover",
-    props: ['info'],
+    props: ['device_id'],
     data () {
       return {
-
+        info:[],
       }
     },
     methods:{
+      requestDeviceInfo(device_id){
+        let that = this;
+        let config = {
+          device_id:device_id
+        }
+        let headers = {
+          //'Content-Type': 'multipart/form-data'
+        }
+        this.$http.post('pc_ims/elevator/device_info', config, headers).then(res => {
+          let data = res.data;
+          console.log('获取电梯设备信息', config, res);
 
+          if (data.code == 0) {
+            let tempArr = [];
+            let data111 = data.data;
+            let content = data111.content;
+            //content = "[{\"设备名称\":\"电梯\"},{\"品牌\":\"凯泉\"},{\"编号\":\"DB466228M\"}]";
+
+            let dataArr = eval(content);
+            dataArr.map((item, i) => {
+              for (var i2 in item) {
+                let obj = {};
+                obj.tit = i2;
+                obj.content = item[i2]
+                tempArr.push(obj)
+              }
+            })
+          this.info = tempArr;
+
+          } else {
+            this.$message(data.message);
+          }
+        }).catch(err=>{
+          this.$message(err);
+        })
+      },
+      getInfo(){
+        this.requestDeviceInfo(this.device_id);
+      }
     },
     created() {
 
@@ -44,9 +83,13 @@
 <style lang="less" type="text/less">
   @import '../../../assets/css/common.css';
   @import '../../../assets/css/comon';
-  .el-scrollbar__wrap {
-    overflow-x: hidden;
+  .dianti-self-popper{
+    .el-scrollbar__wrap {
+      overflow-x: hidden;
+      margin-right: -6px!important;
+    }
   }
+
   .popper__arrow{
     //background-color: #04152c !important;
   }
@@ -72,17 +115,6 @@
   }
   .self-popover-elevator {
     z-index: 999;
-    .imgBox{
-      width: 2.83rem;
-      height: 2.4rem;
-      /*transform: scale(1.5,1.5);*/
-      img{
-        display: block;
-        width: 100%;
-        height: 100%;
-      }
-    }
-
     .popover-btn{
       display: flex;
       flex-direction: column;

@@ -8,7 +8,12 @@
     <div ref="HpadTop" class="tabsDomBox0 h-paddingTop">
       <div class="navCrumbs"><p @click="toHome">首页</p> > 电梯监测系统 > <span>故障管理</span></div>
     </div>
-    <div class="breakdown">
+    <div class="breakdown"
+         v-loading="loading"
+         element-loading-background="rgba(0, 0, 0, 0.5)"
+         element-loading-spinner="el-icon-loading"
+         element-loading-text="拼命加载中"
+    >
       <div class="selectBox">
         <div class="oneLevelBox">
           <div class="tRBrnBox">
@@ -22,7 +27,19 @@
         </div>
         <div class="oneLevelBox">
           <div class="tRBrnBox">
-            <el-select v-model="value" placeholder="状态">
+            <el-select v-model="device_id" placeholder="设备">
+              <el-option
+                v-for="item in deviceOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </div>
+        </div>
+        <div class="oneLevelBox">
+          <div class="tRBrnBox">
+            <el-select v-model="value" placeholder="故障状态">
               <el-option
                 v-for="item in options"
                 :key="item.value"
@@ -34,7 +51,7 @@
         </div>
         <div class="oneLevelBox">
           <div class="tRBrnBox">
-            <el-select v-model="value2" placeholder="状态">
+            <el-select v-model="value2" placeholder="工单进度类型">
               <el-option
                 v-for="item in options2"
                 :key="item.value"
@@ -46,7 +63,7 @@
         </div>
         <div class="oneLevelBox">
           <div class="tRBrnBox">
-            <el-select v-model="value3" placeholder="状态">
+            <el-select v-model="value3" placeholder="信息等级类型">
               <el-option
                 v-for="item in options3"
                 :key="item.value"
@@ -158,15 +175,90 @@
     },
     data () {
       return {
+        loading:false,
+        device_id:'',
+        deviceOptions:[],
+        floor_id:0,
         value:'',
-        options:[],
+        options:[
+          {
+            label:'全部状态',
+            value:''
+          },
+          {
+            label:'关闭',
+            value:'0'
+          },
+          {
+            label:'开启',
+            value:'1'
+          },
+          {
+            label:'故障',
+            value:'2'
+          },
+          {
+            label:'疲劳',
+            value:'3'
+          },
+        ],
         value2:'',
-        options2:[],
+        options2:[
+          {
+            label:'全部工单进度',
+            value:''
+          },
+          {
+            label:'未接单',
+            value:'0'
+          },
+          {
+            label:'接单',
+            value:'1'
+          },
+          {
+            label:'申请延期',
+            value:'2'
+          },
+          {
+            label:'延期申请通过',
+            value:'3'
+          },
+          {
+            label:'完成',
+            value:'4'
+          },
+          {
+            label:'申请退单',
+            value:'5'
+          },
+          {
+            label:'退单申请通过',
+            value:'6'
+          },
+        ],
         value3:'',
-        options3:[],
+        options3:[
+          {
+            label:'全部信息等级',
+            value:''
+          },
+          {
+            label:'普通',
+            value:'0'
+          },
+          {
+            label:'预警',
+            value:'1'
+          },
+          {
+            label:'告警',
+            value:'2'
+          },
+        ],
         floorSelectedOptions:[],
         floorOptions: [],
-        dateVal:'',
+        dateVal:null,
 
         //表格
         tableHei:0,
@@ -180,51 +272,191 @@
         ],
 
         tableData: [
-          {num:'1',time:'2017-07-07',position:'位置位置',gzType:'故障故障',infoLevel:'告警',gzState:'正常',workProgress:'处理中',gzTime:'未恢复'},
+          /*{num:'1',time:'2017-07-07',position:'位置位置',gzType:'故障故障',infoLevel:'告警',gzState:'正常',workProgress:'处理中',gzTime:'未恢复'},
           {num:'1',time:'2017-07-07',position:'位置位置',gzType:'故障故障',infoLevel:'预警',gzState:'正常',workProgress:'已完成',gzTime:'-'},
-          {num:'1',time:'2017-07-07',position:'位置位置',gzType:'故障故障',infoLevel:'报警登',gzState:'故障中',workProgress:'jindu',gzTime:'10分39秒'},
+          {num:'1',time:'2017-07-07',position:'位置位置',gzType:'故障故障',infoLevel:'报警登',gzState:'故障中',workProgress:'jindu',gzTime:'10分39秒'},*/
         ]
 
 
       }
     },
+    watch:{
+      floorSelectedOptions(newVal){
+        if (newVal.length ===0){
+          this.floor_id = 0;
+          this.requestDeviceData();
+        } else {
+          this.floor_id = newVal[newVal.length-1];
+          this.requestDeviceData();
+        }
+      },
+    },
     methods:{
+      requestFloorData(){
+        let that = this;
+        let config = {
+        }
+        let headers = {
+          //'Content-Type': 'multipart/form-data'
+        }
+        this.$http.post('pc_ims/elevator/get_floor', config, headers).then(res => {
+          let data0 = res.data;
+          console.log('获取电梯楼层数据', config, res);
+          if (data0.code == 0) {
+            //楼层数据
+            let area_level = data0.data;
+            let dealedFloor = JSON.parse(JSON.stringify(area_level).replace(/title/g,'label').replace(/floor_id/g,'value').replace(/child/g,'children').replace(/\"children\"\:\[\]\,/g,''));
+            this.floorOptions = dealedFloor;
+            this.floor_id = this.floorOptions[0].value;
+            this.floorSelectedOptions.push(this.floorOptions[0].value);
+          } else {
+            this.$message(data0.msg);
+          }
+        }).catch(err => {
+          console.log(err);
+        })
+      },
+      requestDeviceData(){
+        this.device_id = '';
+        let that = this;
+        let config = {
+          floor_id:this.floor_id
+        }
+        let headers = {
+          //'Content-Type': 'multipart/form-data'
+        }
+        this.$http.post('pc_ims/elevator/get_device', config, headers).then(res => {
+          let data0 = res.data;
+          console.log('获取相应楼层设备列表', config, res);
+          if (data0.code == 0) {
+            let deviceData = data0.data;
+            let tempArr = [];
+            deviceData.map((item,i)=>{
+              if (i===0){
+                this.device_id = item.device_id;
+                this.requestTableData();
+              }
+              let obj = {};
+              obj.label = item.device_title;
+              obj.value = item.device_id;
+              tempArr.push(obj);
+            })
+            this.deviceOptions = tempArr;
+          } else {
+            this.$message(data0.msg);
+          }
+        }).catch(err => {
+          console.log(err);
+        })
+      },
+      requestTableData(page=1){
+        if (this.device_id == ''){
+          this.$message('请先选择设备！');
+          return;
+        }
+        this.loading = true;
+        let that = this;
+        let config = {};
+        if (this.dateVal == null){
+          config = {
+            floor_id:this.floor_id,
+            device_id:this.device_id,
+            failure_state:this.value,
+            plan:this.value2,
+            alarm_level:this.value3,
+            page:page,
+            num:20,
+          }
+        } else {
+          config = {
+            floor_id:this.floor_id,
+            device_id:this.device_id,
+            failure_state:this.value,
+            plan:this.value2,
+            alarm_level:this.value3,
+            start_time:this.dateVal[0],
+            end_time:this.dateVal[1],
+            page:page,
+            num:20,
+          }
+        }
+        let headers = {
+          //'Content-Type': 'multipart/form-data'
+        }
+        this.$http.post('pc_ims/elevator/fault_management', config, headers).then(res => {
+          let data0 = res.data;
+          console.log('获取故障管理数据表格', config, res);
+          if (data0.code == 0) {
+            this.paging = data0.count;
+            let tableData = data0.data;
+            let tempArr = [];
+            /*tableData = [
+              {
+                "alarm_level": "1",
+                "floor": "客梯",
+                "job_id": "0",
+                "state": "0",
+                "time": "2019-01-02 16:39:45",
+                "time_limit": "",
+                "type": "1",
+                'value': '测试数据！'
+              },
+              {num:'1',time:'2017-07-07',position:'位置位置',gzType:'故障故障',infoLevel:'告警',gzState:'正常',workProgress:'处理中',gzTime:'未恢复'},
+          ];*/
+            tableData.map((item,i)=>{
+              let obj = {};
+              obj.num = ((i+1)+(this.pagenumber-1)*20)<10?('0'+((i+1)+(this.pagenumber-1)*20)):(''+((i+1)+(this.pagenumber-1)*20));
+              obj.time = item.time;
+              obj.position = item.floor;
+              obj.gzType = item.value;
+              obj.infoLevel = (item.alarm_level==0?'普通':item.alarm_level==1?'预警':item.alarm_level==2?'告警':'未知');
+              obj.gzState = (item.type==0?'关闭':item.type==1?'开启':item.type==2?'故障':item.type==3?'疲劳':'未知');
+              obj.workProgress = (item.state==0?'未接单':item.state==1?'接单':item.state==2?'申请延期':item.state==3?'延期申请通过':item.state==4?'完成':item.state==5?'申请退单':item.state==6?'退单申请通过':'未知');
+              obj.gzTime = item.time_limit;
+              tempArr.push(obj);
+            })
+            this.tableData = tempArr;
+            this.loading = false;
+          } else {
+            this.loading = false;
+            this.$message(data0.msg);
+          }
+        }).catch(err => {
+          this.loading = false;
+          console.log(err);
+        })
+      },
       floorChange(val){
         console.log(val,this.floorSelectedOptions)
       },
       toHome(){
         this.$router.replace({ path: '/home', params: { isLogin: true} });
       },
-      //获取历史记录请求
-      getHistory(num=1,date='',state='',type='',cont=''){
-
-      },
 
       //选择页码查询
       changePage(val){
-
+        this.pagenumber = val;
+        this.requestTableData(val);
       },
 
       //选择查询条件后查询
       searchData(){
-        //alert(this.infoLevel.value)
+        this.pagenumber = 1;
+        this.requestTableData();
       },
 
       exportExcel(){
-
+        if (this.dateVal == null) {
+          window.location.href = 'https://tesing.china-tillage.com/pc_ims/elevator/download/fault_management?floor_id=' + this.floor_id + '&device_id=' + this.device_id + '&failure_state=' + this.value + '&alarm_level=' + this.value3 + '&plan=' + this.value2+ '&project_id=' + this.$store.state.projectId;
+        }else {
+          window.location.href = 'https://tesing.china-tillage.com/pc_ims/elevator/download/fault_management?floor_id=' + this.floor_id + '&device_id=' + this.device_id + '&failure_state=' + this.value + '&alarm_level=' + this.value3 + '&plan=' + this.value2+'&start_time='+this.dateVal[0]+'&end_time='+this.dateVal[1]+ '&project_id=' + this.$store.state.projectId;
+        }
       },
-
-
-      getHisExcel(num=1,date='',state='',type='',cont=''){
-
-      }
-
-
 
     },
     created() {
       this.tableHei = utils.hei(455);
-      this.getHistory();
+      this.requestFloorData();
     },
     mounted() {
       this.$refs.HpadTop.style.paddingTop = Number(this.$parent.$children[0].$el.children[0].offsetHeight)+30+'px';
@@ -275,8 +507,8 @@
           line-height: 1;
           letter-spacing: 0px;
           color: #ffffff;
-          background-color: transparent;
-          border-bottom: solid 1px #1989fa;
+          background-color: transparent!important;
+          border-bottom: solid 1px #1989fa!important;
         }
         .el-range-editor.el-input__inner{
           padding: 0;
@@ -367,6 +599,7 @@
         display: flex;
         align-items: center;
         .el-cascader{
+          height: 100%;
           .vhLineH(32);
           font-size: 0.12rem;
         }
@@ -451,6 +684,7 @@
           right: 0;
         }
         .el-input {
+          height: 100%;
           background-color: transparent !important;
           display: flex;
           align-items: center;
@@ -551,6 +785,9 @@
     .self-table{
       width: 100%;
       padding: 0 0.2rem;
+      .gutter{
+        display: block!important;
+      }
       .el-table th.is-leaf{
         border-bottom-color: rgba(181, 215, 255, 0.25)!important;
       }

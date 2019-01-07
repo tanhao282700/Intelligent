@@ -459,12 +459,12 @@ export default {
     getData(){  //格式  2018-08-11   开始时间和结束时间 不传时 为当前年数据
       this.floorOptions = [];//初始化楼层
       if ((this.startMonthVal+this.startDayVal).length !==0) {
-        this.time_start = this.nowYear + this.startMonthVal + this.startDayVal;
+        this.time_start = this.startMonthVal + this.startDayVal;
       } else {
         this.time_start = '';
       }
       if ((this.endMonthVal+this.endDayVal).length !==0) {
-        this.time_end = this.nowYear+this.endMonthVal+this.endDayVal;
+        this.time_end = this.endMonthVal+this.endDayVal;
       } else {
         this.time_end = '';
       }

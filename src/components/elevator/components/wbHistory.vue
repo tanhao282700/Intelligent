@@ -8,7 +8,12 @@
     <div ref="HpadTop" class="tabsDomBox0 h-paddingTop">
       <div class="navCrumbs"><p @click="toHome">首页</p> > 电梯监测系统 > <span>维保历史</span></div>
     </div>
-    <div class="wbHistory">
+    <div class="wbHistory"
+         v-loading="loading"
+         element-loading-background="rgba(0, 0, 0, 0.5)"
+         element-loading-spinner="el-icon-loading"
+         element-loading-text="拼命加载中"
+    >
       <div class="selectBox">
         <div class="oneLevelBox">
           <div class="tRBrnBox">
@@ -22,9 +27,21 @@
         </div>
         <div class="oneLevelBox">
           <div class="tRBrnBox">
-            <el-select v-model="wb.value" placeholder="维保状态">
+            <el-select v-model="device_id" placeholder="设备">
               <el-option
-                v-for="item in wb.options"
+                v-for="item in deviceOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </div>
+        </div>
+        <div class="oneLevelBox">
+          <div class="tRBrnBox">
+            <el-select v-model="wbValue" placeholder="维保状态">
+              <el-option
+                v-for="item in wbOptions"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value">
@@ -35,13 +52,12 @@
         <div class="searchBox">
           <div class="dateBox">
             <el-date-picker
-              ref='date'
+              value-format="yyyy-MM-dd"
               v-model="dateVal"
               type="daterange"
               start-placeholder="开始日期"
               end-placeholder="结束日期"
               range-separator="  -  "
-              :default-time="['00:00:00', '23:59:59']"
             >
             </el-date-picker>
           </div>
@@ -98,22 +114,28 @@
     },
     data () {
       return {
+        loading:false,
+        device_id:'',
+        deviceOptions:[],
+        floor_id:0,
         floorSelectedOptions:[],
         floorOptions: [],
-        dateVal:'',
-        wb:{
-          options: [{
-             value: '',
-             label: '维保状态'
-           },{
-             value: '1',
-             label: '正常'
-           }, {
-             value: '2',
-             label: '异常'
-           }],
-           value: '',
-        },
+        dateVal:null,
+        wbValue:'',
+        wbOptions:[
+          {
+            label:'全部',
+            value:'',
+          },
+          {
+            label:'维修',
+            value:'0',
+          },
+          {
+            label:'保养',
+            value:'1',
+          },
+        ],
 
         //表格
         tableHei:0,
@@ -124,7 +146,7 @@
           {prop:'time_start',label:'开始时间',wid:210},
           {prop:'time_end',label:'结束时间',wid:210},
           {prop:'wbCon',label:'维保内容',wid:210},
-          {prop:'wePerson',label:'维保人',wid:210},
+          {prop:'wbPerson',label:'维保人',wid:210},
           {prop:'tel',label:'联系电话',wid:210},
           {prop:'wbType',label:'维保类型'},
         ],
@@ -134,46 +156,219 @@
 
       }
     },
+    watch:{
+      floorSelectedOptions(newVal){
+        if (newVal.length ===0){
+          this.floor_id = 0;
+          this.requestDeviceData();
+        } else {
+          this.floor_id = newVal[newVal.length-1];
+          this.requestDeviceData();
+        }
+      },
+    },
     methods:{
+      requestFloorData(){
+        let that = this;
+        let config = {
+        }
+        let headers = {
+          //'Content-Type': 'multipart/form-data'
+        }
+        this.$http.post('pc_ims/elevator/get_floor', config, headers).then(res => {
+          let data0 = res.data;
+          console.log('获取电梯楼层数据', config, res);
+          if (data0.code == 0) {
+            //楼层数据
+            let area_level = data0.data;
+            let dealedFloor = JSON.parse(JSON.stringify(area_level).replace(/title/g,'label').replace(/floor_id/g,'value').replace(/child/g,'children').replace(/\"children\"\:\[\]\,/g,''));
+            this.floorOptions = dealedFloor;
+            this.floor_id = this.floorOptions[0].value;
+            this.floorSelectedOptions.push(this.floorOptions[0].value);
+          } else {
+            this.$message(data0.msg);
+          }
+        }).catch(err => {
+          console.log(err);
+        })
+      },
+      requestDeviceData(){
+        this.device_id = '';
+        let that = this;
+        let config = {
+          floor_id:this.floor_id
+        }
+        let headers = {
+          //'Content-Type': 'multipart/form-data'
+        }
+        this.$http.post('pc_ims/elevator/get_device', config, headers).then(res => {
+          let data0 = res.data;
+          console.log('获取相应楼层设备列表', config, res);
+          if (data0.code == 0) {
+            let deviceData = data0.data;
+            let tempArr = [];
+            deviceData.map((item,i)=>{
+              if (i===0){
+                this.device_id = item.device_id;
+                this.requestTableData();
+              }
+              let obj = {};
+              obj.label = item.device_title;
+              obj.value = item.device_id;
+              tempArr.push(obj);
+            })
+            this.deviceOptions = tempArr;
+          } else {
+            this.$message(data0.msg);
+          }
+        }).catch(err => {
+          console.log(err);
+        })
+      },
+      requestTableData(page=1){
+        if (this.device_id == ''){
+          this.$message('请先选择设备！');
+          return;
+        }
+        this.loading = true;
+        let that = this;
+        let config = {};
+        if (this.dateVal == null){
+          config = {
+            floor_id:this.floor_id,
+            device_id:this.device_id,
+            page:page,
+            num:20,
+            type:this.wbType,
+          }
+        } else {
+          config = {
+            floor_id:this.floor_id,
+            device_id:this.device_id,
+            start_time:this.dateVal[0],
+            end_time:this.dateVal[1],
+            page:page,
+            num:20,
+            type:this.wbType,
+          }
+        }
+        let headers = {
+          //'Content-Type': 'multipart/form-data'
+        }
+        this.$http.post('pc_ims/elevator/maintenance_historyt', config, headers).then(res => {
+          let data0 = res.data;
+          console.log('获取维保历史数据表格', config, res);
+          if (data0.code == 0) {
+            this.paging = data0.count;
+            let tableData = data0.data;
+            let tempArr = [];
+            /*tableData = [
+              {
+                "conten": "滋溜一下",
+                "end_time": "2018-09-25",
+                "name": "百事",
+                "phone": "13211101114",
+                "start_time": "2018-09-25",
+                "type": 1
+              },
+              {
+                "conten": "维保内容描述。",
+                "end_time": "2018-09-27",
+                "name": "维保人A",
+                "phone": "13211111115",
+                "start_time": "2018-09-27",
+                "type": 1
+              },
+              {
+                "conten": "不可秒数",
+                "end_time": "2018-09-27",
+                "name": "维修人B",
+                "phone": "13211111114",
+                "start_time": "2018-09-27",
+                "type": 0
+              },
+              {
+                "conten": "修不好",
+                "end_time": "2018-09-27",
+                "name": "shishi",
+                "phone": "13211101115",
+                "start_time": "2018-09-27",
+                "type": 1
+              },
+              {
+                "conten": "换新的",
+                "end_time": "2018-09-27",
+                "name": "米啊",
+                "phone": "13211111114",
+                "start_time": "2018-09-27",
+                "type": 0
+              },
+              {
+                "conten": "嗯就这样",
+                "end_time": "2018-09-27",
+                "name": "三三",
+                "phone": "13211101114",
+                "start_time": "2018-09-27",
+                "type": 0
+              }
+            ];*/
+            tableData.map((item,i)=>{
+              let obj = {};
+              obj.num = ((i+1)+(this.pagenumber-1)*20)<10?('0'+((i+1)+(this.pagenumber-1)*20)):(''+((i+1)+(this.pagenumber-1)*20));
+              obj.time_start = item.start_time;
+              obj.time_end = item.end_time;
+              obj.wbCon = item.conten;
+              obj.wbPerson = item.name;
+              obj.tel = item.phone;
+              obj.wbType = (item.type == 0?'维修':item.type == 1?'保养':'未知');
+              tempArr.push(obj);
+            })
+            this.tableData = tempArr;
+            this.loading = false;
+
+          } else {
+            this.loading = false;
+            this.$message(data0.msg);
+          }
+        }).catch(err => {
+          this.loading = false;
+          console.log(err);
+        })
+      },
       floorChange(val){
         console.log(val,this.floorSelectedOptions)
       },
       searchData(){
-
+        this.pagenumber = 1;
+        this.requestTableData();
       },
       toHome(){
         this.$router.replace({ path: '/home', params: { isLogin: true} });
       },
-      //获取历史记录请求
-      getHistory(num=1,date='',state='',type='',cont=''){
 
-      },
 
       //选择页码查询
       changePage(val){
-
+        this.pagenumber = val;
+        this.requestTableData(val);
       },
 
-      //选择查询条件后查询
-      search(){
-
-      },
 
       exportExcel(){
-
+        if (this.dateVal == null) {
+          window.location.href = 'https://tesing.china-tillage.com/pc_ims/elevator/download/maintenance_historyt?floor_id=' + this.floor_id + '&device_id=' + this.device_id+ '&project_id=' + this.$store.state.projectId;
+        }else {
+          window.location.href = 'https://tesing.china-tillage.com/pc_ims/elevator/download/maintenance_historyt?floor_id=' + this.floor_id + '&device_id=' + this.device_id + '&start_time='+this.dateVal[0]+'&end_time='+this.dateVal[1]+ '&project_id=' + this.$store.state.projectId;
+        }
       },
 
-
-      getHisExcel(num=1,date='',state='',type='',cont=''){
-
-      }
 
 
 
     },
     created() {
       this.tableHei = utils.hei(455);
-      this.getHistory();
+      this.requestFloorData();
     },
     mounted() {
       this.$refs.HpadTop.style.paddingTop = Number(this.$parent.$children[0].$el.children[0].offsetHeight)+30+'px';
@@ -222,8 +417,8 @@
           line-height: 1;
           letter-spacing: 0px;
           color: #ffffff;
-          background-color: transparent;
-          border-bottom: solid 1px #1989fa;
+          background-color: transparent!important;
+          border-bottom: solid 1px #1989fa!important;
         }
         .el-range-editor.el-input__inner{
           padding: 0;
@@ -314,6 +509,7 @@
         display: flex;
         align-items: center;
         .el-cascader{
+          height: 100%;
           .vhLineH(32);
           font-size: 0.12rem;
         }
@@ -348,7 +544,7 @@
           border-color:#008aff transparent transparent;/*黄 透明 透明 */
           position:absolute;
           top:50%-4px;
-          right:0.1rem;
+          right:0;
           &::before{
             content: "";
             /*pointer-events: none;
@@ -398,6 +594,7 @@
           right: 0;
         }
         .el-input {
+          height: 100%;
           background-color: transparent !important;
           display: flex;
           align-items: center;
@@ -498,6 +695,9 @@
     .self-table{
       width: 100%;
       padding: 0 0.2rem;
+      .gutter{
+        display: block!important;
+      }
       .el-table th.is-leaf{
         border-bottom-color: rgba(181, 215, 255, 0.25)!important;
       }

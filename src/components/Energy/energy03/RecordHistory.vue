@@ -338,7 +338,15 @@
         this.currentType = type
         let curDate = new Date();
         var preDate = new Date(curDate.getTime() - 24*60*60*1000); //前一天
-        this.areaForm.start_date = this.sysForm.start_date = preDate.getFullYear().toString()+(preDate.getMonth()+1).toString()+preDate.getDate()
+        let startMon = preDate.getMonth()+1
+        if(startMon<10){
+          startMon = '0'+startMon
+        }
+        let startDay = preDate.getDate()
+        if(startDay<10){
+          startDay = '0'+startDay
+        }
+        this.areaForm.start_date = this.sysForm.start_date = preDate.getFullYear().toString()+startMon+startDay
         this.areaForm.end_date = this.sysForm.end_date = this.areaForm.start_date
         this.timeModel = [this.areaForm.start_date,this.areaForm.end_date]
         this.initAreaData(1)
@@ -350,7 +358,15 @@
       this.areaForm.project_id = this.$store.state.projectId;
       let curDate = new Date();
       var preDate = new Date(curDate.getTime() - 24*60*60*1000); //前一天
-      this.areaForm.start_date = preDate.getFullYear().toString()+(preDate.getMonth()+1).toString()+preDate.getDate()
+      let startMon = preDate.getMonth()+1
+      if(startMon<10){
+        startMon = '0'+startMon
+      }
+      let startDay = preDate.getDate()
+      if(startDay<10){
+        startDay = '0'+startDay
+      }
+      this.areaForm.start_date = preDate.getFullYear().toString()+startMon+startDay
       this.areaForm.end_date = this.areaForm.start_date
       this.sysForm.project_id = this.$store.state.projectId;
       this.sysForm.sys_menu_id = this.$store.state.sysList[2].sys_menu_id;
