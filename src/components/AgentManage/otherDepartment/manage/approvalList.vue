@@ -403,6 +403,8 @@
           res = '未接单';
         }else if(state==10){
           res = '待审核';
+        }else if(state==4){
+          res = '已完成';
         }else if(state==11){
           res = '已同意';
         }else if(state==15){

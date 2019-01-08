@@ -30,7 +30,7 @@
                 <el-menu-item v-if="userRouterInfo[9]" index="/elevator"><span class="textPL">电梯监测系统</span></el-menu-item>
               </el-menu-item-group>
             </el-submenu>
-            <el-submenu index="2" v-if="userRouterInfo[2]||userRouterInfo[17]">
+            <el-submenu index="2" v-if="userRouterInfo[2]||userRouterInfo[17]||userRouterInfo[18]">
               <template slot="title">
                 <i class="el-icon-location noLog OperationManagement"></i>
                 <span class="textPL">运营管理</span>

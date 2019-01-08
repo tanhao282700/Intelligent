@@ -2,7 +2,7 @@
     步骤条下的详细信息
 -->
 <template>
-    <div class="routingTask">    
+    <div class="routingTask">
       <ul v-if="newData.desc && newData.desc.length>0">
         <li class="job_det" :span="Math.floor(24/newData.desc.length)" v-for="(item,index) in newData.desc" :key="index">
           <div class="taskDtl">
@@ -10,7 +10,7 @@
               <div class="taskCont">{{item.value}}</div>
           </div>
         </li>
-      </ul>  
+      </ul>
       <div style="clear:both"></div>
       <div v-if="backExcu2">
         <div class="contLabel" v-if="backExcu2 && newData.localDesc">{{newData.localDesc.label}}</div>
@@ -23,7 +23,7 @@
           placeholder="请输入内容"
           v-model="newData.localDesc.value">
         </el-input>
-      </div> 
+      </div>
       <el-row v-if="sendInfo">
         <el-col :span="12" v-for="(item,index) in newData.sendInfos" :key="index">
           <div class="taskDtl" >
@@ -33,7 +33,7 @@
             </el-row>
           </div>
         </el-col>
-      </el-row> 
+      </el-row>
       <div v-if="backExcu && newData.localDesc2">
         <div class="contLabel" v-text="backExcu?newData.localDesc2.label:''"></div>
         <el-input
@@ -140,7 +140,7 @@
           }
       },
       create(){
-        
+
       },
       mounted() {
         this.newData = this.data;
@@ -163,7 +163,7 @@
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="less" scoped="" type="text/less"> 
+<style lang="less" scoped="" type="text/less">
 @import '../../../assets/css/comon.less';
 .vw(@val){
   width:@val*100/1366vw;
@@ -265,7 +265,7 @@
       img{
         width:0.9rem;
         height:0.9rem;
-        margin:0.22rem;
+        margin:0 0.22rem;
       }
     }
   }

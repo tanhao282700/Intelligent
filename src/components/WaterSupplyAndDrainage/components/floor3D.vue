@@ -136,9 +136,9 @@
     methods:{
       chooseSysId(type){
         if (type === 1) {
-          this.getDetailData(this.$store.state.sysList[6].son_list[0].self_id)
+          this.getDetailData((this.$store.state.sysList[6].son_list[0].self_id==7?this.$store.state.sysList[6].son_list[0].sys_menu_id:this.$store.state.sysList[6].son_list[1].sys_menu_id))
         } else if (type === 2) {
-          this.getDetailData(this.$store.state.sysList[6].son_list[1].self_id)
+          this.getDetailData((this.$store.state.sysList[6].son_list[0].self_id==8?this.$store.state.sysList[6].son_list[0].sys_menu_id:this.$store.state.sysList[6].son_list[1].sys_menu_id))
         }
       },
       toHome(){
@@ -231,8 +231,13 @@
             this.deviceNum = Number(data.data.device_count);
             this.devInnormalNum = Number(data.data.device_yc_count);
 
-            this.lists = data.data.sysdevice_list[0].list;
-            this.lists2 = data.data.sysdevice_list[1].list;
+            if (data.data.sysdevice_list[0].title=='给水系统'){
+              this.lists = data.data.sysdevice_list[0].list;
+              this.lists2 = data.data.sysdevice_list[1].list;
+            } else {
+              this.lists = data.data.sysdevice_list[1].list;
+              this.lists2 = data.data.sysdevice_list[0].list;
+            }
 
             this.warnInfoLists = data.data.device_yc_info;
           }else{

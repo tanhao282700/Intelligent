@@ -69,7 +69,7 @@
       getDeviceLists(){
         let that = this;
         let config = {
-          'sys_menu_id':this.$store.state.sysList[6].son_list[0].sys_menu_id,
+          'sys_menu_id':(this.$store.state.sysList[6].son_list[0].self_id==7?this.$store.state.sysList[6].son_list[0].sys_menu_id:this.$store.state.sysList[6].son_list[1].sys_menu_id),
           'project_id':this.$store.state.projectId,
           'floor_id':48,
           'self_id':1263
@@ -93,7 +93,7 @@
       getWarnInfoLists(){
         let that = this;
         let config = {
-          'sys_menu_id':this.$store.state.sysList[6].son_list[0].sys_menu_id,
+          'sys_menu_id':(this.$store.state.sysList[6].son_list[0].self_id==7?this.$store.state.sysList[6].son_list[0].sys_menu_id:this.$store.state.sysList[6].son_list[1].sys_menu_id),
           'floor_id':48,
           'self_id':1263,
           'device_id':''
