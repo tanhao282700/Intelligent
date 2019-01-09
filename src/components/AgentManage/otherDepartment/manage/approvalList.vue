@@ -299,7 +299,7 @@
       },
       tableInfos2Show(item){
         this.$refs.tableInfos2.show();
-        this.getDetailData(item.id,item.now_state)
+        this.getDetailData(item.id,item.now_state);
       },
       getDetailData(id,state){
         this.$http.post('/app_ims/admin/job_info',{
@@ -341,11 +341,12 @@
               k.label = k.info;
               k.time = k.addtime;
             })
-            console.log(job_list)
+
             this.infoItem.job_list = job_list;
 
-            this.infoItem.pic1 = res.data.data.pic1
-            this.infoItem.pic2 = res.data.data.pic2
+            this.infoItem.pic1 = res.data.data.pic1;
+            this.infoItem.pic2 = res.data.data.pic2;
+
           }else{
             this.$message({
               type:'error',
@@ -405,6 +406,7 @@
           res = '待审核';
         }else if(state==4){
           res = '已完成';
+          $(".infoBoxs").addClass("completed");
         }else if(state==11){
           res = '已同意';
         }else if(state==15){

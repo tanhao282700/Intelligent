@@ -231,7 +231,7 @@ export default {
     //     this.sysId= id;
     // },
     showInfoCir(id){
-        let obj = null;
+        /*let obj = null;
          switch(id){
             case 1:
                 obj={id:0,val:[],tit:'',util:'m³',img:require('../../../../assets/img/circle/greenBox.png')};
@@ -242,7 +242,8 @@ export default {
             case 2:
             obj={id:0,val:[],tit:'',util:'m³',img:require('../../../../assets/img/circle/orangeBox.png')};
             break;
-        }
+        }*/
+        let imgArrSel = [require('../../../../assets/img/circle/blueBox.png'),require('../../../../assets/img/circle/greenBox.png'),require('../../../../assets/img/circle/orangeBox.png')];
         let attrs = [];
         let data = {
           sys_menu_id:this.$store.state.sysList[18].sys_menu_id,
@@ -307,9 +308,20 @@ export default {
           if(lens>0){
             this.$refs.dialog.show();
             for(let i =0 ;i<lens;i++){
-              let obj0 = obj;
+              //console.log(data2[i].device)
+              let obj = {};
               obj.id = i;
               obj.tit = data2[i].device;
+              if (id ==0){
+                obj.img = imgArrSel[0];
+                obj.util = 'kw/h';
+              } else if (id == 1) {
+                obj.img = imgArrSel[1];
+                obj.util = 'm³';
+              } else if (id == 2) {
+                obj.img = imgArrSel[2];
+                obj.util = 'm³';
+              }
               let tempVal=0;
               data2[i].data.some((item0,i0)=>{
                 if (item0.title == 'read'){
@@ -318,9 +330,10 @@ export default {
                 }
               })
               obj.val = this.getAttrs(tempVal);
-              attrs.push(obj0);
+              attrs.push(obj);
             }
             this.details =attrs;
+            //console.log(attrs)
           }else{
             this.$message('设备为空');
           }

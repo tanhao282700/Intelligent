@@ -400,12 +400,17 @@
         let res = '';
         if(state==0){
           res = '未接单';
-        }else if(state==9){
-          res = '审批中';
+        }else if(state==10){
+          res = '待审核';
         }else if(state==4){
           res = '已完成';
+          $(".infoBoxs").addClass("completed");
+        }else if(state==11){
+          res = '已同意';
         }else if(state==15){
-          res = "审批驳回";
+          res = "已驳回";
+        }else if(state==1){
+          res = "已接单";
         }else{
           res = '处理中'
         }

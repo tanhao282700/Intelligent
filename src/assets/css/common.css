@@ -8,6 +8,10 @@
   background-size:110% 110%;
   position: relative;
 }
+html{
+  background:url('../../assets/img/common/componentCommonBg.jpg') no-repeat center;
+  background-size: cover;
+}
 
 /* 面包屑通用样式 */
 .el-breadcrumb{
