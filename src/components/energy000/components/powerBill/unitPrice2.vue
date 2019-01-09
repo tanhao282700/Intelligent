@@ -212,8 +212,10 @@
               this.initQuery()
               this.listChange = []
               this.bubbleTipShow(res.data.data.result_data.handle_price_record[0]);
+              //console.log('我走到a')
             } else {
               this.bubbleTipShow(res.data.message);
+              //console.log('我走到b')
             }
           })
         }
@@ -227,6 +229,7 @@
           query_price: true
         }).then((res) => {
           if (res.data.code == 0) {
+            //console.log(res)
             this.data2 = res.data.data.area_level
             for (let i = 0; i < res.data.data.result_data.price_set_record.length; i++) {
               res.data.data.result_data.price_set_record[i].dateRange = [res.data.data.result_data.price_set_record[i].start, res.data.data.result_data.price_set_record[i].end]
@@ -295,6 +298,7 @@
               }
             } else {
               this.bubbleTipShow(res.data.message);
+              //console.log('我走到c')
             }
           })
         }

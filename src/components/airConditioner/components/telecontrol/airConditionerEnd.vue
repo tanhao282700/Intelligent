@@ -562,8 +562,8 @@
             }else {
               //alert('你废了哦？')
             }
-            //这里请求后台获得设备具体数据，又发回去
-            this.postDeviceData(this.deviceStates);
+            //这里请求后台获得设备具体数据，又发回去  re:交给监听了
+            // this.postDeviceData(this.deviceStates);
             break;
           case 'reDeviceClick':
             //console.log(data.params.clickObjName);
@@ -1162,6 +1162,12 @@
 // 在外部vue的window上添加postMessage的监听，并且绑定处理函数handleMessage
       window.addEventListener('message', this.handleMessage)
       this.iframeWin2 = this.$refs.iframe2.contentWindow
+    },
+    watch:{
+      deviceStates(){
+        //这里请求后台获得设备具体数据，又发回去
+        this.postDeviceData(this.deviceStates);
+      }
     },
     destroyed(){
       window.removeEventListener('message',this.handleMessage,false);

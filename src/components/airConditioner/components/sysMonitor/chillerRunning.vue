@@ -24,7 +24,7 @@
       </div>
       <div class="exportBox">
         <a
-          :href="'https://tesing.china-tillage.com/hvac_pc/pc/water/device/excel?device_id='+btnActiveId+'&project_id='+$store.state.projectId+(dateVal.length !==0 ?('&time_start='+dateVal[0]+' 00:00:00'+'&time_end='+dateVal[1]+' 23:59:59'):'')"
+          :href="'https://tesing.china-tillage.com/hvac_pc/pc/water/device/excel?device_id='+btnActiveId+'&project_id='+$store.state.projectId+(dateVal !=null ?('&time_start='+dateVal[0]+' 00:00:00'+'&time_end='+dateVal[1]+' 23:59:59'):'')"
           type="button" class="self-button">
           <span class="icon-export"></span>
           <span>导出</span>
@@ -157,7 +157,7 @@
           {id:2,tit:'二号冷水机组'},
           {id:3,tit:'机房主管运行情况'},*/
         ],
-        dateVal:[],
+        dateVal:null,
         floor_id:undefined,
 
 
@@ -224,7 +224,7 @@
 
             this.devTitLists = arr;
             this.btnActiveId = arr[0].id;
-            this.dateVal = [];
+            this.dateVal = null;
             this.getChillerContent(arr[0].id,1,20);
 
           } else {
@@ -234,51 +234,14 @@
         }).catch(err=>{
           this.$message(err);
         })
-        /*let obj = {
-          sys_menu_id:sysID,
-          floor_id:floor_id
-        };
-        utils.post('airConditioner/water/title',obj).then(res=>{
-          console.log('冷水机组的title数据',obj,res);
-          if (res.code==0){
-            let arr = [];
-            let data = res.data;
-            data.map((item, i) => {
-              let obj = {};
-              obj.id = item.id;
-              obj.tit = item.title;
-              arr.push(obj);
-            });
-            if (arr[0] !=undefined) {
-              if (arr[0].tit.indexOf('机房') > -1) {
-                let len = arr.length;
-                let temp = arr[0];
-                arr.splice(0,1);
-                arr.push(temp);
-              }
-            }
-
-
-            this.devTitLists = arr;
-            this.btnActiveId = arr[0].id;
-            this.dateVal = [];
-            this.getChillerContent(arr[0].id,1,20);
-
-          } else {
-
-            this.$message(res.message);
-          }
-        }).catch(err=>{
-          this.$message(err);
-        })*/
       },
 
       //冷水机组运行参数
-      getChillerContent(device_id,pagenumber=1,pagesize=20,dateArr=[]){
+      getChillerContent(device_id,pagenumber=1,pagesize=20,dateArr=null){
         this.loading = true;
         let starttime = '';
         let endtime = '';
-        if (dateArr == null || dateArr.length===0){
+        if (dateArr == null){
           starttime = '';
           endtime = '';
         }else {
@@ -319,37 +282,6 @@
           this.loading = false;
           this.$message(err);
         })
-        /*let obj = {
-          device_id:device_id,
-          pagenumber:pagenumber,
-          pagesize:pagesize,
-          time_start:starttime,
-          time_end:endtime,
-        };
-        utils.post('airConditioner/water/device',obj).then(res=>{
-          console.log('冷水机组运行参数',obj,res);
-          if (res.code==0){
-            this.paging = res.paging;
-            this.title = res.data.title;
-            this.data = res.data.data;
-            this.dealData();
-            let arr = [];
-            /!*let data = res.data;
-            data.map((item, i) => {
-
-            });*!/
-
-            //this.devTitLists = arr;
-
-          } else {
-            this.loading = false;
-            this.$message(res.message);
-
-          }
-        }).catch(err=>{
-          this.loading = false;
-          this.$message(err);
-        })*/
       },
 
       changeHeadColor({row, column, rowIndex, columnIndex}){
@@ -438,8 +370,6 @@
 
       this.get3DFloor();
       this.tableHei = utils.hei(435);
-
-
 
     }
   }

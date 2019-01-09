@@ -483,8 +483,8 @@
               }else {
                 //alert('你废了哦？')
               }
-                //这里请求后台获得设备具体数据，又发回去
-              this.postDeviceData(this.deviceStates);
+              //   //这里请求后台获得设备具体数据，又发回去
+              // this.postDeviceData(this.deviceStates);
               break;
             case 'reDeviceClick':
               //点击模型响应事件
@@ -928,6 +928,12 @@
       /*beforeDestroy(){
         alert('出发')
       },*/
+      watch:{
+        deviceStates(){
+          //这里请求后台获得设备具体数据，又发回去
+          this.postDeviceData(this.deviceStates);
+        }
+      },
       destroyed(){
         window.removeEventListener('message',this.handleMessage,false);
       }

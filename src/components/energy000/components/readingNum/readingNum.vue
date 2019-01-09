@@ -63,7 +63,7 @@
              <line-echarts-en2 :datas ='v.echarts' ref = "lineEchartssss"  :key = "v.id"/>
          </div>
     </div>
-    <Dialog wid = "5.76rem" hei = "3.37rem" ref = "dialog" tit = "记录详情">
+    <en-read-dialog wid = "5.76rem" hei = "3.37rem" ref = "dialog" tit = "记录详情">
         <el-scrollbar style="height:100%">
             <div class="showBox2" :class="{'showBox3':details.length>3}">
                 <div v-for="(v,i) in details"  class="readImgBox"  :class="{'readImgBox2':details.length>3}">
@@ -79,7 +79,7 @@
                 </div>
             </div>
         </el-scrollbar>
-    </Dialog>
+    </en-read-dialog>
   </div>
 </template>
 
@@ -90,10 +90,12 @@ import SelectHead from '../../../../components/common/selectHead';
 import SelectBox from './selectBox';
 import SelectBox3 from '../../../../components/common/selectBoxE';
 import LineEchartsEn2 from "./lineEchartsEn2";
+import EnReadDialog from "./enReadDialog";
 
 
 export default {
     components:{
+      EnReadDialog,
       LineEchartsEn2,
     'SelectHead':SelectHead,
     'SelectBox':SelectBox,

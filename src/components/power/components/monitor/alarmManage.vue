@@ -146,9 +146,6 @@
           pageSize:20, //每页的条数 。默认为20
           page:1,  //当前页码
           data:[
-            /*{num:'01',time:'2018/06/02  16:55',position:'低压侧XX柜 wpm-301回路',event:'开关断开',class:'严重',progress:'未处理',person:'张三三'},
-            {num:'02',time:'2018/06/02  16:55',position:'低压侧XX柜 wpm-301回路',event:'开关断开',class:'严重',progress:'已完成',person:'张三三'},
-            {num:'03',time:'2018/06/02  16:55',position:'低压侧XX柜 wpm-301回路',event:'开关断开',class:'严重',progress:'处理中',person:'张三三'}*/,
           ],
           th:[
             {prop:'number11',label:'编号',wid:93},

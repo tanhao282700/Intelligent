@@ -39,27 +39,32 @@
         let headers = {
           //'Content-Type': 'multipart/form-data'
         }
-        this.$http.post('pc_ims/elevator/device_info', config, headers).then(res => {
+        this.$http.get('hvac_pc/pc/device_info', config, headers).then(res => {
           let data = res.data;
           console.log('获取电梯设备信息', config, res);
 
           if (data.code == 0) {
+            let dataArr = data.data;
             let tempArr = [];
-            let data111 = data.data;
-            let content = data111.content;
-            //content = "[{\"设备名称\":\"电梯\"},{\"品牌\":\"凯泉\"},{\"编号\":\"DB466228M\"}]";
-
-            let dataArr = eval(content);
-            dataArr.map((item, i) => {
-              for (var i2 in item) {
-                let obj = {};
-                obj.tit = i2;
-                obj.content = item[i2]
-                tempArr.push(obj)
+            dataArr.map((item,i)=>{
+              let obj = {};
+              obj.tit = item.title;
+              if (item.params !== ''){
+                let paramsObj = eval('('+item.params+')');
+                let showvalueIndex;
+                paramsObj.value.some((item0,i0)=>{
+                  if (item.now_value == item0){
+                    showvalueIndex = i0;
+                    return true;
+                  }
+                })
+                obj.content = paramsObj.showvalue[showvalueIndex];
+              } else {
+                obj.content = item.now_value+item.unit;
               }
+              tempArr.push(obj)
             })
-          this.info = tempArr;
-
+            this.info = tempArr;
           } else {
             this.$message(data.message);
           }

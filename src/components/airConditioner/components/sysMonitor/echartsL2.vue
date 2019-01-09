@@ -59,8 +59,8 @@
           },
           grid: {
             top:'16%',
-            left: '0%',
-            right: '0%',
+            left: '3.4%',
+            right: '3.4%',
             bottom: '2%',
             containLabel: true
           },

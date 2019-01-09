@@ -189,6 +189,11 @@
           src:"../../../static/img/energy.png",
           componentsName:'EnergyManage'
         },{
+          id:18,
+          name:"能源管理系统",
+          src:"../../../static/img/energy.png",
+          componentsName:'EnergyManage'
+        },{
           id:14,
           name:"门禁系统",
           src:"../../../static/img/doorManage.png",

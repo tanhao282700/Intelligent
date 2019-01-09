@@ -22,7 +22,7 @@
                   <EchartCir ref="EchartCir1" :echartCirData = "echartCirData2"/>
                 </div>
               </div>
-          <div style="position: absolute;width: 100%;height: 100%;background-color: rgba(0,0,0,0.8);left: 0;top:0;z-index: 10000"></div>
+          <div style="position: absolute;width: 100%;height: 100%;background-color: rgba(0,0,0,0.8);left: 0;top:0;z-index: 100"></div>
         </div>
         <div class="boxs boxs0 relative noMargin">
           <LookTit2

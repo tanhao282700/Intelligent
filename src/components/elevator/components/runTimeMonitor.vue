@@ -77,14 +77,14 @@
               <table>
                 <tr class="part" v-for="(v2,i2) in v.device_info" :key="'p'+i2">
                   <td><span class="tit">{{v2.label}}</span></td>
-                  <td><span class="dd"><span class="line"></span><span class="title1">{{v2.value}}</span><span class="line2"></span></span></td>
+                  <td><span class="dd"><span class="line"></span><span class="title1">{{v2.fun_info==''?(v2.value+v2.unit):dealEval(v2)}}</span><span class="line2"></span></span></td>
                 </tr>
               </table>
             </div>
           </div>
         </div>
       </div>
-      <Dialog wid = "9.39rem" hei = "618" tit="视频监控情况" ref = "dialog">
+      <ele-dialog wid = "9.39rem" hei = "618" tit="视频监控情况" ref = "dialog">
         <div class="dialog-in">
           <div class="videoBox">
             <iframe
@@ -97,7 +97,7 @@
             </iframe>
           </div>
         </div>
-      </Dialog>
+      </ele-dialog>
     </div>
   </div>
 </template>
@@ -105,8 +105,10 @@
   import popover from "./popover";
   import  redpng from '@/assets/img/elevator/red.png';
   import  bluepng from '@/assets/img/elevator/blue.png';
+  import EleDialog from "./eleDialog";
   export default {
     components:{
+      EleDialog,
       popover
     },
     data () {
@@ -132,149 +134,331 @@
             "device_id": 4339,
             "device_info": [
               {
+                "fun_info": "",
                 "label": "楼层位置",
+                "unit": "楼",
                 "value": "0"
               },
               {
+                "fun_info": "{\"value\": [\"0\",\"1\",\"2\"],\"showvalue\": [\"停止\",\"上行\",\"下行\"],\"type\":0}",
                 "label": "运行方向",
+                "unit": "",
                 "value": "0"
               },
               {
+                "fun_info": "{\"value\": [\"0\",\"1\"],\"showvalue\": [\"无人\",\"有人\"],\"type\":0}",
                 "label": "是否有人",
+                "unit": "",
                 "value": "0"
               },
               {
+                "fun_info": "{\"value\": [\"0\",\"1\",\"2\"],\"showvalue\": [\"停止\",\"上行\",\"下行\"],\"type\":0}",
                 "label": "电梯状态",
+                "unit": "",
                 "value": "0"
               },
               {
+                "fun_info": "",
                 "label": "视频",
+                "unit": "",
                 "value": "0"
               },
               {
+                "fun_info": "",
                 "label": "温度",
+                "unit": "℃",
                 "value": "0"
               },
               {
+                "fun_info": "",
                 "label": "湿度",
+                "unit": "%",
                 "value": "0"
               },
               {
+                "fun_info": "{\"value\": [\"0\",\"1\"],\"showvalue\": [\"正常\",\"异常\"],\"type\":0}",
                 "label": "积水",
+                "unit": "",
                 "value": "0"
               },
               {
+                "fun_info": "{\"value\": [\"0\",\"1\"],\"showvalue\": [\"正常\",\"异常\"],\"type\":0}",
                 "label": "积水",
+                "unit": "",
                 "value": "0"
               },
               {
+                "fun_info": "",
                 "label": "电流",
+                "unit": "A",
                 "value": "0"
               },
               {
+                "fun_info": "",
                 "label": "电压",
+                "unit": "V",
                 "value": "0"
               },
               {
+                "fun_info": "",
                 "label": "湿度",
+                "unit": "%",
                 "value": "0"
               }
             ],
             "device_title": "2号楼1号客梯",
-            "state": "0",
+            "state": 0,
             "xiu_count": 0
           },
           {
             "device_id": 4340,
             "device_info": [
               {
+                "fun_info": "",
                 "label": "楼层位置",
+                "unit": "楼",
                 "value": "0"
               },
               {
+                "fun_info": "{\"value\": [\"0\",\"1\",\"2\"],\"showvalue\": [\"停止\",\"上行\",\"下行\"],\"type\":0}",
                 "label": "运行方向",
+                "unit": "",
                 "value": "0"
               },
               {
+                "fun_info": "{\"value\": [\"0\",\"1\"],\"showvalue\": [\"无人\",\"有人\"],\"type\":0}",
                 "label": "是否有人",
+                "unit": "",
                 "value": "0"
               },
               {
+                "fun_info": "{\"value\": [\"0\",\"1\"],\"showvalue\": [\"关\",\"开\"],\"type\":0}",
                 "label": "电梯门开关状态",
-                "value": "0我就是长长我就是长长"
+                "unit": "",
+                "value": "0"
               },
               {
+                "fun_info": "{\"value\": [\"0\",\"1\",\"2\"],\"showvalue\": [\"停止\",\"上行\",\"下行\"],\"type\":0}",
                 "label": "电梯状态",
+                "unit": "",
                 "value": "0"
               },
               {
+                "fun_info": "{\"value\": [\"0\",\"1\"],\"showvalue\": [\"正常\",\"异常\"],\"type\":0}",
                 "label": "冲顶",
+                "unit": "",
                 "value": "0"
               },
               {
+                "fun_info": "{\"value\": [\"0\",\"1\"],\"showvalue\": [\"正常\",\"异常\"],\"type\":0}",
                 "label": "蹲底",
+                "unit": "",
                 "value": "0"
               },
               {
+                "fun_info": "{\"value\": [\"0\",\"1\"],\"showvalue\": [\"正常\",\"异常\"],\"type\":0}",
                 "label": "非平层停车",
+                "unit": "",
                 "value": "0"
               },
               {
+                "fun_info": "{\"value\": [\"0\",\"1\"],\"showvalue\": [\"否\",\"是\"],\"type\":0}",
                 "label": "运行中开门",
+                "unit": "",
                 "value": "0"
               },
               {
+                "fun_info": "{\"value\": [\"0\",\"1\"],\"showvalue\": [\"正常\",\"异常\"],\"type\":0}",
                 "label": "开门走车",
+                "unit": "",
                 "value": "0"
               },
               {
+                "fun_info": "{\"value\": [\"0\",\"1\"],\"showvalue\": [\"正常\",\"异常\"],\"type\":0}",
                 "label": "超车",
+                "unit": "",
                 "value": "0"
               },
               {
+                "fun_info": "{\"value\": [\"0\",\"1\"],\"showvalue\": [\"否\",\"是\"],\"type\":0}",
                 "label": "平层困人",
+                "unit": "",
                 "value": "0"
               },
               {
+                "fun_info": "{\"value\": [\"0\",\"1\"],\"showvalue\": [\"否\",\"是\"],\"type\":0}",
                 "label": "非平层困人",
+                "unit": "",
                 "value": "0"
               },
               {
+                "fun_info": "{\"value\": [\"0\",\"1\"],\"showvalue\": [\"正常\",\"异常\"],\"type\":0}",
                 "label": "积水",
+                "unit": "",
                 "value": "0"
               },
               {
+                "fun_info": "",
                 "label": "湿度",
+                "unit": "%",
                 "value": "0"
               },
               {
+                "fun_info": "",
                 "label": "温度",
+                "unit": "℃",
                 "value": "0"
               },
               {
+                "fun_info": "",
                 "label": "湿度",
+                "unit": "%",
                 "value": "0"
               },
               {
+                "fun_info": "",
                 "label": "视频",
+                "unit": "",
                 "value": "0"
               },
               {
+                "fun_info": "",
                 "label": "电压",
+                "unit": "V",
                 "value": "0"
               },
               {
+                "fun_info": "",
                 "label": "电流",
+                "unit": "A",
                 "value": "0"
               },
               {
+                "fun_info": "",
                 "label": "湿度",
+                "unit": "%",
                 "value": "0"
               }
             ],
             "device_title": "1号电梯",
-            "state": "0",
-            "xiu_count": 9
+            "state": 0,
+            "xiu_count": 1
+          },
+          {
+            "device_id": 34,
+            "device_info": [
+              {
+                "fun_info": "",
+                "label": "楼层位置",
+                "unit": "楼",
+                "value": "0"
+              },
+              {
+                "fun_info": "{\"value\": [\"0\",\"1\",\"2\"],\"showvalue\": [\"停止\",\"上行\",\"下行\"],\"type\":0}",
+                "label": "运行方向",
+                "unit": "",
+                "value": "0"
+              },
+              {
+                "fun_info": "{\"value\": [\"0\",\"1\"],\"showvalue\": [\"无人\",\"有人\"],\"type\":0}",
+                "label": "是否有人",
+                "unit": "",
+                "value": "0"
+              },
+              {
+                "fun_info": "{\"value\": [\"0\",\"1\"],\"showvalue\": [\"关\",\"开\"],\"type\":0}",
+                "label": "电梯门开关状态",
+                "unit": "",
+                "value": "0"
+              },
+              {
+                "fun_info": "{\"value\": [\"0\",\"1\",\"2\"],\"showvalue\": [\"停止\",\"上行\",\"下行\"],\"type\":0}",
+                "label": "电梯状态",
+                "unit": "",
+                "value": "0"
+              },
+              {
+                "fun_info": "{\"value\": [\"0\",\"1\"],\"showvalue\": [\"正常\",\"异常\"],\"type\":0}",
+                "label": "冲顶",
+                "unit": "",
+                "value": "0"
+              },
+              {
+                "fun_info": "{\"value\": [\"0\",\"1\"],\"showvalue\": [\"正常\",\"异常\"],\"type\":0}",
+                "label": "蹲底",
+                "unit": "",
+                "value": "0"
+              },
+              {
+                "fun_info": "{\"value\": [\"0\",\"1\"],\"showvalue\": [\"正常\",\"异常\"],\"type\":0}",
+                "label": "非平层停车",
+                "unit": "",
+                "value": "0"
+              },
+              {
+                "fun_info": "{\"value\": [\"0\",\"1\"],\"showvalue\": [\"否\",\"是\"],\"type\":0}",
+                "label": "运行中开门",
+                "unit": "",
+                "value": "0"
+              },
+              {
+                "fun_info": "{\"value\": [\"0\",\"1\"],\"showvalue\": [\"正常\",\"异常\"],\"type\":0}",
+                "label": "开门走车",
+                "unit": "",
+                "value": "0"
+              },
+              {
+                "fun_info": "{\"value\": [\"0\",\"1\"],\"showvalue\": [\"正常\",\"异常\"],\"type\":0}",
+                "label": "超车",
+                "unit": "",
+                "value": "0"
+              },
+              {
+                "fun_info": "{\"value\": [\"0\",\"1\"],\"showvalue\": [\"否\",\"是\"],\"type\":0}",
+                "label": "平层困人",
+                "unit": "",
+                "value": "0"
+              },
+              {
+                "fun_info": "{\"value\": [\"0\",\"1\"],\"showvalue\": [\"否\",\"是\"],\"type\":0}",
+                "label": "非平层困人",
+                "unit": "",
+                "value": "0"
+              },
+              {
+                "fun_info": "{\"value\": [\"0\",\"1\"],\"showvalue\": [\"正常\",\"异常\"],\"type\":0}",
+                "label": "积水",
+                "unit": "",
+                "value": "0"
+              },
+              {
+                "fun_info": "",
+                "label": "湿度",
+                "unit": "%",
+                "value": "0"
+              },
+              {
+                "fun_info": "",
+                "label": "温度",
+                "unit": "℃",
+                "value": "0"
+              },
+              {
+                "fun_info": "",
+                "label": "湿度",
+                "unit": "%",
+                "value": "0"
+              },
+              {
+                "fun_info": "",
+                "label": "视频",
+                "unit": "",
+                "value": "0"
+              }
+            ],
+            "device_title": "1号电梯",
+            "state": 0,
+            "xiu_count": 0
           }*/
         ],
 
@@ -290,6 +474,18 @@
       }
     },
     methods:{
+      dealEval(v2){
+        let reVal;
+        let evalObj = eval('(' +v2.fun_info + ')');
+        evalObj.value.map((item3, i3) => {
+          if (v2.value == item3){
+            reVal = evalObj.showvalue[i3];
+            //console.log(reVal)
+          }
+        })
+        //console.log(evalObj)
+        return reVal
+      },
       requestFloorData(){
         let that = this;
         let config = {
@@ -810,7 +1006,7 @@
     }
     .dialog-in{
       width: 100%;
-      height: 100%;
+      height: calc(100% - 0.49rem);
       .videoBox{
         width: 100%;
         height: 100%;
