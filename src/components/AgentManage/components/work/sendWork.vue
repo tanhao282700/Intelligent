@@ -153,7 +153,7 @@ export default {
             this.formvals.device_id = k.value;
           }
         })
-        this.formvals.device_name = val;
+        //this.formvals.device_name = val;
       },
       change3(val){
         this.formvals.user_id = val;
