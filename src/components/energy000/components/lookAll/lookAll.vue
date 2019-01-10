@@ -22,7 +22,9 @@
                   <EchartCir ref="EchartCir1" :echartCirData = "echartCirData2"/>
                 </div>
               </div>
-          <div style="position: absolute;width: 100%;height: 100%;background-color: rgba(0,0,0,0.8);left: 0;top:0;z-index: 100"></div>
+          <div style="position: absolute;width: 100%;height: 100%;background-color: rgba(0,0,0,0.8);left: 0;top:0;z-index: 100;background: url('/static/enImg/enWrap.png') no-repeat center;background-size: 100% 100%;font-size: 0.16rem;line-height: 1;color: #008aff;display: flex;justify-content: center;align-items: center">
+            暂未开放
+          </div>
         </div>
         <div class="boxs boxs0 relative noMargin">
           <LookTit2

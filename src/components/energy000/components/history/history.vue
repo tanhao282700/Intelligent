@@ -171,9 +171,9 @@
          </div>
       </div>
     </div>
-    <Dialog wid = "5.76rem" hei = "3.37rem" ref = "dialog" tit = "电力设备分析">
+    <en-his-dialog wid = "5.76rem" hei = "3.37rem" ref = "dialog" tit = "电力设备分析">
          <EchartCircle :echartCirData = "echartCirDataInfo" @itemClick = "itemClick" ref = "echartInfo"/>
-    </Dialog>
+    </en-his-dialog>
   </div>
 </template>
 
@@ -186,8 +186,10 @@ import EchartBar from './EchartBar';
 import SelectBox from '../../../../components/common/selectBox';
 import SelectBox3 from '../../../../components/common/selectBoxE';
 import EchartCircleEn1 from "./echartCircleEn1";
+import EnHisDialog from "./enHisDialog";
 export default {
    components:{
+     EnHisDialog,
      EchartCircleEn1,
     'SelectHead':SelectHead,
     'EchartCircle':EchartCircle,

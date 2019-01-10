@@ -1,7 +1,7 @@
 <template>
     <div class="loginContainer">
       <div class="loginFormBox">
-          <h1 class="sysName">泰立汇云<span></span>智慧酒店系统</h1>
+          <h1 class="sysName">泰立汇云<span></span>智慧酒店管理系统</h1>
           <div class="loginInfoBox">
             <div class="inputItem">
               <label for="userName">用户名</label><span class="break breakWidth1"></span>

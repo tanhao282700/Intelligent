@@ -1,6 +1,6 @@
 <template>
   <el-popover
-    class="self-popover2"
+    class="self-popover3"
     popper-class="self-popper"
     placement="right-start"
     :disabled="false"
@@ -12,10 +12,12 @@
     </div>
 
     <el-scrollbar style="height:100%">
-      <div v-for="(item,i) in info" class="popover-item" :style="{marginTop:i==0?0:'0.15rem'}" :key="i">
-        <div class="title" v-text="item.tit"></div>
-        <div class="content" v-text="item.content"></div>
-      </div>
+      <table>
+        <tr v-for="(item,i) in info" class="popover-item" :key="i">
+          <td><div class="title" v-text="item.tit"></div></td>
+          <td><div class="content" v-text="item.content"></div></td>
+        </tr>
+      </table>
     </el-scrollbar>
   </el-popover>
 </template>
@@ -92,6 +94,18 @@
 <style lang="less" type="text/less">
   @import '../../../../assets/css/common.css';
   @import '../../../../assets/css/comon';
+  .self-popper{
+    .el-scrollbar__wrap{
+      margin-right: -6px!important;
+    }
+    table{
+      //width: 100%;
+      border-collapse: collapse;
+    }
+    table td,th{
+      border: 0;
+    }
+  }
   .el-scrollbar__wrap {
     overflow-x: hidden;
   }
@@ -116,9 +130,9 @@
     box-shadow: 0px 2px 4px 0px rgba(60, 150, 255, 0.35) !important;
     border-radius: 4px !important;
     border: solid 0px #4789d6 !important;
-    padding: 0.15rem 0.1rem !important;
+    padding: 0.075rem 0.1rem !important;
   }
-  .self-popover2 {
+  .self-popover3 {
 
 
     .popover-btn{
@@ -163,12 +177,11 @@
   .popover-item{
     .title{
       display: inline-block;
-      width: 0.88rem;
       font-family: PingFangSC-Regular;
       font-size: 0.14rem;
       font-weight: normal;
       font-stretch: normal;
-      line-height: 1;
+      .vhLineH(29);
       letter-spacing: 0px;
       color: #4f648b;
     }
@@ -179,7 +192,7 @@
       font-size: 0.14rem;
       font-weight: normal;
       font-stretch: normal;
-      line-height: 1;
+      .vhLineH(29);
       letter-spacing: 0px;
       color: #ffffff;
     }

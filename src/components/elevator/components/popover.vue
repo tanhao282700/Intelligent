@@ -9,10 +9,12 @@
     trigger="click">
     <slot slot="reference"></slot>
     <el-scrollbar style="height:100%">
-      <div v-for="(item,i) in info" class="popover-item" :style="{marginTop:i==0?0:'0.15rem'}" :key="i">
-        <div class="title" v-text="item.tit"></div>
-        <div class="content" v-text="item.content"></div>
-      </div>
+      <table>
+        <tr v-for="(item,i) in info" class="popover-item" :key="i">
+          <td><div class="title" v-text="item.tit"></div></td>
+          <td><div class="content" v-text="item.content"></div></td>
+        </tr>
+      </table>
     </el-scrollbar>
   </el-popover>
 </template>
@@ -93,6 +95,13 @@
       overflow-x: hidden;
       margin-right: -6px!important;
     }
+    table{
+      //width: 100%;
+      border-collapse: collapse;
+    }
+    table td,th{
+      border: 0;
+    }
   }
 
   .popper__arrow{
@@ -116,7 +125,7 @@
     box-shadow: 0px 2px 4px 0px rgba(60, 150, 255, 0.35) !important;
     border-radius: 4px !important;
     border: solid 0px #4789d6 !important;
-    padding: 0.15rem 0.1rem !important;
+    padding: 0.075rem 0.1rem !important;
   }
   .self-popover-elevator {
     z-index: 999;
@@ -140,12 +149,11 @@
   .popover-item{
     .title{
       display: inline-block;
-      width: 0.56rem;
       font-family: PingFangSC-Regular;
       font-size: 0.14rem;
       font-weight: normal;
       font-stretch: normal;
-      line-height: 1;
+      .vhLineH(29);
       letter-spacing: 0px;
       color: #4f648b;
     }
@@ -156,7 +164,7 @@
       font-size: 0.14rem;
       font-weight: normal;
       font-stretch: normal;
-      line-height: 1;
+      .vhLineH(29);
       letter-spacing: 0px;
       color: #ffffff;
     }

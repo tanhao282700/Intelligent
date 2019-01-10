@@ -12,7 +12,7 @@
       </div>
 
       <el-scrollbar style="height:100%">
-        <div v-for="(item,i) in warnInfo" class="popover-item" :style="{marginTop:i==0?0:'0.15rem'}" :key="i">
+        <div v-for="(item,i) in warnInfo" class="popover-item2" :style="{marginTop:i==0?0:'0.15rem'}" :key="i">
 
             <div class="head">
               <span class="popover-font num">{{(i+1)<10?'0'+(i+1):(i+1)}}</span>
@@ -117,7 +117,7 @@
 
   }
 
-  .popover-item {
+  .popover-item2 {
     //overflow: hidden;
     .popover-font {
       font-family: PingFangSC-Regular;

@@ -89,7 +89,7 @@
           </el-cascader>
         </div>
         <div class="btnClickBox">
-          <button :disabled="!(yijianNowVal == 0 || yijianNowVal ==1)" type="button" @click="oneKeySwitch" v-text="yijianNowVal == 0 ? '一键关闭' : yijianNowVal == 1 ? '一键开启' : '未知错误'"></button>
+          <button :disabled="!(yijianNowVal == '开启' || yijianNowVal =='关闭')" type="button" @click="oneKeySwitch" v-text="'一键'+yijianNowVal"></button>
         </div>
       </div>
 
@@ -104,13 +104,6 @@
       </iframe>
 
 
-      <!--<button style="position: absolute;top: 100px;" type="button" @click="changeDeviceState('product-16f7b54a-1d6d-4450-a883-c034787d3203-body',1)">改变设备状态1</button>
-      <button style="position: absolute;top: 130px;" type="button" @click="changeDeviceState('product-16f7b54a-1d6d-4450-a883-c034787d32ea-body', 2)">改变设备状态2</button>
-      <button style="position: absolute;top: 160px;" type="button" @click="changeDeviceState('product-5af82546-e39b-4e8a-95cb-31997ebf1bc7-body', 0)">改变设备状态3</button>
-      <button style="position: absolute;top: 190px;" type="button" @click="changeDeviceState('product-16f7b54a-1d6d-4450-a883-c034787d46aa-body', 3)">改变设备状态4</button>-->
-
-
-
     </div>
     <Dialog wid = "3.64rem" hei = "2.16rem" ref = "dialog">
       <div class="dialog-in">
@@ -123,7 +116,7 @@
     </Dialog>
     <Dialog wid = "3.64rem" hei = "2.16rem" ref = "dialog2">
       <div class="dialog-in">
-        <p class="p-text">是否确认{{yijianNowVal == 0 ? '一键开启' : yijianNowVal == 1 ? '一键关闭' : '未知错误'}}？</p>
+        <p class="p-text">是否确认一键{{yijianNowVal}}？</p>
         <div class="btnWrap">
           <button @click="sureControl2" type="button">确定</button>
           <button @click="()=>{this.$refs.dialog2.hide();this.$message('取消操作！');}" type="button">取消</button>
@@ -152,6 +145,9 @@
       props:['sysId'],
       data() {
         return {
+          yijianNum:'',//一键启停实际值
+          paramsObjShowvalue:[],
+          paramsObjValue:[],
           device_pic:[],
           loading:false,
           imgArr:['<img src="/static/img/zhuji.png" alt="主机">','<img src="/static/img/shuibeng.png" alt="水泵">','<img src="/static/img/lengque.png" alt="冷却塔">'],
@@ -546,18 +542,33 @@
               let data2 = data.data.data;
 
               let yijian = data.data.yijian;
-              this.yijianNowVal = yijian.nowvalue;
+              this.yijianNum = yijian.nowvalue;
+              if (yijian.params != ''){
+                let paramsObj = eval('(' + yijian.params + ')');
+                //console.log(paramsObj)
+                this.paramsObjValue = paramsObj.value;
+                this.paramsObjShowvalue = paramsObj.showvalue;
+                paramsObj.value.map((item0,i0)=>{
+
+                  if (yijian.nowvalue != item0){
+                    //console.log(item0,i0)
+                    this.yijianNowVal = paramsObj.showvalue[i0];
+                  }
+                })
+              }
               this.yijianPointId = yijian.point_id;
 
               data2.map((item, i) => {
-                let obj = {};
-                obj.id = item.self_id;
-                obj.all = item.count;
-                obj.on = item.kai;
-                obj.break = item.gu;
-                obj.off = item.guan;
-                obj.self_id = item.self_id;
-                arr.push(obj);
+                if (item.self_id == '1102' || item.self_id == '1103' || item.self_id == '1108') {
+                  let obj = {};
+                  obj.id = item.self_id;
+                  obj.all = item.count;
+                  obj.on = item.kai;
+                  obj.break = item.gu;
+                  obj.off = item.guan;
+                  obj.self_id = item.self_id;
+                  arr.push(obj);
+                }
               });
               this.lists1 = arr;
 
@@ -731,24 +742,6 @@
 
                   obj0.id = item.floor_id;
                   obj0.tit = item.title;
-                  /*if (item.son.length !== 0) {
-                    obj.children = [];
-                    item.son.map((item2, i2) => {
-                      let obj2 = {};
-                      obj2.value = item2.floor_id;
-                      obj2.label = item2.title;
-                      if (item2.son.length !== 0) {
-                        obj2.children = [];
-                        item2.son.map((item3, i3) => {
-                          let obj3 = {};
-                          obj3.value = item3.floor_id;
-                          obj3.label = item3.title;
-                          obj2.children.push(obj3)
-                        })
-                      }
-                      obj.children.push(obj2)
-                    })
-                  }*/
                   tempArr0.push(obj0);
                   tempArr.push(obj);
                 })
@@ -783,7 +776,7 @@
             this.$message(err);
           })
         },
-        //一键启停的开关
+        //图例开关,
         requestOneKeyControl(point_id,nowVal){
           let that = this;
           let config = {
@@ -800,6 +793,33 @@
               this.$message(data.message);
 
 
+            } else {
+              this.$message(data.message);
+            }
+          }).catch(err=>{
+            this.$message(err);
+          })
+        },
+        //一键启停开关
+        requestOneKeyControl2(point_id,nowVal){
+          let that = this;
+          let config = {
+            point_id:point_id,
+            now_value:nowVal
+          }
+          let headers = {
+            //'Content-Type': 'multipart/form-data'
+          }
+          this.$http.get('/realtime_pc/pc/control', config, headers).then(res => {
+            let data = res.data;
+            console.log('点位设备控制', config, res);
+            if (data.code == 0) {
+              this.$message(data.message);
+              this.paramsObjValue.map((item0,i0)=>{
+                if (nowVal != item0){
+                  this.yijianNowVal = this.paramsObjShowvalue[i0]
+                }
+              });
             } else {
               this.$message(data.message);
             }
@@ -879,8 +899,7 @@
           this.$refs.dialog.hide();
         },
         sureControl2() {
-          this.requestOneKeyControl(this.yijianPointId,this.yijianNowVal == 0?1:0);
-          this.yijianNowVal = (this.yijianNowVal == 0?1:0);
+          this.requestOneKeyControl2(this.yijianPointId,this.dealSendVal(this.yijianNum));
           this.$refs.dialog2.hide();
         },
         oneKeySwitch(){
@@ -890,25 +909,20 @@
         //选项卡切换
         tabToggle(index){
           this.tabActive = index;
+        },
+        dealSendVal(val){
+          let reVal;
+          this.paramsObjValue.map((item0,i0)=>{
+            if (val != item0){
+              reVal = item0;
+            }
+          });
+          return reVal;
         }
 
       },
       created() {
-
-
-
         this.get3DFloor();
-
-        // //console.log('系统列表',this.$store.state.sysList)
-        //
-        // let tempObj = this.$store.state.sysList[1];
-        // console.log(tempObj)
-        // /*for (var i in tempObj) {
-        //   console.log(i,":",tempObj[i]);
-        // }*/
-
-
-
 
       },
       mounted() {
