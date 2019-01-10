@@ -41,7 +41,7 @@
           <div class="long" :class="{'anim':animate2}">
             <div class="item" v-for="item in broadTwoList">
               <span>{{item.name}}</span>
-              <span v-text="item.param.showvalue[item.value]" :class="{'gre':item.param.showvalue[item.value]=='运行','red':item.param.showvalue[item.value]=='停止'}" ></span>
+              <span v-text="item.showTxt" :class="{'gre':item.showTxt=='运行','red':item.showTxt=='停止'}" ></span>
             </div>
           </div>
         </div>
@@ -140,6 +140,11 @@
           .then((response)=>{
         response.data.data[0].data4.map((item,index)=>{
           item.param = JSON.parse(item.param)
+          item.param.value.map((list,index)=>{
+              if(item.value == list){
+                  item.showTxt = item.param.showvalue[index]
+              }
+          })
       })
         this.broadOneList = response.data.data[0].data3
         this.broadTwoList = response.data.data[0].data4
@@ -511,6 +516,10 @@
             }
             span:last-child{
               color:rgba(45,240,224,1);
+              max-width: 30%;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
             }
             .red{
               color:rgba(245,108,108,1)!important;

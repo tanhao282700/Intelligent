@@ -257,7 +257,7 @@
         },
         sysForm:{// 系统筛选条件
           project_id:1,
-          system_id:1,
+          system_id:0,
           id1:'',
           id2:'',
         },
