@@ -276,13 +276,6 @@ export default {
       }
       return tempArr;
     },
-    /*endDayVals(){
-      let res = ['开始时间','结束时间'];
-      if(this.endDayVal!=''){
-        res  =[this.timeDeal(this.endDayVal[0]),this.timeDeal(this.endDayVal[1])];
-      }
-      return res;
-    },*/
 
   },
   methods:{
@@ -290,89 +283,101 @@ export default {
       console.log(val,this.floorSelectedOptions)
     },
     startMonthSelChange(val){
-      let tempArr=[
-        {
-          label:'开始日',
-          value:''
-        }
-      ];
-      if (val == '01' || val == '03' || val == '05' || val == '07' || val == '08' || val == '10' || val == '12') {
-        for (let i=1;i<32;i++){
-          let obj = {};
-          obj.value = (i<10?('0'+i):(''+i));
-          obj.label = (i<10?('0'+i+'日'):(''+i+'日'));
-          tempArr.push(obj)
-        }
-        this.startDayOptions = tempArr;
-      } else if (val == '02') {
-        if (this.nowYear % 4 == 0){
-          for (let i=1;i<30;i++){
+      this.startDayVal = '';
+      this.startDayOptions = [];
+      if (val != '') {
+        let tempArr = [
+          {
+            label: '开始日',
+            value: ''
+          }
+        ];
+        if (val == '01' || val == '03' || val == '05' || val == '07' || val == '08' || val == '10' || val == '12') {
+          for (let i = 1; i < 32; i++) {
             let obj = {};
-            obj.value = (i<10?('0'+i):(''+i));
-            obj.label = (i<10?('0'+i+'日'):(''+i+'日'));
+            obj.value = (i < 10 ? ('0' + i) : ('' + i));
+            obj.label = (i < 10 ? ('0' + i + '日') : ('' + i + '日'));
             tempArr.push(obj)
           }
           this.startDayOptions = tempArr;
+        } else if (val == '02') {
+          if (this.nowYear % 4 == 0) {
+            for (let i = 1; i < 30; i++) {
+              let obj = {};
+              obj.value = (i < 10 ? ('0' + i) : ('' + i));
+              obj.label = (i < 10 ? ('0' + i + '日') : ('' + i + '日'));
+              tempArr.push(obj)
+            }
+            this.startDayOptions = tempArr;
+          } else {
+            for (let i = 1; i < 29; i++) {
+              let obj = {};
+              obj.value = (i < 10 ? ('0' + i) : ('' + i));
+              obj.label = (i < 10 ? ('0' + i + '日') : ('' + i + '日'));
+              tempArr.push(obj)
+            }
+            this.startDayOptions = tempArr;
+          }
         } else {
-          for (let i=1;i<29;i++){
+          for (let i = 1; i < 31; i++) {
             let obj = {};
-            obj.value = (i<10?('0'+i):(''+i));
-            obj.label = (i<10?('0'+i+'日'):(''+i+'日'));
+            obj.value = (i < 10 ? ('0' + i) : ('' + i));
+            obj.label = (i < 10 ? ('0' + i + '日') : ('' + i + '日'));
             tempArr.push(obj)
           }
           this.startDayOptions = tempArr;
         }
       } else {
-        for (let i=1;i<31;i++){
-          let obj = {};
-          obj.value = (i<10?('0'+i):(''+i));
-          obj.label = (i<10?('0'+i+'日'):(''+i+'日'));
-          tempArr.push(obj)
-        }
-        this.startDayOptions = tempArr;
+        this.startDayOptions = [];
       }
     },
     endMonthSelChange(val){
-      let tempArr=[
-        {
-          label:'结束日',
-          value:''
-        }
-      ];
-      if (val == '01' || val == '03' || val == '05' || val == '07' || val == '08' || val == '10' || val == '12') {
-        for (let i=1;i<32;i++){
-          let obj = {};
-          obj.value = (i<10?('0'+i):(''+i));
-          obj.label = (i<10?('0'+i+'日'):(''+i+'日'));
-          tempArr.push(obj)
-        }
-        this.endDayOptions = tempArr;
-      } else if (val == '02') {
-        if (this.nowYear % 4 == 0){
-          for (let i=1;i<30;i++){
+      this.endDayVal = '';
+      this.endDayOptions = [];
+      if (val != '') {
+        let tempArr = [
+          {
+            label: '结束日',
+            value: ''
+          }
+        ];
+        if (val == '01' || val == '03' || val == '05' || val == '07' || val == '08' || val == '10' || val == '12') {
+          for (let i = 1; i < 32; i++) {
             let obj = {};
-            obj.value = (i<10?('0'+i):(''+i));
-            obj.label = (i<10?('0'+i+'日'):(''+i+'日'));
+            obj.value = (i < 10 ? ('0' + i) : ('' + i));
+            obj.label = (i < 10 ? ('0' + i + '日') : ('' + i + '日'));
             tempArr.push(obj)
           }
           this.endDayOptions = tempArr;
+        } else if (val == '02') {
+          if (this.nowYear % 4 == 0) {
+            for (let i = 1; i < 30; i++) {
+              let obj = {};
+              obj.value = (i < 10 ? ('0' + i) : ('' + i));
+              obj.label = (i < 10 ? ('0' + i + '日') : ('' + i + '日'));
+              tempArr.push(obj)
+            }
+            this.endDayOptions = tempArr;
+          } else {
+            for (let i = 1; i < 29; i++) {
+              let obj = {};
+              obj.value = (i < 10 ? ('0' + i) : ('' + i));
+              obj.label = (i < 10 ? ('0' + i + '日') : ('' + i + '日'));
+              tempArr.push(obj)
+            }
+            this.endDayOptions = tempArr;
+          }
         } else {
-          for (let i=1;i<29;i++){
+          for (let i = 1; i < 31; i++) {
             let obj = {};
-            obj.value = (i<10?('0'+i):(''+i));
-            obj.label = (i<10?('0'+i+'日'):(''+i+'日'));
+            obj.value = (i < 10 ? ('0' + i) : ('' + i));
+            obj.label = (i < 10 ? ('0' + i + '日') : ('' + i + '日'));
             tempArr.push(obj)
           }
           this.endDayOptions = tempArr;
         }
       } else {
-        for (let i=1;i<31;i++){
-          let obj = {};
-          obj.value = (i<10?('0'+i):(''+i));
-          obj.label = (i<10?('0'+i+'日'):(''+i+'日'));
-          tempArr.push(obj)
-        }
-        this.endDayOptions = tempArr;
+        this.endDayOptions = [];
       }
     },
 

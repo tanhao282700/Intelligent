@@ -206,6 +206,12 @@
               src:"../../../static/img/agent.png",
               componentsName:'AgentManage'
             },
+            18:{
+                id:18,
+              name:"能源管理系统",
+              src:"../../../static/img/energy.png",
+              componentsName:'EnergyManage'
+            },
           '-1':{
               id:'-1',
               name:"设备情况",

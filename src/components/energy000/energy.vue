@@ -125,7 +125,6 @@ export default {
 @import '../../assets/css/tabs.less';
   .energy{
       width:100%;
-      height:100%;
       .tabBoxs{
           padding-left:2.489vw;
       }
