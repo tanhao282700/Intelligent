@@ -553,17 +553,17 @@ export default {
             };
             this.powerRanks[0].lists.push(obj1);
           }
-          for (let j =0;j<data2.rank.now.length;j++){
+          for (let j =0;j<data2.rank.save.length;j++){
             let obj2 = {
-              tit:data2.rank.now[j].name,
-              val:data2.rank.now[j].value
+              tit:data2.rank.save[j].name,
+              val:data2.rank.save[j].value
             };
             this.powerRanks[1].lists.push(obj2);
           }
-          for (let k=0;k<data2.rank.save.length;k++){
+          for (let k=0;k<data2.rank.now.length;k++){
             let obj3 = {
-              tit:data2.rank.save[k].name,
-              val:data2.rank.save[k].value
+              tit:data2.rank.now[k].name,
+              val:data2.rank.now[k].value
             };
             this.powerRanks[2].lists.push(obj3);
           }

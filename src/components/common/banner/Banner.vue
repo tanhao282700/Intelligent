@@ -28,6 +28,8 @@
                 <el-menu-item v-if="userRouterInfo[3]" index="/power"><span class="textPL">变配电系统</span></el-menu-item>
                 <el-menu-item v-if="userRouterInfo[6]" index="/WaterSupplyAndDrainage"><span class="textPL">给排水系统</span></el-menu-item>
                 <el-menu-item v-if="userRouterInfo[9]" index="/elevator"><span class="textPL">电梯监测系统</span></el-menu-item>
+                <el-menu-item v-if="userRouterInfo[4]" index="/parkingLot"><span class="textPL">停车场系统</span></el-menu-item>
+                <el-menu-item v-if="userRouterInfo[10]" index="/airQuality"><span class="textPL">空气质量监测系统</span></el-menu-item>
               </el-menu-item-group>
             </el-submenu>
             <el-submenu index="2" v-if="userRouterInfo[2]||userRouterInfo[17]||userRouterInfo[18]">

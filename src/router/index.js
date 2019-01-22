@@ -101,7 +101,14 @@ import runTimeMonitor from '@/components/elevator/components/runTimeMonitor';
 import wbHistory from '@/components/elevator/components/wbHistory';
 import breakdownManagement from '@/components/elevator/components/breakdownManagement';
 import dataHistory from '@/components/elevator/components/dataHistory';
-
+//停车场
+import parkingLot from '@/components/parkingLot/parkingLot'
+import parkDetail from '@/components/parkingLot/components/parkDetail'
+import carOrigin from '@/components/parkingLot/components/carOrigin'
+//空气质量
+import airQuality from '@/components/airQuality/airQuality'
+import airQualityMonitor from '@/components/airQuality/components/airQualityMonitor'
+import airQualityStatistics from '@/components/airQuality/components/airQualityStatistics'
 Vue.use(Router);
 
 export default new Router({
@@ -488,6 +495,52 @@ export default new Router({
           return '/elevator/wbHistory'
         } else if (info.sysList[9].role_string[0] == 0 && info.sysList[9].role_string[1] == 0 && info.sysList[9].role_string[2] == 0 && info.sysList[9].role_string[3] != 0) {
           return '/elevator/breakdownManagement'
+        }
+      }
+    },
+    //停车场
+    {
+      path: '/parkingLot',
+      component: parkingLot,
+      children:[
+        {
+          path: '/parkingLot/components/parkDetail',
+          component:parkDetail
+        },
+        {
+          path: '/parkingLot/components/carOrigin',
+          component: carOrigin
+        },
+      ],
+      redirect: to => {
+        let info = JSON.parse(sessionStorage.getItem('routerInfo'))
+        if(info.sysList[4].role_string[0]!=0 ){
+          return '/parkingLot/components/parkDetail'
+        }else{
+          return '/parkingLot/components/carOrigin'
+        }
+      }
+    },
+    //空气质量
+    {
+      path: '/airQuality',
+      component: airQuality,
+      children:[
+        {
+          path: '/airQuality/components/airQualityMonitor',
+          component:airQualityMonitor
+        },
+        {
+          path: '/airQuality/components/airQualityStatistics',
+          component: airQualityStatistics
+        },
+      ],
+      redirect: to => {
+        let info = JSON.parse(sessionStorage.getItem('routerInfo'))
+        if(info.sysList[10].role_string[0]!=0 ){
+          return '/airQuality/components/airQualityMonitor'
+        }else{
+          return '/airQuality/components/airQualityStatistics'
         }
       }
     },

@@ -194,7 +194,7 @@ export default {
           type:'green',
           now:0,
           total:0,
-          util:'kg',
+          util:'kw/h',
           tit:'当前能耗值'
         } ,
          circleData2:{

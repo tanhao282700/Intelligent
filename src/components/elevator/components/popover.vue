@@ -22,8 +22,6 @@
 <script>
   export default {
     components:{
-
-
     },
     name: "popover",
     props: ['device_id'],

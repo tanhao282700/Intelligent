@@ -30,7 +30,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 0.85rem;
+  min-width: 0.85rem;
   border: 1px solid transparent;
 }
 .generation{
