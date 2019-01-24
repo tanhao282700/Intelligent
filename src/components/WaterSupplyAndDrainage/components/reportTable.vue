@@ -12,7 +12,7 @@
     element-loading-text="拼命加载中"
     class="wsadReport">
     <div class="head">
-      <span v-text="selfID==7?'给水系统数据报表':'排水系统数据报表'" class="title"></span>
+      <span v-text="sysTit" class="title"></span>
 
       <button @click="getExportReport()" class="export-btn" type="button">
         <span class="icon-export"></span>
@@ -49,7 +49,7 @@
 <script>
   import utils from '../../../assets/js/utils';
   import SelectBox from '../../../components/form/selectBox';
-  import Table from '../../../components/common/table';
+  import Table from '../../../components/common/table2';
 
   import showTooltip from './showTooltip';
   import showOperateState from './showOperateState';
@@ -59,7 +59,7 @@
       'SelectBox':SelectBox,
       'Table':Table,
     },
-    props:['selfID'],
+    props:['sysID','sysTit'],
     data () {
       let wid1=73;
       let  wid2=133;
@@ -67,14 +67,16 @@
       let  wid4=93;
       let  wid5=109;
       return {
+        sys_type:(this.sysTit=='给水系统数据报表'?0:this.sysTit=='排水系统数据报表'?1:''),
         record_data:[],
-        tableType:'1',
+        tableType:'0',
         activeName: 'first',
         headTitle:[],
 
         loading:false,
         table:{
-          hei:566, //table高度  设置后有滚动条
+          showPagination:true,
+          hei:490, //table高度  设置后有滚动条
           len:0, //总条数
           pageSize:20, //每页的条数 。默认为20
           page:1,  //当前页码
@@ -88,7 +90,8 @@
         },
 
         table2:{
-          hei:566, //table高度  设置后有滚动条
+          showPagination:true,
+          hei:490, //table高度  设置后有滚动条
           len:0, //总条数
           pageSize:20, //每页的条数 。默认为20
           page:1,  //当前页码
@@ -135,7 +138,8 @@
         deviceInnormalNum:10,
 
         table3:{
-          hei:566, //table高度  设置后有滚动条
+          showPagination:true,
+          hei:490, //table高度  设置后有滚动条
           len:0, //总条数
           pageSize:20, //每页的条数 。默认为20
           page:1,  //当前页码
@@ -151,7 +155,8 @@
         },
 
         table4:{
-          hei:566, //table高度  设置后有滚动条
+          showPagination:true,
+          hei:490, //table高度  设置后有滚动条
           len:0, //总条数
           pageSize:20, //每页的条数 。默认为20
           page:1,  //当前页码
@@ -183,36 +188,36 @@
     methods:{
       //分页：切换页面
       changePage(val){
-        this.getDataReport((this.selfID == 7 ? this.$store.state.sysList[6].son_list[0].sys_menu_id : this.$store.state.sysList[6].son_list[1].sys_menu_id),val)
+        this.table.page = val;
+        this.getDataReport(this.sysID,val)
       },
       changePage2(val){
-        this.getFaultReport((this.selfID == 7 ? this.$store.state.sysList[6].son_list[0].sys_menu_id : this.$store.state.sysList[6].son_list[1].sys_menu_id),val)
+        this.table2.page = val;
+        this.getFaultReport(this.sysID,val)
       },
       changePage3(val){
-        this.getRecordReport((this.selfID == 7 ? this.$store.state.sysList[6].son_list[0].sys_menu_id : this.$store.state.sysList[6].son_list[1].sys_menu_id),val)
+        this.table3.page = val;
+        this.getRecordReport(this.sysID,val)
       },
       changePage4(val){
-        this.getSwitchReport((this.selfID == 7 ? this.$store.state.sysList[6].son_list[0].sys_menu_id : this.$store.state.sysList[6].son_list[1].sys_menu_id),val)
+        this.table4.page = val;
+        this.getSwitchReport(this.sysID,val)
       },
       //tab选项卡切换
       handleClick(tab, event) {
-        console.log(tab.index);
+        //console.log(tab.index);
         switch (tab.index) {
           case '0':
-            if (this.selfID == 7){
-              this.tableType = '1';
-            } else if (this.selfID == 9){
-              this.tableType = '5';
-            }
+            this.tableType = '0';
             break;
           case '1':
-            this.tableType = '2';
+            this.tableType = '1';
             break;
           case '2':
-            this.tableType = '3';
+            this.tableType = '2';
             break;
           case '3':
-            this.tableType = '4';
+            this.tableType = '3';
             break;
           default:
             alert('未知错误0');
@@ -225,6 +230,8 @@
         let config = {
           'sys_menu_id':sysID,
           'floor_id':'',
+          'pagesize':20,
+          'pagenumber':this.table.page,
         }
         let headers = {
           //'Content-Type': 'multipart/form-data'
@@ -233,6 +240,7 @@
           let data = res.data;
           console.log('数据统计报表', config, res);
           if(data.code==0){
+            this.table.len = data.count;
             let data_info = data.data.data_info;
             let title_map = data_info.title_map;
             this.headTitle = title_map;
@@ -411,6 +419,8 @@
         let that = this;
         let config = {
           'sys_menu_id':sysID,
+          'pagesize':20,
+          'page_index':this.table2.page,
         }
         let headers = {
           //'Content-Type': 'multipart/form-data'
@@ -419,6 +429,7 @@
           let data = res.data;
           console.log('故障统计报表', config, res);
           if(data.code==0){
+            this.table2.len = data.count;
             let tempData = data.data.data_info;
             //let tempData = data.;
             let newData = tempData.map((item,i)=>{
@@ -442,6 +453,9 @@
         let that = this;
         let config = {
           'sys_menu_id':sysID,
+          'pagesize':20,
+          'page_index':this.table3.page,
+
         }
         let headers = {
           //'Content-Type': 'multipart/form-data'
@@ -450,6 +464,7 @@
           let data = res.data;
           console.log('维修记录统计报表', config, res);
           if(data.code==0){
+            this.table3.len = data.count;
             this.table3.data = data.data;
             //this.table3.len = data.paging.count;
             this.loading = false;
@@ -470,6 +485,8 @@
         let that = this;
         let config = {
           'sys_menu_id':sysID,
+          'pagesize':20,
+          'pagenumber':this.table4.page,
         }
         let headers = {
           //'Content-Type': 'multipart/form-data'
@@ -478,7 +495,7 @@
           let data = res.data;
           console.log('启停统计报表', config, res);
           if(data.code==0){
-            // this.table4.len = data.paging.count;
+            this.table4.len = data.count;
             let tempData = data.data.data_info;
             let newArr= tempData.map((item,i)=>{
               /*console.log(eval('('+item.data+')'))
@@ -502,42 +519,19 @@
       },
       //导出统计报表
       getExportReport(sysID,type){
-        window.location.href = 'https://tesing.china-tillage.com/drainage/drainage_startstop_excel?sys_menu_id='+(this.selfID == 7 ? this.$store.state.sysList[6].son_list[0].sys_menu_id : this.$store.state.sysList[6].son_list[1].sys_menu_id)+'&user_id='+this.$store.state.userId+'&project_id='+this.$store.state.projectId+'&type='+this.tableType;
+        window.location.href = 'https://tesing.china-tillage.com/drainage/drainage_startstop_excel?sys_menu_id='+this.sysID+'&user_id='+this.$store.state.userId+'&project_id='+this.$store.state.projectId+'&page_type='+this.tableType+'&sys_type='+this.sys_type;
       },
-      //获取报表表头
-      getReportHeader(sysID){
-        let that = this;
-        let config = {
-          'sys_menu_id':sysID,
-        }
-        let headers = {
-          //'Content-Type': 'multipart/form-data'
-        }
-        this.$http.post('drainage/drainage_dtareport_header', config, headers).then(res => {
-          let data = res.data;
-          console.log('获取报表表头', config, res);
-          if(data.code==0){
-            this.headTitle = data.data;
-          }else{
-            this.$message(data.message);
-          }
-        }).catch(err=>{
-          console.log(err);
-        })
-      }
+
     },
     created() {
 
-      //this.getReportHeader((this.selfID == 7 ? this.$store.state.sysList[6].son_list[0].sys_menu_id : this.$store.state.sysList[6].son_list[1].sys_menu_id))
-
-       this.getDataReport((this.selfID == 7 ? this.$store.state.sysList[6].son_list[0].sys_menu_id : this.$store.state.sysList[6].son_list[1].sys_menu_id),1)
-       this.getFaultReport((this.selfID == 7 ? this.$store.state.sysList[6].son_list[0].sys_menu_id : this.$store.state.sysList[6].son_list[1].sys_menu_id),1)
-       this.getRecordReport((this.selfID == 7 ? this.$store.state.sysList[6].son_list[0].sys_menu_id : this.$store.state.sysList[6].son_list[1].sys_menu_id),1)
-       this.getSwitchReport((this.selfID == 7 ? this.$store.state.sysList[6].son_list[0].sys_menu_id : this.$store.state.sysList[6].son_list[1].sys_menu_id),1)
+       this.getDataReport(this.sysID,1)
+       this.getFaultReport(this.sysID,1)
+       this.getRecordReport(this.sysID,1)
+       this.getSwitchReport(this.sysID,1)
 
     },
     mounted() {
-
     },
   }
 </script>

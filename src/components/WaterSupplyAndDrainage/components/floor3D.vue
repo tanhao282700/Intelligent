@@ -95,7 +95,7 @@
       </div>
 
       <Dialog wid = "13.26rem" hei = "640" ref = "dialogTable">
-        <report-table :selfID="self_id" />
+        <report-table :sysID="sys_id" :sysTit="sysTit" />
       </Dialog>
     </div>
   </div>
@@ -115,6 +115,7 @@
     },
     data () {
       return {
+        sysTit:'',
         deviceNum:'-',
         devInnormalNum:'-',
         lists:[
@@ -130,14 +131,16 @@
         warnInfoLists:[
           {id:1,date:'-',content:'-',title:''},
         ],
-        self_id:'',
+        sys_id:'',
       }
     },
     methods:{
       chooseSysId(type){
         if (type === 1) {
+          this.sysTit = '给水系统数据报表';
           this.getDetailData((this.$store.state.sysList[6].son_list[0].self_id==7?this.$store.state.sysList[6].son_list[0].sys_menu_id:this.$store.state.sysList[6].son_list[1].sys_menu_id))
         } else if (type === 2) {
+          this.sysTit = '排水系统数据报表';
           this.getDetailData((this.$store.state.sysList[6].son_list[0].self_id==8?this.$store.state.sysList[6].son_list[0].sys_menu_id:this.$store.state.sysList[6].son_list[1].sys_menu_id))
         }
       },
@@ -211,8 +214,8 @@
       },
       getDetailData(id){
         this.$refs.dialogTable.show();
-        console.log(id);
-        this.self_id = id;
+        //console.log(id);
+        this.sys_id = id;
       },
       //获取设备
       getTotal(){

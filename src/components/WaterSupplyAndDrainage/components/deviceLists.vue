@@ -409,7 +409,6 @@
             this.dialog2Title = data.data.title;
             if (data.data.info.length != 0) {
               data.data.info.map((item, i) => {
-
                 if (item.type == 1) {
                   lineDataArr.push(item)
                 } else if (item.type == 2) {

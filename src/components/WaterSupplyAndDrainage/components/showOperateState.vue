@@ -24,7 +24,7 @@
     },
     methods:{
       render (){
-        console.log(this.btnss.data)
+        //console.log(this.btnss.data)
         let html = 'bbb';
         let color = '#ccc';
         switch(this.btnss.data){
