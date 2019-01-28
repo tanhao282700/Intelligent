@@ -4,7 +4,7 @@
     popper-class="airQuality-self-popper"
     placement="right-start"
     :disabled="false"
-    width="194"
+    width="240"
     @show="getInfo"
     trigger="hover">
     <slot slot="reference"></slot>
@@ -17,7 +17,7 @@
             <td>
               <div class="content">
                 <span :class="['iconBox',((v.colour==-1 && v.direction==-1)?'arrow-bottom-r':(v.colour==-1 && v.direction!=-1)?'arrow-top-r':(v.colour!=-1 && v.direction==-1)?'arrow-bottom-g':(v.colour!=-1 && v.direction!=-1)?'arrow-top-g':'')]"></span>
-                <span :class="['text',(v.colour==-1?'red':'green')]" v-text="v.value"></span>
+                <span :class="['text',(v.colour==-1?'red':'green')]" v-text="v.value+' '+v.unit"></span>
               </div>
             </td>
           </tr>

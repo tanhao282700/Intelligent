@@ -25,7 +25,7 @@
             </el-cascader>
           </div>
         </div>
-        <div class="rightBox">
+        <!--<div class="rightBox">
           <span class="tit">车辆检索：</span>
           <div class="inputBox">
             <el-input v-model="carNumber" placeholder="请输入车牌号码"></el-input>
@@ -33,7 +33,7 @@
           <div class="sltbtn">
             <el-button @click="searchData" type="primary" icon="el-icon-search">查询</el-button>
           </div>
-        </div>
+        </div>-->
       </div>
       <div class="content">
         <div class="left">

@@ -364,7 +364,6 @@
     },
     mounted() {
       this.$refs.HpadTop.style.paddingTop = Number(this.$parent.$children[0].$el.children[0].offsetHeight)+30+'px';
-
     },
   }
 </script>
